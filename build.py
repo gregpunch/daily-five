@@ -260,12 +260,14 @@ HOWTO=("<section class='sbhero'><span class='kicker'>🧮 Methodology</span><h1 
 
 def ogimage(ed,nice):
     fin=ed['finance'][:4]
-    rowsvg=''.join(f'<g transform="translate(70,{300+i*70})"><rect width="128" height="48" rx="24" fill="{"#16c784" if p["action"]=="BUY" else "#ff4d5e"}"/><text x="64" y="33" text-anchor="middle" font-size="24" font-weight="800" fill="#06130c">{p["action"]}</text><text x="150" y="36" font-family="monospace" font-size="38" font-weight="700" fill="#fff">{E(p["label"])}</text><text x="380" y="36" font-family="monospace" font-size="30" fill="#9ba3ba">${p["entry"]:,.2f}</text><text x="640" y="36" font-size="24" fill="#c9cede">{E(p["horizon"])}</text></g>' for i,p in enumerate(fin))
+    rowsvg=''.join(f'<g transform="translate(70,{330+i*62})"><rect width="128" height="48" rx="24" fill="{"#16c784" if p["action"]=="BUY" else "#ff4d5e"}"/><text x="64" y="33" text-anchor="middle" font-size="24" font-weight="800" fill="#06130c">{p["action"]}</text><text x="150" y="36" font-family="monospace" font-size="38" font-weight="700" fill="#fff">{E(p["label"])}</text><text x="380" y="36" font-family="monospace" font-size="30" fill="#9ba3ba">${p["entry"]:,.2f}</text><text x="640" y="36" font-size="24" fill="#c9cede">{E(p["horizon"])}</text></g>' for i,p in enumerate(fin))
+    import textwrap
+    hl=''.join(f'<text x="70" y="{240+i*40}" font-size="32" font-weight="700" fill="#fff">{E(l)}</text>' for i,l in enumerate(textwrap.wrap(ed['headline'],58)[:2]))
     logo=LOGO.replace('class="mark" ','').replace(' width="34" height="34"','').replace('<svg ','<svg width="40" height="40" ')
     svg=(f'<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs><radialGradient id="a" cx=".15" cy=".1" r=".7"><stop offset="0" stop-color="#16c784" stop-opacity=".45"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient><radialGradient id="b" cx=".9" cy=".2" r=".7"><stop offset="0" stop-color="#7c5cff" stop-opacity=".55"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient></defs>'
          f'<rect width="1200" height="630" fill="#07080d"/><rect width="1200" height="630" fill="url(#a)"/><rect width="1200" height="630" fill="url(#b)"/><g font-family="Inter,Helvetica,Arial,sans-serif">'
          f'<g transform="translate(70,60) scale(1.6)">{logo}</g><text x="160" y="112" font-size="44" font-weight="800" fill="#fff">The Daily Five</text>'
-         f'<text x="70" y="200" font-size="26" font-weight="700" fill="#ffb020" letter-spacing="3">{E(nice.upper())}</text><text x="70" y="250" font-size="34" font-weight="700" fill="#fff">{E(ed["headline"][:60])}</text>{rowsvg}'
+         f'<text x="70" y="200" font-size="26" font-weight="700" fill="#ffb020" letter-spacing="3">{E(nice.upper())}</text>{hl}{rowsvg}'
          f'<text x="1130" y="600" text-anchor="end" font-size="22" fill="#9ba3ba">readdailyfive.com \u00b7 Not financial advice</text></g></svg>')
     rel=f"og/{ed['date']}.png"; w(f"og/{ed['date']}.svg",svg); svgp=os.path.join(OUT,f"og/{ed['date']}.svg")
     chrome=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('chromium-browser')
