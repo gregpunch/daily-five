@@ -37,7 +37,10 @@ def stock_close_on(sym,on):
     return None,None
 def pmarket(slug):
     def f():
-        m=get(f"https://gamma-api.polymarket.com/markets?slug={slug}")[0]
+        r=get(f"https://gamma-api.polymarket.com/markets?slug={slug}")
+        # Gamma drops closed markets from the default query; ask again for closed ones so resolved picks settle.
+        if not r: r=get(f"https://gamma-api.polymarket.com/markets?slug={slug}&closed=true")
+        m=r[0]
         return {'outcomes':json.loads(m['outcomes']),'prices':[float(x) for x in json.loads(m['outcomePrices'])],'closed':bool(m.get('closed')),'tokens':json.loads(m.get('clobTokenIds') or '[]'),'volume':float(m.get('volume') or 0)}
     return memo(('pm',slug),f)
 def phistory(token):
@@ -81,7 +84,7 @@ def enrich(ed):
         p['pts']=phistory(tok) if tok else []
         if key in exits: p['cur'],p['final'],p['note']=exits[key]['price'],True,'resolved'
         else:
-            p['cur']=m['prices'][p['outcome']] if m else None; p['final']=bool(m and m['closed']); p['note']='resolved' if p['final'] else 'live'
+            p['cur']=m['prices'][p['outcome']] if m else None; p['final']=bool(m and m['closed'] and p['cur'] is not None and (p['cur']>=0.99 or p['cur']<=0.01)); p['note']='resolved' if p['final'] else ('closed, awaiting resolution' if m and m['closed'] else 'live')
             if p['final'] and p['cur'] is not None: exits[key]={'price':p['cur'],'note':'resolved'}
         midnight=datetime.datetime.combine(TODAY,datetime.time()).timestamp()
         tp=[v for t,v in p['pts'] if t>=midnight]; p['open']=tp[0] if tp else None; p['qt']=int(NOW.timestamp())
@@ -154,12 +157,12 @@ def hero(ed,nice):
 <aside class="topcall {top['action'].lower()}"><span class="tlbl">Top call today</span><div class="crow"><span class="act {top['action'].lower()}">{top['action']}</span><span class="tk">{E(top['label'])}</span></div>
 <span class="price">${top['entry']:,.2f}</span>{spark(top.get('pts'),220,56)}<p>{E(top['why'])}</p>{chip(top.get('ret'))}</aside></div>{tape(ed)}</section>"""
 def recap(prev):
-    if not prev: return '<div class="recap"><div><span class="kicker">📬 Yesterday\'s results</span><p>This is our first edition, so results start tomorrow. Every pick is tracked on the <a href="'+BASE+'/track-record/">Track record</a>.</p></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.</div></div>'
+    if not prev: return '<div class="recap"><div><span class="kicker">📬 Yesterday\'s results</span><p>This is our first edition, so results start tomorrow. Every pick is tracked on the <a href="'+BASE+'/track-record/">Track record</a>.</p></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
     ps=prev['finance']+prev['sports']; rs=[p['ret'] for p in ps if p.get('ret') is not None]
     items=''.join(f'<a href="{BASE}/picks/{p["id"]}/" class="rc"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} {chip(p.get("ret"),p.get("final"))}</a>' for p in ps)
     summ=f'{sum(r>0 for r in rs)}/{len(rs)} winning · avg {pct(sum(rs)/len(rs)) if rs else "—"}'
-    return f'<div class="recap"><div><span class="kicker">📬 Yesterday\'s results ({prev["date"]})</span><p><b>{summ}</b></p><div class="rcs">{items}</div></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.</div></div>'
-def today_strip(ps,where='home'):
+    return f'<div class="recap"><div><span class="kicker">📬 Yesterday\'s results ({prev["date"]})</span><p><b>{summ}</b></p><div class="rcs">{items}</div></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
+def today_strip(ps,where='home',settled=None):
     """'Today so far' running P/L strip for open picks. live.js recomputes it every minute."""
     op=[p for p in ps if not p.get('final')]; rs=[p for p in op if p.get('ret') is not None]
     up=sum(p['ret']>0 for p in rs); dn=sum(p['ret']<0 for p in rs); avg=sum(p['ret'] for p in rs)/len(rs) if rs else None
@@ -167,12 +170,15 @@ def today_strip(ps,where='home'):
     best=max(rs,key=lambda p:p['ret']) if rs else None; worst=min(rs,key=lambda p:p['ret']) if rs else None
     ids=json.dumps({p['id']:p['label'] for p in op})
     lab=lambda p: f'{E(p["label"])} {chip(p["ret"])}' if p else '—'
-    return (f'<div class="tsf {where}" id="tsf" data-picks="{E(ids)}" aria-live="polite"><span class="tsl"><span class="live"></span>Today so far</span>'
+    st=[p for p in (settled or []) if p.get('final') and p.get('ret') is not None]
+    sett=(f'<span class="tsc set"><small>settled</small> '+' '.join(f'<a href="{BASE}/picks/{p["id"]}/">{E(p["label"])} {chip(p["ret"],True)}</a>' for p in st)+'</span>') if st else ''
+    return (f'<div class="tsf {where}" id="tsf" data-picks="{E(ids)}" aria-live="polite"><span class="tsl"><span class="live"></span><span data-t="lbl">Today so far</span></span>'
             f'<span class="tsc"><b class="up" data-t="up">▲ {up}</b> up <b class="dn" data-t="dn">▼ {dn}</b> down <small>of {len(op)} open</small></span>'
             f'<span class="tsc"><small>avg since pick</small> <span data-t="avg">{mv(avg)}</span></span>'
             f'<span class="tsc"><small>avg today</small> <span data-t="so">{mv(aso)}</span></span>'
             f'<span class="tsc"><small>best</small> <span data-t="best">{lab(best)}</span></span>'
-            f'<span class="tsc"><small>worst</small> <span data-t="worst">{lab(worst)}</span></span></div>')
+            f'<span class="tsc"><small>worst</small> <span data-t="worst">{lab(worst)}</span></span>{sett}'
+            f'<span class="tsc nx"><small>next edition</small> <b class="nxc">7 AM ET</b></span><span class="tsc mk" data-t="mk" hidden></span></div>')
 def body(ed,prev=None):
     rank=0; fin=''
     for h,ic in [('1 Day','⚡'),('1 Month','📅'),('1 Year','🌱')]:
@@ -185,7 +191,7 @@ def body(ed,prev=None):
     sp=''.join(sp_card(p,i+1) for i,p in enumerate(ed['sports']))
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
     upd=NOW.strftime('%-I:%M %p ET')
-    return recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
+    return recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">The best ideas from AI agents, analysts and public sources, by horizon.</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
 <section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off.</p></div></div><div class="grid g3">{sp}</div></section>"""
@@ -371,7 +377,7 @@ def main():
     fmt=lambda r,v: (f"{v*100:.1f}¢" if r['kind']=='Sports' else f"${v:,.2f}") if v is not None else 'pending'
     tr=''.join(f'<tr><td class="mono">{r["date"][5:]}</td><td><span class="mini {r["action"].lower()}">{r["action"]}</span> <a href="{BASE}/picks/{r['id']}/"><b>{E(r["pick"])}</b></a></td><td>{E(r["horizon"])}</td><td class="mono">{fmt(r,r["entry"])}</td><td class="mono">{fmt(r,r["cur"])} <small>{E(r["note"])}</small></td><td>{spark(r["pts"],90,26)}</td><td>{chip(r["ret"],r["final"])}</td><td>{("Win" if r["ret"]>0 else "Loss" if r["ret"]<0 else "Flat") if r["ret"] is not None else "Pending"}{"" if r["final"] else " <small>open</small>"}</td><td><a href="{E(r["src"])}" rel="nofollow noopener" target="_blank" aria-label="source">↗</a></td></tr>' for r in rows)
     upd=datetime.datetime.now().strftime('%b %-d, %Y · %-I:%M %p ET')
-    sbstrip=today_strip([p for e in eds for p in e['finance']+e['sports']],'sb')
+    sbstrip=today_strip([p for e in eds for p in e['finance']+e['sports']],'sb',max(eds,key=lambda e:e['date'])['finance']+max(eds,key=lambda e:e['date'])['sports'])
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))

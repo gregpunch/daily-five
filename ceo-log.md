@@ -18,3 +18,23 @@
 3. Kit welcome sequence (3 emails: how we rank, how to read the Scoreboard, yesterday's results), plus a 4:15 PM ET "closing bell" recap email that drives return visits. Ask the user before turning on any automation that sends.
 4. @ReadDailyFive cadence: 7 AM edition card (OG image), a midday "Today so far" post, a 4:15 PM scorecard. Confirm cadence with the user before posting at volume.
 5. Evergreen SEO pages: "/best-stocks-to-buy-today/" and per-horizon hubs (1 Day / 1 Month / 1 Year) that pull from the track record, plus FAQ schema on how-we-rank.
+
+## 2026-10-15 · ~4:05 PM ET check-in
+
+**Shipped**
+- Closing-bell mode for the "Today so far" strip (homepage + Scoreboard). After 4 PM ET on weekdays it turns amber and reads "🔔 Closing bell · stocks closed for the day · sports still live". It shows "Pre-market" before 9:30 AM and "Weekend" on Sat/Sun. It also has a live countdown to the next 7 AM ET edition (in the strip and the recap box) and a "settled" chip for picks that closed today. Goal: give readers a reason to come back at 7 AM.
+- Price refresh at 4:03 PM ET (Yahoo + Polymarket). Stocks: AMAT +0.96%, KLAC +1.29%, AVGO +0.99%, MRVL +2.51% since pick. SELL QQQ -0.74% and SELL CRWV -12.45% (CRWV +14.2% on the day). Sports: Guardians won ALCS G3 and settled at 100¢, **+86.92% final** (first closed pick). Brewers NO WS -0.36%. Dodgers, Seahawks and Brewers NLCS are flat ahead of tonight's games. Strip: 4 up / 4 down of 10 open, avg since pick -0.79%, avg today +1.74%.
+
+**Fixed**
+- Resolved sports picks showed as "pending". Polymarket's Gamma API leaves closed markets out of `?slug=` results, so after the Guardians game resolved its card had no price. `build.py` now retries with `&closed=true` and settles a pick only when the price is ≥0.99 or ≤0.01 (it's frozen in `data/exits.json`).
+- Dispatch stopgap went quiet from 2:56 to 4:05 PM ET: no dispatches, nothing logged, process still alive (likely the box was paused mid-`sleep 900`). Rewrote `/workspace/bin/d5-dispatch.sh` (v2) to check the wall clock every 60 s, log failures, and time out gh calls after 60 s. Restarted at 4:06 PM ET.
+
+**CI finding**
+- Still zero GitHub `schedule` runs; every run since 1:39 PM ET was `workflow_dispatch` from the stopgap (all succeeded). The stopgap still won't survive a box restart. Proposal for the user: allow a free external cron pinger, or accept the box stopgap as the long-term trigger.
+
+**Growth ideas still pending**
+1. Google Search Console + Bing Webmaster: verify the domain and submit sitemap.xml (needs the user's Google account).
+2. `book` lines for Seahawks (TNF) and Brewers WS, so their Edge scores leave neutral (only from real published sportsbook lines).
+3. Kit welcome sequence + 4:15 PM ET closing-bell recap email (needs the user's OK before anything sends).
+4. @ReadDailyFive cadence: 7 AM card, midday strip, and a 4:15 PM scorecard ("Guardians +86.9% final" makes a good first scorecard post).
+5. Evergreen SEO: FAQ schema on /how-we-rank/ and per-horizon hub pages.

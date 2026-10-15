@@ -28,7 +28,14 @@ async function tick(){let stamp=null;
   const m=(await (await fetch('https://gamma-api.polymarket.com/markets?slug='+encodeURIComponent(el.dataset.slug))).json())[0];
   const d=state[el.dataset.id]=Object.assign(state[el.dataset.id]||{},{cur:+JSON.parse(m.outcomePrices)[+el.dataset.oc]});paint(el,d);stamp=et(new Date());}catch(e){}}));
  const u=document.getElementById('upd');if(u&&stamp)u.textContent=stamp;strip();}
-tick();setInterval(tick,60000);})();
+function clock(){const p={};for(const x of new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date()))p[x.type]=x.value;
+ const h=+p.hour%24,m=+p.minute,wk=!/Sat|Sun/.test(p.weekday),mins=h*60+m,left=(mins<420?420-mins:1860-mins),txt=(left>=60?Math.floor(left/60)+'h ':'')+(left%60)+'m';
+ for(const el of $('.nxc'))el.textContent='in '+txt+' · 7 AM ET';
+ if(!T)return;const L=T.querySelector('[data-t=lbl]'),M=T.querySelector('[data-t=mk]');if(!L)return;
+ const after=wk&&mins>=960,pre=wk&&mins<570,we=!wk;T.classList.toggle('bell',after||we);
+ L.textContent=after?'🔔 Closing bell':pre?'Pre-market':we?'Weekend':'Today so far';
+ if(M){M.hidden=!(after||pre||we);M.textContent=after?'stocks closed for the day · sports still live':pre?'stocks open 9:30 AM ET':we?'stocks closed · sports live':'';}}
+tick();clock();setInterval(tick,60000);setInterval(clock,30000);})();
 (()=>{const u=new URL(location.href);if(u.searchParams.get('subscribed')!=='1')return;
 const b=document.createElement('div');b.className='subok';b.setAttribute('role','status');
 b.innerHTML='<span class="subi">🎉</span><div><b>You\'re in!</b> Check your inbox to confirm. Your first Daily Five arrives tomorrow at 7 AM ET.</div><button aria-label="Dismiss">×</button>';
