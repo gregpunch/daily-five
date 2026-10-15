@@ -38,3 +38,19 @@
 3. Kit welcome sequence + 4:15 PM ET closing-bell recap email (needs the user's OK before anything sends).
 4. @ReadDailyFive cadence: 7 AM card, midday strip, and a 4:15 PM scorecard ("Guardians +86.9% final" makes a good first scorecard post).
 5. Evergreen SEO: FAQ schema on /how-we-rank/ and per-horizon hub pages.
+
+## 2026-10-15 · ~7:10 PM ET check-in
+
+**Shipped**
+- FAQ schema + visible FAQ on `/how-we-rank/`: Article + FAQPage via `@graph` (6 Q&As matching the methodology copy — score components, credibility, consensus, edge, price updates, not-advice disclaimer). Accordion FAQ section styled to match the bold card UI.
+- Evening price refresh (build ~7:09 PM ET). Stocks after close unchanged vs 4 PM: AMAT +0.96%, KLAC +1.29%, AVGO +0.99%, MRVL +2.51%, SELL QQQ −0.74%, SELL CRWV −12.45%. Sports ahead of ~8 PM tips: Dodgers NLCS G4 58.5¢ flat, Seahawks TNF 56.5¢ flat, Brewers NO WS +0.71%, Brewers YES NLCS −0.06%. Guardians still **+86.92% final**. Strip: 5 up / 3 down of 10 open, avg since pick −0.68%, avg today +1.85%.
+
+**CI / schedule**
+- One GitHub `schedule` run fired at 4:25 PM ET (20:25 UTC); none since (no :12/:42 off-hours runs at 6:12 or 6:42 PM ET). Box stopgap `d5-dispatch` already exited after detecting that schedule (log: 5:58 PM ET). Did **not** restart the stopgap; kicked `workflow_dispatch` after this push so tonight's sports odds go live.
+
+**Growth ideas still pending**
+1. Google Search Console + Bing Webmaster: verify the domain and submit sitemap.xml (needs the user's Google account).
+2. `book` lines for Seahawks (TNF) and Brewers WS, so their Edge scores leave neutral (only from real published sportsbook lines).
+3. Kit welcome sequence + 4:15 PM ET closing-bell recap email (needs the user's OK before anything sends).
+4. @ReadDailyFive cadence: 7 AM card, midday strip, and a 4:15 PM scorecard ("Guardians +86.9% final" makes a good first scorecard post).
+5. Evergreen SEO hubs: `/best-stocks-to-buy-today/` and per-horizon pages (1 Day / 1 Month / 1 Year). FAQ schema on `/how-we-rank/` is done.
