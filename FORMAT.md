@@ -41,4 +41,21 @@ git add -A && git commit -m "Edition YYYY-MM-DD" && git push   # auth: credentia
 ```
 Horizons close at entry date + 1 / 30 / 365 days (exit = first daily close on/after that date). Sports picks close when the Polymarket market resolves. SELL finance returns are short-side; sports picks are always BUY of an outcome (use the NO outcome to fade).
 
-The hero's "Top call" card shows finance item #3 (first 1-Month pick); order items accordingly. Signup forms POST natively to Kit form 10050182 (field `email_address`).
+Signup forms POST natively to Kit form 10050182 (field `email_address`).
+
+## Live prices (automatic)
+GitHub Actions (`.github/workflows/pages.yml`) rebuilds and redeploys every 10 min on weekday market hours (13–21 UTC) and every 15 min otherwise. Each build writes `site/data/live.json` (cur, day open, since-open %, since-pick %, final, updated_et). `live.js` reloads it every 60 s and also polls Polymarket's Gamma API directly (CORS-enabled) for sports cards. Stocks are labeled delayed (Yahoo may lag up to ~15 min). `site/` is no longer committed: CI builds it. Only `data/exits.json` is committed back by CI (with `[skip ci]`).
+
+## SEO pages (automatic)
+`/picks/<id>/` per pick, `/ticker/<SYMBOL or polymarket-slug>/` per ticker/market, `/track-record/`, `/how-we-rank/`, and a per-edition OG image `/og/<date>.png` (SVG rendered to PNG with headless Chrome when available, otherwise the SVG). All go in `sitemap.xml`. The recap block shows the previous edition's picks with P/L, plus "Come back tomorrow at 7 AM ET".
+
+## Sports `why`
+Every sports item must state a sourced reason, or start with "Our read:" if it's our inference. It renders as "Why BUY: …".
+
+## Daily Five Score (computed by build.py)
+Four components, each 0–25 (neutral 12.5 when they can't be computed, and the card says so):
+1. **Credibility**: hit rate of `source.name` across closed picks in our Scoreboard (needs ≥5 closed picks; otherwise "new source").
+2. **Consensus**: from the `consensus` field, which you fill with REAL sources found by search: `"consensus": {"agree": [{"name","url"}], "dissent": [{"name","url"}]}` (count the primary source in `agree`).
+3. **Edge**: stocks = % gap to Yahoo `financialData.targetMeanPrice` (signed by BUY/SELL). Sports = no-vig sportsbook probability minus Polymarket price, in points, from `"book": {"name","url","odds":[american_for_our_outcome, american_other]}` (real published lines only).
+4. **Risk/reward**: stocks = horizon-scaled target gap ÷ (60-day daily vol × √trading days); sports = EV at the fair probability.
+Cards show the score badge, four component bars, and a one-line breakdown. Finance and sports are ranked by score (#1 = highest); the hero "Top call" is the top-scored finance pick (so `top_call` text should match it, or omit `top_call`).

@@ -1,14 +1,30 @@
-name: Deploy Pages
-on: {push: {branches: [main]}, workflow_dispatch: {}}
-permissions: {contents: read, pages: write, id-token: write}
+name: Build & deploy (live prices)
+on:
+  push: {branches: [main]}
+  workflow_dispatch: {}
+  schedule:
+    - cron: '*/10 13-21 * * 1-5'   # every 10 min, ~9 AM-5 PM ET weekdays (market hours focus)
+    - cron: '*/15 22-23,0-12 * * *' # every 15 min off-hours (sports markets)
+    - cron: '*/15 13-21 * * 0,6'    # weekends
+permissions: {contents: write, pages: write, id-token: write}
+concurrency: {group: pages, cancel-in-progress: false}
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: {name: github-pages}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Build with fresh prices (Yahoo Finance + Polymarket)
+        run: SITE_URL=https://readdailyfive.com python3 build.py
+      - name: Persist frozen exits
+        run: |
+          if ! git diff --quiet -- data/exits.json; then
+            git config user.name "The Daily Five bot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/exits.json && git commit -m "Update exits [skip ci]" && git push || true
+          fi
       - uses: actions/configure-pages@v5
-        with: {enablement: true}
       - uses: actions/upload-pages-artifact@v3
         with: {path: site}
       - uses: actions/deploy-pages@v4

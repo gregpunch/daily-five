@@ -19,6 +19,24 @@
    "source": {
     "name": "Reuters via Investing.com",
     "url": "https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Reuters via Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779"
+     },
+     {
+      "name": "AP",
+      "url": "https://apnews.com/article/stock-markets-kospi-tech-shares-e889ad7dee2b7dd959f1b8bc87366914"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "UBS CIO",
+      "url": "https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html"
+     }
+    ]
    }
   },
   {
@@ -33,6 +51,19 @@
    "source": {
     "name": "Reuters via Yahoo",
     "url": "https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Reuters via Yahoo",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html"
+     },
+     {
+      "name": "Reuters via Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779"
+     }
+    ],
+    "dissent": []
    }
   },
   {
@@ -47,6 +78,24 @@
    "source": {
     "name": "J.P. Morgan note (via MastermindX)",
     "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "J.P. Morgan semis note",
+      "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"
+     },
+     {
+      "name": "UBS CIO",
+      "url": "https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "JPM strategists via MarketWatch (no fast rebound)",
+      "url": "https://www.marketwatch.com/story/why-the-ai-trade-is-not-set-up-for-a-rebound-like-julys-according-to-jpmorgan-5ae511db"
+     }
+    ]
    }
   },
   {
@@ -61,6 +110,24 @@
    "source": {
     "name": "Stifel via StockWire X",
     "url": "https://stockwirex.com/news/ai-semiconductor-valuations-stifel-october-2026/"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "J.P. Morgan semis note",
+      "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"
+     },
+     {
+      "name": "Stifel via StockWire X",
+      "url": "https://stockwirex.com/news/ai-semiconductor-valuations-stifel-october-2026/"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "JPM strategists via MarketWatch (no fast rebound)",
+      "url": "https://www.marketwatch.com/story/why-the-ai-trade-is-not-set-up-for-a-rebound-like-julys-according-to-jpmorgan-5ae511db"
+     }
+    ]
    }
   },
   {
@@ -75,6 +142,24 @@
    "source": {
     "name": "UBS CIO",
     "url": "https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "UBS CIO",
+      "url": "https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html"
+     },
+     {
+      "name": "J.P. Morgan semis note",
+      "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "JPM strategists via MarketWatch (no fast rebound)",
+      "url": "https://www.marketwatch.com/story/why-the-ai-trade-is-not-set-up-for-a-rebound-like-julys-according-to-jpmorgan-5ae511db"
+     }
+    ]
    }
   },
   {
@@ -89,6 +174,24 @@
    "source": {
     "name": "J.P. Morgan note (via MastermindX)",
     "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "J.P. Morgan semis note",
+      "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"
+     },
+     {
+      "name": "UBS CIO",
+      "url": "https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "JPM strategists via MarketWatch (no fast rebound)",
+      "url": "https://www.marketwatch.com/story/why-the-ai-trade-is-not-set-up-for-a-rebound-like-julys-according-to-jpmorgan-5ae511db"
+     }
+    ]
    }
   }
  ],
@@ -152,6 +255,23 @@
    "source": {
     "name": "Polymarket",
     "url": "https://polymarket.com/event/mlb-2026-national-league-champion"
+   },
+   "book": {
+    "name": "DraftKings (Oct 14) via FOX Sports",
+    "url": "https://www.foxsports.com/stories/mlb/2026-mlb-nlcs-odds-dodgers-brewers",
+    "odds": [
+     -285,
+     235
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "DraftKings via FOX Sports",
+      "url": "https://www.foxsports.com/stories/mlb/2026-mlb-nlcs-odds-dodgers-brewers"
+     }
+    ],
+    "dissent": []
    }
   },
   {
@@ -166,6 +286,23 @@
    "source": {
     "name": "Polymarket",
     "url": "https://polymarket.com/event/mlb-mil-lad-2026-10-15"
+   },
+   "book": {
+    "name": "DraftKings via FOX Sports",
+    "url": "https://www.foxsports.com/stories/mlb/2026-mlb-nlcs-odds-dodgers-brewers",
+    "odds": [
+     -161,
+     133
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "DraftKings via FOX Sports",
+      "url": "https://www.foxsports.com/stories/mlb/2026-mlb-nlcs-odds-dodgers-brewers"
+     }
+    ],
+    "dissent": []
    }
   },
   {
@@ -180,6 +317,15 @@
    "source": {
     "name": "DeFi Rate",
     "url": "https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Kalshi/Polymarket via DeFi Rate",
+      "url": "https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/"
+     }
+    ],
+    "dissent": []
    }
   },
   {
