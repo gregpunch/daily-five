@@ -32,7 +32,9 @@ def page(title,desc,path,body,schema=None):
 def w(rel,txt):
     p=os.path.join(OUT,rel.lstrip('/')); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def main():
-    shutil.rmtree(OUT,ignore_errors=True); os.makedirs(OUT); w('style.css',CSS)
+    shutil.rmtree(OUT,ignore_errors=True); os.makedirs(OUT); w('style.css',CSS); w('.nojekyll','')
+    host=urlparse(SITE).hostname
+    if host and not host.endswith('github.io') and host!='example.com': w('CNAME',host+'\n')
     eds=sorted(glob.glob(os.path.join(ROOT,'editions','*.md')),reverse=True); items=[]
     for f in eds:
         d=os.path.basename(f)[:-3]; md=open(f).read()
