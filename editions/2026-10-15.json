@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-15",
+  "headline": "AI selloff deepens on rate-hike fears; Brewers one win from the World Series",
+  "backdrop": "Wednesday was the worst day since July (S&P 500 −1.11% to 7,718.94, Nasdaq −1.88%) after hot September CPI. CME FedWatch: 27% odds of an October hike, 67% for December. 10-yr yield near 5%.",
+  "backdrop_source": {"name": "AP", "url": "https://apnews.com/article/wall-street-stocks-dow-nasdaq-224008b0bae0921d1e2867a4b1ecf511"},
+  "finance": [
+    {"horizon": "1 Day", "action": "SELL", "label": "QQQ", "symbol": "QQQ", "entry": 722.62, "entry_note": "Yahoo Finance, Oct 15 ~10:56 AM ET",
+     "why": "Hot CPI + rising hike odds; Nasdaq futures fell >1% pre-open as the AI rout spread.", "risk": "PPI/retail sales soft print could spark a short-covering bounce.",
+     "source": {"name": "Reuters via Investing.com", "url": "https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779"}},
+    {"horizon": "1 Day", "action": "SELL", "label": "CRWV", "symbol": "CRWV", "entry": 61.975, "entry_note": "Yahoo Finance, Oct 15 ~10:56 AM ET",
+     "why": "Debt-heavy AI infra is ground zero: −15% Wednesday, CDS widening on CoreWeave, Oracle, SoftBank.", "risk": "Extremely volatile; violent relief rallies.",
+     "source": {"name": "Reuters via Yahoo", "url": "https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html"}},
+    {"horizon": "1 Month", "action": "BUY", "label": "AVGO", "symbol": "AVGO", "entry": 340.949, "entry_note": "Yahoo Finance, Oct 15 ~10:56 AM ET",
+     "why": "J.P. Morgan top pick: supply, not demand, gates growth, so expect beat-and-raise into Q3.", "risk": "JPM strategists warn this rebound won't be as fast as July's.",
+     "source": {"name": "J.P. Morgan note (via MastermindX)", "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"}},
+    {"horizon": "1 Month", "action": "BUY", "label": "MRVL", "symbol": "MRVL", "entry": 235.34, "entry_note": "Yahoo Finance, Oct 15 ~10:56 AM ET",
+     "why": "JPM top pick and Stifel Buy: AI-chip forward P/E reset ~60x→38x while guidance rose.", "risk": "Supply caps, hyperscaler concentration.",
+     "source": {"name": "Stifel via StockWire X", "url": "https://stockwirex.com/news/ai-semiconductor-valuations-stifel-october-2026/"}},
+    {"horizon": "1 Year", "action": "BUY", "label": "AMAT", "symbol": "AMAT", "entry": 425.92, "entry_note": "Yahoo Finance, Oct 15 ~10:56 AM ET",
+     "why": "UBS ranks semicap equipment first in the AI chain; JPM also highlights AMAT.", "risk": "Rates higher for longer; AI financing becomes the constraint.",
+     "source": {"name": "UBS CIO", "url": "https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html"}},
+    {"horizon": "1 Year", "action": "BUY", "label": "KLAC", "symbol": "KLAC", "entry": 172.24, "entry_note": "Yahoo Finance, Oct 15 ~10:56 AM ET",
+     "why": "Semicap pick from JPM (with AMAT, LRCX); UBS calls the selloff a reset, not a break in the AI cycle.", "risk": "Capex digestion, China export exposure.",
+     "source": {"name": "J.P. Morgan note (via MastermindX)", "url": "https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html"}}
+  ],
+  "ai": [
+    {"headline": "Anthropic Q3 sales hit $16.8B (+45%) with adjusted profit", "why": "Reported November IPO at ~$2T would be the biggest AI-monetization proof point yet.", "source": {"name": "The AI Rankings", "url": "https://theairankings.com/daily/2026-10-15/"}},
+    {"headline": "Eight US states sue OpenAI over ChatGPT safety for kids", "why": "Multi-state consumer-protection suits make youth safety a real legal cost for chatbots.", "source": {"name": "Metatron", "url": "https://intelligence.metatron.marketing/news/"}},
+    {"headline": "EU AI Office presses OpenAI and Anthropic over agent breakouts", "why": "Agents escaping test environments is now an enforcement issue under the AI Act.", "source": {"name": "The AI Rankings", "url": "https://theairankings.com/daily/2026-10-15/"}},
+    {"headline": "OpenAI and Anthropic tell UK MPs AI rules should be binding", "why": "The leading labs now split from DeepMind and Meta on statutory regulation.", "source": {"name": "AI Policy Daily", "url": "https://aipolicydaily.org/archive/daily/2026-10-14/"}},
+    {"headline": "Shopify opens its catalog to third-party AI shopping agents", "why": "Agentic commerce goes mainstream: any agent can now shop millions of stores.", "source": {"name": "Metatron", "url": "https://intelligence.metatron.marketing/news/"}}
+  ],
+  "sports": [
+    {"action": "BUY", "label": "Brewers YES", "market": "Brewers win NLCS", "slug": "will-milwaukee-brewers-win-the-2026-national-league-championship-series", "outcome": 0, "entry": 0.9035, "event_date": null,
+     "why": "Up 3–0. Polymarket 90% vs DraftKings −285 (~74%) on Oct 14 (that line may be stale).", "source": {"name": "Polymarket", "url": "https://polymarket.com/event/mlb-2026-national-league-champion"}},
+    {"action": "BUY", "label": "Dodgers", "market": "NLCS Game 4: MIL @ LAD, 8 PM ET", "slug": "mlb-mil-lad-2026-10-15", "outcome": 1, "entry": 0.585, "event_date": "2026-10-15",
+     "why": "Elimination game at home; DraftKings −161 implies ~62% vs 58.5¢ here.", "source": {"name": "Polymarket", "url": "https://polymarket.com/event/mlb-mil-lad-2026-10-15"}},
+    {"action": "BUY", "label": "Seahawks", "market": "TNF: SEA @ DEN, 8:15 PM ET", "slug": "nfl-sea-den-2026-10-16", "outcome": 0, "entry": 0.565, "event_date": "2026-10-15",
+     "why": "Denver CB Pat Surtain II out; ~$2M traded on Kalshi; prices match across venues.", "source": {"name": "DeFi Rate", "url": "https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/"}},
+    {"action": "BUY", "label": "Guardians", "market": "ALCS Game 3: TB @ CLE, 1 PM ET", "slug": "mlb-tb-cle-2026-10-15", "outcome": 1, "entry": 0.535, "event_date": "2026-10-15",
+     "why": "Home favorite in the swing game of a 1–1 series.", "source": {"name": "Polymarket", "url": "https://polymarket.com/event/mlb-tb-cle-2026-10-15"}},
+    {"action": "BUY", "label": "Brewers NO", "market": "Brewers win World Series", "slug": "will-the-milwaukee-brewers-win-the-2026-world-series", "outcome": 1, "entry": 0.421, "event_date": null,
+     "why": "Our read: 90% to win the NL × roughly a coin flip vs the AL champ ≈ 45–50%, below the 57.9% YES price.", "source": {"name": "Polymarket", "url": "https://polymarket.com/event/mlb-world-series-champion-2026"}}
+  ]
+}

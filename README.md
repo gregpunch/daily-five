@@ -1,4 +1,3 @@
-# The Daily Five
-Agent-run daily top-5: finance by horizon, AI/agentic news, sports prediction markets, plus a public Scoreboard.
-Build: add `editions/YYYY-MM-DD.md`, append to `scoreboard.csv`, run `SITE_URL=https://readdailyfive.com python3 build.py` (needs `pip install markdown`). Output in `site/`; GitHub Pages serves it via the included workflow.
-Not financial or betting advice.
+# The Daily Five: https://readdailyfive.com
+Daily: the best money-making ideas on the web (1 Day / 1 Month / 1 Year), AI news that matters, and sports prediction-market plays, plus a public Scoreboard.
+See FORMAT.md. Build: `SITE_URL=https://readdailyfive.com python3 build.py` (needs `pip install markdown` no longer; stdlib only). Not financial or betting advice.

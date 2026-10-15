@@ -1,12 +1,12 @@
-date,section,idea,ticker_or_market,horizon,source,entry_price,entry_price_source,thesis
-2026-10-15,finance,Macro data (PPI/retail sales) drives AI selloff,QQQ/NQ futures,today,https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779,,,"Hot data + 27% Oct hike odds keep pressure on AI"
-2026-10-15,finance,Leveraged AI infra under pressure,CRWV; ORCL,today,https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html,,,"Debt-funded AI names hit hardest as rates rise; CDS widening"
-2026-10-15,finance,JPM buy semis on weakness,AVGO; MRVL; NVDA,this month,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html,NVDA 214.39,Investing.com quote table (Oct 15 AM),"Supply-gated growth; beat-and-raise into Q3"
-2026-10-15,finance,Stifel AI chip valuation reset,MPWR; MRVL; TXN; MTSI; SMTC,this month,https://stockwirex.com/news/ai-semiconductor-valuations-stifel-october-2026/,,,"Median fwd P/E 60x->38x while guidance rose"
-2026-10-15,finance,UBS diversified AI value chain,Semicap/robotics/foundry,1yr+,https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html,,,"Selloff is expectations reset not cycle break"
-2026-10-15,finance,Anthropic IPO watch,Anthropic (pre-IPO),1yr+,https://theairankings.com/daily/2026-10-15/,,,"Q3 sales $16.8B +45%; reported Nov listing ~$2T"
-2026-10-15,sports-pm,Brewers win NLCS,Polymarket NLCS winner,2026-10-31,https://polymarket.com/event/mlb-2026-national-league-champion/will-milwaukee-brewers-win-the-2026-national-league-championship-series,Brewers 90%,Polymarket via search snapshot,"Up 3-0; DK -285 (Oct 14) may be stale"
-2026-10-15,sports-pm,NLCS Game 4 MIL@LAD,Polymarket US mlb-mil-lad-2026-10-15,2026-10-15,https://polymarket.us/sports/mlb/mlb-mil-lad-2026-10-15,LAD 58% / MIL 42%,Polymarket US,"Elimination game; in line with DK -161/+133"
-2026-10-15,sports-pm,TNF SEA@DEN,Polymarket US / Kalshi,2026-10-15,https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/,SEA 56.5% / DEN 43.75%,Polymarket US; Kalshi 57/44,"Surtain out; ~$2.0M Kalshi vol; no cross-venue arb"
-2026-10-15,sports-pm,ALCS Game 3 TB@CLE,Polymarket US mlb-tb-cle-2026-10-15,2026-10-15,https://polymarket.us/sports/mlb/mlb-tb-cle-2026-10-15,CLE 55% / TB 45.5%,Polymarket US,"Swing game of tied series"
-2026-10-15,sports-pm,World Series winner,Polymarket WS 2026,2026-11 (WS end),https://polymarket.com/event/mlb-world-series-champion-2026,MIL 45.1% (snapshots vary to 58%),Polymarket event page,"Possible repricing vs 90% NLCS odds"
+date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
+2026-10-15,Finance,1 Day,SELL,QQQ,722.62,722.72,open,-0.01,https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779
+2026-10-15,Finance,1 Day,SELL,CRWV,61.975,62.235,open,-0.42,https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html
+2026-10-15,Finance,1 Month,BUY,AVGO,340.949,340.925,open,-0.01,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html
+2026-10-15,Finance,1 Month,BUY,MRVL,235.34,235.895,open,0.24,https://stockwirex.com/news/ai-semiconductor-valuations-stifel-october-2026/
+2026-10-15,Finance,1 Year,BUY,AMAT,425.92,426.565,open,0.15,https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html
+2026-10-15,Finance,1 Year,BUY,KLAC,172.24,172.35,open,0.06,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html
+2026-10-15,Sports,Sports market,BUY,Brewers YES · Brewers win NLCS,0.9035,0.9035,open,0.00,https://polymarket.com/event/mlb-2026-national-league-champion
+2026-10-15,Sports,Sports market,BUY,"Dodgers · NLCS Game 4: MIL @ LAD, 8 PM ET",0.585,0.585,open,0.00,https://polymarket.com/event/mlb-mil-lad-2026-10-15
+2026-10-15,Sports,Sports market,BUY,"Seahawks · TNF: SEA @ DEN, 8:15 PM ET",0.565,0.565,open,0.00,https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/
+2026-10-15,Sports,Sports market,BUY,"Guardians · ALCS Game 3: TB @ CLE, 1 PM ET",0.535,0.535,open,0.00,https://polymarket.com/event/mlb-tb-cle-2026-10-15
+2026-10-15,Sports,Sports market,BUY,Brewers NO · Brewers win World Series,0.421,0.421,open,0.00,https://polymarket.com/event/mlb-world-series-champion-2026
