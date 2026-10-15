@@ -18,7 +18,8 @@ git add -A && git commit -m "Edition YYYY-MM-DD" && git push   # auth: credentia
 ```json
 {
   "date": "YYYY-MM-DD",
-  "headline": "One-line hook for the day (hero + page title)",
+  "headline": "One-line hook for the day (page title/SEO)",
+  "top_call": "Big punchy hero headline about the day's top call (optional; falls back to headline)",
   "backdrop": "1–2 sentence market context with real numbers",
   "backdrop_source": {"name": "AP", "url": "https://..."},
   "finance": [            // 6 items: 2 each for "1 Day", "1 Month", "1 Year"
@@ -28,7 +29,7 @@ git add -A && git commit -m "Edition YYYY-MM-DD" && git push   # auth: credentia
      "source": {"name": "Outlet", "url": "https://..."}}
   ],
   "ai": [                 // 5 items
-    {"headline": "...", "why": "One-line why it matters.", "source": {"name": "...", "url": "https://..."}}
+    {"category": "Money|Policy|Safety|Regulation|Agents|Models|Chips|...", "headline": "...", "why": "One-line why it matters.", "source": {"name": "...", "url": "https://..."}}
   ],
   "sports": [             // 5 Polymarket/Kalshi plays
     {"action": "BUY", "label": "Brewers YES", "market": "Brewers win NLCS",
@@ -39,3 +40,5 @@ git add -A && git commit -m "Edition YYYY-MM-DD" && git push   # auth: credentia
 }
 ```
 Horizons close at entry date + 1 / 30 / 365 days (exit = first daily close on/after that date). Sports picks close when the Polymarket market resolves. SELL finance returns are short-side; sports picks are always BUY of an outcome (use the NO outcome to fade).
+
+The hero's "Top call" card shows finance item #3 (first 1-Month pick); order items accordingly. Signup forms POST natively to Kit form 10050182 (field `email_address`).
