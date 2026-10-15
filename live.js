@@ -17,3 +17,8 @@ async function tick(){let stamp=null;
   const d=state[el.dataset.id]=Object.assign(state[el.dataset.id]||{},{cur:+JSON.parse(m.outcomePrices)[+el.dataset.oc]});paint(el,d);stamp=et(new Date());}catch(e){}}));
  const u=document.getElementById('upd');if(u&&stamp)u.textContent=stamp;}
 tick();setInterval(tick,60000);})();
+(()=>{const u=new URL(location.href);if(u.searchParams.get('subscribed')!=='1')return;
+const b=document.createElement('div');b.className='subok';b.setAttribute('role','status');
+b.innerHTML='<span class="subi">🎉</span><div><b>You\'re in!</b> Check your inbox to confirm. Your first Daily Five arrives tomorrow at 7 AM ET.</div><button aria-label="Dismiss">×</button>';
+b.querySelector('button').onclick=()=>b.remove();document.body.prepend(b);setTimeout(()=>b.classList.add('show'),30);
+u.searchParams.delete('subscribed');history.replaceState(null,'',u.pathname+(u.search||'')+u.hash);})();

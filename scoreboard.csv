@@ -1,12 +1,12 @@
 date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
-2026-10-15,Finance,1 Year,BUY,AMAT,425.92,426.8,open,0.21,https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html
-2026-10-15,Finance,1 Year,BUY,KLAC,172.24,173.225,open,0.57,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html
-2026-10-15,Finance,1 Month,BUY,AVGO,340.949,340.95,open,0.00,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html
-2026-10-15,Finance,1 Month,BUY,MRVL,235.34,237.046,open,0.72,https://stockwirex.com/news/ai-semiconductor-valuations-stifel-october-2026/
-2026-10-15,Finance,1 Day,SELL,QQQ,722.62,725.12,open,-0.35,https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779
-2026-10-15,Finance,1 Day,SELL,CRWV,61.975,64.54,open,-4.14,https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html
+2026-10-15,Finance,1 Year,BUY,AMAT,425.92,428.83,open,0.68,https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html
+2026-10-15,Finance,1 Year,BUY,KLAC,172.24,173.47,open,0.71,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html
+2026-10-15,Finance,1 Month,BUY,AVGO,340.949,339.2,open,-0.51,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html
+2026-10-15,Finance,1 Month,BUY,MRVL,235.34,236.61,open,0.54,https://stockwirex.com/news/ai-semiconductor-valuations-stifel-october-2026/
+2026-10-15,Finance,1 Day,SELL,QQQ,722.62,724.44,open,-0.25,https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779
+2026-10-15,Finance,1 Day,SELL,CRWV,61.975,64.255,open,-3.68,https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html
 2026-10-15,Sports,Sports,BUY,"Dodgers · NLCS Game 4: MIL @ LAD, 8 PM ET",0.585,0.585,open,0.00,https://polymarket.com/event/mlb-mil-lad-2026-10-15
 2026-10-15,Sports,Sports,BUY,"Seahawks · TNF: SEA @ DEN, 8:15 PM ET",0.565,0.565,open,0.00,https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/
 2026-10-15,Sports,Sports,BUY,"Guardians · ALCS Game 3: TB @ CLE, 1 PM ET",0.535,0.535,open,0.00,https://polymarket.com/event/mlb-tb-cle-2026-10-15
-2026-10-15,Sports,Sports,BUY,Brewers NO · Brewers win World Series,0.421,0.4355,open,3.44,https://polymarket.com/event/mlb-world-series-champion-2026
+2026-10-15,Sports,Sports,BUY,Brewers NO · Brewers win World Series,0.421,0.434,open,3.09,https://polymarket.com/event/mlb-world-series-champion-2026
 2026-10-15,Sports,Sports,BUY,Brewers YES · Brewers win NLCS,0.9035,0.9035,open,0.00,https://polymarket.com/event/mlb-2026-national-league-champion
