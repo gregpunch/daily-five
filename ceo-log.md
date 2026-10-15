@@ -10,6 +10,7 @@
 **CI finding**
 - `pages.yml` was valid and the workflow active, but zero `schedule` runs ever fired between when the crons were added (11:10 AM ET) and 1:10 PM ET. All 10 runs were `push`. Likely cause: GitHub's best-effort scheduler (new repo, plus dense `*/10` and `*/15` crons on round minutes, which GitHub routinely delays or drops at peak load).
 - Fix: crons moved to off-round minutes, market hours every 15 min (:07/:22/:37/:52, 13-21 UTC weekdays), every 30 min otherwise (:12/:42). workflow_dispatch kept. If schedules still don't fire by tomorrow's open, fallback options (need user OK): a free external pinger that calls workflow_dispatch (needs an account), or a cron job on the box that runs `gh workflow run`.
+- Still no `schedule` run at the 1:22 and 1:37 PM ET slots after the fix (new crons may take a while to register). Stopgap from 1:39 PM ET: `/workspace/bin/d5-dispatch.sh` on the box runs `gh workflow run pages.yml` every 15 min in market hours and every 30 min otherwise. It skips when a run is already active and exits on its own once GitHub fires any `schedule` run. Log: `/workspace/daily-top5-dispatch.log`. Stop it with `pkill -f d5-dispatch.sh`. It won't survive a box restart.
 
 **Growth ideas (not yet done; nothing promoted externally)**
 1. Google Search Console + Bing Webmaster: verify readdailyfive.com and submit sitemap.xml (free, but needs the user's Google account, so ask first). Ticker, pick, track-record and how-we-rank pages are already in the sitemap.
