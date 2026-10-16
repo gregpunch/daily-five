@@ -10,5 +10,9 @@
  "2026-10-15/s2": {
   "price": 0.0,
   "note": "resolved"
+ },
+ "2026-10-15/s0": {
+  "price": 1.0,
+  "note": "resolved"
  }
 }
