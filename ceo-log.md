@@ -86,3 +86,19 @@
 3. Use the new Polymarket hub as the link target in X replies to Polymarket posters (more relevant than the homepage).
 4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
 5. Per-horizon stock hubs once there's ~1 week of picks (too thin today).
+
+## 2026-10-16 · ~4:10 PM ET check-in
+
+**Shipped**
+- Share button on every pick card (homepage, pick pages, ticker pages, hubs): an X post link with the pick, entry price, pick URL, and via @ReadDailyFive. live.js swaps in the live P/L at click time ("BUY LRCX: −4.87% since The Daily Five called it", adding "(final)" once settled) and opens the native share sheet on phones. Push 1630d6f, deploy succeeded, verified live (11 share buttons on the homepage, new live.js served). Renders: `shots/share-d.png`, `shots/share-m.png`. Goal: readers bring in readers, especially when a call is working.
+- Closing-bell price refresh (live build 4:10 PM ET). Today's edition: SELL META +3.72%, SELL QQQ +2.50%, Brewers YES WS +1.09%; CROX −1.31%, MBLY −2.83%, LRCX −4.87%, SMTC −5.19%, Packers −1.90%, Guardians YES ALCS −1.10%; Chiefs and Guardians G4 flat (G4 is 8 PM ET tonight). Both 1 Day shorts are winning into the close.
+
+**Fixed / CI**
+- No broken pages. GitHub `schedule` fired at 4:00 PM ET; box stopgap d5-dispatch v3 still running as backup.
+
+**Growth ideas still pending**
+1. Google Search Console + Bing Webmaster: verify readdailyfive.com and submit sitemap.xml (needs the user's Google account).
+2. Kit welcome sequence + 4:15 PM ET closing-bell recap email (needs OK before any sends).
+3. Per-pick OG images showing live-at-build P/L so shared pick links unfurl with a scorecard, not the edition image.
+4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
+5. Per-horizon stock hubs once there's ~1 week of picks.
