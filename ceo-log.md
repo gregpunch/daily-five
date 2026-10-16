@@ -102,3 +102,19 @@
 3. Per-pick OG images showing live-at-build P/L so shared pick links unfurl with a scorecard, not the edition image.
 4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
 5. Per-horizon stock hubs once there's ~1 week of picks.
+
+## 2026-10-16 · ~7:05 PM ET check-in
+
+**Shipped**
+- Per-pick share cards: every pick page now has its own 1200×630 `og:image` (`/og/picks/<id>.png`) showing BUY/SELL, the pick, a big since-the-call P/L, entry → now/exit, LIVE/FINAL, and the Daily Five Score, rendered at each build with headless Chrome (4 in parallel, ~20s locally for 22 cards). The `?v=` query changes with the P/L so X re-fetches a fresh card. Only open picks or picks from the last 7 days get cards, so build time stays flat. So a shared "SELL META" link unfurls as a "+3.72%" scorecard, not the generic edition image. Push aca5a6a; deploy succeeded and the PNG is served live (checked `/picks/2026-10-16-sell-meta/`).
+- Evening refresh (7:06 PM ET live build). Today's edition: SELL META +3.72%, SELL QQQ +2.50%, Brewers YES WS +1.24%; CROX −1.31%, Guardians YES ALCS −1.02%, Chiefs −1.27%, Packers −1.90%, Guardians G4 −2.02% (8 PM ET tonight), MBLY −2.83%, LRCX −4.87%, SMTC −5.19%. Oct 15 1 Day shorts (SELL QQQ +1.77%, SELL CRWV +0.94%) freeze at the Oct 16 close on tomorrow's first build, per the `TODAY > end` rule.
+
+**Fixed / CI**
+- No broken pages (home, scoreboard, both hubs return 200). GitHub `schedule` skipped every slot from 4:00 PM to 6:47 PM ET, then resumed at 6:47 PM ET. Stopgap not restarted because it would exit right away after a fresh schedule run.
+
+**Growth ideas still pending**
+1. Google Search Console + Bing Webmaster: verify readdailyfive.com and submit sitemap.xml (needs the user's Google account).
+2. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+3. Use the per-pick card links (not the homepage) in X replies and scorecards; winners such as the META short unfurl as big green numbers.
+4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
+5. Per-horizon stock hubs once there's ~1 week of picks.
