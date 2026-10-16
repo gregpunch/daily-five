@@ -318,6 +318,53 @@ def write_live(eds):
         for p in ed['finance']+ed['sports']:
             picks[p['id']]={'cur':p.get('cur'),'open':p.get('open'),'so':p.get('so'),'ret':p.get('ret'),'final':p.get('final'),'kind':p['kind'],'qt':p.get('qt'),'label':p['label']}
     w('data/live.json',json.dumps({'updated':NOW.astimezone().isoformat(timespec='seconds'),'ts':int(NOW.timestamp()),'updated_et':NOW.strftime('%-I:%M %p ET'),'picks':picks}))
+def _render_png(svgp,pngp):
+    chrome=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('chromium-browser')
+    if not chrome: return False
+    import subprocess, tempfile
+    with tempfile.TemporaryDirectory() as ud:
+        try: subprocess.run([chrome,'--headless=new','--no-sandbox','--hide-scrollbars','--disable-gpu',f'--user-data-dir={ud}','--window-size=1200,630',f'--screenshot={pngp}','file://'+svgp],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=60)
+        except Exception: return False
+    return os.path.exists(pngp)
+PICK_OG_JOBS=[]
+def pick_og(p,ed):
+    """Per-pick share card (1200x630) with the live-at-build P/L, so shared pick links unfurl as a scorecard.
+    Only for recent/open picks (keeps build time flat); others fall back to the edition image."""
+    age=(TODAY-datetime.date.fromisoformat(ed['date'])).days
+    if age>7 and p.get('final'): return None
+    k=p['kind']; r=p.get('ret'); fin=p.get('final')
+    col='#16c784' if (r or 0)>0 else '#ff4d5e' if (r or 0)<0 else '#9ba3ba'
+    big=pct(r) if r is not None else 'Pending'
+    act=p['action']; acol='#16c784' if act=='BUY' else '#ff4d5e'
+    import textwrap
+    lab=p['label'] if k=='Finance' else p['label']
+    sub=p['horizon']+' pick' if k=='Finance' else p['market']
+    subl=textwrap.wrap(sub,52)[:2]
+    stat='FINAL' if fin else 'LIVE'
+    when=NOW.strftime('%b %-d, %-I:%M %p ET')
+    status_txt=('Final result' if fin else f'Marked {when}')
+    logo=LOGO.replace('class="mark" ','').replace(' width="34" height="34"','').replace('<svg ','<svg width="40" height="40" ')
+    lsz=88 if len(lab)<=8 else 64 if len(lab)<=14 else 48
+    svg=(f'<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs><radialGradient id="a" cx=".12" cy=".1" r=".75"><stop offset="0" stop-color="{acol}" stop-opacity=".40"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient><radialGradient id="b" cx=".92" cy=".85" r=".7"><stop offset="0" stop-color="#7c5cff" stop-opacity=".5"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient></defs>'
+         f'<rect width="1200" height="630" fill="#07080d"/><rect width="1200" height="630" fill="url(#a)"/><rect width="1200" height="630" fill="url(#b)"/><g font-family="Inter,Helvetica,Arial,sans-serif">'
+         f'<g transform="translate(70,56) scale(1.4)">{logo}</g><text x="146" y="101" font-size="38" font-weight="800" fill="#fff">The Daily Five</text>'
+         f'<text x="1130" y="101" text-anchor="end" font-size="24" font-weight="700" fill="#ffb020" letter-spacing="3">CALLED {E(datetime.date.fromisoformat(ed["date"]).strftime("%b %-d").upper())}</text>'
+         f'<rect x="70" y="160" width="150" height="58" rx="29" fill="{acol}"/><text x="145" y="199" text-anchor="middle" font-size="30" font-weight="800" fill="#06130c">{act}</text>'
+         f'<text x="244" y="{205 if lsz>=64 else 202}" font-family="monospace" font-size="{lsz}" font-weight="700" fill="#fff">{E(lab)}</text>'
+         +''.join(f'<text x="70" y="{268+i*36}" font-size="28" fill="#c9cede">{E(l)}</text>' for i,l in enumerate(subl))+
+         f'<text x="70" y="{455}" font-size="150" font-weight="800" fill="{col}" font-family="Space Grotesk,Inter,Helvetica,Arial,sans-serif">{E(big)}</text>'
+         f'<text x="70" y="510" font-size="28" fill="#9ba3ba">since the call · entry {E(money(k,p["entry"]))} → {"exit" if fin else "now"} {E(money(k,p.get("cur")))}</text>'
+         f'<rect x="900" y="340" width="230" height="64" rx="16" fill="#11131c" stroke="{col}" stroke-width="3"/><text x="1015" y="383" text-anchor="middle" font-size="28" font-weight="800" fill="{col}" letter-spacing="4">{stat}</text>'
+         f'<text x="1015" y="440" text-anchor="middle" font-size="22" fill="#9ba3ba">Score {int(round(p.get("score") or 0))}/100</text>'
+         f'<text x="70" y="590" font-size="22" fill="#9ba3ba">{E(status_txt)}</text><text x="1130" y="590" text-anchor="end" font-size="22" fill="#9ba3ba">readdailyfive.com · Not advice</text></g></svg>')
+    rel=f"og/picks/{p['id']}"; w(rel+'.svg',svg)
+    PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
+    v=f"{(r or 0)*10000:.0f}{'f' if fin else ''}"
+    return f"/{rel}.png?v={v}"
+def render_pick_ogs():
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(4) as ex: ok=list(ex.map(lambda j:_render_png(*j),PICK_OG_JOBS))
+    print(f"pick share cards: {sum(ok)}/{len(ok)} rendered")
 def pick_page(p,ed):
     k=p['kind']; t=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" \u00b7 {p['horizon']} pick")
     title=f"{t}: {ed['date']} | {BRAND}"; desc=f"{t} at {money(k,p['entry'])} on {ed['date']}. Why: {p['why']}"[:155]
@@ -329,7 +376,9 @@ def pick_page(p,ed):
          f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd><dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
          f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>')
     sch={"@context":"https://schema.org","@type":"Article","headline":t[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":{"@type":"Thing","name":p['tname']}}
-    w(f"picks/{p['id']}/index.html",shell(title,desc,f"/picks/{p['id']}/",det,sch))
+    og=pick_og(p,ed)
+    if og: sch['image']=SITE+og.split('?')[0]
+    w(f"picks/{p['id']}/index.html",shell(title,desc,f"/picks/{p['id']}/",det,sch,og=og))
 def best_stocks_hub(eds):
     """Evergreen SEO hub: /best-stocks-to-buy-today/ from real BUY finance picks only."""
     buys=[]
@@ -538,7 +587,7 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); extra=seo_pages(eds,rows,tiles); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
