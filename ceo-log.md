@@ -70,3 +70,19 @@
 3. @ReadDailyFive cadence confirm before volume (7 AM card, midday strip, 4:15 PM scorecard).
 4. Fill real `book` sportsbook lines into sports picks so Edge scores leave neutral (only published lines with name/url/odds).
 5. Per-horizon SEO hubs: `/best-1-day-stock-picks/` · `/best-1-month-stock-picks/` · `/best-1-year-stock-picks/` (follow-on to today's evergreen hub).
+
+## 2026-10-16 · ~1:10 PM ET check-in
+
+**Shipped**
+- New evergreen SEO hub `/polymarket-picks-today/` (live at https://readdailyfive.com/polymarket-picks-today/, push c50e08b, deploy succeeded 1:09 PM ET). Today's sports plays ranked by Daily Five Score with live Polymarket cards, tiles for settled win rate (2/4, 50%), avg settled return (−25.60%), open-markets avg, a graded list of every Polymarket pick (Won/Lost/Open), FAQ + CollectionPage schema, sitemap + footer link, and a "Every Polymarket pick, graded →" link from the homepage sports section. Aimed at "polymarket picks today" search intent and at the Polymarket crowd we're following on X. Checked desktop + mobile renders (`shots/pm-hub*.png`).
+- Price refresh (1:08 PM ET live build). Today's edition: 3 up / 6 down / 2 flat. SELL META +3.11%, SELL QQQ +2.06%, Brewers YES WS +0.93%; MBLY −3.97%, SMTC −3.91%, LRCX −3.72%, Packers −1.90%, Guardians YES ALCS −1.80%, CROX −1.03%; Chiefs and Guardians G4 flat (G4 is tonight). Oct 15 holdovers: Brewers NO WS −16.98%, chips (AMAT/AVGO/KLAC/MRVL) −1.6% to −2.4%, SELL QQQ +1.33%, SELL CRWV +0.72% (1 Day picks exit at today's close per FORMAT.md).
+
+**Fixed / CI**
+- No broken pages found. GitHub `schedule` went quiet again after 10:46 AM ET (no runs for ~2h20m in market hours). Restarted box stopgap `/workspace/bin/d5-dispatch.sh` v3 at 1:10 PM ET.
+
+**Growth ideas still pending**
+1. Google Search Console + Bing Webmaster: verify readdailyfive.com and submit sitemap.xml (needs the user's Google account). Now 2 evergreen hubs that would benefit.
+2. Kit welcome sequence + 4:15 PM ET closing-bell recap email (needs OK before any sends).
+3. Use the new Polymarket hub as the link target in X replies to Polymarket posters (more relevant than the homepage).
+4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
+5. Per-horizon stock hubs once there's ~1 week of picks (too thin today).
