@@ -115,7 +115,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>Five ideas. Every morning. Free.</h2><p>Get the Daily Five in your inbox before the opening bell.</p></div>
 {sform('cta')}</section>
-</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
+</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def money(kind,v): return '—' if v is None else (f"{v*100:.1f}¢" if kind=='Sports' else f"${v:,.2f}")
@@ -323,6 +323,92 @@ def pick_page(p,ed):
          f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>')
     sch={"@context":"https://schema.org","@type":"Article","headline":t[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":{"@type":"Thing","name":p['tname']}}
     w(f"picks/{p['id']}/index.html",shell(title,desc,f"/picks/{p['id']}/",det,sch))
+def best_stocks_hub(eds):
+    """Evergreen SEO hub: /best-stocks-to-buy-today/ from real BUY finance picks only."""
+    buys=[]
+    for ed in eds:
+        for p in ed['finance']:
+            if p['action']=='BUY': buys.append((p,ed))
+    if not buys and not eds:
+        bodyh=('<section class="sbhero"><span class="kicker">📈 Stocks</span><h1 class="pt">Best stocks to buy today</h1>'
+               '<p class="sub">No BUY picks yet. Check back after the next 7 AM ET edition.</p></section>')
+        w('best-stocks-to-buy-today/index.html',shell(
+            f'Best Stocks to Buy Today | {BRAND}',
+            'AI-ranked stock BUY ideas from The Daily Five, with Daily Five Scores and live performance since each pick.',
+            '/best-stocks-to-buy-today/',bodyh,
+            {"@context":"https://schema.org","@type":"CollectionPage","name":"Best Stocks to Buy Today","url":SITE+"/best-stocks-to-buy-today/"}))
+        return '/best-stocks-to-buy-today/'
+    latest=eds[0]['date'] if eds else TODAY.isoformat()
+    today=[(p,ed) for p,ed in buys if ed['date']==latest]
+    today.sort(key=lambda x:-x[0].get('score',0))
+    # Track-record stats for all BUY finance picks
+    with_ret=[p for p,_ in buys if p.get('ret') is not None]
+    wins=sum(p['ret']>0 for p in with_ret); avg=(sum(p['ret'] for p in with_ret)/len(with_ret)) if with_ret else None
+    open_n=sum(1 for p,_ in buys if not p.get('final'))
+    closed_n=sum(1 for p,_ in buys if p.get('final'))
+    def tile(name,val,sub):
+        return f'<div class="tile"><span class="h">{name}</span><b class="{"up" if isinstance(val,str) and val.startswith("+") else ("dn" if isinstance(val,str) and val.startswith("-") else "")}">{val}</b><span class="s">{sub}</span></div>'
+    wr=f'{wins/len(with_ret)*100:.0f}%' if with_ret else '—'
+    tiles=(tile('BUY win rate',wr,f'{wins}/{len(with_ret)} graded')+
+           tile('Avg since pick',pct(avg) if avg is not None else '—','all BUY finance picks')+
+           tile("Today's BUYs",str(len(today)),f'edition {latest}')+
+           tile('Open / closed',f'{open_n} / {closed_n}','still tracking'))
+    # Today's cards
+    if today:
+        cards=''.join(fin_card(p,i+1) for i,(p,_) in enumerate(today))
+        today_block=f'<h2 class="h2s">Today\'s BUY calls · {latest}</h2><p class="sub hub-lead">Ranked by <a href="{BASE}/how-we-rank/">Daily Five Score</a>. Entry prices are real quotes at publish; P/L marks to live Yahoo Finance data.</p><div class="grid">{cards}</div>'
+    else:
+        today_block=f'<h2 class="h2s">Today\'s BUY calls</h2><p class="sub">No BUY finance picks in the latest edition. See the <a href="{BASE}/">homepage</a> for SELLs and sports markets.</p>'
+    # By horizon: 1 Day first (SEO intent), then 1 Month, 1 Year — show recent BUYs
+    hz_blocks=''
+    for h,ic in [('1 Day','⚡'),('1 Month','📅'),('1 Year','🌱')]:
+        lst=[(p,ed) for p,ed in buys if p['horizon']==h]
+        if not lst: continue
+        # most recent date first; within a date, highest Daily Five Score first
+        lst=sorted(lst,key=lambda x:(x[1]['date'],x[0].get('score',0)),reverse=True)
+        rows=''.join(
+            f'<a class="hubrow" href="{BASE}/picks/{p["id"]}/">'
+            f'<span class="act buy">BUY</span>'
+            f'<span class="hubtk">{E(p["label"])}</span>'
+            f'<span class="hubhz">{E(h)}</span>'
+            f'<span class="hubsc">{p.get("score","—")}</span>'
+            f'<span class="hubent">{money("Finance",p["entry"])}</span>'
+            f'{chip(p.get("ret"),p.get("final"))}'
+            f'<span class="hubdt">{ed["date"]}</span></a>'
+            for p,ed in lst[:12])
+        hz_blocks+=f'<div class="hzblock"><h3 class="hzh">{ic} {h} BUY track record</h3><div class="hublist">{rows}</div></div>'
+    # Past BUYs not in today (for "recent" section if we want extra)
+    links=(f'<div class="hubcta"><a class="pill" href="{BASE}/how-we-rank/">How we rank →</a>'
+           f'<a class="pill ghost" href="{BASE}/scoreboard/">Full scoreboard →</a>'
+           f'<a class="pill ghost" href="{BASE}/track-record/">Track record →</a></div>')
+    faqs=[
+        ("How do you pick the best stocks to buy today?",
+         "Every morning we pull public analyst notes, upgrades, and market ideas, then score each BUY with the Daily Five Score: source credibility, consensus, edge vs analyst targets, and risk/reward. The highest-scoring calls make the page."),
+        ("Are these financial advice?",
+         "No. Entry prices are real snapshots at publish time and P/L updates with live market data, but nothing here is financial, investment, or trading advice. You can lose money."),
+        ("Where does performance come from?",
+         "We mark every pick to Yahoo Finance from the published entry until the horizon ends (1 Day, 1 Month, or 1 Year). Wins, losses, and averages are public on the Scoreboard."),
+    ]
+    faq_html='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(
+        f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
+    nice=datetime.date.fromisoformat(latest).strftime('%A, %B %-d, %Y') if eds else ''
+    bodyh=(f'<section class="sbhero hubhero"><span class="kicker">📈 Best stocks to buy</span>'
+           f'<h1 class="pt">Best stocks to buy today</h1>'
+           f'<p class="sub">AI-ranked BUY ideas from The Daily Five — with Daily Five Scores, real entry prices, and live performance since each pick. Updated {nice}.</p>'
+           f'{links}</section>'
+           f'<div class="tiles">{tiles}</div>'
+           f'<p class="disc-bar">⚠️ <b>Not financial advice.</b> These are public ideas we score and track — not a recommendation to buy or sell. Past results don\'t guarantee future returns.</p>'
+           f'{today_block}{hz_blocks}{faq_html}'
+           f'<p class="sub hub-foot">Want SELLs, AI news, and sports markets too? See <a href="{BASE}/">today\'s full edition</a>.</p>')
+    title=f'Best Stocks to Buy Today (Live Scores & Track Record) | {BRAND}'
+    desc=(f'Today\'s best stocks to buy, ranked by the Daily Five Score: real entry prices, live Yahoo Finance performance, and a public BUY track record. Updated {latest}.')[:155]
+    sch={"@context":"https://schema.org","@graph":[
+        {"@type":"CollectionPage","name":"Best Stocks to Buy Today","description":desc,"url":SITE+"/best-stocks-to-buy-today/","isPartOf":{"@type":"WebSite","name":BRAND,"url":SITE+"/"}},
+        {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]},
+    ]}
+    w('best-stocks-to-buy-today/index.html',shell(title,desc,'/best-stocks-to-buy-today/',bodyh,sch))
+    return '/best-stocks-to-buy-today/'
+
 def seo_pages(eds,rows,tiles):
     urls=[]; by={}
     for ed in eds:
@@ -390,14 +476,14 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    extra=seo_pages(eds,rows,tiles); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); extra=seo_pages(eds,rows,tiles); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
         {'@type':'FAQPage','mainEntity':faq_ents,'url':SITE+'/how-we-rank/'},
     ]}
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
-    urls=['/','/scoreboard/','/track-record/','/how-we-rank/','/archive/']+[f'/{d}/' for d,*_ in items]+extra
+    urls=['/','/scoreboard/','/track-record/','/how-we-rank/',hub,'/archive/']+[f'/{d}/' for d,*_ in items]+extra
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{TODAY}</lastmod></url>" for u in urls)+'</urlset>')
     w('robots.txt',f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
     os.makedirs(os.path.join(OUT,'email'),exist_ok=True)

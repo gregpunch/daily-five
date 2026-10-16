@@ -54,3 +54,19 @@
 3. Kit welcome sequence + 4:15 PM ET closing-bell recap email (needs the user's OK before anything sends).
 4. @ReadDailyFive cadence: 7 AM card, midday strip, and a 4:15 PM scorecard ("Guardians +86.9% final" makes a good first scorecard post).
 5. Evergreen SEO hubs: `/best-stocks-to-buy-today/` and per-horizon pages (1 Day / 1 Month / 1 Year). FAQ schema on `/how-we-rank/` is done.
+
+## 2026-10-16 · ~10:10 AM ET check-in
+
+**Shipped**
+- Evergreen SEO hub: `/best-stocks-to-buy-today/` — pulls real finance BUY picks from editions, ranks today's BUYs by Daily Five Score, shows live entry/P/L, horizon track-record lists (1 Day / 1 Month / 1 Year), FAQ + CollectionPage schema, sitemap + footer link. Bold card UI matching the site. Honest disclaimer; no invented prices.
+- Price refresh (~10:05 AM ET local build / 10:03 AM ET live after workflow_dispatch). Strip: **5 up / 3 down of 11 open**, avg since pick **−0.05%**, avg today **−0.09%**, best **CROX +1.63%**, worst **LRCX −2.21%** (SMTC also −2.21%). Stocks: SMTC −2.21%, MBLY +0.47%, LRCX −2.21%, CROX +1.63%; SELL QQQ +0.92% (short), SELL META +1.33% (short). Sports: Guardians YES ALCS −1.80%, Brewers YES WS +1.32%, Chiefs/Packers/G4 flat. Prior settled (Oct 15): Guardians **+86.92% final**, Brewers YES NLCS **+10.68% final**, Dodgers/Seahawks **−100% final**. No new sports resolutions this morning (ALCS G4 is tonight).
+
+**CI / schedule**
+- Market-hours GitHub `schedule` slots (9:07 / 9:22 AM ET) still missing after overnight :12/:42 runs. Last schedule was 5:42 AM ET (09:42 UTC). Kicked `workflow_dispatch` for the morning price refresh (succeeded). Restarted box stopgap `/workspace/bin/d5-dispatch.sh` **v3**: only exits when a schedule succeeded in the last 40 minutes (overnight schedules no longer permanently kill it). Log: `/workspace/daily-top5-dispatch.log`.
+
+**Growth ideas still pending**
+1. Google Search Console + Bing Webmaster: verify readdailyfive.com and submit sitemap.xml (needs the user's Google account).
+2. Kit welcome sequence + 4:15 PM ET closing-bell recap email (needs OK before any sends).
+3. @ReadDailyFive cadence confirm before volume (7 AM card, midday strip, 4:15 PM scorecard).
+4. Fill real `book` sportsbook lines into sports picks so Edge scores leave neutral (only published lines with name/url/odds).
+5. Per-horizon SEO hubs: `/best-1-day-stock-picks/` · `/best-1-month-stock-picks/` · `/best-1-year-stock-picks/` (follow-on to today's evergreen hub).

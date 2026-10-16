@@ -107,3 +107,17 @@ a.tk,a.mkt{color:#fff;text-decoration:none}a.tk:hover,a.mkt:hover{text-decoratio
 .tmc{display:block;margin-top:6px;font-size:13px;color:#cfd4e4}.tmc b{font-family:var(--mono);color:#ffcf70}
 @media(max-width:640px){.tsc.nx{margin-left:0}}
 .faq{display:grid;gap:10px;margin:8px 0 28px}.fq{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0;overflow:hidden}.fq summary{cursor:pointer;list-style:none;padding:16px 18px;font-family:var(--disp);font-weight:800;font-size:17px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px}.fq summary::-webkit-details-marker{display:none}.fq summary::after{content:"+";font-family:var(--mono);font-size:22px;color:var(--vio);font-weight:800}.fq[open] summary::after{content:"–"}.fq[open] summary{border-bottom:1px solid var(--line);color:#ffcf70}.fq p{margin:0;padding:14px 18px 18px;color:#c9cede;line-height:1.55;font-size:15px}
+
+/* Evergreen hub: /best-stocks-to-buy-today/ */
+.hubhero .sub{max-width:54ch}.hubcta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px}
+.hubcta .pill{display:inline-flex;align-items:center;text-decoration:none;font-weight:800;font-size:14px;padding:10px 16px;border-radius:999px;background:var(--up);color:#04130c}
+.hubcta .pill.ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14)}
+.hubcta .pill:hover{filter:brightness(1.08)}
+.hub-lead{margin:0 0 14px}.hub-foot{margin:28px 0 8px}
+.hublist{display:grid;gap:8px}
+.hubrow{display:grid;grid-template-columns:auto 1fr auto auto auto auto auto;gap:10px 14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-decoration:none;color:#fff;transition:.15s}
+.hubrow:hover{border-color:#3a4060;transform:translateY(-2px)}
+.hubtk{font-family:var(--mono);font-weight:700;font-size:20px}.hubhz{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.hubsc{font-family:var(--mono);font-weight:700;font-size:15px;color:#ffcf70}.hubsc::after{content:" D5";font-size:10px;color:var(--mut);font-weight:800}
+.hubent{font-family:var(--mono);font-size:14px;color:#cfd4e4}.hubdt{font-size:12px;font-weight:700;color:var(--mut)}
+@media(max-width:720px){.hubrow{grid-template-columns:auto 1fr auto;grid-template-areas:"act tk sc" "hz ent chip" "dt dt dt"}.hubrow .act{grid-area:act}.hubtk{grid-area:tk}.hubsc{grid-area:sc}.hubhz{grid-area:hz}.hubent{grid-area:ent}.hubrow .chip{grid-area:chip}.hubdt{grid-area:dt}}
