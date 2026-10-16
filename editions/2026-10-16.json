@@ -1,0 +1,354 @@
+{
+ "date": "2026-10-16",
+ "headline": "Earnings week tests the AI trade; Brewers clinch World Series berth",
+ "top_call": "UBS and Baird stay bullish on Semtech. Buy the AI data-center connectivity dip.",
+ "backdrop": "S&P futures +0.2% into Friday after a bruising AI week (Nasdaq ~\u22122% week-to-date). 10-year yield near 5.07%; CME FedWatch ~87% odds of an October hold after Fed Chair Warsh offered no hike signal. Hot PPI (+6.3% YoY) and CPI (3.7%) still linger.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/16/us-treasury-yields-investors-hot-inflation-data-.html"
+ },
+ "finance": [
+  {
+   "horizon": "1 Day",
+   "action": "SELL",
+   "label": "QQQ",
+   "symbol": "QQQ",
+   "entry": 728.0,
+   "entry_note": "Yahoo Finance, Oct 16 ~7:10 AM ET (prior close/pre-market)",
+   "why": "AI/tech still under pressure into weekend; Deutsche Bank and RBC pulled back on tech risk-reward.",
+   "risk": "Relief bounce if rates keep easing or Friday data softens.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Reuters",
+      "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/nasdaq-futures-edge-lower-as-ai-spending-fed-rate-concerns-weigh-4952930"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "UBS",
+      "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Day",
+   "action": "SELL",
+   "label": "META",
+   "symbol": "META",
+   "entry": 736.72,
+   "entry_note": "Yahoo Finance, Oct 16 ~7:10 AM ET (prior close/pre-market)",
+   "why": "First big hyperscaler print next week; Street wants capex ROI proof as AI financing jitters rise.",
+   "risk": "Strong Muse AI narrative or beat-and-raise could squeeze shorts.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Reuters",
+      "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+     },
+     {
+      "name": "BNY Wealth (via Reuters)",
+      "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "LRCX",
+   "symbol": "LRCX",
+   "entry": 277.46,
+   "entry_note": "Yahoo Finance, Oct 16 ~7:10 AM ET (prior close/pre-market)",
+   "why": "Wednesday earnings are a key semis demand tell after an 8% SOX slide this month; still +~60% YTD.",
+   "risk": "Soft wafer-fab guidance could extend the AI-equipment selloff.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Reuters",
+      "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Deutsche Bank strategists (via Reuters)",
+      "url": "https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "CROX",
+   "symbol": "CROX",
+   "entry": 124.77,
+   "entry_note": "Yahoo Finance, Oct 16 ~7:10 AM ET (prior close/pre-market)",
+   "why": "Barclays upgraded to Overweight and raised PT to $139 on product expansion and international growth.",
+   "risk": "North America still uneven; upgrade already partly in the +8.5% week move.",
+   "source": {
+    "name": "Stocktwits",
+    "url": "https://stocktwits.com/news-articles/markets/equity/stocktwits-wall-street-wrap-crocs-liquidia-win-upgrades-while-space-x-competition-and-grocery-woes-put-ast-space-mobile-albertsons-under-pressure/cZx0UOFRBsI"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Barclays (via Stocktwits)",
+      "url": "https://stocktwits.com/news-articles/markets/equity/stocktwits-wall-street-wrap-crocs-liquidia-win-upgrades-while-space-x-competition-and-grocery-woes-put-ast-space-mobile-albertsons-under-pressure/cZx0UOFRBsI"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "MBLY",
+   "symbol": "MBLY",
+   "entry": 7.43,
+   "entry_note": "Yahoo Finance, Oct 16 ~7:10 AM ET (prior close/pre-market)",
+   "why": "Citi initiates Buy with $11 PT (~48% upside) on ADAS leadership and rising autonomy content.",
+   "risk": "Street consensus is Hold-heavy; auto-cycle and Intel overhang remain.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/16/mobileye-stock-citi-buy-rating.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Citi (via CNBC)",
+      "url": "https://www.cnbc.com/2026/10/16/mobileye-stock-citi-buy-rating.html"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "LSEG consensus (14 Holds",
+      "url": "https://www.cnbc.com/2026/10/16/mobileye-stock-citi-buy-rating.html"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "SMTC",
+   "symbol": "SMTC",
+   "entry": 144.21,
+   "entry_note": "Yahoo Finance, Oct 16 ~7:10 AM ET (prior close/pre-market)",
+   "why": "UBS Strong Buy and Baird Buy cite data-center SiGe/1.6T ramp; multiple top-ranked analysts stay bullish.",
+   "risk": "Stock already slid hard with the AI complex; further capex digestion.",
+   "source": {
+    "name": "WallStreetZen",
+    "url": "https://www.wallstreetzen.com/news/3-new-strong-buy-ratings-from-top-rated-analysts-10-16-2026"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "UBS (via WallStreetZen)",
+      "url": "https://www.wallstreetzen.com/news/3-new-strong-buy-ratings-from-top-rated-analysts-10-16-2026"
+     },
+     {
+      "name": "Baird (via WallStreetZen)",
+      "url": "https://www.wallstreetzen.com/news/3-new-strong-buy-ratings-from-top-rated-analysts-10-16-2026"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Policy",
+   "headline": "FTC hits OpenAI and Anthropic with 50-page safety record demands",
+   "why": "Civil investigative demands put security incidents, safeguards, marketing and privacy under formal scrutiny.",
+   "source": {
+    "name": "AI Weekly",
+    "url": "https://aiweekly.co/issues/the-ftc-wants-openais-and-anthropics-safety-incident-records"
+   }
+  },
+  {
+   "category": "Money",
+   "headline": "Anthropic IPO talk cools to ~$1.5T after Q3 sales grew 45% to $16.8B",
+   "why": "Investor-day chatter stepped down from ~$2T as growth decelerated from Q2.",
+   "source": {
+    "name": "AI Weekly",
+    "url": "https://aiweekly.co/issues/the-ftc-wants-openais-and-anthropics-safety-incident-records"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "Eight US states sue OpenAI over ChatGPT risks to children",
+   "why": "Multi-state consumer suits seek product changes and penalties over alleged youth-safety failures.",
+   "source": {
+    "name": "Museum of AI",
+    "url": "https://aimuseum.se/pages/daily/2026-10-16-ainews.html"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Meta ships Muse Spark Open (816B) for local Mac Studio inference",
+   "why": "Frontier-scale open weights on owned hardware turns AI spend from token bills into fixed capex.",
+   "source": {
+    "name": "AI Weekly",
+    "url": "https://aiweekly.co/issues/the-ftc-wants-openais-and-anthropics-safety-incident-records"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "Character.ai files Chapter 11; Disney opens at $20M for IP license",
+   "why": "Litigation and compute costs sank a once-hot consumer chatbot into bankruptcy court.",
+   "source": {
+    "name": "AI Weekly",
+    "url": "https://aiweekly.co/issues/the-ftc-wants-openais-and-anthropics-safety-incident-records"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "Guardians YES",
+   "market": "Guardians win ALCS",
+   "slug": "will-cleveland-guardians-win-the-2026-american-league-championship-series",
+   "outcome": 0,
+   "entry": 0.6375,
+   "event_date": null,
+   "why": "Up 2\u20131 at home after Game 3; Brewers already clinched NL, so this series decides the WS foe.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/mlb-2026-american-league-champion"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "USA TODAY Sportsbook Wire",
+      "url": "https://sportsbookwire.usatoday.com/story/sports/mlb/2026/10/16/rays-at-guardians-alcs-game-4-odds-picks-and-predictions/92278155007/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Guardians",
+   "market": "ALCS Game 4: TB @ CLE, 8 PM ET",
+   "slug": "mlb-tb-cle-2026-10-16",
+   "outcome": 1,
+   "entry": 0.495,
+   "event_date": "2026-10-16",
+   "why": "Home side up 2\u20131 in a pick'em; BetMGM \u2212110/\u2212110 matches ~49.5\u00a2 here.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/mlb-tb-cle-2026-10-16"
+   },
+   "book": {
+    "name": "BetMGM",
+    "url": "https://sportsbookwire.usatoday.com/story/sports/mlb/2026/10/16/rays-at-guardians-alcs-game-4-odds-picks-and-predictions/92278155007/",
+    "odds": [
+     -110,
+     -110
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "BetMGM (via USA TODAY)",
+      "url": "https://sportsbookwire.usatoday.com/story/sports/mlb/2026/10/16/rays-at-guardians-alcs-game-4-odds-picks-and-predictions/92278155007/"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "USA TODAY pick (Rays ML)",
+      "url": "https://sportsbookwire.usatoday.com/story/sports/mlb/2026/10/16/rays-at-guardians-alcs-game-4-odds-picks-and-predictions/92278155007/"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Brewers YES",
+   "market": "Brewers win World Series",
+   "slug": "will-the-milwaukee-brewers-win-the-2026-world-series",
+   "outcome": 0,
+   "entry": 0.6445,
+   "event_date": null,
+   "why": "Swept the Dodgers for first WS berth since 1982; faces a softer AL side than LAD.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/mlb-world-series-champion-2026"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "USA TODAY Sportsbook Wire",
+      "url": "https://sportsbookwire.usatoday.com/story/sports/mlb/2026/10/16/rays-at-guardians-alcs-game-4-odds-picks-and-predictions/92278155007/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Chiefs",
+   "market": "Week 7: LAC @ KC, Sun",
+   "slug": "nfl-lac-kc-2026-10-18",
+   "outcome": 1,
+   "entry": 0.785,
+   "event_date": "2026-10-18",
+   "why": "Home favorite ~78.5\u00a2; Kalshi/books also cluster near ~79% on Kansas City.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-lac-kc-2026-10-18"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "MarketMaster",
+      "url": "https://marketmaster.live/league/nfl"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Packers",
+   "market": "Week 7: DAL @ GB, Sun",
+   "slug": "nfl-dal-gb-2026-10-19",
+   "outcome": 1,
+   "entry": 0.525,
+   "event_date": "2026-10-19",
+   "why": "Slight home edge at 52.5\u00a2 in a near-coin-flip NFC tilt.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-dal-gb-2026-10-19"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "SportsBookISH",
+      "url": "https://sportsbookish.com/sports/nfl"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ]
+}
