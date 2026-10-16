@@ -129,11 +129,18 @@ def livebox(p):
 <div><span class="lbl">Live</span><span class="price" data-k="cur">{money(k,p.get('cur'))}</span></div>
 <div><span class="lbl">Today</span><span data-k="so">{mv(p.get('so'))}</span></div>
 <div><span class="lbl">Since pick</span><span data-k="ret">{chip(p.get('ret'),p.get('final'))}</span></div></div>"""
+def share(p):
+    """Share button: X intent link (static fallback); live.js swaps in live P/L and uses the native share sheet on mobile."""
+    k=p['kind']; what=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" ({p['horizon']})")
+    txt=f"{what} at {money(k,p['entry'])}, a call from The Daily Five"
+    u=f"{SITE}/picks/{p['id']}/"
+    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
+    return f'<a class="shr" href="{E(href)}" target="_blank" rel="noopener" data-share-id="{p["id"]}" data-share-what="{E(what)}" data-share-url="{E(u)}" aria-label="Share {E(what)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>Share</a>'
 def fin_card(p,rank):
     a=p['action'].lower()
     return f"""<article class="card fc {a}"><div class="ctop"><span class="rank">#{rank}</span><span class="hz">⏱ {E(p['horizon'])}</span>{badge(p)}</div>
 <div class="crow"><span class="act {a}">{p['action']}</span><a class="tk" href="{BASE}/ticker/{p['tslug']}/">{E(p['label'])}</a>{spark(p.get('pts'),110,32)}</div>{livebox(p)}{breakdown(p)}
-<p class="why"><b>Why {p['action']}:</b> {E(p['why'])}</p><p class="risk">⚠ {E(p['risk'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></div></article>"""
+<p class="why"><b>Why {p['action']}:</b> {E(p['why'])}</p><p class="risk">⚠ {E(p['risk'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
 def sp_card(p,rank):
     m=p.get('m'); bars=''
     if m:
@@ -144,7 +151,7 @@ def sp_card(p,rank):
     return f"""<article class="card sc"><div class="ctop"><span class="rank">#{rank}</span><span class="hz">🏟 {E(when)}</span>{badge(p)}</div>
 <a class="mkt" href="{BASE}/ticker/{p['tslug']}/">{E(p['market'])}</a>{bars}
 <div class="crow"><span class="act buy">BUY</span><span class="tk sm">{E(p['label'])}</span>{vol}{spark(p.get('pts'),100,30)}</div>{livebox(p)}{breakdown(p)}
-<p class="why"><b>Why BUY:</b> {E(p['why'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></div></article>"""
+<p class="why"><b>Why BUY:</b> {E(p['why'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
 def tape(ed):
     it=''.join(f'<span class="ti"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} <i>${p["entry"]:,.2f}</i> {chip(p.get("ret"))}</span>' for p in ed['finance'])
     it+=''.join(f'<span class="ti"><b class="buy">BUY</b> {E(p["label"])} <i>{p["entry"]*100:.1f}¢</i></span>' for p in ed['sports'])
