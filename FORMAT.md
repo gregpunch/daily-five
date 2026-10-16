@@ -59,3 +59,5 @@ Four components, each 0–25 (neutral 12.5 when they can't be computed, and the 
 3. **Edge**: stocks = % gap to Yahoo `financialData.targetMeanPrice` (signed by BUY/SELL). Sports = no-vig sportsbook probability minus Polymarket price, in points, from `"book": {"name","url","odds":[american_for_our_outcome, american_other]}` (real published lines only).
 4. **Risk/reward**: stocks = horizon-scaled target gap ÷ (60-day daily vol × √trading days); sports = EV at the fair probability.
 Cards show the score badge, four component bars, and a one-line breakdown. Finance and sports are ranked by score (#1 = highest); the hero "Top call" is the top-scored finance pick (so `top_call` text should match it, or omit `top_call`).
+
+Evergreen SEO hubs (rebuilt every build, real picks only): `/best-stocks-to-buy-today/` (finance BUYs) and `/polymarket-picks-today/` (sports prediction-market plays: today ranked by Daily Five Score, settled win rate/avg return, every pick graded, FAQ + CollectionPage schema). Both are in the sitemap and footer.
