@@ -419,17 +419,52 @@ def render_pick_ogs():
     from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor(4) as ex: ok=list(ex.map(lambda j:_render_png(*j),PICK_OG_JOBS))
     print(f"pick share cards: {sum(ok)}/{len(ok)} rendered")
+_SUFX=re.compile(r'(,?\s+(Inc\.?|Incorporated|Corporation|Corp\.?|Ltd\.?|Limited|plc|PLC|N\.V\.|S\.A\.|Co\.|Company|Holdings)|,\s*Series \d+|\s+ETF)$')
+def cname(sym):
+    """Company / fund name for SEO titles (Yahoo chart meta), suffixes stripped: 'Netflix, Inc.' -> 'Netflix'."""
+    def f():
+        m=get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d&range=1d")['chart']['result'][0]['meta']
+        n=(m.get('longName') or m.get('shortName') or '').strip()
+        for _ in range(3): n=_SUFX.sub('',n).strip()
+        return n if n and n.upper()!=sym.upper() else None
+    return memo(('nm',sym),f)
+def pick_seo(p,ed):
+    """Search-intent title/H1 for a pick page: '<Company> (<SYM>) Stock Prediction ...' or '<Away> vs. <Home> Prediction & Pick ...'.
+    Returns (seo_headline, title_suffix, description, schema 'about')."""
+    k=p['kind']; dd=datetime.date.fromisoformat(ed['date']).strftime('%b %-d, %Y')
+    if k=='Finance':
+        sym=p['symbol'].upper(); nm=cname(sym); who=f"{nm} ({sym})" if nm else sym
+        hz={'1 Day':'1-Day','1 Month':'1-Month','1 Year':'1-Year'}.get(p['horizon'],p['horizon'])
+        h=f"{who} Stock Prediction: {p['action']}, {hz} Call"
+        d=f"{who} {hz} stock pick from {dd}: {p['action']} at {money(k,p['entry'])}. Why: {p['why']}"
+        ab={"@type":"Corporation","name":nm or sym,"tickerSymbol":sym}
+        return h,dd,d,ab
+    g=pgame(p.get('slug')); ko=kickoff(p); pre=p['market'].split(':')[0].strip(); sp=(p.get('slug') or '').split('-')[0]
+    if g and len(g['teams'])==2 and ko:
+        aw,hm=g['teams']; an,hn=aw['al'] or aw['nm'],hm['al'] or hm['nm']
+        lg=(sp.upper()+' ') if sp in ('nfl','nba','nhl','wnba') and not pre.upper().startswith(sp.upper()) else ''
+        h=f"{an} vs. {hn} Prediction & Pick: {p['label']} to Win"
+        when=ko.strftime('%b %-d, %Y')
+        d=f"Our {aw['nm']} vs. {hm['nm']} pick ({lg}{pre}, {ko.strftime('%a %b %-d, %-I:%M %p ET')}): {p['label']} at {money(k,p['entry'])} on Polymarket. Why: {p['why']}"
+        sport={'nfl':'American football','cfb':'American football','mlb':'Baseball','nba':'Basketball','wnba':'Basketball','cbb':'Basketball','nhl':'Ice hockey'}.get(sp,'Sports')
+        ab={"@type":"SportsEvent","name":f"{aw['nm']} vs. {hm['nm']}","startDate":ko.isoformat(),"sport":sport,
+            "awayTeam":{"@type":"SportsTeam","name":aw['nm']},"homeTeam":{"@type":"SportsTeam","name":hm['nm']},"url":f"{SITE}/picks/{p['id']}/"}
+        return h,f"{lg}{pre}, {when}",d,ab
+    h=f"{p['market']}? Odds & Prediction: {p['action']} {p['label']}"
+    d=f"{p['market']} odds and our pick from {dd}: {p['action']} {p['label']} at {money(k,p['entry'])} on Polymarket. Why: {p['why']}"
+    return h,dd,d,{"@type":"Thing","name":p['tname']}
 def pick_page(p,ed):
     k=p['kind']; t=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" \u00b7 {p['horizon']} pick")
-    title=f"{t}: {ed['date']} | {BRAND}"; desc=f"{t} at {money(k,p['entry'])} on {ed['date']}. Why: {p['why']}"[:155]
+    h,suf,desc,about=pick_seo(p,ed)
+    title=f"{h} ({suf}) | {BRAND}"; desc=desc if len(desc)<=155 else desc[:154].rsplit(' ',1)[0]+'\u2026'
     card=fin_card(p,'') if k=='Finance' else sp_card(p,'')
     kick="\U0001F4B0 Finance pick" if k=="Finance" else "\U0001F3DF Sports market pick"
     note=(' \u00b7 '+E(p.get('entry_note'))) if p.get('entry_note') else ''
-    det=(f'<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(t)}</h1></section><div class="pickwrap">{card}<div class="pinfo">'
+    det=(f'<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
          f'<h2>Pick details</h2><dl><dt>Published</dt><dd>{ed["date"]} in <a href="{BASE}/{ed["date"]}/">that day\'s edition</a></dd><dt>Entry</dt><dd>{money(k,p["entry"])}{note}</dd>'
          f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd><dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
          f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>')
-    sch={"@context":"https://schema.org","@type":"Article","headline":t[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":{"@type":"Thing","name":p['tname']}}
+    sch={"@context":"https://schema.org","@type":"Article","headline":h[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":about}
     og=pick_og(p,ed)
     if og: sch['image']=SITE+og.split('?')[0]
     w(f"picks/{p['id']}/index.html",shell(title,desc,f"/picks/{p['id']}/",det,sch,og=og))
