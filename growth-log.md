@@ -43,6 +43,12 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-17 | @michaelsisakov | 2,264 | stocks/trading (weak followback ratio) | pending (check 10-24) |
 | 2026-10-17 | @XutuTrading | 5,835 | Polymarket sports (weak followback ratio) | pending (check 10-24) |
 | 2026-10-17 | @DDOGGSTACKS | 5,613 | NFL props betting (modest followback ratio) | pending (check 10-24) |
+| 2026-10-17 | @shaunstake | 2,388 | Kalshi/CFB odds commentary | pending (check 10-24) |
+| 2026-10-17 | @PredMarketWiki | 7,672 | prediction-market news (PM Wisdom) | pending (check 10-24) |
+| 2026-10-17 | @Jeremy_Cluff | 1,597 | NFL odds writer, follows 1,081 | pending (check 10-24) |
+| 2026-10-17 | @offshoreinsider | 11.6K | sports betting intel, follows 4,708 | pending (check 10-24) |
+| 2026-10-17 | @InvestAlphaPro | 1,536 | AI stocks/credit explainers | pending (check 10-24) |
+| 2026-10-17 | @TheCappersHub__ | 1,076 | daily betting cards, follows 765 | pending (check 10-24) |
 
 ## Replies & posts
 | Date/time ET | Type | Target post URL | Our reply/post URL | Linked site? |
@@ -77,9 +83,15 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-17 ~9:10 AM | reply | https://x.com/MikeZaccardi/status/2111175597518958702 | https://x.com/ReadDailyFive/status/2111445008826216797 | yes |
 | 2026-10-17 ~9:10 AM | reply | https://x.com/Web3Niels/status/2111431653566353721 | https://x.com/ReadDailyFive/status/2111445056343126490 | no |
 | 2026-10-17 ~9:10 AM | reply | https://x.com/oneweekseason/status/2111298659497521369 | https://x.com/ReadDailyFive/status/2111445172844212503 | no |
+| 2026-10-17 ~12:07 PM | reply | https://x.com/brewmarkets/status/2111473594467340483 | https://x.com/ReadDailyFive/status/2111489194426241379 | no |
+| 2026-10-17 ~12:07 PM | reply | https://x.com/AlexCaruso/status/2111463278001983769 | https://x.com/ReadDailyFive/status/2111489223337582764 | no |
+| 2026-10-17 ~12:09 PM | reply | https://x.com/TheSonOfWalkley/status/2111470035629949388 | https://x.com/ReadDailyFive/status/2111489643426586861 | yes (homepage) |
+| 2026-10-17 ~12:10 PM | reply | https://x.com/BraVoCycles/status/2111481886925070638 | https://x.com/ReadDailyFive/status/2111489882489237971 | no |
+| 2026-10-17 ~12:11 PM | reply | https://x.com/austinsprops/status/2111478320504406504 | https://x.com/ReadDailyFive/status/2111490128296456223 | yes (NFL hub) |
+| 2026-10-17 ~12:12 PM | reply | https://x.com/CNBCtech/status/2111485441069252779 | https://x.com/ReadDailyFive/status/2111490433608274317 | no |
 
 ## Warnings / pauses
-(none — 2026-10-17 9 AM run clean too; 12:14 PM, 3:07 PM, 6:10 PM and 9:05 PM runs on 2026-10-16 saw no warnings, limits, or captchas)
+(none — 2026-10-17 noon run clean; — 2026-10-17 9 AM run clean too; 12:14 PM, 3:07 PM, 6:10 PM and 9:05 PM runs on 2026-10-16 saw no warnings, limits, or captchas)
 
 Notes: X people search gave junk; find follow targets via authors of recent Polymarket/semis posts. Avoid @HeidingOut going forward.
 
@@ -90,3 +102,5 @@ Notes: X people search gave junk; find follow targets via authors of recent Poly
 9 PM run note: ALCS Game 4 (TB-CLE) was rain-postponed to Saturday ~8 PM; the 'Guardians G4 8 PM ET' pick market may need relabel/settlement check in tomorrow's edition. Replies again went out in a burst (first 3 back-to-back) and follows ~6-8s apart; next run, tell the browser agent to post/follow ONE per call with explicit waits. 3 follows were under the 500-follower floor (check profile counts BEFORE following). Followers still 1; no outside engagement in notifications.
 
 Sat 10-17 9 AM run note: Saturday-morning fresh posts were scarce, so 4 of 6 replies targeted 9-17h-old posts (weaker reach). Two replies ran slightly over 260 chars. Pacing mostly good; one reply pair and one follow pair went out close together. Followers still 1; no outside engagement. Weekend tip: favor live NFL/ALCS posts later in the day.
+
+Sat 10-17 noon run note: targets found via built-in X search (all under 2h old, bigger accounts: brewmarkets 130k, AlexCaruso 377k, austinsprops 299k, TheSonOfWalkley 53k, CNBCtech 67k, BraVoCycles 20k). 6 replies (2 links: homepage, NFL hub), 6 follows (12 today). Replies 1-2 went out ~6s apart by mistake; rest 50s+. Followers 1, following 35. No outside engagement yet.

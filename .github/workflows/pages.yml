@@ -29,3 +29,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with: {path: site}
       - uses: actions/deploy-pages@v4
+      - name: Ping IndexNow (new URLs to Bing & co., push builds only)
+        if: github.event_name == 'push'
+        continue-on-error: true
+        run: sleep 20 && SITE_URL=https://readdailyfive.com python3 indexnow.py

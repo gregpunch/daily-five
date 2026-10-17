@@ -617,6 +617,7 @@ def seo_pages(eds,rows,tiles):
         f'<div class="tiles">{tiles}</div><h2 class="h2s">Tickers &amp; markets</h2><div class="tks">{tk}</div><h2 class="h2s">All picks</h2><div class="rcs col">{allp}</div>')
     w('track-record/index.html',shell(f"Track Record: Win Rate & Returns of Every Pick | {BRAND}","The Daily Five's public track record: win rate and average return by horizon for every stock and sports-market pick, marked to real prices.",'/track-record/',tb,{"@context":"https://schema.org","@type":"CollectionPage","name":"Daily Five Track Record","url":SITE+"/track-record/"}))
     return urls
+INDEXNOW_KEY='fcd40c5d2b89f9aed9ee904f5baee9f2'
 def main():
     shutil.rmtree(OUT,ignore_errors=True); os.makedirs(OUT)
     w('style.css',open(os.path.join(ROOT,'style.css')).read()); w('.nojekyll','')
@@ -673,6 +674,7 @@ def main():
     urls=['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh,'/archive/']+[f'/{d}/' for d,*_ in items]+extra
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{TODAY}</lastmod></url>" for u in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
+    w(INDEXNOW_KEY+'.txt',INDEXNOW_KEY)  # IndexNow key file (Bing, Yandex, Seznam, Naver); indexnow.py pings after deploy
     w('robots.txt',f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
     os.makedirs(os.path.join(OUT,'email'),exist_ok=True)
     for f in glob.glob(os.path.join(ROOT,'email','*.html')): shutil.copy(f,os.path.join(OUT,'email'))

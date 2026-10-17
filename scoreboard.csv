@@ -16,10 +16,10 @@ date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
 2026-10-16,Finance,1 Month,BUY,CROX,124.77,123.14,open,-1.31,https://stocktwits.com/news-articles/markets/equity/stocktwits-wall-street-wrap-crocs-liquidia-win-upgrades-while-space-x-competition-and-grocery-woes-put-ast-space-mobile-albertsons-under-pressure/cZx0UOFRBsI
 2026-10-16,Finance,1 Day,SELL,QQQ,728.0,709.8,open,2.50,https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575
 2026-10-16,Finance,1 Day,SELL,META,736.72,709.325,open,3.72,https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575
-2026-10-16,Sports,Sports,BUY,Guardians YES · Guardians win ALCS,0.6375,0.6235,open,-2.20,https://polymarket.com/event/mlb-2026-american-league-champion
-2026-10-16,Sports,Sports,BUY,Brewers YES · Brewers win World Series,0.6445,0.647,open,0.39,https://polymarket.com/event/mlb-world-series-champion-2026
-2026-10-16,Sports,Sports,BUY,"Chiefs · Week 7: LAC @ KC, Sun",0.785,0.775,open,-1.27,https://polymarket.com/event/nfl-lac-kc-2026-10-18
-2026-10-16,Sports,Sports,BUY,"Packers · Week 7: DAL @ GB, Sun",0.525,0.515,open,-1.90,https://polymarket.com/event/nfl-dal-gb-2026-10-19
+2026-10-16,Sports,Sports,BUY,Guardians YES · Guardians win ALCS,0.6375,0.6185,open,-2.98,https://polymarket.com/event/mlb-2026-american-league-champion
+2026-10-16,Sports,Sports,BUY,Brewers YES · Brewers win World Series,0.6445,0.6465,open,0.31,https://polymarket.com/event/mlb-world-series-champion-2026
+2026-10-16,Sports,Sports,BUY,"Chiefs · Week 6: LAC @ KC, Sun 4:25 PM ET",0.785,0.785,open,0.00,https://polymarket.com/event/nfl-lac-kc-2026-10-18
+2026-10-16,Sports,Sports,BUY,"Packers · Week 6: DAL @ GB, Sun 8:20 PM ET",0.525,0.515,open,-1.90,https://polymarket.com/event/nfl-dal-gb-2026-10-19
 2026-10-16,Sports,Sports,BUY,"Guardians · ALCS Game 4: TB @ CLE, Sat 8 PM ET (rain-moved)",0.495,0.495,open,0.00,https://polymarket.com/event/mlb-tb-cle-2026-10-16
 2026-10-15,Finance,1 Year,BUY,AMAT,425.92,409.29,open,-3.90,https://www.ubs.com/global/en/wealthmanagement/insights/chief-investment-office/house-view/daily/2026/latest-14102026.html
 2026-10-15,Finance,1 Year,BUY,KLAC,172.24,165.74,open,-3.77,https://www.mastermind-x.com/research/jpm-semiconductors-semi-66921c.html
@@ -30,5 +30,5 @@ date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
 2026-10-15,Sports,Sports,BUY,"Dodgers · NLCS Game 4: MIL @ LAD, 8 PM ET",0.585,0.0,final,-100.00,https://polymarket.com/event/mlb-mil-lad-2026-10-15
 2026-10-15,Sports,Sports,BUY,"Seahawks · TNF: SEA @ DEN, 8:15 PM ET",0.565,0.0,final,-100.00,https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/
 2026-10-15,Sports,Sports,BUY,"Guardians · ALCS Game 3: TB @ CLE, 1 PM ET",0.535,1.0,final,86.92,https://polymarket.com/event/mlb-tb-cle-2026-10-15
-2026-10-15,Sports,Sports,BUY,Brewers NO · Brewers win World Series,0.421,0.353,open,-16.15,https://polymarket.com/event/mlb-world-series-champion-2026
+2026-10-15,Sports,Sports,BUY,Brewers NO · Brewers win World Series,0.421,0.3535,open,-16.03,https://polymarket.com/event/mlb-world-series-champion-2026
 2026-10-15,Sports,Sports,BUY,Brewers YES · Brewers win NLCS,0.9035,1.0,final,10.68,https://polymarket.com/event/mlb-2026-national-league-champion
