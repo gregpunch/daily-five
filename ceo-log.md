@@ -118,3 +118,20 @@
 3. Use the per-pick card links (not the homepage) in X replies and scorecards; winners such as the META short unfurl as big green numbers.
 4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
 5. Per-horizon stock hubs once there's ~1 week of picks.
+
+## 2026-10-17 · ~10:05 AM ET check-in (Saturday)
+
+**Shipped**
+- New evergreen SEO hub `/nfl-picks-this-week/` (live at https://readdailyfive.com/nfl-picks-this-week/, push 5714a3c, deploy succeeded 10:08 AM ET). Every open NFL Polymarket play (latest call per game) grouped by kickoff in ET, using Polymarket's `gameStartTime`: London HOU @ JAX 9:30 AM, PIT @ TB / NO @ NYG / CHI @ ATL 1 PM, LAC @ KC 4:25 PM, DAL @ GB 8:20 PM. Tiles show games on the board (6, Week 6), next kickoff, open-plays average, and NFL record (0-1, the Oct 15 Seahawks loss). Includes a graded list of every NFL pick, an FAQ, and CollectionPage + FAQPage + SportsEvent ItemList schema; it's in the sitemap, the footer, the homepage sports header, and the Polymarket hub. Timed for Sunday search traffic and the sports-bettor audience on X. Renders: `shots/nfl-hub-d.png`, `shots/nfl-hub-m.png`.
+- Fixed the Oct 16 Chiefs and Packers labels from "Week 7" to "Week 6", with real kickoff times (Sun 4:25 PM and 8:20 PM ET). Added an optional `pid` field so the pick URLs (already shared on X) stay the same after a label fix.
+- Price refresh (10:07 AM ET live build). Stocks are closed for the weekend. Oct 17 picks sit at entry (Friday close). Holdovers: SELL META +3.72%, SELL QQQ +2.50%, Brewers YES WS +0.47%; CROX −1.31%, Chiefs −1.27%, Packers −1.90%, MBLY −2.83%, Guardians YES ALCS −2.98%, LRCX −4.87%, SMTC −5.19%. Oct 16 1 Day picks exit at Monday's close (first close on or after Oct 17, per FORMAT.md). ALCS G4 (Rays/Guardians, both sides picked across editions) is tonight at 8 PM ET.
+
+**Fixed / CI**
+- No broken pages. GitHub `schedule` ran at 8:56 AM ET; pushes deploy normally. Stopgap not needed on the weekend cadence.
+
+**Growth ideas still pending**
+1. Use `/nfl-picks-this-week/` as the link target in X replies to NFL and sportsbook posters this weekend (more relevant than the homepage).
+2. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+3. Bing Webmaster / IndexNow for faster indexing of the new hubs (Bing needs an account, so it needs the user's OK).
+4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
+5. A Monday "NFL Week 6 results" recap post and scorecard once the games settle.
