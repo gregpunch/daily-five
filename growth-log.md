@@ -9,6 +9,7 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-16 3:07 PM | 1 | 11 | 3 PM run; expected 12 following, profile showed 11 (one earlier follow may not have stuck; recheck next run) |
 | 2026-10-16 6:10 PM | 1 | 17 | 6 PM run; 12 + 5 new = 17, so the earlier count discrepancy resolved |
 | 2026-10-16 9:05 PM | 1 | 23 | 9 PM run; +6 follows (23 today, under 25 cap) |
+| 2026-10-17 9:12 AM | 1 | 29 | Sat 9 AM run; +6 follows (6 today) |
 
 ## Follows (date, handle, followers at follow, reason, followed back?)
 | Date | Handle | Followers | Why | Followback |
@@ -36,6 +37,12 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-16 | @polytradewatch | 86 | Polymarket whale trades (below 500 floor) | pending (check 10-23) |
 | 2026-10-16 | @MrBryan1316 | 19 | Polymarket trade analysis (below 500 floor) | pending (check 10-23) |
 | 2026-10-16 | @Trolll743607 | 29 | Polymarket trader (below 500 floor) | pending (check 10-23) |
+| 2026-10-17 | @ZeeshanAbid982 | 4,960 | semis/TSMC, follows back heavily (4,496 following) | pending (check 10-24) |
+| 2026-10-17 | @amir_amirel | 1,521 | Polymarket sports | pending (check 10-24) |
+| 2026-10-17 | @wallstnomads | 5,488 | active stocks/trading (modest followback ratio) | pending (check 10-24) |
+| 2026-10-17 | @michaelsisakov | 2,264 | stocks/trading (weak followback ratio) | pending (check 10-24) |
+| 2026-10-17 | @XutuTrading | 5,835 | Polymarket sports (weak followback ratio) | pending (check 10-24) |
+| 2026-10-17 | @DDOGGSTACKS | 5,613 | NFL props betting (modest followback ratio) | pending (check 10-24) |
 
 ## Replies & posts
 | Date/time ET | Type | Target post URL | Our reply/post URL | Linked site? |
@@ -64,9 +71,15 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-16 ~9:04 PM | reply | https://x.com/PatrickE_Vegas/status/2111237190646931565 | https://x.com/ReadDailyFive/status/2111262185188184292 | yes |
 | 2026-10-16 ~9:05 PM | reply | https://x.com/Kalshi_Finance/status/2111257589791027276 | https://x.com/ReadDailyFive/status/2111262222811005419 | no |
 | 2026-10-16 ~9:05 PM | reply | https://x.com/TNTSportsUS/status/2111243287197601804 | https://x.com/ReadDailyFive/status/2111262234760609879 | no |
+| 2026-10-17 ~9:10 AM | reply | https://x.com/polymarketjapan/status/2111411910579265939 | https://x.com/ReadDailyFive/status/2111444719389528437 | no |
+| 2026-10-17 ~9:10 AM | reply | https://x.com/MLBNetwork/status/2111286324452081789 | https://x.com/ReadDailyFive/status/2111444832639975734 | no |
+| 2026-10-17 ~9:10 AM | reply | https://x.com/CaesarsSports/status/2111268468662178221 | https://x.com/ReadDailyFive/status/2111444887631720959 | no |
+| 2026-10-17 ~9:10 AM | reply | https://x.com/MikeZaccardi/status/2111175597518958702 | https://x.com/ReadDailyFive/status/2111445008826216797 | yes |
+| 2026-10-17 ~9:10 AM | reply | https://x.com/Web3Niels/status/2111431653566353721 | https://x.com/ReadDailyFive/status/2111445056343126490 | no |
+| 2026-10-17 ~9:10 AM | reply | https://x.com/oneweekseason/status/2111298659497521369 | https://x.com/ReadDailyFive/status/2111445172844212503 | no |
 
 ## Warnings / pauses
-(none — 12:14 PM, 3:07 PM, 6:10 PM and 9:05 PM runs on 2026-10-16 saw no warnings, limits, or captchas)
+(none — 2026-10-17 9 AM run clean too; 12:14 PM, 3:07 PM, 6:10 PM and 9:05 PM runs on 2026-10-16 saw no warnings, limits, or captchas)
 
 Notes: X people search gave junk; find follow targets via authors of recent Polymarket/semis posts. Avoid @HeidingOut going forward.
 
@@ -75,3 +88,5 @@ Notes: X people search gave junk; find follow targets via authors of recent Poly
 6 PM run note: replies spaced ~45s+ apart (good). @yuriymatso has limited replies; skip. Results scorecard post went out (X dedupe blocked a second copy). Today's follows total 17 (under 25/day cap). Followers still 1 (only owner); no external engagement in notifications yet.
 
 9 PM run note: ALCS Game 4 (TB-CLE) was rain-postponed to Saturday ~8 PM; the 'Guardians G4 8 PM ET' pick market may need relabel/settlement check in tomorrow's edition. Replies again went out in a burst (first 3 back-to-back) and follows ~6-8s apart; next run, tell the browser agent to post/follow ONE per call with explicit waits. 3 follows were under the 500-follower floor (check profile counts BEFORE following). Followers still 1; no outside engagement in notifications.
+
+Sat 10-17 9 AM run note: Saturday-morning fresh posts were scarce, so 4 of 6 replies targeted 9-17h-old posts (weaker reach). Two replies ran slightly over 260 chars. Pacing mostly good; one reply pair and one follow pair went out close together. Followers still 1; no outside engagement. Weekend tip: favor live NFL/ALCS posts later in the day.
