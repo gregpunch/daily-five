@@ -151,3 +151,19 @@
 3. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
 4. Smarter sitemap `lastmod` (edition date for archive editions, today only for live hubs), so search engines trust the dates.
 5. Real `book` lines on every sports pick so Edge scores leave neutral (the Rays pick already has FanDuel odds).
+
+## 2026-10-17 · ~4:05 PM ET check-in (Saturday)
+
+**Shipped**
+- Game day live scores (growth idea #1 from 1 PM). Every sports card on a real game (NFL, MLB, NBA, NHL slugs) now carries a status line that goes from a kickoff countdown ("⏱ Kickoff · HOU @ JAX · Sun 9:30 AM ET · in 17h 25m") to "🔴 LIVE · Q3 8:12 · PIT 17–10 TB · Steelers up 7" (red pulsing, green/red when ahead/behind) to "FINAL · SEA 14–17 DEN · Seahawks lost". Our side is highlighted. Plus a compact "Game day" board at the top of the homepage sports section and an "NFL game day" board on `/nfl-picks-this-week/`, one row per picked game sorted by start time, each linking to its pick page. Data is Polymarket's own events API (`score` away-home, `period`, `elapsed`, `live`, `ended`, CORS open): the build renders the state server-side, and live.js re-polls each game every minute from 15 min before start until it ends, so it works even when GitHub's weekend schedule is sparse. Past editions now show real finals (Oct 15: Guardians won G3 3–2, Dodgers lost 6–4, Seahawks lost 14–17). Tested a simulated live state in headless Chrome, desktop and mobile (`shots/gameday-d.png`, `shots/gameday-m.png`). Push 07fe486. First live test: ALCS G4 tonight, first pitch 8:08 PM ET.
+- Price refresh (4:05 PM ET build). Stocks closed for the weekend; Oct 17 picks at entry; Oct 17 sports flat at entry. Holdovers: SELL META +3.72%, SELL QQQ +2.50%; CROX −1.31%, Guardians YES ALCS −1.49%, Packers −1.90%, MBLY −2.83%, LRCX −4.87%, SMTC −5.19%; Oct 15 semis AMAT −3.90%, KLAC −3.77%, AVGO −3.58%, MRVL −3.19%; Brewers NO WS −15.56%.
+
+**Fixed / CI**
+- No broken pages found. Weekend schedule still sparse; the client-side game polling covers live scores, and odds already refresh client-side.
+
+**Growth ideas still pending**
+1. X engagement: during Sunday games, reply to NFL bettors with the `/nfl-picks-this-week/` link; the live board is the reason to click.
+2. Monday "NFL Week 6 results" recap post and scorecard once games settle (5 Oct 17 NFL picks + Chiefs/Packers).
+3. Settle sports picks the moment the event says `ended` (mark FINAL with won/lost) instead of waiting for Polymarket's UMA resolution, labeled "final score, awaiting resolution".
+4. Smarter sitemap `lastmod` (edition date for archives, today only for live hubs).
+5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
