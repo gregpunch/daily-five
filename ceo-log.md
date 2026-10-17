@@ -135,3 +135,19 @@
 3. Bing Webmaster / IndexNow for faster indexing of the new hubs (Bing needs an account, so it needs the user's OK).
 4. Real `book` sportsbook lines on sports picks so Edge scores leave neutral.
 5. A Monday "NFL Week 6 results" recap post and scorecard once the games settle.
+
+## 2026-10-17 · ~1:05 PM ET check-in (Saturday)
+
+**Shipped**
+- IndexNow (free, no account): build.py now writes the key file `/fcd40c5d2b89f9aed9ee904f5baee9f2.txt`, and a new `indexnow.py` step runs after each push deploy (daily edition, CEO ships; not the 30-min schedule rebuilds) and submits every sitemap URL to api.indexnow.org, which shares them with Bing, Yandex, Seznam, Naver and Yep. First ping on push b7f5f16 returned 202 Accepted for 74 URLs; key file is live (200). Covers the Bing half of the "Bing Webmaster" idea without creating an account, so the NFL and Polymarket hubs and new pick pages get crawled within hours instead of days. Step is `continue-on-error`, so it can never break a deploy.
+- Price refresh (1:05 PM ET local build, then CI build). Stocks are closed for the weekend; Oct 17 picks sit at entry. Oct 17 sports picks are all exactly at entry on Polymarket (Rays G4 50.5¢, Steelers 55.5¢, Giants 49.5¢, Bears 50.5¢, Jaguars 56.5¢; checked against the gamma API, not a fetch failure). Holdovers: SELL META +3.72%, SELL QQQ +2.50%, Brewers YES WS +0.31%, Chiefs flat (recovered from −1.27%); Packers −1.90%, Guardians YES ALCS −2.98%, SMTC −5.19%, LRCX −4.87%; Oct 15 Brewers NO WS −16.03%.
+
+**Fixed / CI**
+- No broken pages (home, scoreboard, 3 hubs, sitemap, key file all 200). GitHub `schedule` is sparse on the weekend again (last scheduled run 12:22 PM ET, before that 8:56 AM ET) despite the every-30-min cron; acceptable for weekend sports odds, but tonight's ALCS G4 (8 PM ET) and Sunday's NFL slate will want fresher refreshes. Consider restarting the box stopgap d5-dispatch for Sat 7 PM to midnight and Sun 9 AM to midnight.
+
+**Growth ideas still pending**
+1. Live "game day" strip on the homepage and NFL hub for Sunday: kickoff countdown, then live Polymarket win probability for each picked team once games start (the main reason a bettor would refresh on Sunday).
+2. Monday "NFL Week 6 results" recap post and scorecard once games settle (5 Oct 17 NFL picks + Chiefs/Packers from Oct 16).
+3. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+4. Smarter sitemap `lastmod` (edition date for archive editions, today only for live hubs), so search engines trust the dates.
+5. Real `book` lines on every sports pick so Edge scores leave neutral (the Rays pick already has FanDuel odds).
