@@ -3,7 +3,7 @@
 Run: SITE_URL=https://readdailyfive.com python3 build.py
 Reads editions/*.json; fetches real prices (Yahoo Finance chart API, Polymarket Gamma + CLOB APIs)
 for live P/L, sparklines and the Scoreboard; writes site/ and scoreboard.csv; freezes exits in data/exits.json."""
-import time, json, os, glob, html, shutil, datetime, csv, urllib.request
+import time, json, os, glob, html, shutil, datetime, csv, re, urllib.request
 from urllib.parse import urlparse
 os.environ['TZ']='America/New_York'; time.tzset()
 ROOT=os.path.dirname(os.path.abspath(__file__)); OUT=os.path.join(ROOT,'site')
@@ -43,6 +43,16 @@ def pmarket(slug):
         m=r[0]
         return {'outcomes':json.loads(m['outcomes']),'prices':[float(x) for x in json.loads(m['outcomePrices'])],'closed':bool(m.get('closed')),'tokens':json.loads(m.get('clobTokenIds') or '[]'),'volume':float(m.get('volume') or 0),'start':m.get('gameStartTime')}
     return memo(('pm',slug),f)
+GAME_RE=re.compile(r'^(nfl|mlb|nba|nhl|wnba|cfb|cbb)-[a-z]+-[a-z]+-\d{4}-\d{2}-\d{2}$')
+def pgame(slug):
+    """Live game state for a Polymarket game event (score is 'away-home', period NS / Q1..Q4 / HT / VFT)."""
+    if not GAME_RE.match(slug or ''): return None
+    def f():
+        r=get(f"https://gamma-api.polymarket.com/events?slug={slug}") or get(f"https://gamma-api.polymarket.com/events?slug={slug}&closed=true")
+        e=r[0]; tm=e.get('teams') or []
+        return {'score':e.get('score') or '','period':e.get('period') or '','elapsed':e.get('elapsed') or '','live':bool(e.get('live')),'ended':bool(e.get('ended')),
+                'teams':sorted([{'ab':(t.get('abbreviation') or '').upper(),'al':t.get('alias') or '','nm':t.get('name') or '','o':t.get('ordering')} for t in tm],key=lambda t:0 if t['o']=='away' else 1)}
+    return memo(('pg',slug),f)
 def phistory(token):
     return memo(('ph',token),lambda: [(h['t'],h['p']) for h in get(f"https://clob.polymarket.com/prices-history?market={token}&interval=1w&fidelity=60")['history']])
 HZ={'1 Day':1,'1 Month':30,'1 Year':365}
@@ -129,6 +139,50 @@ def livebox(p):
 <div><span class="lbl">Live</span><span class="price" data-k="cur">{money(k,p.get('cur'))}</span></div>
 <div><span class="lbl">Today</span><span data-k="so">{mv(p.get('so'))}</span></div>
 <div><span class="lbl">Since pick</span><span data-k="ret">{chip(p.get('ret'),p.get('final'))}</span></div></div>"""
+GLBL={'nfl':'\u23f1 Kickoff','cfb':'\u23f1 Kickoff','mlb':'\u26be First pitch','nba':'\u23f1 Tip-off','wnba':'\u23f1 Tip-off','cbb':'\u23f1 Tip-off','nhl':'\u23f1 Puck drop'}
+def _left(sec):
+    m=max(0,round(sec/60)); d,h,mm=m//1440,m%1440//60,m%60
+    return f'{d}d {h}h' if d>=2 else (f'{h+24*d}h {mm}m' if m>=60 else f'{mm}m')
+def gd(p,cls=''):
+    """Game-day status line for a sports pick on a real game: countdown, then live score, then final.
+    Server renders the state at build time; live.js polls Polymarket's events API every minute near and during the game."""
+    g=pgame(p.get('slug')); m=p.get('m') or {}
+    if not g or len(g['teams'])!=2: return ''
+    ko=kickoff(p)
+    if not ko: return ''
+    aw,hm=g['teams']; pn=(m.get('outcomes') or [p['label']])[p['outcome']] if m.get('outcomes') else p['label']
+    hit=lambda t: pn.lower() in (t['al']+' '+t['nm']).lower() or (t['al'] and t['al'].lower() in pn.lower())
+    ps='h' if (hit(hm) and not hit(aw)) else ('a' if hit(aw) else ('a' if p['outcome']==0 else 'h'))
+    sp=p['slug'].split('-')[0]; lb=GLBL.get(sp,'\u23f1 Starts'); kt=ko.strftime('%a %-I:%M %p ET')
+    B_=lambda t,sd: f'<b class="pk">{E(t)}</b>' if sd==ps else E(t)
+    sc=[int(x) for x in g['score'].split('-')] if re.fullmatch(r'\d+-\d+',g['score']) else None
+    fin=g['ended'] or g['period'] in ('VFT','FT','F'); now=datetime.datetime.now().astimezone()
+    live=(not fin) and (g['live'] or (sc is not None and now>=ko and g['period'] not in ('','NS')))
+    if (fin or live) and sc:
+        me,op=(sc[0],sc[1]) if ps=='a' else (sc[1],sc[0]); d=me-op
+        mt=f'{B_(aw["ab"],"a")} {sc[0]}<i>\u2013</i>{sc[1]} {B_(hm["ab"],"h")}'
+        if fin: st='fin '+('won' if d>0 else 'lost' if d<0 else ''); bd='FINAL'; xt=f'{pn} won \u2705' if d>0 else (f'{pn} lost' if d<0 else 'Tied')
+        else:
+            per={'HT':'Halftime'}.get(g['period'],g['period'])
+            st='on '+('ahead' if d>0 else 'behind' if d<0 else ''); bd='\U0001F534 LIVE'+(f' \u00b7 {per}' if per else '')+(f' {g["elapsed"]}' if g['elapsed'] else ''); xt=f'{pn} up {d}' if d>0 else (f'{pn} down {-d}' if d<0 else 'Tied')
+    else:
+        st='pre'; bd=lb; mt=f'{B_(aw["ab"],"a")} @ {B_(hm["ab"],"h")}'; left=(ko-now).total_seconds(); xt=f'{kt} \u00b7 '+(f'in {_left(left)}' if left>0 else 'starting now')
+    pn=p['label']; xt=xt.replace((m.get('outcomes') or [pn])[p['outcome']] if m.get('outcomes') else pn,pn,1)
+    data=(f' data-ev="{E(p["slug"])}" data-ko="{int(ko.timestamp())}" data-aw="{E(aw["ab"])}" data-hm="{E(hm["ab"])}" data-ps="{ps}" data-pn="{E(pn)}" data-lb="{E(lb)}" data-kt="{E(kt)}"'
+          f' data-sc="{E(g["score"])}" data-pe="{E(g["period"])}" data-el="{E(g["elapsed"])}" data-lv="{int(g["live"])}" data-en="{int(g["ended"])}"')
+    return f'<div class="gd {st} {cls}"{data} aria-live="polite"><span class="gdb">{E(bd)}</span><span class="gdm">{mt}</span><span class="gdx">{E(xt)}</span></div>'
+def gd_board(ps,title='Game day'):
+    """Compact live board: one row per picked game (deduped by market, latest call wins), sorted by start time."""
+    seen=set(); rows=[]
+    for p in ps:
+        if p.get('slug') in seen: continue
+        g=gd(p,'row')
+        if not g: continue
+        seen.add(p['slug']); rows.append((kickoff(p),f'<a class="gdr" href="{BASE}/picks/{p["id"]}/"><span class="gdp"><span class="act buy">BUY</span> {E(p["label"])}</span>{g}</a>'))
+    if not rows: return ''
+    rows.sort(key=lambda r:r[0])
+    return (f'<div class="gdboard"><div class="gdh"><span class="live"></span><b>{E(title)}</b><small>Countdown, live score and final for every game we picked. Scores from Polymarket, updated every minute.</small></div>'
+            f'<div class="gdl">{"".join(r for _,r in rows)}</div></div>')
 def share(p):
     """Share button: X intent link (static fallback); live.js swaps in live P/L and uses the native share sheet on mobile."""
     k=p['kind']; what=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" ({p['horizon']})")
@@ -149,7 +203,7 @@ def sp_card(p,rank):
     when='Tonight' if p.get('event_date')==TODAY.isoformat() else ('Event '+datetime.date.fromisoformat(p['event_date']).strftime('%b %-d') if p.get('event_date') else 'Futures')
     vol=f'<span class="vol">${m["volume"]/1e6:.1f}M vol</span>' if m and m['volume']>=1e5 else ''
     return f"""<article class="card sc"><div class="ctop"><span class="rank">#{rank}</span><span class="hz">🏟 {E(when)}</span>{badge(p)}</div>
-<a class="mkt" href="{BASE}/ticker/{p['tslug']}/">{E(p['market'])}</a>{bars}
+<a class="mkt" href="{BASE}/ticker/{p['tslug']}/">{E(p['market'])}</a>{bars}{gd(p)}
 <div class="crow"><span class="act buy">BUY</span><span class="tk sm">{E(p['label'])}</span>{vol}{spark(p.get('pts'),100,30)}</div>{livebox(p)}{breakdown(p)}
 <p class="why"><b>Why BUY:</b> {E(p['why'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
 def tape(ed):
@@ -201,7 +255,7 @@ def body(ed,prev=None):
     return recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">The best ideas from AI agents, analysts and public sources, by horizon.</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
-<section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a></p></div></div><div class="grid g3">{sp}</div></section>"""
+<section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a></p></div></div>{gd_board(ed["sports"])}<div class="grid g3">{sp}</div></section>"""
 def bar_chart(rows):
     rs=[r for r in rows if r['ret'] is not None]
     if not rs: return ''
@@ -585,7 +639,7 @@ def nfl_hub(eds):
            f'<p class="sub">AI-ranked NFL plays from The Daily Five, priced on Polymarket, sorted by kickoff, and graded in public after every game. Updated {nice}.</p>{links}</section>'
            f'<div class="tiles">{tiles}</div>'
            f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
-           f'{tb}{hb}{fq}<p class="sub hub-foot">Trade stocks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
+           f'{gd_board([p for p,_ in slate],"NFL game day")}{tb}{hb}{fq}<p class="sub hub-foot">Trade stocks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
     title=f'NFL Picks This Week{wl}: Live Polymarket Odds & Results | {BRAND}'
     desc=(f'This week\'s NFL picks{wl}, ranked by the Daily Five Score, with live Polymarket odds, kickoff times, and a public win/loss record. Updated {latest}.')[:155]
     evs=[{"@type":"SportsEvent","name":(p.get('m') or {}).get('outcomes') and ' vs. '.join(p['m']['outcomes']) or p['market'],"startDate":kickoff(p).isoformat(),"sport":"American football","url":f"{SITE}/picks/{p['id']}/"} for p,_ in slate if kickoff(p)]

@@ -47,3 +47,21 @@ const what=a.dataset.shareWhat,url=a.dataset.shareUrl;
 const text=m?`${what}: ${m[0]} since The Daily Five called it${/final/.test(r.textContent)?' (final)':''}`:`${what}, a call from The Daily Five`;
 if(navigator.share&&matchMedia('(pointer:coarse)').matches){e.preventDefault();navigator.share({title:'The Daily Five',text,url}).catch(()=>{});return;}
 a.href='https://x.com/intent/post?'+new URLSearchParams({text,url,via:'ReadDailyFive'}).toString();});})();
+(()=>{const G=[...document.querySelectorAll('.gd[data-ev]')];if(!G.length)return;const st={};
+for(const el of G){const d=el.dataset;if(!st[d.ev])st[d.ev]={score:d.sc,period:d.pe,elapsed:d.el,live:d.lv==='1',ended:d.en==='1'};}
+const left=s=>{const m=Math.max(0,Math.round(s/60)),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;return d>=2?`${d}d ${h}h`:m>=60?`${h+24*d}h ${mm}m`:`${mm}m`;};
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(el){const d=el.dataset,e=st[d.ev]||{},ko=+d.ko*1000,now=Date.now(),ps=d.ps,pn=d.pn,row=el.classList.contains('row')?' row':'';
+ const B=(t,s)=>s===ps?`<b class="pk">${esc(t)}</b>`:esc(t),q=c=>el.querySelector(c);
+ const sc=/^\d+-\d+$/.test(e.score||'')?e.score.split('-').map(Number):null,fin=e.ended||/^(VFT|FT|F)$/.test(e.period||'');
+ const live=!fin&&(e.live||(sc&&now>=ko&&e.period&&e.period!=='NS'));
+ if((fin||live)&&sc){const df=ps==='a'?sc[0]-sc[1]:sc[1]-sc[0];q('.gdm').innerHTML=`${B(d.aw,'a')} ${sc[0]}<i>–</i>${sc[1]} ${B(d.hm,'h')}`;
+  if(fin){el.className='gd fin '+(df>0?'won':df<0?'lost':'')+row;q('.gdb').textContent='FINAL';q('.gdx').textContent=df>0?`${pn} won ✅`:df<0?`${pn} lost`:'Tied';}
+  else{const per=e.period==='HT'?'Halftime':(e.period||'');el.className='gd on '+(df>0?'ahead':df<0?'behind':'')+row;
+   q('.gdb').textContent='🔴 LIVE'+(per?' · '+per:'')+(e.elapsed?' '+e.elapsed:'');q('.gdx').textContent=df>0?`${pn} up ${df}`:df<0?`${pn} down ${-df}`:'Tied';}}
+ else{el.className='gd pre'+row;q('.gdm').innerHTML=`${B(d.aw,'a')} @ ${B(d.hm,'h')}`;q('.gdb').textContent=d.lb;const l=(ko-now)/1000;q('.gdx').textContent=d.kt+' · '+(l>0?'in '+left(l):'starting now');}}
+const paint=()=>G.forEach(render);
+async function poll(){const now=Date.now(),evs=[...new Set(G.filter(el=>{const e=st[el.dataset.ev]||{};return !e.ended&&now>=(+el.dataset.ko-900)*1000;}).map(el=>el.dataset.ev))];
+ await Promise.all(evs.map(async ev=>{try{const e=(await (await fetch('https://gamma-api.polymarket.com/events?slug='+encodeURIComponent(ev),{cache:'no-store'})).json())[0];
+  if(e)st[ev]={score:e.score||'',period:e.period||'',elapsed:e.elapsed||'',live:!!e.live,ended:!!e.ended};}catch(x){}}));paint();}
+paint();poll();setInterval(paint,30000);setInterval(poll,60000);})();
