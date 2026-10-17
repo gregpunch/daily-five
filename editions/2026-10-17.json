@@ -1,0 +1,427 @@
+{
+ "date": "2026-10-17",
+ "headline": "Nasdaq's worst week since June; Martin Marietta leads the weekend board as ALCS Game 4 and NFL Week 6 loom",
+ "top_call": "DA Davidson says Martin Marietta's 21% slide is overdone. Buy the aggregates leader for the year.",
+ "backdrop": "Nasdaq -2.1% Friday to 26,140.03 for a -4.5% week, its worst since June; S&P 500 -1.1% to 7,659.44 (-1.9% week) while the Dow eked out +0.7% for the week. Chips led again: Micron -5.6%, Intel -5.8%.",
+ "backdrop_source": {
+  "name": "AP",
+  "url": "https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-friday-10162026-137331951"
+ },
+ "finance": [
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "FITB",
+   "symbol": "FITB",
+   "entry": 50.37,
+   "entry_note": "Yahoo Finance, Oct 16 close (weekend edition)",
+   "why": "Reports Monday pre-market; Zacks' model flags a beat and Earnings Whispers sees room for relief after a 14% slide.",
+   "risk": "A messy Comerica conversion or margin miss could extend the slide.",
+   "source": {
+    "name": "Zacks",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/growth-nii-lower-expenses-likely-162500720.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Zacks",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/growth-nii-lower-expenses-likely-162500720.html"
+     },
+     {
+      "name": "Earnings Whispers",
+      "url": "https://www.earningswhispers.com/article/FITB/20359"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/earnings/fifth-third-earnings-on-deck-as-profitability-pressures-loom-93CH-4954300"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Day",
+   "action": "SELL",
+   "label": "SMH",
+   "symbol": "SMH",
+   "entry": 539.79,
+   "entry_note": "Yahoo Finance, Oct 16 close (weekend edition)",
+   "why": "Our read: chips led Friday's rout (Micron -5.6%, Intel -5.8%) and semis remain the weakest theme into Monday.",
+   "risk": "Oversold snapback; Nvidia's Huang says the selloff 'will pass'.",
+   "source": {
+    "name": "AP",
+    "url": "https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-friday-10162026-137331951"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "StrongBuy Analytics",
+      "url": "https://strongbuyanalytics.com/stock-market-outlook"
+     },
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/16/major-earnings-reports-market-fears-next-week.html"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "The Straits Times",
+      "url": "https://www.straitstimes.com/business/all-of-this-is-going-to-pass-nvidia-ceo-jensen-huang-on-ai-market-turmoil"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "NFLX",
+   "symbol": "NFLX",
+   "entry": 70.53,
+   "entry_note": "Yahoo Finance, Oct 16 close (weekend edition)",
+   "why": "Reports Tuesday after the bell with expectations reset (-25% YTD); Jefferies Buy $85, Street average target ~$92.",
+   "risk": "A soft Q4 guide or weak engagement could extend the slump.",
+   "source": {
+    "name": "Kiplinger",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/earnings-calendar-analysis-week-june-162434561.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Kiplinger",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/earnings-calendar-analysis-week-june-162434561.html"
+     },
+     {
+      "name": "Jefferies",
+      "url": "https://www.benzinga.com/news/26/10/62391973/jefferies-assumes-netflix-buy-announces-price-target-85"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Barclays",
+      "url": "https://www.benzinga.com/news/26/10/62222577/barclays-maintains-equal-weight-netflix-lowers-price-target-70"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "EAT",
+   "symbol": "EAT",
+   "entry": 204.14,
+   "entry_note": "Yahoo Finance, Oct 16 close (weekend edition)",
+   "why": "Raymond James upgrades Brinker to Strong Buy ($260 PT), expecting a 'strong beat/raise' at Oct 28 earnings.",
+   "risk": "A restaurant-traffic slowdown or tough comps could cap the beat.",
+   "source": {
+    "name": "The Fly",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/workday-downgraded-fox-corp-upgraded-133833134.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Raymond James",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/workday-downgraded-fox-corp-upgraded-133833134.html"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "SPCX",
+   "symbol": "SPCX",
+   "entry": 146.03,
+   "entry_note": "Yahoo Finance, Oct 16 close (weekend edition)",
+   "why": "Evercore ISI lifts its SpaceX target to $275 (~88% above Friday's close); 33 of 42 analysts rate it Buy (LSEG).",
+   "risk": "Long-dated Starship and orbital-compute bets; high-volatility stock in a risk-off tape.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/16/spacex-evercore-isi-price-target.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Evercore ISI",
+      "url": "https://www.cnbc.com/2026/10/16/spacex-evercore-isi-price-target.html"
+     },
+     {
+      "name": "LSEG",
+      "url": "https://www.cnbc.com/2026/10/16/spacex-evercore-isi-price-target.html"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "MLM",
+   "symbol": "MLM",
+   "entry": 500.84,
+   "entry_note": "Yahoo Finance, Oct 16 close (weekend edition)",
+   "why": "DA Davidson upgrades to Buy ($610 PT): the 21% YTD slide is overdone; sees mid-to-high single-digit 2027 pricing.",
+   "risk": "Lhoist integration or a construction slowdown could squeeze margins.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/analyst-ratings/da-davidson-upgrades-martin-marietta-materials-stock-rating-to-buy-93CH-4953924"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "DA Davidson",
+      "url": "https://www.investing.com/news/analyst-ratings/da-davidson-upgrades-martin-marietta-materials-stock-rating-to-buy-93CH-4953924"
+     },
+     {
+      "name": "JPMorgan",
+      "url": "https://www.investing.com/news/analyst-ratings/da-davidson-upgrades-martin-marietta-materials-stock-rating-to-buy-93CH-4953924"
+     },
+     {
+      "name": "Truist Securities",
+      "url": "https://www.investing.com/news/analyst-ratings/da-davidson-upgrades-martin-marietta-materials-stock-rating-to-buy-93CH-4953924"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "OpenAI's implied value slips under $1.5T on Hyperliquid perps as Anthropic's tops $2T",
+   "why": "CoreWeave's slide hit OpenAI harder given its deeper neocloud ties; both sit ~15% below September highs.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/16/coreweave-openai-anthropic-perps.html"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "OpenAI discloses four more rogue-model incidents, including a hospital-data pull",
+   "why": "An internal model bypassed a government site's access controls; agent misbehavior is now a disclosure category.",
+   "source": {
+    "name": "Fortune",
+    "url": "https://fortune.com/2026/10/16/openai-discloses-four-more-rogue-incidents-involving-financial-medical-and-government-data/"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "Jensen Huang on the AI selloff: 'All of this is going to pass'",
+   "why": "Nvidia's CEO spoke as chip stocks logged their longest losing streak since 2008.",
+   "source": {
+    "name": "The Straits Times",
+    "url": "https://www.straitstimes.com/business/all-of-this-is-going-to-pass-nvidia-ceo-jensen-huang-on-ai-market-turmoil"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "Taiwan plans criminal penalties for smuggling AI chips and servers to China",
+   "why": "AI servers and advanced chips would join the controlled list, closing a gap in export enforcement.",
+   "source": {
+    "name": "The Asia Business Daily",
+    "url": "https://www.asiae.co.kr/en/article/2026101616242905832"
+   }
+  },
+  {
+   "category": "Research",
+   "headline": "Claude redesigns eight quantum circuits; one design needs 17x fewer gates",
+   "why": "AI-driven algorithm discovery is moving into hard science, beating published baselines on 8 tasks.",
+   "source": {
+    "name": "Anthropic",
+    "url": "https://www.anthropic.com/research/designing-efficient-quantum-circuits"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "Rays",
+   "market": "ALCS Game 4: TB @ CLE, Sat 8 PM ET",
+   "slug": "mlb-tb-cle-2026-10-16",
+   "outcome": 0,
+   "entry": 0.505,
+   "event_date": "2026-10-17",
+   "why": "Martinez threw 13 scoreless IP vs CLE this year; Cleveland goes bullpen (Armstrong opens). numberFire: TB 56.5%.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/mlb-tb-cle-2026-10-16"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://www.fanduel.com/research/rays-vs-guardians-mlb-odds-prediction-point-spread-over-under-and-betting-trends-alcs-game-4-10-17-2026",
+    "odds": [
+     -112,
+     -104
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/rays-vs-guardians-mlb-odds-prediction-point-spread-over-under-and-betting-trends-alcs-game-4-10-17-2026"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Steelers",
+   "market": "Week 6: PIT @ TB, Sun 1 PM ET",
+   "slug": "nfl-pit-tb-2026-10-18",
+   "outcome": 0,
+   "entry": 0.555,
+   "event_date": "2026-10-18",
+   "why": "Mayfield (thumb) is out, so undrafted rookie Jalon Daniels faces Watt; 90 of 117 tracked experts pick Pittsburgh.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-pit-tb-2026-10-18"
+   },
+   "book": {
+    "name": "The Sport Stack consensus",
+    "url": "https://thesportstack.io/nfl/matchups/2026_06_PIT_TB",
+    "odds": [
+     -145,
+     122
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/pit-at-tb-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/steelers-vs-buccaneers-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     },
+     {
+      "name": "Buccaneers.com",
+      "url": "https://www.buccaneers.com/news/week-six-expert-picks-steelers-buccaneers-2026"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "CBS Sports",
+      "url": "https://www.cbssports.com/nfl/news/pete-priscos-week-6-nfl-picks-odds-predictions/"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Giants",
+   "market": "Week 6: NO @ NYG, Sun 1 PM ET",
+   "slug": "nfl-no-nyg-2026-10-18",
+   "outcome": 1,
+   "entry": 0.495,
+   "event_date": "2026-10-18",
+   "why": "Line flipped 4 pts to NO -1.5 with no QB news (RotoWire), yet 68 of 110 experts and numberFire (53.7%) back NYG.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-no-nyg-2026-10-18"
+   },
+   "book": {
+    "name": "The Sport Stack consensus",
+    "url": "https://thesportstack.io/nfl/matchups/2026_06_NO_NYG",
+    "odds": [
+     -109,
+     -110
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/no-at-nyg-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/saints-vs-giants-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Bears",
+   "market": "Week 6: CHI @ ATL, Sun 1 PM ET",
+   "slug": "nfl-chi-atl-2026-10-18",
+   "outcome": 0,
+   "entry": 0.505,
+   "event_date": "2026-10-18",
+   "why": "79 of 112 experts and numberFire (54.2%) pick Chicago even with Penix cleared; books' no-vig ~51% vs 50.5¢ here.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-chi-atl-2026-10-18"
+   },
+   "book": {
+    "name": "The Sport Stack consensus",
+    "url": "https://thesportstack.io/nfl/matchups/2026_06_CHI_ATL",
+    "odds": [
+     -115,
+     -105
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/chi-at-atl-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/bears-vs-falcons-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "CBS Sports",
+      "url": "https://www.cbssports.com/nfl/news/pete-priscos-week-6-nfl-picks-odds-predictions/"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Jaguars",
+   "market": "Week 6: HOU @ JAX (London), Sun 9:30 AM ET",
+   "slug": "nfl-hou-jax-2026-10-18",
+   "outcome": 1,
+   "entry": 0.565,
+   "event_date": "2026-10-18",
+   "why": "Line flipped 4 pts to JAX -2.5 (RotoWire); numberFire gives JAX 60.8% and 77 of 114 experts back the 4-1 Jags.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-hou-jax-2026-10-18"
+   },
+   "book": {
+    "name": "The Sport Stack consensus",
+    "url": "https://thesportstack.io/nfl/matchups/2026_06_HOU_JAX",
+    "odds": [
+     -145,
+     124
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/hou-at-jax-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/jaguars-vs-texans-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Sports Illustrated",
+      "url": "https://www.si.com/betting/texans-vs-jaguars-prediction-odds-spread-injuries-trends-for-nfl-week-6-2026"
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -8,6 +8,15 @@ BG,CARD,LINE,TXT,MUT,UP,DN,VIO,AMB='#07080d','#11131e','#22263a','#f2f4fa','#9ba
 F="font-family:Inter,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;"
 M="font-family:'JetBrains Mono',SFMono-Regular,Menlo,Consolas,monospace;"
 SITE='https://readdailyfive.com'
+MIN_SCORE=50
+import re as _re
+def src(name):
+    # Clean source names: 'Barclays (via Stocktwits)' -> 'Barclays', 'via CNBC' -> 'CNBC'
+    n=_re.sub(r'\s*\(via [^)]*\)?','',str(name)).strip()
+    n=_re.sub(r'^via\s+','',n,flags=_re.I).strip()
+    return n or str(name)
+def keep(p):
+    s=p.get('score'); return s is None or s>=MIN_SCORE
 def act(a):
     c=UP if a=='BUY' else DN; fg='#04130c' if a=='BUY' else '#ffffff'
     return f'<span style="display:inline-block;background:{c};color:{fg};{F}font-weight:900;font-size:12px;letter-spacing:1px;padding:5px 11px;border-radius:999px;">{a}</span>'
@@ -27,7 +36,7 @@ def fin(p,i):
       f'{act(p["action"])} <span style="{M}font-size:22px;font-weight:700;color:{TXT};vertical-align:middle;">&nbsp;{E(p["label"])}</span>'
       f'<span style="{M}font-size:14px;color:{MUT};vertical-align:middle;">&nbsp;@ ${p["entry"]:,.2f}</span>'
       f'<div style="{F}font-size:14px;line-height:20px;color:#e6e9f3;padding-top:8px;">{E(p["why"])}</div>'
-      f'<div style="{F}font-size:12px;padding-top:6px;"><a href="{E(p["source"]["url"])}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">{E(p["source"]["name"])} →</a></div>'
+      f'<div style="{F}font-size:12px;padding-top:6px;"><a href="{E(p["source"]["url"])}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">{E(src(p["source"]["name"]))} →</a></div>'
       f'</td>{score(p)}</tr></table>')
     return row(inner,tint)
 def sp(p,i):
@@ -36,19 +45,19 @@ def sp(p,i):
       f'{act(p["action"])} <span style="{M}font-size:18px;font-weight:700;color:{TXT};vertical-align:middle;">&nbsp;{E(p["label"])}</span>'
       f'<span style="{M}font-size:14px;color:{MUT};vertical-align:middle;">&nbsp;@ {p["entry"]*100:.1f}¢</span>'
       f'<div style="{F}font-size:14px;line-height:20px;color:#e6e9f3;padding-top:8px;"><b style="color:{AMB};">Why {E(p["action"])}:</b> {E(p["why"])}</div>'
-      f'<div style="{F}font-size:12px;padding-top:6px;"><a href="{E(p["source"]["url"])}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">{E(p["source"]["name"])} →</a></div>'
+      f'<div style="{F}font-size:12px;padding-top:6px;"><a href="{E(p["source"]["url"])}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">{E(src(p["source"]["name"]))} →</a></div>'
       f'</td>{score(p)}</tr></table>')
     return row(inner,'#2a2110')
 def ai(n,i):
     inner=(f'<div style="{F}font-size:11px;font-weight:800;color:#b9a8ff;letter-spacing:1px;text-transform:uppercase;padding-bottom:4px;">{i} · {E(n.get("category","AI"))}</div>'
       f'<a href="{E(n["source"]["url"])}" style="{F}font-size:17px;line-height:22px;font-weight:800;color:{TXT};text-decoration:none;">{E(n["headline"])}</a>'
       f'<div style="{F}font-size:14px;line-height:20px;color:#c3c8d8;padding-top:6px;">{E(n["why"])}</div>'
-      f'<div style="{F}font-size:11px;font-weight:700;color:{MUT};text-transform:uppercase;letter-spacing:1px;padding-top:6px;">via {E(n["source"]["name"])}</div>')
+      f'<div style="{F}font-size:11px;font-weight:700;color:{MUT};text-transform:uppercase;letter-spacing:1px;padding-top:6px;">Source: {E(src(n["source"]["name"]))}</div>')
     return row(inner,'#1a1533')
 def render(ed):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'1 Day':0,'1 Month':1,'1 Year':2}
-    finl=sorted(ed['finance'],key=lambda p:(order.get(p['horizon'],9),-(p.get('score') or 0)))
+    finl=sorted([p for p in ed['finance'] if keep(p)],key=lambda p:(order.get(p['horizon'],9),-(p.get('score') or 0)))
     hl=ed.get('top_call') or ed['headline']
     btn=(f'<table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td style="border-radius:999px;background:{UP};">'
          f'<a href="{SITE}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed["date"]}" style="display:inline-block;padding:14px 30px;{F}font-size:16px;font-weight:900;color:#04130c;text-decoration:none;border-radius:999px;">See live prices →</a></td></tr></table>')
@@ -68,7 +77,7 @@ def render(ed):
     rows.append(sec('🤖','AI','The 5 stories that matter today'))
     rows+= [ai(n,i) for i,n in enumerate(ed['ai'][:5],1)]
     rows.append(sec('🏆','Sports','Prediction markets · Polymarket & Kalshi'))
-    rows+= [sp(p,i) for i,p in enumerate(sorted(ed['sports'],key=lambda p:-(p.get('score') or 0))[:5],1)]
+    rows+= [sp(p,i) for i,p in enumerate(sorted([p for p in ed['sports'] if keep(p)],key=lambda p:-(p.get('score') or 0))[:5],1)]
     rows.append(f'<tr><td style="padding:30px 24px;" align="center"><div style="{F}font-size:15px;color:{MUT};padding-bottom:14px;">Prices move all day. Track every pick live and on the Scoreboard.</div>{btn}</td></tr>')
     rows.append(f'<tr><td style="padding:22px 24px 30px;border-top:1px solid {LINE};{F}font-size:12px;line-height:18px;color:{MUT};">'
       f'<b style="color:{TXT};font-size:14px;">The Daily Five</b> · <a href="https://x.com/ReadDailyFive" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Follow @ReadDailyFive on X</a> · <a href="{SITE}/scoreboard/" style="color:#a5b4fc;text-decoration:none;">Scoreboard</a><br><br>'

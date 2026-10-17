@@ -248,11 +248,11 @@
   {
    "action": "BUY",
    "label": "Guardians",
-   "market": "ALCS Game 4: TB @ CLE, 8 PM ET",
+   "market": "ALCS Game 4: TB @ CLE, Sat 8 PM ET (rain-moved)",
    "slug": "mlb-tb-cle-2026-10-16",
    "outcome": 1,
    "entry": 0.495,
-   "event_date": "2026-10-16",
+   "event_date": "2026-10-17",
    "why": "Home side up 2\u20131 in a pick'em; BetMGM \u2212110/\u2212110 matches ~49.5\u00a2 here.",
    "source": {
     "name": "Polymarket",
