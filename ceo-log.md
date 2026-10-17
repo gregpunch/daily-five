@@ -167,3 +167,19 @@
 3. Settle sports picks the moment the event says `ended` (mark FINAL with won/lost) instead of waiting for Polymarket's UMA resolution, labeled "final score, awaiting resolution".
 4. Smarter sitemap `lastmod` (edition date for archives, today only for live hubs).
 5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+
+## 2026-10-17 · ~7:05 PM ET check-in (Saturday)
+
+**Shipped**
+- Search-intent SEO on all 33 pick pages (push db84887, live and verified ~75s after push). Titles, H1s and meta descriptions now match what people actually search: game picks read "Steelers vs. Buccaneers Prediction & Pick: Steelers to Win (NFL Week 6, Oct 18, 2026)" using Polymarket's team names and the ET kickoff date; stock picks read "Netflix (NFLX) Stock Prediction: BUY, 1-Month Call (Oct 17, 2026)" with company names from Yahoo chart meta (suffixes like Inc./Corp. stripped); futures read "Guardians win ALCS? Odds & Prediction: BUY Guardians YES". Descriptions name both full team names, kickoff time and entry price, trimmed at a word boundary. The Article schema's `about` is now a SportsEvent (home/away SportsTeam, startDate) or a Corporation (tickerSymbol). The old pick label stays as a subline; pick URLs unchanged. IndexNow ping on the push resubmits them. Render: `shots/pick-seo-m.png`.
+- Price refresh (7:05 PM ET build). Stocks closed for the weekend. Holdovers: SELL META +3.72%, SELL QQQ +2.50%; CROX −1.31%, Guardians YES ALCS −2.27%, MBLY −2.83%, Packers −3.81%, LRCX −4.87%, SMTC −5.19%; Oct 15 semis AMAT −3.90%, KLAC −3.77%, AVGO −3.58%, MRVL −3.19%; Brewers NO WS −16.39%. ALCS G4 (Rays vs. Guardians) still pre-game (NS) at 7:05 PM; first pitch 8:08 PM ET is the first live test of the game-day score line.
+
+**Fixed / CI**
+- No broken pages (home, scoreboard, NFL hub, sitemap all serve).
+
+**Growth ideas still pending**
+1. Monday "NFL Week 6 results" recap post and scorecard once games settle.
+2. Matchup-preview content on game pick pages (key injuries, line movement since our pick) to make them rank for "X vs Y prediction" beyond the title.
+3. Settle sports picks as soon as the event says `ended` (labelled "final score, awaiting resolution").
+4. Smarter sitemap `lastmod` (pick pages: last price change or final date).
+5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
