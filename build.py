@@ -41,7 +41,7 @@ def pmarket(slug):
         # Gamma drops closed markets from the default query; ask again for closed ones so resolved picks settle.
         if not r: r=get(f"https://gamma-api.polymarket.com/markets?slug={slug}&closed=true")
         m=r[0]
-        return {'outcomes':json.loads(m['outcomes']),'prices':[float(x) for x in json.loads(m['outcomePrices'])],'closed':bool(m.get('closed')),'tokens':json.loads(m.get('clobTokenIds') or '[]'),'volume':float(m.get('volume') or 0)}
+        return {'outcomes':json.loads(m['outcomes']),'prices':[float(x) for x in json.loads(m['outcomePrices'])],'closed':bool(m.get('closed')),'tokens':json.loads(m.get('clobTokenIds') or '[]'),'volume':float(m.get('volume') or 0),'start':m.get('gameStartTime')}
     return memo(('pm',slug),f)
 def phistory(token):
     return memo(('ph',token),lambda: [(h['t'],h['p']) for h in get(f"https://clob.polymarket.com/prices-history?market={token}&interval=1w&fidelity=60")['history']])
@@ -89,7 +89,7 @@ def enrich(ed):
         midnight=datetime.datetime.combine(TODAY,datetime.time()).timestamp()
         tp=[v for t,v in p['pts'] if t>=midnight]; p['open']=tp[0] if tp else None; p['qt']=int(NOW.timestamp())
         p['ret']=None if p['cur'] is None else (p['cur']-p['entry'])/p['entry']
-        p['id']=f"{ed['date']}-{slugify(p['label']+'-'+p['market'])[:60].strip('-')}"; p['tslug']=p['slug'][:70]; p['tname']=p['market'].split(',')[0]; p['kind']='Sports'
+        p['id']=p.get('pid') or f"{ed['date']}-{slugify(p['label']+'-'+p['market'])[:60].strip('-')}"; p['tslug']=p['slug'][:70]; p['tname']=p['market'].split(',')[0]; p['kind']='Sports'
     for p in ed['finance']+ed['sports']:
         p['so']=None if (p.get('open') in (None,0) or p.get('cur') is None) else (p['cur']-p['open'])/p['open']
     json.dump(exits,open(EX,'w'),indent=1)
@@ -115,7 +115,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>Five ideas. Every morning. Free.</h2><p>Get the Daily Five in your inbox before the opening bell.</p></div>
 {sform('cta')}</section>
-</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
+</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · <a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def money(kind,v): return '—' if v is None else (f"{v*100:.1f}¢" if kind=='Sports' else f"${v:,.2f}")
@@ -201,7 +201,7 @@ def body(ed,prev=None):
     return recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">The best ideas from AI agents, analysts and public sources, by horizon.</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
-<section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a></p></div></div><div class="grid g3">{sp}</div></section>"""
+<section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a></p></div></div><div class="grid g3">{sp}</div></section>"""
 def bar_chart(rows):
     rs=[r for r in rows if r['ret'] is not None]
     if not rs: return ''
@@ -511,13 +511,89 @@ def polymarket_hub(eds):
            f'<p class="sub">AI-ranked prediction-market plays from The Daily Five, with live Polymarket odds, real entry prices, and every result graded in public. Updated {nice}.</p>{links}</section>'
            f'<div class="tiles">{tiles}</div>'
            f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
-           f'{tb}{hb}{fq}<p class="sub hub-foot">Want stock picks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
+           f'{tb}{hb}{fq}<p class="sub hub-foot">Betting Sunday? See <a href="{BASE}/nfl-picks-this-week/">NFL picks this week</a>. Want stock picks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
     title=f'Polymarket Sports Picks Today (Live Odds & Results) | {BRAND}'
     desc=f'Today\'s best Polymarket sports picks, ranked by the Daily Five Score, with live odds, real entry prices, and a public win/loss record. Updated {latest}.'[:155]
     sch={"@context":"https://schema.org","@graph":[
         {"@type":"CollectionPage","name":"Polymarket Sports Picks Today","description":desc,"url":SITE+P,"isPartOf":{"@type":"WebSite","name":BRAND,"url":SITE+"/"}},
         {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}
     w('polymarket-picks-today/index.html',shell(title,desc,P,bodyh,sch))
+    return P
+
+def kickoff(p):
+    st=(p.get('m') or {}).get('start')
+    if not st: return None
+    try: return datetime.datetime.fromisoformat(st.replace(' ','T')).astimezone()
+    except Exception: return None
+def nfl_hub(eds):
+    """Evergreen SEO hub: /nfl-picks-this-week/ from real NFL Polymarket picks only, grouped by kickoff."""
+    P='/nfl-picks-this-week/'
+    allp=[(p,ed) for ed in eds for p in ed['sports'] if p['slug'].startswith('nfl-')]
+    seen=set(); slate=[]
+    for p,ed in allp:  # eds are newest-first: keep the latest call on each game
+        if p.get('final') or p['slug'] in seen: continue
+        seen.add(p['slug']); slate.append((p,ed))
+    far=datetime.datetime.max.replace(tzinfo=datetime.timezone.utc)
+    slate.sort(key=lambda x:(kickoff(x[0]) or far, -x[0].get('score',0)))
+    wk=next((m.group(1) for p,_ in slate for m in [re.search(r'Week (\d+)',p['market'])] if m),None)
+    settled=[p for p,_ in allp if p.get('final') and p.get('ret') is not None]
+    sw=sum(p['ret']>0 for p in settled); savg=sum(p['ret'] for p in settled)/len(settled) if settled else None
+    oavg=(lambda o: sum(o)/len(o) if o else None)([p['ret'] for p,_ in slate if p.get('ret') is not None])
+    _now=datetime.datetime.now().astimezone(); nk=next((k for k in (kickoff(p) for p,_ in slate) if k and k>_now),None); live_n=sum(1 for p,_ in slate if (kickoff(p) or far)<=_now)
+    def tile(name,val,sub):
+        cls='up' if val.startswith('+') else ('dn' if val.startswith('-') else '')
+        return f'<div class="tile"><span class="h">{name}</span><b class="{cls}">{val}</b><span class="s">{sub}</span></div>'
+    tiles=(tile('Games on the board',str(len(slate)),f'Week {wk}' if wk else 'open NFL plays')+
+           tile('Next kickoff',nk.strftime('%a %-I:%M %p') if nk else ('Live' if live_n else '\u2014'),'ET' if nk else (f'{live_n} game(s) in progress' if live_n else 'none scheduled'))+
+           tile('Open plays avg',pct(oavg),'marked to live Polymarket odds')+
+           tile('NFL record',f'{sw}-{len(settled)-sw}' if settled else '0-0',f'avg settled {pct(savg)}' if settled else 'first games settle this week'))
+    if slate:
+        out=''; cur=None; rank=0
+        for p,ed in slate:
+            k=kickoff(p); g=k.strftime('%A, %b %-d \u00b7 %-I:%M %p ET') if k else 'Kickoff TBA'
+            if g!=cur:
+                if cur is not None: out+='</div>'
+                out+=f'<h3 class="hzh">\U0001F3C8 {g}</h3><div class="grid g3">'; cur=g
+            rank+=1; out+=sp_card(p,rank)
+        out+='</div>'
+        tb=(f'<h2 class="h2s">This week\'s NFL plays{f" \u00b7 Week {wk}" if wk else ""}</h2><p class="sub hub-lead">Grouped by kickoff (Eastern). '
+            f'Entry is the real Polymarket price when we published; odds and P/L update live. Scored with the <a href="{BASE}/how-we-rank/">Daily Five Score</a>.</p>{out}')
+    else:
+        tb='<h2 class="h2s">This week\'s NFL plays</h2><p class="sub">No open NFL plays right now. New picks drop with the 7 AM ET edition.</p>'
+    res=lambda p: ('Won' if p['ret']>0 else 'Lost') if p.get('final') else 'Open'
+    rows=''.join(f'<a class="hubrow" href="{BASE}/picks/{p["id"]}/"><span class="act buy">BUY</span><span class="hubtk">{E(p["label"])}</span>'
+                 f'<span class="hubhz">{E(p["market"])}</span><span class="hubsc">{p.get("score","\u2014")}</span><span class="hubent">{money("Sports",p["entry"])}</span>'
+                 f'{chip(p.get("ret"),p.get("final"))}<span class="hubdt">{res(p)} \u00b7 {ed["date"]}</span></a>' for p,ed in allp[:40])
+    hb=f'<div class="hzblock"><h3 class="hzh">\U0001F3C6 Every NFL pick, graded</h3><div class="hublist">{rows}</div></div>' if rows else ''
+    links=(f'<div class="hubcta"><a class="pill" href="{BASE}/#sports">Today\'s edition \u2192</a>'
+           f'<a class="pill ghost" href="{BASE}/polymarket-picks-today/">All Polymarket picks \u2192</a>'
+           f'<a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard \u2192</a></div>')
+    faqs=[
+        ("What are the best NFL picks this week?",
+         "We scan Polymarket's NFL game markets for big moves, heavy volume, and prices that look off versus sportsbook lines and public previews, then rank each BUY with the Daily Five Score. This week's plays are listed above by kickoff, with live odds."),
+        ("Why use Polymarket odds instead of a point spread?",
+         "A Polymarket price is the market's implied win probability: 55 cents means about a 55% chance. That makes every pick gradable to the cent, so our record is a real return per $1 staked, not a claimed win rate."),
+        ("When do NFL picks settle?",
+         "Each pick settles when its Polymarket game market resolves after the final whistle, at 100 cents if our side wins or 0 if it loses. Until then the P/L is marked to the live price."),
+        ("Is this betting advice?",
+         "No. These are public prediction-market ideas we score and track in the open. Nothing here is betting, financial, or investment advice; prediction markets may not be legal where you live, and you can lose your entire stake."),
+    ]
+    fq='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
+    latest=eds[0]['date'] if eds else TODAY.isoformat(); nice=datetime.date.fromisoformat(latest).strftime('%A, %B %-d, %Y')
+    wl=f' (Week {wk})' if wk else ''
+    bodyh=(f'<section class="sbhero hubhero"><span class="kicker">\U0001F3C8 NFL picks</span><h1 class="pt">NFL picks this week{wl}</h1>'
+           f'<p class="sub">AI-ranked NFL plays from The Daily Five, priced on Polymarket, sorted by kickoff, and graded in public after every game. Updated {nice}.</p>{links}</section>'
+           f'<div class="tiles">{tiles}</div>'
+           f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
+           f'{tb}{hb}{fq}<p class="sub hub-foot">Trade stocks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
+    title=f'NFL Picks This Week{wl}: Live Polymarket Odds & Results | {BRAND}'
+    desc=(f'This week\'s NFL picks{wl}, ranked by the Daily Five Score, with live Polymarket odds, kickoff times, and a public win/loss record. Updated {latest}.')[:155]
+    evs=[{"@type":"SportsEvent","name":(p.get('m') or {}).get('outcomes') and ' vs. '.join(p['m']['outcomes']) or p['market'],"startDate":kickoff(p).isoformat(),"sport":"American football","url":f"{SITE}/picks/{p['id']}/"} for p,_ in slate if kickoff(p)]
+    sch={"@context":"https://schema.org","@graph":[
+        {"@type":"CollectionPage","name":f"NFL Picks This Week{wl}","description":desc,"url":SITE+P,"isPartOf":{"@type":"WebSite","name":BRAND,"url":SITE+"/"}},
+        {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]
+        +([{"@type":"ItemList","name":"NFL games we picked","itemListElement":[{"@type":"ListItem","position":i+1,"item":e} for i,e in enumerate(evs)]}] if evs else [])}
+    w('nfl-picks-this-week/index.html',shell(title,desc,P,bodyh,sch))
     return P
 
 def seo_pages(eds,rows,tiles):
@@ -587,14 +663,14 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfh=nfl_hub(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
         {'@type':'FAQPage','mainEntity':faq_ents,'url':SITE+'/how-we-rank/'},
     ]}
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
-    urls=['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,'/archive/']+[f'/{d}/' for d,*_ in items]+extra
+    urls=['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh,'/archive/']+[f'/{d}/' for d,*_ in items]+extra
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{TODAY}</lastmod></url>" for u in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
     w('robots.txt',f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")

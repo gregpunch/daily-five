@@ -307,7 +307,7 @@
   {
    "action": "BUY",
    "label": "Chiefs",
-   "market": "Week 7: LAC @ KC, Sun",
+   "market": "Week 6: LAC @ KC, Sun 4:25 PM ET",
    "slug": "nfl-lac-kc-2026-10-18",
    "outcome": 1,
    "entry": 0.785,
@@ -325,12 +325,13 @@
      }
     ],
     "dissent": []
-   }
+   },
+   "pid": "2026-10-16-chiefs-week-7-lac-kc-sun"
   },
   {
    "action": "BUY",
    "label": "Packers",
-   "market": "Week 7: DAL @ GB, Sun",
+   "market": "Week 6: DAL @ GB, Sun 8:20 PM ET",
    "slug": "nfl-dal-gb-2026-10-19",
    "outcome": 1,
    "entry": 0.525,
@@ -348,7 +349,8 @@
      }
     ],
     "dissent": []
-   }
+   },
+   "pid": "2026-10-16-packers-week-7-dal-gb-sun"
   }
  ]
 }
