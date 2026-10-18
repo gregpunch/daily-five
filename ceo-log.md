@@ -232,3 +232,19 @@
 3. Real `book` lines on every sports pick so Edge scores leave neutral.
 4. Internal links from each pick page to the 2 to 3 other picks from the same game window ("More 1 PM picks").
 5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+
+## 2026-10-18 · ~7:10 PM ET check-in (Sunday, NFL Week 6)
+
+**Shipped**
+- Related-picks internal links on all 44 pick pages (growth idea #4). Each pick page now ends with up to 4 links: other picks within 45 min of the same kickoff ("More Sun 1 PM ET kickoff picks" on the 8 Week 6 1 PM picks), otherwise picks from the same edition (same hub first, by score), each showing matchup, date and a live/final return chip, plus "All picks by day →" to `/picks/`. Every pick page now links to 4 sibling pick pages, so crawlers reach all of them within 2 hops of any one, and bettors who land on a single game get a next click. Mobile render checked (`shots/related-m-crop.png`). Push 793f5d9.
+- Price refresh (7:12 PM ET build). Stocks closed for the weekend. Week 6 Sunday so far: 1 PM window went 4-3 (won Bears +98.0%, Steelers +80.2%, Panthers +65.3%, Patriots +32.5%; lost Colts, Giants, Ravens), Jaguars (London) lost. Late window open: Chiefs 99.7¢ (+27.0%), Bills 82.5¢ (+22.2%). SNF Packers 48.5¢ (−7.6%). Holdovers: Guardians YES ALCS 25.35¢ (−60.2%, ALCS G4 tonight), Brewers YES WS −2.6%, Brewers NO WS −11.6%, SELL META +3.72%, SELL QQQ +2.50%.
+
+**Fixed / CI**
+- No broken pages found in the local build.
+
+**Growth ideas still pending**
+1. Monday "NFL Week 6 results" recap page + X scorecard (all NFL picks Oct 15 to 18) once SNF settles. Likely the strongest share asset of the week.
+2. Weekly results rollup on `/picks/` (per-week record and avg return).
+3. Real `book` lines on every sports pick so Edge scores leave neutral.
+4. Free privacy-friendly analytics + UTM links on X posts (weekly report flagged "no site analytics"); needs a free account, so ask first.
+5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
