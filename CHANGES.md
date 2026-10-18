@@ -11,3 +11,6 @@
 - live.js shows "⚠ stock prices from <time> · stale, refreshing soon" next to the timestamp when live.json is older than 25 min (market hours) / 50 min (off-hours).
 - live.json now carries a timezone-aware `updated`, an epoch `ts`, and each pick's `label`.
 - Actions schedule rewritten to off-round minutes (:07/:22/:37/:52 market hours, :12/:42 otherwise); scheduled runs had never fired.
+
+# 2026-10-18 ~10 AM ET CEO check-in
+- Sports picks on real games now settle on the final score: once Polymarket's events API says the game ended with a decisive score, the pick shows 100¢/0¢, +P/L final, Won/Lost on the Scoreboard, track record and hubs (note "final score, awaiting resolution"), instead of waiting hours for UMA resolution. Provisional, not written to exits.json. live.js settles the card in the browser the moment its game line flips to FINAL.

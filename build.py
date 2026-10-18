@@ -98,6 +98,11 @@ def enrich(ed):
         else:
             p['cur']=m['prices'][p['outcome']] if m else None; p['final']=bool(m and m['closed'] and p['cur'] is not None and (p['cur']>=0.99 or p['cur']<=0.01)); p['note']='resolved' if p['final'] else ('closed, awaiting resolution' if m and m['closed'] else 'live')
             if p['final'] and p['cur'] is not None: exits[key]={'price':p['cur'],'note':'resolved'}
+            elif m and GAME_RE.match(p.get('slug') or ''):
+                # Game over but the market hasn't resolved on-chain yet (UMA can take hours): settle provisionally on the final score.
+                # Not written to exits, so the official resolution still overrides it once the market closes.
+                g=pgame(p['slug']); d=final_margin(p,g,m)
+                if d: p['cur'],p['final'],p['note']=(1.0 if d>0 else 0.0),True,'final score, awaiting resolution'
         midnight=datetime.datetime.combine(TODAY,datetime.time()).timestamp()
         tp=[v for t,v in p['pts'] if t>=midnight]; p['open']=tp[0] if tp else None; p['qt']=int(NOW.timestamp())
         p['ret']=None if p['cur'] is None else (p['cur']-p['entry'])/p['entry']
@@ -145,6 +150,16 @@ GLBL={'nfl':'\u23f1 Kickoff','cfb':'\u23f1 Kickoff','mlb':'\u26be First pitch','
 def _left(sec):
     m=max(0,round(sec/60)); d,h,mm=m//1440,m%1440//60,m%60
     return f'{d}d {h}h' if d>=2 else (f'{h+24*d}h {mm}m' if m>=60 else f'{mm}m')
+def pick_side(p,g,m):
+    """'a' or 'h': which team in the game our picked outcome is."""
+    aw,hm=g['teams']; pn=(m.get('outcomes') or [p['label']])[p['outcome']] if m.get('outcomes') else p['label']
+    hit=lambda t: pn.lower() in (t['al']+' '+t['nm']).lower() or (t['al'] and t['al'].lower() in pn.lower())
+    return 'h' if (hit(hm) and not hit(aw)) else ('a' if hit(aw) else ('a' if p['outcome']==0 else 'h'))
+def final_margin(p,g,m):
+    """Our side's final margin once the game has ended (None if not over, unscored, or not a 2-team game). BUY only."""
+    if not g or len(g['teams'])!=2 or p.get('action','BUY')!='BUY' or not (g['ended'] or g['period'] in ('VFT','FT','F')): return None
+    if not re.fullmatch(r'\d+-\d+',g['score']): return None
+    a,h=[int(x) for x in g['score'].split('-')]; return (a-h) if pick_side(p,g,m)=='a' else (h-a)
 def gd(p,cls=''):
     """Game-day status line for a sports pick on a real game: countdown, then live score, then final.
     Server renders the state at build time; live.js polls Polymarket's events API every minute near and during the game."""
@@ -153,8 +168,7 @@ def gd(p,cls=''):
     ko=kickoff(p)
     if not ko: return ''
     aw,hm=g['teams']; pn=(m.get('outcomes') or [p['label']])[p['outcome']] if m.get('outcomes') else p['label']
-    hit=lambda t: pn.lower() in (t['al']+' '+t['nm']).lower() or (t['al'] and t['al'].lower() in pn.lower())
-    ps='h' if (hit(hm) and not hit(aw)) else ('a' if hit(aw) else ('a' if p['outcome']==0 else 'h'))
+    ps=pick_side(p,g,m)
     sp=p['slug'].split('-')[0]; lb=GLBL.get(sp,'\u23f1 Starts'); kt=ko.strftime('%a %-I:%M %p ET')
     B_=lambda t,sd: f'<b class="pk">{E(t)}</b>' if sd==ps else E(t)
     sc=[int(x) for x in g['score'].split('-')] if re.fullmatch(r'\d+-\d+',g['score']) else None

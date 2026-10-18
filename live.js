@@ -8,6 +8,7 @@ function paint(el,d){const k=el.dataset.kind,e=+el.dataset.entry,s=el.dataset.si
   if(d.open){d.so=(d.cur-d.open)/d.open;el.querySelector('[data-k=so]').innerHTML=chip(d.so);}
   const pp=el.closest('.card')&&el.closest('.card').querySelector('[data-k=pp]');if(pp&&k==='Sports')pp.textContent=Math.round(d.cur*100)+'%';}}
 const state={};
+document.addEventListener('d5final',ev=>{const el=ev.detail.el,id=el.dataset.id,d=state[id]=Object.assign(state[id]||{},{cur:ev.detail.cur,final:true,lf:1});paint(el,d);strip();});
 function strip(){if(!T)return;let L={};try{L=JSON.parse(T.dataset.picks)}catch(e){}
  const rs=[],so=[];for(const id in L){const d=state[id];if(!d||d.final)continue;if(d.ret!=null)rs.push([d.ret,L[id]]);if(d.so!=null)so.push(d.so);}
  if(!rs.length)return;const q=k=>T.querySelector('[data-t='+k+']'),avg=a=>a.reduce((x,y)=>x+y,0)/a.length;rs.sort((a,b)=>b[0]-a[0]);
@@ -21,7 +22,7 @@ function stale(ts){const u=document.getElementById('upd');if(!u||!ts)return;let 
   n.textContent='⚠ stock prices from '+et(new Date(ts*1000))+' · stale, refreshing soon';}else if(n)n.remove();}
 async function tick(){let stamp=null;
  try{const j=await (await fetch((document.querySelector('link[rel=stylesheet][href$="style.css"]').getAttribute('href').replace('style.css',''))+'data/live.json?t='+Date.now(),{cache:'no-store'})).json();
-  for(const id in j.picks){state[id]=Object.assign(state[id]||{},j.picks[id]);}
+  for(const id in j.picks){if(state[id]&&state[id].lf&&!j.picks[id].final)continue;state[id]=Object.assign(state[id]||{},j.picks[id]);}
   for(const el of $('.lv')){const d=state[el.dataset.id];if(d)paint(el,d);}stamp=j.updated_et;stale(j.ts);}catch(e){}
  const sp=[...$('.lv[data-slug]')];
  await Promise.all(sp.map(async el=>{try{if(state[el.dataset.id]&&state[el.dataset.id].final)return;
@@ -56,7 +57,7 @@ function render(el){const d=el.dataset,e=st[d.ev]||{},ko=+d.ko*1000,now=Date.now
  const sc=/^\d+-\d+$/.test(e.score||'')?e.score.split('-').map(Number):null,fin=e.ended||/^(VFT|FT|F)$/.test(e.period||'');
  const live=!fin&&(e.live||(sc&&now>=ko&&e.period&&e.period!=='NS'));
  if((fin||live)&&sc){const df=ps==='a'?sc[0]-sc[1]:sc[1]-sc[0];q('.gdm').innerHTML=`${B(d.aw,'a')} ${sc[0]}<i>–</i>${sc[1]} ${B(d.hm,'h')}`;
-  if(fin){el.className='gd fin '+(df>0?'won':df<0?'lost':'')+row;q('.gdb').textContent='FINAL';q('.gdx').textContent=df>0?`${pn} won ✅`:df<0?`${pn} lost`:'Tied';}
+  if(fin){el.className='gd fin '+(df>0?'won':df<0?'lost':'')+row;const lv=df&&el.closest('.card')&&el.closest('.card').querySelector('.lv[data-slug]');if(lv&&lv.dataset.side==='BUY')document.dispatchEvent(new CustomEvent('d5final',{detail:{el:lv,cur:df>0?1:0}}));q('.gdb').textContent='FINAL';q('.gdx').textContent=df>0?`${pn} won ✅`:df<0?`${pn} lost`:'Tied';}
   else{const per=e.period==='HT'?'Halftime':(e.period||'');el.className='gd on '+(df>0?'ahead':df<0?'behind':'')+row;
    q('.gdb').textContent='🔴 LIVE'+(per?' · '+per:'')+(e.elapsed?' '+e.elapsed:'');q('.gdx').textContent=df>0?`${pn} up ${df}`:df<0?`${pn} down ${-df}`:'Tied';}}
  else{el.className='gd pre'+row;q('.gdm').innerHTML=`${B(d.aw,'a')} @ ${B(d.hm,'h')}`;q('.gdb').textContent=d.lb;const l=(ko-now)/1000;q('.gdx').textContent=d.kt+' · '+(l>0?'in '+left(l):'starting now');}}

@@ -39,7 +39,7 @@ git add -A && git commit -m "Edition YYYY-MM-DD" && git push   # auth: credentia
   ]
 }
 ```
-Horizons close at entry date + 1 / 30 / 365 days (exit = first daily close on/after that date). Sports picks close when the Polymarket market resolves. SELL finance returns are short-side; sports picks are always BUY of an outcome (use the NO outcome to fade).
+Horizons close at entry date + 1 / 30 / 365 days (exit = first daily close on/after that date). Sports picks close when the Polymarket market resolves; on a real game (NFL/MLB/NBA/NHL slugs) a BUY settles provisionally at 100¢/0¢ as soon as Polymarket's events API reports the game ended with a decisive final score (note "final score, awaiting resolution", not frozen into exits.json, so the official resolution still wins). live.js does the same in the browser the moment a card's game-day line flips to FINAL. SELL finance returns are short-side; sports picks are always BUY of an outcome (use the NO outcome to fade).
 
 Signup forms POST natively to Kit form 10050182 (field `email_address`).
 
