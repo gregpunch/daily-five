@@ -215,3 +215,20 @@
 3. Smarter sitemap `lastmod` (archive editions keep their date; open pick pages today; finals their settle date).
 4. Real `book` lines on every sports pick so Edge scores leave neutral.
 5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+
+## 2026-10-18 · ~4:10 PM ET check-in (Sunday, NFL Week 6)
+
+**Shipped**
+- Breadcrumbs + `/picks/` index + honest sitemap `lastmod` (growth idea #3). All 44 pick pages and every ticker page now show a visible trail ("Home › NFL picks › Week 6: PIT @ TB › BUY Steelers", hub picked by pick type: Stock picks, NFL picks or Polymarket picks) and ship BreadcrumbList JSON-LD in the page's @graph, so Google can show the trail in results and crawl hub → game → pick as a hierarchy. New `/picks/` page (it used to 404, and it's the parent of every pick URL) lists all 44 picks by edition day with that day's settled W-L. Sitemap `lastmod` is per URL now: settled picks keep their settle date (Oct 15 and 16 finals), ticker pages their latest pick, editions their latest pick, live pages today, instead of stamping all 98 URLs with today, which Google learns to ignore.
+- Fixes: live.js now moves the opposing team's % and the odds bar with our side's live price (the Steelers card read 77% vs 42%); sports badge says "Today" for daytime games and "Tonight" from 5 PM ET (1 PM games said Tonight); the empty "#" rank no longer shows on pick pages. Renders: `shots/crumbs-d.png`, `shots/crumbs-m.png`, `shots/picks-index-m.png`. Push bf17a9e.
+- Price refresh (4:10 PM ET build), 1 PM games in Q4 or just ended: Bears +93.6%, Panthers +57.9%, Patriots +32.4%, Steelers +4.5% (tight, 19–16 late); Colts −99.3% and Giants −94.7% (losing late); Ravens settled lost (−100%). 4:25 PM games (Bills, Chiefs) just kicking off, Packers SNF 8:20 PM. Holdovers: SELL META +3.72%, SELL QQQ +2.50%, Guardians YES ALCS −34.67%, Brewers NO WS −14.13%, Packers −5.71%.
+
+**Fixed / CI**
+- No broken pages (home, scoreboard, NFL hub, sitemap 200). `/picks/` was a 404, now a real page.
+
+**Growth ideas still pending**
+1. Monday "NFL Week 6 results" recap page + X scorecard (all NFL picks Oct 15 to 18) once SNF settles.
+2. Weekly results rollup on `/picks/` (per-week record and avg return) once we have more than one week.
+3. Real `book` lines on every sports pick so Edge scores leave neutral.
+4. Internal links from each pick page to the 2 to 3 other picks from the same game window ("More 1 PM picks").
+5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
