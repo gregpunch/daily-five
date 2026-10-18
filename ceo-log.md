@@ -199,3 +199,19 @@
 3. Matchup-preview content on game pick pages (injuries, line movement since our pick).
 4. Smarter sitemap `lastmod`.
 5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+
+## 2026-10-18 · ~1:05 PM ET check-in (Sunday, NFL Week 6)
+
+**Shipped**
+- "Since our pick" section on all 44 pick pages (growth idea #3, matchup-preview content, minus injuries since we have no reliable injury feed). Each page now has a full-width line-movement chart from real Polymarket CLOB / Yahoo Finance history starting at the 7 AM publish time (dashed amber entry line, labeled now/final dot, time axis), a factual summary ("When we published on Oct 17, Polymarket priced Steelers at 55.5¢, a 55.5% implied chance. It's now 57.5¢, up 2.0¢ since the pick. Range since the pick: 55.5¢ to 61.5¢."), the source and update time, and two collapsible FAQs ("Who will win Steelers vs. Buccaneers?", "What are the Steelers vs. Buccaneers odds now?"; stocks get "Is Lam Research (LRCX) stock a buy?" and "How has the LRCX BUY call done?"). FAQs also ship as FAQPage JSON-LD in an @graph with the Article schema. This gives every pick page unique, refreshing, matchup-specific copy for "X vs Y prediction/odds" searches, and a reason for bettors to revisit during games. Checked desktop and mobile renders (`shots/mv-*.png`). Push f2b8ece.
+- Price refresh (1:05 to 1:10 PM ET builds). Stocks closed for the weekend. Jaguars (Oct 17) lost in London, settled 0¢ on the final score (−100%). 1 PM games just kicked off: Steelers +2.7%, Bears +1.98%, Giants −2.02%; Oct 18 Colts −4.03%, Panthers −3.31%, Ravens −1.63%, Patriots −1.32%, Bills +1.48% (4:25 PM). Holdovers: SELL META +3.72%, SELL QQQ +2.50%, Chiefs flat, Packers −3.81%, Brewers YES WS −1.01%, Guardians YES ALCS −33.02%.
+
+**Fixed / CI**
+- No broken pages found in the local build. Weekend GitHub schedule still sparse; live.js covers odds and scores client-side.
+
+**Growth ideas still pending**
+1. Monday "NFL Week 6 results" recap page + X scorecard (10 NFL picks across Oct 16 to 18) once tonight's SNF settles.
+2. Sunday-evening X post at ~4:30 PM: 1 PM-window record with links to the settled pick pages (the new chart shows the swing).
+3. Smarter sitemap `lastmod` (archive editions keep their date; open pick pages today; finals their settle date).
+4. Real `book` lines on every sports pick so Edge scores leave neutral.
+5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
