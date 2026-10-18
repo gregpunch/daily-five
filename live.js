@@ -6,7 +6,7 @@ const et=d=>d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZo
 function paint(el,d){const k=el.dataset.kind,e=+el.dataset.entry,s=el.dataset.side;
  if(d.cur!=null){el.querySelector('[data-k=cur]').textContent=money(k,d.cur);const r=d.ret=(d.cur-e)/e*(s==='SELL'&&k==='Finance'?-1:1);el.querySelector('[data-k=ret]').innerHTML=chip(r,d.final);
   if(d.open){d.so=(d.cur-d.open)/d.open;el.querySelector('[data-k=so]').innerHTML=chip(d.so);}
-  const pp=el.closest('.card')&&el.closest('.card').querySelector('[data-k=pp]');if(pp&&k==='Sports')pp.textContent=Math.round(d.cur*100)+'%';}}
+  const pp=el.closest('.card')&&el.closest('.card').querySelector('[data-k=pp]');if(pp&&k==='Sports'){pp.textContent=Math.round(d.cur*100)+'%';const tm=pp.closest('.match'),ts=tm?tm.querySelectorAll('.team'):[];if(ts.length===2){const pi=ts[0].classList.contains('pick')?0:1,o=ts[1-pi].querySelector('.tp');if(o)o.textContent=(100-Math.round(d.cur*100))+'%';const bar=tm.nextElementSibling&&tm.nextElementSibling.classList.contains('pbar')&&tm.nextElementSibling.querySelector('span');if(bar)bar.style.width=((pi===0?d.cur:1-d.cur)*100).toFixed(1)+'%';}}}}
 const state={};
 document.addEventListener('d5final',ev=>{const el=ev.detail.el,id=el.dataset.id,d=state[id]=Object.assign(state[id]||{},{cur:ev.detail.cur,final:true,lf:1});paint(el,d);strip();});
 function strip(){if(!T)return;let L={};try{L=JSON.parse(T.dataset.picks)}catch(e){}

@@ -208,7 +208,7 @@ def share(p):
     return f'<a class="shr" href="{E(href)}" target="_blank" rel="noopener" data-share-id="{p["id"]}" data-share-what="{E(what)}" data-share-url="{E(u)}" aria-label="Share {E(what)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>Share</a>'
 def fin_card(p,rank):
     a=p['action'].lower()
-    return f"""<article class="card fc {a}"><div class="ctop"><span class="rank">#{rank}</span><span class="hz">⏱ {E(p['horizon'])}</span>{badge(p)}</div>
+    return f"""<article class="card fc {a}"><div class="ctop">{f'<span class="rank">#{rank}</span>' if rank else ''}<span class="hz">⏱ {E(p['horizon'])}</span>{badge(p)}</div>
 <div class="crow"><span class="act {a}">{p['action']}</span><a class="tk" href="{BASE}/ticker/{p['tslug']}/">{E(p['label'])}</a>{spark(p.get('pts'),110,32)}</div>{livebox(p)}{breakdown(p)}
 <p class="why"><b>Why {p['action']}:</b> {E(p['why'])}</p><p class="risk">⚠ {E(p['risk'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
 def sp_card(p,rank):
@@ -216,9 +216,10 @@ def sp_card(p,rank):
     if m:
         bars='<div class="match">'+''.join(f'<div class="team {"pick" if i==p["outcome"] else ""}"><span class="tn">{E(o)}</span><span class="tp" {"data-k=pp" if i==p["outcome"] else ""}>{pr*100:.0f}%</span></div>' for i,(o,pr) in enumerate(zip(m['outcomes'],m['prices'])))+'</div>'
         if len(m['prices'])==2: bars+=f'<div class="pbar" role="img" aria-label="{E(m["outcomes"][0])} {m["prices"][0]*100:.0f}%, {E(m["outcomes"][1])} {m["prices"][1]*100:.0f}%"><span style="width:{m["prices"][0]*100:.1f}%"></span></div>'
-    when='Tonight' if p.get('event_date')==TODAY.isoformat() else ('Event '+datetime.date.fromisoformat(p['event_date']).strftime('%b %-d') if p.get('event_date') else 'Futures')
+    ko=kickoff(p)
+    when=('Tonight' if ko and ko.hour>=17 else 'Today') if p.get('event_date')==TODAY.isoformat() else ('Event '+datetime.date.fromisoformat(p['event_date']).strftime('%b %-d') if p.get('event_date') else 'Futures')
     vol=f'<span class="vol">${m["volume"]/1e6:.1f}M vol</span>' if m and m['volume']>=1e5 else ''
-    return f"""<article class="card sc"><div class="ctop"><span class="rank">#{rank}</span><span class="hz">🏟 {E(when)}</span>{badge(p)}</div>
+    return f"""<article class="card sc"><div class="ctop">{f'<span class="rank">#{rank}</span>' if rank else ''}<span class="hz">🏟 {E(when)}</span>{badge(p)}</div>
 <a class="mkt" href="{BASE}/ticker/{p['tslug']}/">{E(p['market'])}</a>{bars}{gd(p)}
 <div class="crow"><span class="act buy">BUY</span><span class="tk sm">{E(p['label'])}</span>{vol}{spark(p.get('pts'),100,30)}</div>{livebox(p)}{breakdown(p)}
 <p class="why"><b>Why BUY:</b> {E(p['why'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
@@ -530,6 +531,25 @@ def move_chart(p,ed,h):
            f'<p class="mvsrc">Source: {src}, updated {NOW.strftime("%b %-d, %-I:%M %p")} ET.</p>'
            f'<div class="mvfaq">'+''.join(f'<details><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faq)+'</div></section>')
     return html_,faq
+def hub_of(p):
+    """(name, path) of the hub page a pick belongs to, for breadcrumbs."""
+    if p['kind']=='Finance': return ('Stock picks','/best-stocks-to-buy-today/')
+    if (p.get('slug') or '').startswith('nfl-'): return ('NFL picks','/nfl-picks-this-week/')
+    return ('Polymarket picks','/polymarket-picks-today/')
+def crumbs(trail):
+    """trail: [(name, path)], last item is the current page. Returns (visible nav html, BreadcrumbList schema)."""
+    nav='<nav class="crumbs" aria-label="Breadcrumb"><ol>'+''.join((f'<li><a href="{BASE}{u}">{E(n)}</a></li>' if i<len(trail)-1 else f'<li aria-current="page">{E(n)}</li>') for i,(n,u) in enumerate(trail))+'</ol></nav>'
+    sch={"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":i+1,"name":n,"item":SITE+u} for i,(n,u) in enumerate(trail)]}
+    return nav,sch
+def lastmod(p,ed):
+    """Honest sitemap lastmod for a pick page: today while it is still marked to live prices, else the day it settled."""
+    if not p.get('final'): return TODAY.isoformat()
+    m=re.search(r'\d{4}-\d{2}-\d{2}',p.get('note') or '')
+    if m: d=m.group(0)
+    elif p.get('pts'): d=datetime.datetime.fromtimestamp(p['pts'][-1][0]).date().isoformat()
+    elif kickoff(p): d=kickoff(p).date().isoformat()
+    else: d=ed['date']
+    return min(max(d,ed['date']),TODAY.isoformat())
 def pick_page(p,ed):
     k=p['kind']; t=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" \u00b7 {p['horizon']} pick")
     h,suf,desc,about=pick_seo(p,ed)
@@ -538,15 +558,17 @@ def pick_page(p,ed):
     kick="\U0001F4B0 Finance pick" if k=="Finance" else "\U0001F3DF Sports market pick"
     note=(' \u00b7 '+E(p.get('entry_note'))) if p.get('entry_note') else ''
     mvh,faq=move_chart(p,ed,h)
-    det=(f'<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
+    hn,hu=hub_of(p); cnav,csch=crumbs([('Home','/'),(hn,hu),(p['tname'],f"/ticker/{p['tslug']}/"),(f"{p['action']} {p['label']}",f"/picks/{p['id']}/")])
+    det=(f'{cnav}<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
          f'<h2>Pick details</h2><dl><dt>Published</dt><dd>{ed["date"]} in <a href="{BASE}/{ed["date"]}/">that day\'s edition</a></dd><dt>Entry</dt><dd>{money(k,p["entry"])}{note}</dd>'
          f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd><dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
          f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh)
     sch={"@context":"https://schema.org","@type":"Article","headline":h[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":about}
     og=pick_og(p,ed)
     if og: sch['image']=SITE+og.split('?')[0]
+    sch.pop('@context'); sch={"@context":"https://schema.org","@graph":[sch,csch]}
     if faq:
-        sch.pop('@context'); sch={"@context":"https://schema.org","@graph":[sch,{"@type":"FAQPage","url":f"{SITE}/picks/{p['id']}/","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]}]}
+        sch['@graph'].append({"@type":"FAQPage","url":f"{SITE}/picks/{p['id']}/","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]})
     w(f"picks/{p['id']}/index.html",shell(title,desc,f"/picks/{p['id']}/",det,sch,og=og))
 def best_stocks_hub(eds):
     """Evergreen SEO hub: /best-stocks-to-buy-today/ from real BUY finance picks only."""
@@ -769,7 +791,7 @@ def seo_pages(eds,rows,tiles):
     urls=[]; by={}
     for ed in eds:
         for p in ed['finance']+ed['sports']:
-            pick_page(p,ed); urls.append(f"/picks/{p['id']}/"); by.setdefault(p['tslug'],[]).append((p,ed))
+            pick_page(p,ed); urls.append((f"/picks/{p['id']}/",lastmod(p,ed))); by.setdefault(p['tslug'],[]).append((p,ed))
     for slug,lst in by.items():
         p0=lst[0][0]; nm=p0['tname']; k=p0['kind']
         title=(f"{nm} Stock: Daily Five Picks, Live Price & Track Record" if k=='Finance' else f"{nm}: Prediction Market Odds & Daily Five Picks")+f" | {BRAND}"
@@ -777,14 +799,24 @@ def seo_pages(eds,rows,tiles):
         li=''.join(f'<a class="rc" href="{BASE}/picks/{p["id"]}/"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} \u00b7 {ed["date"]} \u00b7 entry {money(p["kind"],p["entry"])} {chip(p.get("ret"),p.get("final"))}</a>' for p,ed in lst)
         rs=[p['ret'] for p,_ in lst if p.get('ret') is not None]
         cardf=fin_card if k=="Finance" else sp_card
-        bodyh=f'<section class="sbhero"><span class="kicker">{"\U0001F4C8 Ticker" if k=="Finance" else "\U0001F3DF Market"}</span><h1 class="pt">{E(nm)}</h1><p class="sub">{len(lst)} pick(s) \u00b7 avg return since pick {pct(sum(rs)/len(rs)) if rs else "\u2014"}</p></section><div class="pickwrap">{cardf(p0,"")}<div class="pinfo"><h2>All picks</h2><div class="rcs col">{li}</div><p><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'
-        sch={"@context":"https://schema.org","@type":"CollectionPage","name":title,"description":desc,"url":f"{SITE}/ticker/{slug}/"}
-        w(f"ticker/{slug}/index.html",shell(title,desc,f"/ticker/{slug}/",bodyh,sch)); urls.append(f"/ticker/{slug}/")
+        hn,hu=hub_of(p0); cnav,csch=crumbs([('Home','/'),(hn,hu),(nm,f"/ticker/{slug}/")])
+        bodyh=f'{cnav}<section class="sbhero"><span class="kicker">{"\U0001F4C8 Ticker" if k=="Finance" else "\U0001F3DF Market"}</span><h1 class="pt">{E(nm)}</h1><p class="sub">{len(lst)} pick(s) \u00b7 avg return since pick {pct(sum(rs)/len(rs)) if rs else "\u2014"}</p></section><div class="pickwrap">{cardf(p0,"")}<div class="pinfo"><h2>All picks</h2><div class="rcs col">{li}</div><p><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'
+        sch={"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":title,"description":desc,"url":f"{SITE}/ticker/{slug}/"},csch]}
+        w(f"ticker/{slug}/index.html",shell(title,desc,f"/ticker/{slug}/",bodyh,sch)); urls.append((f"/ticker/{slug}/",max(lastmod(p,ed) for p,ed in lst)))
     allp=''.join(f'<a class="rc" href="{BASE}/picks/{r["id"]}/"><b class="{r["action"].lower()}">{r["action"]}</b> {E(r["pick"])} \u00b7 {E(r["horizon"])} \u00b7 {r["date"]} {chip(r["ret"],r["final"])}</a>' for r in rows)
     tk=''.join(f'<a class="tkchip" href="{BASE}/ticker/{s}/">{E(l[0][0]["tname"])}</a>' for s,l in by.items())
     tb=(f'<section class="sbhero"><span class="kicker">\U0001F3C6 Track record</span><h1 class="pt">Every pick, graded in public</h1><p class="sub">We publish an entry price from a real quote for every pick, then mark it to live market data until its horizon ends (1 Day, 1 Month, 1 Year) or its market resolves. Nothing gets deleted. SELL returns are short-side. See the <a href="{BASE}/scoreboard/">Scoreboard</a> for charts.</p></section>'
         f'<div class="tiles">{tiles}</div><h2 class="h2s">Tickers &amp; markets</h2><div class="tks">{tk}</div><h2 class="h2s">All picks</h2><div class="rcs col">{allp}</div>')
     w('track-record/index.html',shell(f"Track Record: Win Rate & Returns of Every Pick | {BRAND}","The Daily Five's public track record: win rate and average return by horizon for every stock and sports-market pick, marked to real prices.",'/track-record/',tb,{"@context":"https://schema.org","@type":"CollectionPage","name":"Daily Five Track Record","url":SITE+"/track-record/"}))
+    # /picks/ index: every pick page, newest edition first (the parent of every /picks/<id>/ URL used to 404)
+    byd={}
+    for r in rows: byd.setdefault(r['date'],[]).append(r)
+    rec=lambda rs: f"{sum(r['ret']>0 for r in rs if r['final'] and r['ret'] is not None)}-{sum(r['ret']<=0 for r in rs if r['final'] and r['ret'] is not None)}"
+    secs=''.join(f'<h2 class="h2s"><a href="{BASE}/{d}/">{datetime.date.fromisoformat(d).strftime("%A, %B %-d")}</a> <small class="mut">{len(rs)} picks \u00b7 settled {rec(rs)}</small></h2><div class="rcs col">'+''.join(f'<a class="rc" href="{BASE}/picks/{r["id"]}/"><b class="{r["action"].lower()}">{r["action"]}</b> {E(r["pick"])} \u00b7 {E(r["horizon"])} {chip(r["ret"],r["final"])}</a>' for r in rs)+'</div>' for d,rs in sorted(byd.items(),reverse=True))
+    cnav,csch=crumbs([('Home','/'),('All picks','/picks/')])
+    pb=(f'{cnav}<section class="sbhero"><span class="kicker">\U0001F5C2 All picks</span><h1 class="pt">Every Daily Five pick, by day</h1><p class="sub">{len(rows)} stock and prediction-market picks since {min(byd)}, each with its entry price, live mark and result. Hubs: <a href="{BASE}/best-stocks-to-buy-today/">stock picks</a>, <a href="{BASE}/nfl-picks-this-week/">NFL picks</a>, <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a>.</p></section>{secs}')
+    w('picks/index.html',shell(f"All Picks: Every Stock & Prediction-Market Call, by Day | {BRAND}",f"All {len(rows)} Daily Five picks by day: stock BUY/SELL calls and Polymarket sports plays with entry prices, live marks and settled results.",'/picks/',pb,{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"All Daily Five picks","url":SITE+"/picks/"},csch]}))
+    urls.insert(0,('/picks/',TODAY.isoformat()))
     return urls
 INDEXNOW_KEY='fcd40c5d2b89f9aed9ee904f5baee9f2'
 def main():
@@ -840,8 +872,10 @@ def main():
         {'@type':'FAQPage','mainEntity':faq_ents,'url':SITE+'/how-we-rank/'},
     ]}
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
-    urls=['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh,'/archive/']+[f'/{d}/' for d,*_ in items]+extra
-    w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{TODAY}</lastmod></url>" for u in urls)+'</urlset>')
+    # lastmod: hubs today; an edition page changes until all its picks settle; pick/ticker pages from lastmod()
+    edlm=lambda e: max([lastmod(p,e) for p in e['finance']+e['sports']]+[e['date']])
+    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh,'/archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds]+extra
+    w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
     w(INDEXNOW_KEY+'.txt',INDEXNOW_KEY)  # IndexNow key file (Bing, Yandex, Seznam, Naver); indexnow.py pings after deploy
     w('robots.txt',f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
