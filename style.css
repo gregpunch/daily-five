@@ -148,3 +148,4 @@ a.tk,a.mkt{color:#fff;text-decoration:none}a.tk:hover,a.mkt:hover{text-decoratio
 nav.crumbs a:hover{background:none;color:var(--amb);border-bottom-color:var(--amb)}
 .crumbs [aria-current]{color:var(--txt);font-weight:600;max-width:42ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .h2s small.mut{font:500 13px var(--mono);color:var(--mut);margin-left:8px;letter-spacing:0}
+.relbox{margin:28px 0 8px}.relbox .rc{justify-content:flex-start}.relbox .rc .chip{margin-left:auto}.relmore{margin:12px 0 0;font-size:14px}.relmore a{color:var(--mut)}

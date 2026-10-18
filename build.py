@@ -550,7 +550,23 @@ def lastmod(p,ed):
     elif kickoff(p): d=kickoff(p).date().isoformat()
     else: d=ed['date']
     return min(max(d,ed['date']),TODAY.isoformat())
-def pick_page(p,ed):
+def related(p,ed,allp):
+    """Internal links for a pick page: other picks from the same kickoff window (sports, within 45 min) or else the same edition, max 4."""
+    ko=kickoff(p); hub=hub_of(p)[1]; dot=' \u00b7 '
+    win=[(q,e) for q,e in allp if q is not p and ko and kickoff(q) and abs((kickoff(q)-ko).total_seconds())<=2700]
+    if len(win)>=2:
+        win.sort(key=lambda x:(kickoff(x[0]),-x[0].get('score',0))); out=win[:4]
+        head=f"More {ko.strftime('%a %-I:%M %p').replace(':00','')} ET kickoff picks"
+    else:
+        fill=[(q,e) for q,e in allp if e is ed and q is not p and all(q is not w_ for w_,_ in win)]
+        fill.sort(key=lambda x:(hub_of(x[0])[1]!=hub,-x[0].get('score',0))); out=(win+fill)[:4]
+        head=f"More picks from the {ed['date']} edition" if not win else "Related picks"
+    if not out: return ''
+    def row(q,e):
+        mk=(dot+E((q['market'].split(':',1)[1] if ':' in q['market'] else q['market']).split(',')[0].strip())) if q['kind']=='Sports' else ''
+        return f'<a class="rc" href="{BASE}/picks/{q["id"]}/"><b class="{q["action"].lower()}">{q["action"]}</b> {E(q["label"])}{mk}{dot}{e["date"]} {chip(q.get("ret"),q.get("final"))}</a>'
+    return f'<section class="relbox"><h2 class="h2s">{E(head)}</h2><div class="rcs col">{"".join(row(q,e) for q,e in out)}</div><p class="relmore"><a href="{BASE}/picks/">All picks by day \u2192</a></p></section>'
+def pick_page(p,ed,allp=()):
     k=p['kind']; t=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" \u00b7 {p['horizon']} pick")
     h,suf,desc,about=pick_seo(p,ed)
     title=f"{h} ({suf}) | {BRAND}"; desc=desc if len(desc)<=155 else desc[:154].rsplit(' ',1)[0]+'\u2026'
@@ -562,7 +578,7 @@ def pick_page(p,ed):
     det=(f'{cnav}<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
          f'<h2>Pick details</h2><dl><dt>Published</dt><dd>{ed["date"]} in <a href="{BASE}/{ed["date"]}/">that day\'s edition</a></dd><dt>Entry</dt><dd>{money(k,p["entry"])}{note}</dd>'
          f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd><dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
-         f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh)
+         f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh+related(p,ed,allp))
     sch={"@context":"https://schema.org","@type":"Article","headline":h[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":about}
     og=pick_og(p,ed)
     if og: sch['image']=SITE+og.split('?')[0]
@@ -789,9 +805,10 @@ def nfl_hub(eds):
 
 def seo_pages(eds,rows,tiles):
     urls=[]; by={}
+    allp=[(p,ed) for ed in eds for p in ed['finance']+ed['sports']]
     for ed in eds:
         for p in ed['finance']+ed['sports']:
-            pick_page(p,ed); urls.append((f"/picks/{p['id']}/",lastmod(p,ed))); by.setdefault(p['tslug'],[]).append((p,ed))
+            pick_page(p,ed,allp); urls.append((f"/picks/{p['id']}/",lastmod(p,ed))); by.setdefault(p['tslug'],[]).append((p,ed))
     for slug,lst in by.items():
         p0=lst[0][0]; nm=p0['tname']; k=p0['kind']
         title=(f"{nm} Stock: Daily Five Picks, Live Price & Track Record" if k=='Finance' else f"{nm}: Prediction Market Odds & Daily Five Picks")+f" | {BRAND}"

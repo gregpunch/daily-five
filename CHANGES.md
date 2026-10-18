@@ -24,3 +24,4 @@
 - Sitemap `lastmod` is now honest per URL instead of today for everything: settled pick pages keep their settle date, ticker pages their latest pick, editions the latest of their picks; live pages get today.
 - live.js now updates the opposing team's % and the odds bar alongside our side's live price (they used to go stale, e.g. 77% vs 42%).
 - Sports card badge says "Today" for daytime games and "Tonight" from 5 PM ET (1 PM games were labeled Tonight); empty "#" rank no longer shows on pick pages.
+- Related-picks internal links on all 44 pick pages: "More Sun 1 PM ET kickoff picks" (other picks within 45 min of the same kickoff), otherwise "More picks from the <date> edition" (same hub first, by score), max 4, each with matchup, date and live/final return chip, plus a link to `/picks/`. Spreads link equity across pick pages and gives bettors a next click.
