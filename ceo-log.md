@@ -183,3 +183,19 @@
 3. Settle sports picks as soon as the event says `ended` (labelled "final score, awaiting resolution").
 4. Smarter sitemap `lastmod` (pick pages: last price change or final date).
 5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+
+## 2026-10-18 · ~10:05 AM ET check-in (Sunday, NFL Week 6)
+
+**Shipped**
+- Game picks now settle on the final score (growth idea #3). When Polymarket's events API reports a picked game `ended` with a decisive score, the build marks the BUY at 100¢ (won) or 0¢ (lost), "final", with Won/Lost on the Scoreboard, track record, NFL and Polymarket hubs and pick pages (status note "final score, awaiting resolution"). It is provisional and not frozen into `data/exits.json`, so the official UMA resolution still overrides it. In the browser, live.js settles the card's Live/Since-pick box the moment its game-day line flips to FINAL, and ignores the stale live.json until the server agrees, so readers see results within a minute of the final whistle instead of hours later. Tested the side/margin logic on simulated finals (win, loss, not over, tie). Push 04f8c8e, live and verified ~75s after push. Documented in FORMAT.md and CHANGES.md.
+- Price refresh (10:08 AM ET build). Stocks closed for the weekend. Live game: Jaguars (Oct 17 pick, HOU @ JAX London) trail 7–0 in Q1, pick −31.86%. Oct 18 NFL picks near entry (Colts −1.34%, rest flat); Oct 17 Steelers +1.8%, Bears +1.98%, Giants flat. Holdovers: Chiefs flat, Packers −3.81%, Brewers YES WS −1.24%, Guardians YES ALCS −32.47%, Brewers NO WS −13.66%. Rays G4 settled +98.02%.
+
+**Fixed / CI**
+- No broken pages (home, scoreboard, NFL hub, sitemap 200). GitHub `schedule` sparse again (last scheduled build 7:41 AM ET); live.js covers odds and scores client-side, and the 4 PM check-in build will settle the 1 PM games server-side.
+
+**Growth ideas still pending**
+1. Monday "NFL Week 6 results" recap post and scorecard (10 NFL picks across Oct 16 to 18), now easy since games settle on the final score.
+2. X engagement this afternoon: post a live "Game day" scorecard when the 1 PM games end, linking `/nfl-picks-this-week/`.
+3. Matchup-preview content on game pick pages (injuries, line movement since our pick).
+4. Smarter sitemap `lastmod`.
+5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
