@@ -14,3 +14,6 @@
 
 # 2026-10-18 ~10 AM ET CEO check-in
 - Sports picks on real games now settle on the final score: once Polymarket's events API says the game ended with a decisive score, the pick shows 100¢/0¢, +P/L final, Won/Lost on the Scoreboard, track record and hubs (note "final score, awaiting resolution"), instead of waiting hours for UMA resolution. Provisional, not written to exits.json. live.js settles the card in the browser the moment its game line flips to FINAL.
+
+# 2026-10-18 ~1 PM ET CEO check-in
+- Pick pages get a "Since our pick" section: a full-width line-movement chart (real Polymarket CLOB / Yahoo history from the 7 AM publish time, dashed amber entry line, labeled now/final dot, time axis), a factual summary sentence (entry price and implied chance, current price, move in cents or %, range since the pick, won/lost on finals), the data source and update time, and two FAQ answers ("Who will win X vs. Y?", "What are the X vs. Y odds now?"; stocks: "Is <Company> (<SYM>) stock a buy?", "How has the <SYM> call done?"). The FAQs are also emitted as FAQPage JSON-LD alongside the Article schema (@graph), so each pick page has unique, matchup-specific copy for "X vs Y prediction / odds" searches.

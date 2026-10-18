@@ -14,6 +14,8 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-17 3:14 PM | 1 | 40 | Sat 3 PM run; +6 follows (18 today; expected 41 from 35+6, one may have dropped) |
 | 2026-10-17 6:13 PM | 1 | 46 | Sat 6 PM run; +5 follows (23 today) |
 | 2026-10-17 9:08 PM | 2 | 48 | Sat 9 PM run; +2 follows (25 today, cap hit). FIRST outside follower: @jbfinancebull followed back |
+| 2026-10-18 9:08 AM | 2 | 54 | Sun 9 AM run; +6 follows (6 today) |
+| 2026-10-18 12:12 PM | 2 | 60 | Sun noon run; +6 follows (12 today) |
 
 ## Follows (date, handle, followers at follow, reason, followed back?)
 | Date | Handle | Followers | Why | Followback |
@@ -67,6 +69,18 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-17 | @molecule_trader | 976 | trader, follows 380 (follow click unverified, but following count matched +5) | pending (check 10-24) |
 | 2026-10-17 | @stonkmane69 | 2,435 | SMH/semis chart research | pending (check 10-24) |
 | 2026-10-17 | @MickBransfield | 1,997 | prediction-markets analyst, Kalshi vs Polymarket research | pending (check 10-24) |
+| 2026-10-18 | @xamSportsHQ | 2,648 | pro sports bettor, follows 3,251 (bio has paid-picks link) | pending (check 10-25) |
+| 2026-10-18 | @FBGarbageTime | 1,776 | NFL picks/podcast, follows 1,755 | pending (check 10-25) |
+| 2026-10-18 | @LukeBennettFin | 2,901 | AI/growth stock commentator, follows 1,645 | pending (check 10-25) |
+| 2026-10-18 | @tinotime1996 | 3,089 | fantasy/NFL picks podcaster, follows 5,020 | pending (check 10-25) |
+| 2026-10-18 | @blexy_cryptt | 2,341 | prediction markets/AI creator, follows 969 | pending (check 10-25) |
+| 2026-10-18 | @FoxFellasPod | 2,262 | Patriots podcast with weekly betting cards, follows 942 | pending (check 10-25) |
+| 2026-10-18 | @BlaineofTB | 4,805 | sports/investing, follows 4,689 (strong followback ratio) | pending (check 10-25) |
+| 2026-10-18 | @WizardOddsShow | 5,638 | Vegas NFL handicapper/odds, follows 2,969 | pending (check 10-25) |
+| 2026-10-18 | @Dboybruh | 6,326 | day trader, earnings-week posts, follows 2,786 | pending (check 10-25) |
+| 2026-10-18 | @EliasArizaJr13 | 2,759 | trader/investing, follows 1,676 | pending (check 10-25) |
+| 2026-10-18 | @GamblerGazette | 2,961 | betting fair-market write-ups (AI-written per bio), follows 477 | pending (check 10-25) |
+| 2026-10-18 | @BacklogAlpha | 910 | stocks/AI infrastructure, earnings calendars, follows 780 | pending (check 10-25) |
 
 ## Replies & posts
 | Date/time ET | Type | Target post URL | Our reply/post URL | Linked site? |
@@ -126,6 +140,18 @@ Rules: ~25 follows/day max (5-6 per run), unfollow non-followbacks after 7 days 
 | 2026-10-17 ~9:06 PM | reply | https://x.com/The_AI_Investor/status/2111615332473610310 | https://x.com/ReadDailyFive/status/2111625004664369426 | no |
 | 2026-10-17 ~9:07 PM | reply | https://x.com/Sportsnet/status/2111620147127722165 | https://x.com/ReadDailyFive/status/2111625090509296115 | no |
 | 2026-10-17 ~9:07 PM | reply | https://x.com/WFAN660/status/2111623417934045488 | https://x.com/ReadDailyFive/status/2111625306377465951 | yes (NFL hub) |
+| 2026-10-18 ~9:04 AM | reply | https://x.com/PatrickE_Vegas/status/2111797558163255589 | https://x.com/ReadDailyFive/status/2111805377906151593 | no |
+| 2026-10-18 ~9:05 AM | reply | https://x.com/CoversJLo/status/2111793164516282481 | https://x.com/ReadDailyFive/status/2111805589609402867 | no |
+| 2026-10-18 ~9:06 AM | reply | https://x.com/LesBowen/status/2111803863464370337 | https://x.com/ReadDailyFive/status/2111805721566404952 | no |
+| 2026-10-18 ~9:07 AM | reply | https://x.com/ThePupOfWallSt/status/2111792061863055494 | https://x.com/ReadDailyFive/status/2111806152321462676 | yes (homepage) |
+| 2026-10-18 ~9:07 AM | reply | https://x.com/Pete_Collins_/status/2111787696746103062 | https://x.com/ReadDailyFive/status/2111806187620741409 | yes (NFL hub) |
+| 2026-10-18 ~9:08 AM | reply | https://x.com/zedryaz/status/2111782969354391967 | https://x.com/ReadDailyFive/status/2111806395431719002 | no |
+| 2026-10-18 ~12:07 PM | reply | https://x.com/johnewing/status/2111827139720823137 | https://x.com/ReadDailyFive/status/2111851517926138304 | yes (NFL hub) |
+| 2026-10-18 ~12:08 PM | reply | https://x.com/marccolcer/status/2111832899737522611 | https://x.com/ReadDailyFive/status/2111851728744464613 | no |
+| 2026-10-18 ~12:09 PM | reply | https://x.com/SeekingAlpha/status/2111837214300856542 | https://x.com/ReadDailyFive/status/2111851969329688645 | no |
+| 2026-10-18 ~12:10 PM | reply | https://x.com/KingPropz/status/2111839800517177407 | https://x.com/ReadDailyFive/status/2111852187232125279 | no |
+| 2026-10-18 ~12:10 PM | reply | https://x.com/timoassi/status/2111842375962169375 | https://x.com/ReadDailyFive/status/2111852404971106480 | yes (homepage) |
+| 2026-10-18 ~12:11 PM | reply | https://x.com/VulcanMK5/status/2111829665207681304 | https://x.com/ReadDailyFive/status/2111852623133650972 | no |
 
 ## Warnings / pauses
 (none — 2026-10-17 6 PM run clean too; 3 PM, noon and 9 AM clean; 12:14 PM, 3:07 PM, 6:10 PM and 9:05 PM runs on 2026-10-16 saw no warnings, limits, or captchas)
@@ -147,3 +173,5 @@ Sat 10-17 3 PM run note: 6 replies (2 links: NFL hub, homepage), 6 follows (18 t
 
 Sat 10-17 6 PM run note: results scorecard posted first (holdovers SELL META +3.7%, SELL QQQ +2.5%, Brewers WS +0.5%; SMTC −5.2%, LRCX −4.9%; Rays G4 50.5¢ tonight). 5 replies to big accounts (Kalshi_Finance 110k, SharpFBAnalysis 35k, Covers 175k [~2.5h old], NationPadres 28k, Beth_Kindig 184k); 1 link (NFL hub). 5 follows (23 today, cap 25). Pacing good (replies 40-90s, follows 20s+). Followers still 1, following 46. No outside engagement. Next run: capture reply URLs.
 Sat 10-17 9 PM run note: 6 replies to fresh posts (10m-1h50m old; BovadaOfficial 94k, kurtsaltrichter 45k, jaredsmithbets 23k, The_AI_Investor 81k, Sportsnet 1M, WFAN660 182k), 2 links (homepage, NFL hub); all reply URLs captured. Replies 2-3 went out ~15-25s apart (slip); rest 40-60s. 2 follows (@stonkmane69, @MickBransfield) = 25 today, cap hit. Followers 2 (first follow-back: @jbfinancebull), following 48. No warnings. Live ALCS/NFL posts in the evening gave the freshest big-account targets.
+Sun 10-18 9 AM run note: targets pre-picked via built-in X search (all 30-120 min old): PatrickE_Vegas 94k, CoversJLo 20k, LesBowen 78k, ThePupOfWallSt 55k, Pete_Collins_ 12k, zedryaz 1.2k. 6 replies (2 links: homepage, NFL hub), all URLs captured; numbers from live.json 7:41 AM (NE 75.5¢, IND 74.5¢, BUF 67.5¢, CAR 60.5¢, MU $878.84). Replies 4-5 ~8s apart (slip after a 'Discard post?' dialog); rest 45s+. One duplicate attempt was blocked by X ('You already said that'), no dupe posted. 6 follows (6 today). Followers 2, following 54. No warnings, no outside engagement. Prediction-market search on Sunday morning is mostly airdrop/crypto spam; NFL betting and earnings-week searches gave the best targets.
+Sun 10-18 noon run note: targets pre-picked via built-in X search (all 20-110 min old): johnewing 118k, marccolcer 51k, SeekingAlpha 343k, KingPropz 39k, timoassi 15k, VulcanMK5 3.9k. 6 replies (2 links: NFL hub, homepage), all URLs captured; parlay-math replies used live.json 10:50 AM prices (NE 75.5, IND 73.5, BUF 67.5, BAL 61.5, CAR 60.5, NYG 49.5); earnings-week replies used GE BUY, SELL META +3.7%, MU BUY. Pacing clean (replies 50-57s, follows 20s+). 6 follows (12 today). Followers 2, following 60. No warnings, no outside engagement. Earnings-week (TSLA/META/NFLX/GE) and parlay posts were the best Sunday-noon targets; prediction-market search still spammy.

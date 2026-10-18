@@ -469,6 +469,67 @@ def pick_seo(p,ed):
     h=f"{p['market']}? Odds & Prediction: {p['action']} {p['label']}"
     d=f"{p['market']} odds and our pick from {dd}: {p['action']} {p['label']} at {money(k,p['entry'])} on Polymarket. Why: {p['why']}"
     return h,dd,d,{"@type":"Thing","name":p['tname']}
+def move_chart(p,ed,h):
+    """'Since our pick' line-movement chart + factual summary + FAQ entries for a pick page (real Yahoo / Polymarket CLOB history only)."""
+    k=p['kind']; d0=datetime.date.fromisoformat(ed['date']); dd=d0.strftime('%b %-d')
+    t0=datetime.datetime.combine(d0,datetime.time(7,0)).timestamp()
+    pts=[(t,v) for t,v in (p.get('pts') or []) if t>=t0 and v is not None]
+    ent,cur=p['entry'],p.get('cur'); fmt=lambda v: money(k,v)
+    if k=='Sports': fmt=lambda v: f"{v*100:.1f}\u00a2".replace('.0\u00a2','\u00a2')
+    if cur is not None and (not pts or pts[-1][1]!=cur): pts=pts+[(max(int(NOW.timestamp()),(pts[-1][0]+1) if pts else 0),cur)]
+    nm=p['label']
+    if k=='Sports':
+        if p.get('final') and cur is not None:
+            res='won' if cur>=0.5 else 'lost'
+            txt=f"When we published on {dd}, Polymarket priced {nm} at {fmt(ent)}, a {ent*100:.1f}% implied chance. Our {nm} pick {res}, settling at {fmt(cur)} ({pct(p.get('ret'))} on the entry price){' on the final score, pending official resolution' if str(p.get('note','')).startswith('final score') else ''}."
+        elif cur is not None:
+            mv=(cur-ent)*100; dirn=(f'up {abs(mv):.1f}\u00a2' if mv>0 else f'down {abs(mv):.1f}\u00a2' if mv<0 else 'unchanged')
+            txt=f"When we published on {dd}, Polymarket priced {nm} at {fmt(ent)}, a {ent*100:.1f}% implied chance. It's now {fmt(cur)} ({cur*100:.1f}%), {dirn} since the pick."
+        else: txt=f"When we published on {dd}, Polymarket priced {nm} at {fmt(ent)}, a {ent*100:.1f}% implied chance."
+    else:
+        sym=p['symbol'].upper()
+        if cur is not None:
+            txt=f"{sym} was {fmt(ent)} when we published the {p['action']} call on {dd}. It's {'closed at' if p.get('final') else 'now'} {fmt(cur)}, {pct(p.get('ret'))} for the {p['action']} side."
+        else: txt=f"{sym} was {fmt(ent)} when we published the {p['action']} call on {dd}."
+    ys=[v for _,v in pts]
+    if len(ys)>=2:
+        lo,hi=min(ys+[ent]),max(ys+[ent]); txt+=f" Range since the pick: {fmt(min(ys))} to {fmt(max(ys))}."
+    faq=[]
+    g=pgame(p.get('slug')) if k=='Sports' else None
+    if k=='Sports' and g and len(g['teams'])==2:
+        aw,hm=g['teams']; an,hn=aw['al'] or aw['nm'],hm['al'] or hm['nm']
+        faq.append((f"Who will win {an} vs. {hn}?",f"The Daily Five's pick is {nm} to win, bought at {fmt(ent)} on Polymarket on {dd}. Why: {p['why']}"))
+        faq.append((f"What are the {an} vs. {hn} odds now?",txt))
+    elif k=='Sports':
+        faq.append((f"{p['market']}?",f"The Daily Five's pick is {p['action']} {nm} at {fmt(ent)} on Polymarket ({dd}). Why: {p['why']}"))
+        faq.append((f"How has the {nm} pick moved?",txt))
+    else:
+        nmc=cname(sym) or sym
+        faq.append((f"Is {nmc} ({sym}) stock a {p['action'].lower()}?",f"The Daily Five's {p['horizon']} call from {dd} is {p['action']} {sym} at {fmt(ent)}. Why: {p['why']} Not financial advice."))
+        faq.append((f"How has the {sym} {p['action']} call done?",txt))
+    svg=''
+    if len(ys)>=2:
+        W,H,L,R,T,B=520,220,6,112,16,28; ts=[t for t,_ in pts]; x0,x1=ts[0],ts[-1]; span=(x1-x0) or 1; rng=(hi-lo) or (abs(hi)*.02 or .01)
+        X=lambda t: L+(t-x0)/span*(W-L-R); Y=lambda v: T+(hi-v)/rng*(H-T-B)
+        good=(p.get('ret') or 0)>=0; col='#16c784' if good else '#ff4d5e'
+        line=' '.join(f"{X(t):.1f},{Y(v):.1f}" for t,v in pts)
+        area=f"{X(x0):.1f},{H-B} "+line+f" {X(x1):.1f},{H-B}"
+        ticks=''
+        for i in range(4):
+            tt=x0+span*i/3; lab=datetime.datetime.fromtimestamp(tt).strftime('%a %-I %p' if span<6*86400 else '%b %-d')
+            ticks+=f'<text x="{X(tt):.0f}" y="{H-8}" text-anchor="{"start" if i==0 else "end" if i==3 else "middle"}">{lab}</text>'
+        svg=(f'<svg class="mvchart" viewBox="0 0 {W} {H}" role="img" aria-label="{E(nm)} price since the pick: {E(fmt(ent))} entry, {E(fmt(cur))} now">'
+             f'<defs><linearGradient id="mvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{col}" stop-opacity=".35"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></linearGradient></defs>'
+             f'<polygon points="{area}" fill="url(#mvg)"/>'
+             f'<line x1="{L}" x2="{W-R}" y1="{Y(ent):.1f}" y2="{Y(ent):.1f}" class="mvent"/><text x="{W-R+6}" y="{Y(ent)+4:.1f}" class="mvlab">entry {E(fmt(ent))}</text>'
+             f'<polyline points="{line}" fill="none" stroke="{col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
+             f'<circle cx="{X(x1):.1f}" cy="{Y(ys[-1]):.1f}" r="4.5" fill="{col}"/><text x="{W-R+6}" y="{min(max(Y(ys[-1])+4,T+8),H-B):.1f}" class="mvlab now" fill="{col}">{"final" if p.get("final") else "now"} {E(fmt(ys[-1]))}</text>'
+             f'{ticks}</svg>')
+    src='Polymarket CLOB price history' if k=='Sports' else 'Yahoo Finance prices'
+    html_=(f'<section class="mvbox"><h2>Since our pick</h2><p class="mvtxt">{E(txt)}</p>{svg}'
+           f'<p class="mvsrc">Source: {src}, updated {NOW.strftime("%b %-d, %-I:%M %p")} ET.</p>'
+           f'<div class="mvfaq">'+''.join(f'<details><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faq)+'</div></section>')
+    return html_,faq
 def pick_page(p,ed):
     k=p['kind']; t=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" \u00b7 {p['horizon']} pick")
     h,suf,desc,about=pick_seo(p,ed)
@@ -476,13 +537,16 @@ def pick_page(p,ed):
     card=fin_card(p,'') if k=='Finance' else sp_card(p,'')
     kick="\U0001F4B0 Finance pick" if k=="Finance" else "\U0001F3DF Sports market pick"
     note=(' \u00b7 '+E(p.get('entry_note'))) if p.get('entry_note') else ''
+    mvh,faq=move_chart(p,ed,h)
     det=(f'<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
          f'<h2>Pick details</h2><dl><dt>Published</dt><dd>{ed["date"]} in <a href="{BASE}/{ed["date"]}/">that day\'s edition</a></dd><dt>Entry</dt><dd>{money(k,p["entry"])}{note}</dd>'
          f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd><dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
-         f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>')
+         f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh)
     sch={"@context":"https://schema.org","@type":"Article","headline":h[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":about}
     og=pick_og(p,ed)
     if og: sch['image']=SITE+og.split('?')[0]
+    if faq:
+        sch.pop('@context'); sch={"@context":"https://schema.org","@graph":[sch,{"@type":"FAQPage","url":f"{SITE}/picks/{p['id']}/","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]}]}
     w(f"picks/{p['id']}/index.html",shell(title,desc,f"/picks/{p['id']}/",det,sch,og=og))
 def best_stocks_hub(eds):
     """Evergreen SEO hub: /best-stocks-to-buy-today/ from real BUY finance picks only."""

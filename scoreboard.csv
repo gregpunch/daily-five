@@ -5,21 +5,21 @@ date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
 2026-10-18,Finance,1 Day,BUY,FOXA,64.15,64.15,open,0.00,https://finance.yahoo.com/markets/stocks/articles/bofa-double-lifts-fox-buy-120628561.html
 2026-10-18,Finance,1 Month,BUY,ZETA,31.81,31.81,open,0.00,https://finance.yahoo.com/markets/stocks/articles/zeta-global-stock-rises-goldman-164807565.html
 2026-10-18,Finance,1 Day,SELL,IWM,270.44,270.44,open,-0.00,https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-friday-10162026-137331951
-2026-10-18,Sports,Sports,BUY,"Bills · Week 6: BUF @ LV, Sun 4:25 PM ET",0.675,0.675,open,0.00,https://polymarket.com/event/nfl-buf-lv-2026-10-18
-2026-10-18,Sports,Sports,BUY,"Ravens · Week 6: BAL @ CLE, Sun 1 PM ET",0.615,0.615,open,0.00,https://polymarket.com/event/nfl-bal-cle-2026-10-18
-2026-10-18,Sports,Sports,BUY,"Patriots · Week 6: NYJ @ NE, Sun 1 PM ET",0.755,0.755,open,0.00,https://polymarket.com/event/nfl-nyj-ne-2026-10-18
-2026-10-18,Sports,Sports,BUY,"Colts · Week 6: TEN @ IND, Sun 1 PM ET",0.745,0.745,open,0.00,https://polymarket.com/event/nfl-ten-ind-2026-10-18
-2026-10-18,Sports,Sports,BUY,"Panthers · Week 6: CAR @ PHI, Sun 1 PM ET",0.605,0.605,open,0.00,https://polymarket.com/event/nfl-car-phi-2026-10-18
+2026-10-18,Sports,Sports,BUY,"Colts · Week 6: TEN @ IND, Sun 1 PM ET",0.745,0.685,open,-8.05,https://polymarket.com/event/nfl-ten-ind-2026-10-18
+2026-10-18,Sports,Sports,BUY,"Patriots · Week 6: NYJ @ NE, Sun 1 PM ET",0.755,0.745,open,-1.32,https://polymarket.com/event/nfl-nyj-ne-2026-10-18
+2026-10-18,Sports,Sports,BUY,"Bills · Week 6: BUF @ LV, Sun 4:25 PM ET",0.675,0.685,open,1.48,https://polymarket.com/event/nfl-buf-lv-2026-10-18
+2026-10-18,Sports,Sports,BUY,"Ravens · Week 6: BAL @ CLE, Sun 1 PM ET",0.615,0.655,open,6.50,https://polymarket.com/event/nfl-bal-cle-2026-10-18
+2026-10-18,Sports,Sports,BUY,"Panthers · Week 6: CAR @ PHI, Sun 1 PM ET",0.605,0.665,open,9.92,https://polymarket.com/event/nfl-car-phi-2026-10-18
 2026-10-17,Finance,1 Year,BUY,MLM,500.84,500.84,open,0.00,https://www.investing.com/news/analyst-ratings/da-davidson-upgrades-martin-marietta-materials-stock-rating-to-buy-93CH-4953924
 2026-10-17,Finance,1 Year,BUY,SPCX,146.03,146.03,open,0.00,https://www.cnbc.com/2026/10/16/spacex-evercore-isi-price-target.html
 2026-10-17,Finance,1 Day,BUY,FITB,50.37,50.37,open,0.00,https://finance.yahoo.com/markets/stocks/articles/growth-nii-lower-expenses-likely-162500720.html
 2026-10-17,Finance,1 Month,BUY,NFLX,70.53,70.53,open,0.00,https://finance.yahoo.com/markets/stocks/articles/earnings-calendar-analysis-week-june-162434561.html
 2026-10-17,Finance,1 Month,BUY,EAT,204.14,204.14,open,0.00,https://finance.yahoo.com/markets/stocks/articles/workday-downgraded-fox-corp-upgraded-133833134.html
 2026-10-17,Finance,1 Day,SELL,SMH,539.79,539.79,open,-0.00,https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-friday-10162026-137331951
-2026-10-17,Sports,Sports,BUY,"Steelers · Week 6: PIT @ TB, Sun 1 PM ET",0.555,0.565,open,1.80,https://polymarket.com/event/nfl-pit-tb-2026-10-18
-2026-10-17,Sports,Sports,BUY,"Giants · Week 6: NO @ NYG, Sun 1 PM ET",0.495,0.495,open,0.00,https://polymarket.com/event/nfl-no-nyg-2026-10-18
-2026-10-17,Sports,Sports,BUY,"Jaguars · Week 6: HOU @ JAX (London), Sun 9:30 AM ET",0.565,0.565,open,0.00,https://polymarket.com/event/nfl-hou-jax-2026-10-18
-2026-10-17,Sports,Sports,BUY,"Bears · Week 6: CHI @ ATL, Sun 1 PM ET",0.505,0.515,open,1.98,https://polymarket.com/event/nfl-chi-atl-2026-10-18
+2026-10-17,Sports,Sports,BUY,"Giants · Week 6: NO @ NYG, Sun 1 PM ET",0.495,0.435,open,-12.12,https://polymarket.com/event/nfl-no-nyg-2026-10-18
+2026-10-17,Sports,Sports,BUY,"Steelers · Week 6: PIT @ TB, Sun 1 PM ET",0.555,0.575,open,3.60,https://polymarket.com/event/nfl-pit-tb-2026-10-18
+2026-10-17,Sports,Sports,BUY,"Jaguars · Week 6: HOU @ JAX (London), Sun 9:30 AM ET",0.565,0.0,final,-100.00,https://polymarket.com/event/nfl-hou-jax-2026-10-18
+2026-10-17,Sports,Sports,BUY,"Bears · Week 6: CHI @ ATL, Sun 1 PM ET",0.505,0.575,open,13.86,https://polymarket.com/event/nfl-chi-atl-2026-10-18
 2026-10-17,Sports,Sports,BUY,"Rays · ALCS Game 4: TB @ CLE, Sat 8 PM ET",0.505,1.0,final,98.02,https://polymarket.com/event/mlb-tb-cle-2026-10-16
 2026-10-16,Finance,1 Year,BUY,SMTC,144.21,136.73,open,-5.19,https://www.wallstreetzen.com/news/3-new-strong-buy-ratings-from-top-rated-analysts-10-16-2026
 2026-10-16,Finance,1 Year,BUY,MBLY,7.43,7.22,open,-2.83,https://www.cnbc.com/2026/10/16/mobileye-stock-citi-buy-rating.html
@@ -27,7 +27,7 @@ date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
 2026-10-16,Finance,1 Month,BUY,CROX,124.77,123.14,open,-1.31,https://stocktwits.com/news-articles/markets/equity/stocktwits-wall-street-wrap-crocs-liquidia-win-upgrades-while-space-x-competition-and-grocery-woes-put-ast-space-mobile-albertsons-under-pressure/cZx0UOFRBsI
 2026-10-16,Finance,1 Day,SELL,QQQ,728.0,709.8,open,2.50,https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575
 2026-10-16,Finance,1 Day,SELL,META,736.72,709.325,open,3.72,https://www.investing.com/news/stock-market-news/as-ai-rally-wobbles-stock-markets-spotlight-turns-to-earnings-4953575
-2026-10-16,Sports,Sports,BUY,Guardians YES · Guardians win ALCS,0.6375,0.4395,open,-31.06,https://polymarket.com/event/mlb-2026-american-league-champion
+2026-10-16,Sports,Sports,BUY,Guardians YES · Guardians win ALCS,0.6375,0.427,open,-33.02,https://polymarket.com/event/mlb-2026-american-league-champion
 2026-10-16,Sports,Sports,BUY,Brewers YES · Brewers win World Series,0.6445,0.638,open,-1.01,https://polymarket.com/event/mlb-world-series-champion-2026
 2026-10-16,Sports,Sports,BUY,"Chiefs · Week 6: LAC @ KC, Sun 4:25 PM ET",0.785,0.785,open,0.00,https://polymarket.com/event/nfl-lac-kc-2026-10-18
 2026-10-16,Sports,Sports,BUY,"Packers · Week 6: DAL @ GB, Sun 8:20 PM ET",0.525,0.505,open,-3.81,https://polymarket.com/event/nfl-dal-gb-2026-10-19
