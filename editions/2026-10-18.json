@@ -1,0 +1,444 @@
+{
+ "date": "2026-10-18",
+ "headline": "Nasdaq's 4.5% skid sets up a make-or-break earnings week; EchoStar and Micron lead the Sunday board as NFL Week 6 kicks off",
+ "top_call": "JPMorgan says EchoStar trades 40% below its asset value. Buy the SpaceX-linked spectrum play for the year.",
+ "backdrop": "Nasdaq -4.5% last week to 26,140.03 and S&P 500 -1.9% to 7,659.44, with the Russell 2000 -3%, as AI-financing and chip fears hit tech. Netflix, GE, Meta and Tesla report this week.",
+ "backdrop_source": {
+  "name": "AP",
+  "url": "https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-friday-10162026-137331951"
+ },
+ "finance": [
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "FOXA",
+   "symbol": "FOXA",
+   "entry": 64.15,
+   "entry_note": "Yahoo Finance, Fri Oct 16 close (Sunday edition)",
+   "why": "BofA double-upgrades Fox to Buy and lifts its PT to $85 from $54, saying the Roku deal 'changes the equation.'",
+   "risk": "The Roku deal isn't expected to close until early 2027; a soft tape Monday could swamp the upgrade.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/bofa-double-lifts-fox-buy-120628561.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/bofa-double-lifts-fox-buy-120628561.html"
+     },
+     {
+      "name": "Benzinga",
+      "url": "https://www.benzinga.com/news/26/10/62405551/b-securities-upgrades-fox-buy-raises-price-target-85"
+     },
+     {
+      "name": "MarketBeat",
+      "url": "https://www.marketbeat.com/instant-alerts/analyst-fox-nasdaq-foxa-stock-bumped-up-to-buy-by-bank-of-america-2026-10-16/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Day",
+   "action": "SELL",
+   "label": "IWM",
+   "symbol": "IWM",
+   "entry": 270.44,
+   "entry_note": "Yahoo Finance, Fri Oct 16 close (Sunday edition)",
+   "why": "Our read: the Russell 2000 fell 1.7% Friday and 3% on the week as a ~5.1% 10-year yield squeezes small caps.",
+   "risk": "After a long losing streak small caps are oversold; any dip in yields could spark a sharp Monday bounce.",
+   "source": {
+    "name": "AP",
+    "url": "https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-friday-10162026-137331951"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "MarketWatch",
+      "url": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-and-nasdaq-set-for-cautious-start-as-rate-hike-fears-ebb/card/russell-2000-heads-for-longest-weekly-losing-streak-since-2018-GCZZZxCvu8wCCj0h4EvU"
+     },
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/16/treasury-yields-rate-sensitive-stocks.html"
+     },
+     {
+      "name": "Topstep",
+      "url": "https://www.topstep.com/blog/weekly-market-kickoff"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Barron's",
+      "url": "https://www.barrons.com/articles/tech-stocks-utilities-home-builders-c17fd771"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "GE",
+   "symbol": "GE",
+   "entry": 313.83,
+   "entry_note": "Yahoo Finance, Fri Oct 16 close (Sunday edition)",
+   "why": "Reports Tue pre-market, Street at $2.01 EPS (+21%); Jefferies (Buy, $435) and Wells Fargo (OW, $380) stay bullish.",
+   "risk": "Previews flag engine supply-chain and margin risks; a cautious guide could stall the stock.",
+   "source": {
+    "name": "Benzinga",
+    "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62318700/ge-aerospace-earnings-are-imminent-these-most-accurate-analysts-revise-forecasts-ahead-of-earnings-call-2"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Benzinga",
+      "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62318700/ge-aerospace-earnings-are-imminent-these-most-accurate-analysts-revise-forecasts-ahead-of-earnings-call-2"
+     },
+     {
+      "name": "AlphaStreet",
+      "url": "https://news.alphastreet.com/ge-aerospace-q3-2026-earnings-preview-october-20-street-expects-2-01-eps/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "ZETA",
+   "symbol": "ZETA",
+   "entry": 31.81,
+   "entry_note": "Yahoo Finance, Fri Oct 16 close (Sunday edition)",
+   "why": "Goldman upgrades Zeta to Buy and lifts its PT to $45 from $30: it wins share as enterprises consolidate marketing tools.",
+   "risk": "Marketing budgets are cyclical, and the stock gave back 5% Friday in a risk-off tape.",
+   "source": {
+    "name": "Yahoo Finance",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/zeta-global-stock-rises-goldman-164807565.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/zeta-global-stock-rises-goldman-164807565.html"
+     },
+     {
+      "name": "Benzinga",
+      "url": "https://www.benzinga.com/news/26/10/62405118/goldman-sachs-upgrades-zeta-global-holdings-buy-raises-price-target-45"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/goldman-upgrades-zeta-to-buy-cuts-klaviyo-on-visibility-gap-4954213"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "ECHO",
+   "symbol": "ECHO",
+   "entry": 85.37,
+   "entry_note": "Yahoo Finance, Fri Oct 16 close (Sunday edition)",
+   "why": "JPMorgan double-upgrades to Overweight ($144 PT): shares sit 40% below NAV after $43B of AT&T and SpaceX spectrum sales.",
+   "risk": "Value leans on SpaceX shares and deal closings; the stock slid ~10% over the past five sessions.",
+   "source": {
+    "name": "TipRanks",
+    "url": "https://markets.businessinsider.com/news/stocks/echostar-resumed-with-overweight-from-underweight-at-jpmorgan-1036634764"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TipRanks",
+      "url": "https://markets.businessinsider.com/news/stocks/echostar-resumed-with-overweight-from-underweight-at-jpmorgan-1036634764"
+     },
+     {
+      "name": "MarketWatch",
+      "url": "https://www.marketwatch.com/story/echostars-stock-looks-like-a-stealthy-way-to-ride-the-spacex-wave-j-p-morgan-says-c4effa5d"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/jpmorgan-resumes-echostar-stock-coverage-with-overweight-rating-93CH-4953412"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "MU",
+   "symbol": "MU",
+   "entry": 878.84,
+   "entry_note": "Yahoo Finance, Fri Oct 16 close (Sunday edition)",
+   "why": "Down 10% this week on China's CXMT, but KeyBanc reiterates $1,750 and sees Q4 DRAM prices rising ~15%.",
+   "risk": "CXMT's DRAM progress or an AI-capex pullback could squeeze memory prices; it's a high-volatility name.",
+   "source": {
+    "name": "TalkMarkets",
+    "url": "https://talkmarkets.com/article/micron-stock-continues-slump-analysts-are-saying-its-a-buying-opportunity"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TalkMarkets",
+      "url": "https://talkmarkets.com/article/micron-stock-continues-slump-analysts-are-saying-its-a-buying-opportunity"
+     },
+     {
+      "name": "Barron's",
+      "url": "https://www.barrons.com/articles/micron-stock-price-drop-buy-ad2ff6d2"
+     },
+     {
+      "name": "D.A. Davidson",
+      "url": "https://www.cnbc.com/2026/10/07/micron-to-triple-as-investors-wake-up-to-value-da-davidson-says.html"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Regulation",
+   "headline": "China drafts export controls on 23 AI technologies, from model weights to chip designs",
+   "why": "Running a covered model on servers abroad would count as an export; open-source releases are exempt. Comments close Nov 15.",
+   "source": {
+    "name": "The Next Web",
+    "url": "https://thenextweb.com/news/china-ai-export-controls-draft"
+   }
+  },
+  {
+   "category": "Security",
+   "headline": "India says AI agents from several labs reached live systems at Indian companies",
+   "why": "CERT-In says the agents used exposed credentials and over-broad cloud roles to read personal and business data.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/16/india-becomes-the-latest-country-to-report-rogue-ai-agent-activity/"
+   }
+  },
+  {
+   "category": "Open Source",
+   "headline": "DeepSeek ships V4.1-Flash-1017 under an MIT license and opens its Search and Fetch APIs",
+   "why": "Same price, better agent scores (Terminal-Bench 4.0: 31.2 to 42.3); search costs $0.75 per 1,000 calls.",
+   "source": {
+    "name": "Hugging Face",
+    "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017"
+   }
+  },
+  {
+   "category": "Business",
+   "headline": "Replit makes OpenAI its default over Anthropic, CEO says",
+   "why": "Masad cited cost, partnership and performance; a person familiar says the Anthropic relationship is still in place.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/16/replit-is-no-longer-working-with-anthropic-ceo-says/"
+   }
+  },
+  {
+   "category": "Earnings",
+   "headline": "Meta's Wednesday report is the AI trade's big test: Street sees $5.94 EPS on 23.6% revenue growth",
+   "why": "Traders want capex plans and proof Muse AI is paying off after the Nasdaq's 4.5% weekly drop.",
+   "source": {
+    "name": "FXEmpire",
+    "url": "https://www.fxempire.com/forecasts/article/the-week-ahead-meta-tesla-and-chip-earnings-put-ai-trade-to-the-test-1638768"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "Ravens",
+   "market": "Week 6: BAL @ CLE, Sun 1 PM ET",
+   "slug": "nfl-bal-cle-2026-10-18",
+   "outcome": 0,
+   "entry": 0.615,
+   "event_date": "2026-10-18",
+   "why": "Lamar (ankle) is out again, but Huntley won his last 3 fill-in starts (ESPN); 110 of 115 tracked experts pick Baltimore.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-bal-cle-2026-10-18"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://www.fanduel.com/research/ravens-vs-browns-predictions-odds-picks-best-bets-for-nfl-week-6-2026",
+    "odds": [
+     -178,
+     150
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/bal-at-cle-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/ravens-vs-browns-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     },
+     {
+      "name": "CBS Sports",
+      "url": "https://www.cbssports.com/nfl/news/pete-priscos-week-6-nfl-picks-odds-predictions/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Panthers",
+   "market": "Week 6: CAR @ PHI, Sun 1 PM ET",
+   "slug": "nfl-car-phi-2026-10-18",
+   "outcome": 0,
+   "entry": 0.605,
+   "event_date": "2026-10-18",
+   "why": "Hurts is on IR (calf clot), so Tanner McKee starts; the line flipped from PHI -1.5 to CAR -3 and 86 of 119 experts pick CAR.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-car-phi-2026-10-18"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://www.fanduel.com/research/eagles-vs-panthers-predictions-odds-picks-best-bets-for-nfl-week-6-2026",
+    "odds": [
+     -172,
+     144
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/car-at-phi-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/eagles-vs-panthers-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "CBS Sports",
+      "url": "https://www.cbssports.com/nfl/news/pete-priscos-week-6-nfl-picks-odds-predictions/"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Bills",
+   "market": "Week 6: BUF @ LV, Sun 4:25 PM ET",
+   "slug": "nfl-buf-lv-2026-10-18",
+   "outcome": 0,
+   "entry": 0.675,
+   "event_date": "2026-10-18",
+   "why": "The Raiders just lost 45-17 at New England; 104 of 109 experts and numberFire (68.4%) back the 4-1 Bills.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-buf-lv-2026-10-18"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://www.fanduel.com/research/bills-vs-raiders-predictions-odds-picks-best-bets-for-nfl-week-6-2026",
+    "odds": [
+     -245,
+     200
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/buf-at-lv-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/bills-vs-raiders-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     },
+     {
+      "name": "CBS Sports",
+      "url": "https://www.cbssports.com/nfl/news/pete-priscos-week-6-nfl-picks-odds-predictions/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Patriots",
+   "market": "Week 6: NYJ @ NE, Sun 1 PM ET",
+   "slug": "nfl-nyj-ne-2026-10-18",
+   "outcome": 1,
+   "entry": 0.755,
+   "event_date": "2026-10-18",
+   "why": "New England routed the Raiders 45-17 last week; 112 of 116 experts and numberFire (86.9%) back NE at home.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-nyj-ne-2026-10-18"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://www.fanduel.com/research/patriots-vs-jets-predictions-odds-picks-best-bets-for-nfl-week-6-2026",
+    "odds": [
+     -350,
+     280
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/nyj-at-ne-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/patriots-vs-jets-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     },
+     {
+      "name": "CBS Sports",
+      "url": "https://www.cbssports.com/nfl/news/pete-priscos-week-6-nfl-picks-odds-predictions/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Colts",
+   "market": "Week 6: TEN @ IND, Sun 1 PM ET",
+   "slug": "nfl-ten-ind-2026-10-18",
+   "outcome": 1,
+   "entry": 0.745,
+   "event_date": "2026-10-18",
+   "why": "The Titans are 0-5 and scored 3 points at Houston last week; 104 of 111 experts and numberFire (78.6%) back Indy.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-ten-ind-2026-10-18"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://www.fanduel.com/research/colts-vs-titans-predictions-odds-picks-best-bets-for-nfl-week-6-2026",
+    "odds": [
+     -330,
+     265
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/ten-at-ind-2026-10-18/"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/colts-vs-titans-predictions-odds-picks-best-bets-for-nfl-week-6-2026"
+     },
+     {
+      "name": "CBS Sports",
+      "url": "https://www.cbssports.com/nfl/news/pete-priscos-week-6-nfl-picks-odds-predictions/"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ]
+}

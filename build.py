@@ -82,6 +82,8 @@ def enrich(ed):
         elif TODAY>end:
             c,dt=stock_close_on(p['symbol'],end); p['cur'],p['final'],p['note']=c,c is not None,f"closed {dt}"
             if c is not None: exits[key]={'price':c,'note':p['note']}
+            else:  # horizon ended on a weekend/holiday: no exit close yet, so mark to the latest price until the next close
+                o=today_open_stock(p['symbol']); p['cur'],p['note']=((o or {}).get('last') or (s['last'] if s else None)),'live (exits at next close)'
         else:
             o=today_open_stock(p['symbol']); p['cur'],p['final'],p['note']=((o or {}).get('last') or (s['last'] if s else None)),False,'live'
         o=today_open_stock(p['symbol']) if not p['final'] else None
