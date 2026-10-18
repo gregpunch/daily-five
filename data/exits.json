@@ -34,5 +34,13 @@
  "2026-10-17/s4": {
   "price": 0.0,
   "note": "resolved"
+ },
+ "2026-10-18/s0": {
+  "price": 0.0,
+  "note": "resolved"
+ },
+ "2026-10-18/s3": {
+  "price": 1.0,
+  "note": "resolved"
  }
 }
