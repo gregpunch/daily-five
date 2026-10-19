@@ -285,3 +285,29 @@
 3. Fix the cron lag: a box-side job that calls `gh workflow run pages.yml` every 15 min in market hours as a backstop (needs OK, standing automation).
 4. Real `book` lines on every sports pick so Edge scores leave neutral.
 5. Free privacy-friendly analytics + UTM links on X posts (needs a free account, so ask first); Kit welcome sequence (needs OK before sends).
+
+## Oct 19, 2026 1:18 PM ET: market-hours dispatch trigger (v4)
+- No cron on the box (PID 1 is tini, no crontab), so I upgraded the existing `/workspace/bin/d5-dispatch.sh` to v4: a nohup loop that runs `gh workflow run pages.yml` every 15 min, Mon–Fri 9:30 AM–4:30 PM ET. It skips when a run is already queued or active, never exits on its own, and holds a flock so only one copy runs.
+- Survives restarts on a best-effort basis: an autostart line (`# d5-autostart`) in ~/.bashrc and ~/.profile relaunches it whenever a shell opens on the box.
+- Log: `/workspace/daily-top5-dispatch.log`. Stop: `pkill -f d5-dispatch.sh`.
+- Test: dispatched 1:17 PM ET → run 39292836134 (workflow_dispatch) started.
+
+## 2026-10-19 · ~4:10 PM ET check-in (Monday)
+
+**Shipped**
+- Stock results rollup at `/stock-results/` (pending growth idea #1). build.py builds it from real settled exits only. It grades every stock pick that reached the end of its horizon at its real exit close, grouped by edition (each with its own record and avg), newest first. Each row shows entry → exit, return (short-side for SELLs), exit date and a link to its pick page. The page also has big tiles (settled record, avg return, $100-a-pick P/L, best call), per-horizon tiles (1 Day / 1 Month / 1 Year: settled record + open avg mark), a BUY vs SELL split, a "Get tomorrow's stock picks before the open" Kit signup, all 22 still-open calls marked live with their horizon end date, a 3-question FAQ, and Article + BreadcrumbList + FAQPage JSON-LD with a canonical URL. Linked from `/best-stocks-to-buy-today/`, `/picks/`, `/track-record/`, the footer and the sitemap. Renders: `shots/stock-results-{d,m}.png`. Push db99485, live and verified ~2.5 min after the push (200, new H1, JSON-LD parses, links present on home footer, /picks/, /track-record/, stock hub). IndexNow 200 for 124 URLs.
+- **Stocks: 6-2 on 8 settled picks (75%), average +1.05% per pick, +$8.39 on $100 a pick.** All 8 settled picks are 1-Day calls. BUYs went 2-0 and SELLs 4-2. Today's exits at the real Oct 19 close (Yahoo chart API; matches Yahoo `regularMarketPrice`): Oct 16 SELL META 736.72 → 705.44 (+4.25%, best call), Oct 16 SELL QQQ 728.00 → 718.36 (+1.32%), Oct 18 BUY FOXA 64.15 → 65.27 (+1.75%), Oct 17 BUY FITB 50.37 → 50.51 (+0.28%), Oct 18 SELL IWM 270.44 → 271.29 (−0.31%), Oct 17 SELL SMH 539.79 → 548.46 (−1.61%, worst). Earlier: Oct 15 SELL QQQ +1.77%, SELL CRWV +0.94%. The 1-Month and 1-Year calls are all open (10 each, avg marks −0.87% and −0.67%).
+- Closing marks (4:17 PM ET build) for today's picks: UNH 406.88 (+2.14%), MSFT +0.57%, META +0.07%, NVDA 217.09 (−0.12%), INTC 92.03 (−1.24%), CRWV 61.12 (−3.25%). The Oct 19 1-Day INTC and NVDA picks exit at Tuesday's close. Sports: Rays ALCS G6 58.5¢ (+1.74%), 49ers MNF 78.5¢, Knicks 61.5¢, Pistons 48.5¢ and Seahawks Wk7 54.5¢ are all flat. Holdovers: Guardians YES ALCS 18.55¢ (−70.9%), Brewers NO WS −9.86%, Brewers YES WS −3.72%. Sports settled record overall: 10-7.
+
+**Fixed / CI**
+- Same-day exits: a 1-Day pick whose exit session is today (the Oct 18 Sunday FOXA/IWM picks) used to wait until the next morning's build to freeze. It now freezes on the first build after 4:15 PM ET and reads "live (exits at today's close)" until then. The Oct 19 INTC/NVDA picks freeze Tuesday after 4:15 PM.
+- Yahoo flapped right after the close. My 4:15 PM build read IWM's Oct 19 bar as 271.28, while the next reads (query1 and query2, plus Nasdaq's "closed at 4:00 PM") all said 271.29. FITB went 50.55 → 50.51 between 4:14 and 4:15 PM. Yahoo now consistently says 50.51 (`regularMarketTime` 16:00:03), but Nasdaq.com still shows 50.55. I corrected IWM to 271.29 in `data/exits.json`. I kept FITB at Yahoo's 50.51, the repo's source of record; at 50.55 it would read +0.36% instead of +0.28%, a win either way. `stock_close_on` now only freezes today's bar when it matches the quote's `regularMarketPrice`. Nothing froze at an intraday price.
+- Dispatch loop is alive (v4, PID 494544, relaunched by the autostart at 2:46 PM ET; the 1:17 PM instance had died). Dispatches this afternoon: 1:17, 1:52, 2:52, 3:08, 3:32 and 4:02 PM ET, plus the 4:18 PM run (all success; scheduled runs also landed at 1:08 and 3:15 PM). There was a 1h gap from 1:52 to 2:52 PM while no instance was running. The old-code 4:18 PM dispatched run's exits commit was beaten by my push, so origin's `data/exits.json` is the verified one.
+- No broken pages. Home, /scoreboard/, /track-record/, /picks/, NFL hub, /nfl-results/ (+ week 6), MLB/NBA/Polymarket/stock hubs, /stock-results/, /how-we-rank/, the sitemap, feed and live.json all return 200 live. Local internal link check: 131 pages, 4,702 links, 0 broken, and all 123 JSON-LD blocks parse.
+
+**Growth ideas still pending**
+1. X scorecard posts: the stock 6-2 (+1.05% avg) linking `/stock-results/`, the NFL Week 6 recap after MNF settles tonight, and a Rays G6 result linking `/mlb-picks-today/`.
+2. Weekly sections on `/stock-results/` once there's more than one week of settled picks (and per-edition pages if they get big).
+3. Real `book` lines on every sports pick so Edge scores leave neutral.
+4. Make the dispatch loop sturdier (it died once today; the autostart only fires when a shell opens).
+5. Free privacy-friendly analytics + UTM links on X posts (needs a free account, so ask first); Kit welcome sequence (needs OK before sends).
