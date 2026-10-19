@@ -33,7 +33,10 @@ def stock_close_on(sym,on):
     s=memo(('yd',sym),lambda: get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d&range=2y")['chart']['result'][0])
     if not s: return None,None
     for t,c in zip(s['timestamp'],s['indicators']['quote'][0]['close']):
-        if c and datetime.date.fromtimestamp(t)>=on: return round(c,4),datetime.date.fromtimestamp(t).isoformat()
+        d=datetime.date.fromtimestamp(t)
+        # Today's daily bar is still forming until the close: never freeze an intraday price as an exit.
+        if d==TODAY and NOW.time()<datetime.time(16,15): return None,None
+        if c and d>=on: return round(c,4),d.isoformat()
     return None,None
 def pmarket(slug):
     def f():
@@ -132,7 +135,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>Five ideas. Every morning. Free.</h2><p>Get the Daily Five in your inbox before the opening bell.</p></div>
 {sform('cta')}</section>
-</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · <a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
+</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def money(kind,v): return '—' if v is None else (f"{v*100:.1f}¢" if kind=='Sports' else f"${v:,.2f}")
@@ -774,7 +777,7 @@ def nfl_hub(eds):
     hb=f'<div class="hzblock"><h3 class="hzh">\U0001F3C6 Every NFL pick, graded</h3><div class="hublist">{rows}</div></div>' if rows else ''
     links=(f'<div class="hubcta"><a class="pill" href="{BASE}/#sports">Today\'s edition \u2192</a>'
            f'<a class="pill ghost" href="{BASE}/polymarket-picks-today/">All Polymarket picks \u2192</a>'
-           f'<a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard \u2192</a></div>')
+           f'<a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard \u2192</a>{nfl_results_links()}</div>')
     faqs=[
         ("What are the best NFL picks this week?",
          "We scan Polymarket's NFL game markets for big moves, heavy volume, and prices that look off versus sportsbook lines and public previews, then rank each BUY with the Daily Five Score. This week's plays are listed above by kickoff, with live odds."),
@@ -788,9 +791,11 @@ def nfl_hub(eds):
     fq='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
     latest=eds[0]['date'] if eds else TODAY.isoformat(); nice=datetime.date.fromisoformat(latest).strftime('%A, %B %-d, %Y')
     wl=f' (Week {wk})' if wk else ''
+    o=NFLWK[0] if NFLWK else None; lvx=(f" ({o['n_open']} still live)" if o and o['n_open'] else '')
+    wkban=(f'<a class="wkban" href="{BASE}{o["url"]}"><span class="kicker">\U0001F3C1 Week {o["wk"]} results</span><b>We went {o["w"]}-{o["l"]} in NFL Week {o["wk"]}, {pct(o["avg"])} avg return{lvx}.</b><span>Every pick graded, with entry price, final score and return \u2192</span></a>') if o else ''
     bodyh=(f'<section class="sbhero hubhero"><span class="kicker">\U0001F3C8 NFL picks</span><h1 class="pt">NFL picks this week{wl}</h1>'
            f'<p class="sub">AI-ranked NFL plays from The Daily Five, priced on Polymarket, sorted by kickoff, and graded in public after every game. Updated {nice}.</p>{links}</section>'
-           f'<div class="tiles">{tiles}</div>'
+           f'<div class="tiles">{tiles}</div>{wkban}'
            f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
            f'{gd_board([p for p,_ in slate],"NFL game day")}{tb}{hb}{fq}<p class="sub hub-foot">Trade stocks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
     title=f'NFL Picks This Week{wl}: Live Polymarket Odds & Results | {BRAND}'
@@ -803,6 +808,134 @@ def nfl_hub(eds):
     w('nfl-picks-this-week/index.html',shell(title,desc,P,bodyh,sch))
     return P
 
+NFLWK=[]  # weekly NFL results pages, newest first: dicts with wk, url, w, l, n_open, avg (filled by nfl_results)
+def _wk_start(d):
+    """NFL weeks run Tuesday to Monday (TNF ... MNF): the Tuesday on or before d."""
+    return d-datetime.timedelta(days=(d.weekday()-1)%7)
+def _ko_or_date(p):
+    k=kickoff(p)
+    if k: return k
+    if p.get('event_date'): return datetime.datetime.combine(datetime.date.fromisoformat(p['event_date']),datetime.time(13,0)).astimezone()
+    return None
+def _window(k):
+    """Kickoff-window heading for a results page."""
+    t=k.strftime('%-I:%M %p').replace(':00',''); dd=k.strftime('%b %-d')
+    wd=k.weekday()
+    if wd==3: return f"Thursday Night Football \u00b7 Thu {dd}, {t} ET"
+    if wd==0: return f"Monday Night Football \u00b7 Mon {dd}, {t} ET"
+    if wd==6 and k.hour<12: return f"International game \u00b7 Sun {dd}, {t} ET"
+    if wd==6 and k.hour<16: return f"Sunday early window \u00b7 {dd}, {t} ET"
+    if wd==6 and k.hour<19: return f"Sunday late window \u00b7 {dd}, {t} ET"
+    if wd==6: return f"Sunday Night Football \u00b7 {dd}, {t} ET"
+    return k.strftime('%A %b %-d, ')+t+' ET'
+def nfl_weeks(eds):
+    """Group NFL picks into weeks by kickoff (Tue..Mon) and fill NFLWK (newest first) with each week that has a settled pick.
+    The week number comes from the 'Week N' in our market text, so a Week 7 game picked early never lands in Week 6."""
+    groups={}
+    for ed in eds:
+        for p in ed['sports']:
+            if not (p.get('slug') or '').startswith('nfl-'): continue
+            k=_ko_or_date(p)
+            if k: groups.setdefault(_wk_start(k.date()),[]).append((p,ed,k))
+    NFLWK.clear()
+    for ws,lst in sorted(groups.items(),reverse=True):
+        wk=next((m.group(1) for p,_,_ in lst for m in [re.search(r'Week (\d+)',p['market'])] if m),None)
+        st=[(p,ed,k) for p,ed,k in lst if p.get('final') and p.get('ret') is not None]
+        if not wk or not st: continue
+        lst.sort(key=lambda x:(x[2],x[1]['date']))
+        w_=sum(p['ret']>0 for p,_,_ in st); avg=sum(p['ret'] for p,_,_ in st)/len(st)
+        op=[(p,ed,k) for p,ed,k in lst if not p.get('final')]
+        d1,d2=lst[0][2].date(),lst[-1][2].date()
+        rng=(f"{d1.strftime('%b %-d')}\u2013{d2.strftime('%-d')}" if d1.month==d2.month else f"{d1.strftime('%b %-d')}\u2013{d2.strftime('%b %-d')}")+f", {d2.year}"
+        NFLWK.append(dict(wk=wk,ws=ws,url=f'/nfl-results/week-{wk}/',w=w_,l=len(st)-w_,n_open=len(op),avg=avg,rng=rng,n=len(lst),lst=lst,st=st,op=op))
+def nfl_results(eds):
+    """Weekly NFL results recap pages (/nfl-results/week-N/) + an /nfl-results/ index, from real settled picks only.
+    A week is every NFL pick whose game kicks off Tue..Mon; its number comes from the 'Week N' in our market text.
+    A page appears once at least one game of that week has settled. Returns sitemap (url, lastmod) pairs."""
+    urls=[]
+    for o in NFLWK:
+        wk,ws,lst,st,w_,l_,avg,op,P,rng=o['wk'],o['ws'],o['lst'],o['st'],o['w'],o['l'],o['avg'],o['op'],o['url'],o['rng']
+        best=max(st,key=lambda x:x[0]['ret']); worst=min(st,key=lambda x:(x[0]['ret'],-x[0]['entry']))
+        def score_of(p):
+            g=pgame(p.get('slug'))
+            if not g or len(g['teams'])!=2 or not re.fullmatch(r'\d+-\d+',g['score'] or ''): return None
+            a,h=g['score'].split('-'); aw,hm=g['teams']; ps=pick_side(p,g,p.get('m') or {})
+            B_=lambda t,sd: f'<b>{E(t)}</b>' if sd==ps else E(t)
+            return f"{B_(aw['ab'],'a')} {a}\u2013{h} {B_(hm['ab'],'h')}", f"{aw['ab']} {a}, {hm['ab']} {h}"
+        def mtch(p):
+            mk=p['market'].split(':',1)[1] if ':' in p['market'] else p['market']
+            return mk.split(',')[0].replace('(London)','').strip()
+        def row(p,ed,k):
+            fin=p.get('final'); cls='open' if not fin else ('won' if p['ret']>0 else 'lost'); res={'open':'LIVE','won':'WON','lost':'LOST'}[cls]
+            sc=score_of(p) if fin else None
+            sub=(f"{sc[0]} \u00b7 Final" if sc else f"{E(mtch(p))} \u00b7 Final") if fin else f"{E(mtch(p))} \u00b7 {k.strftime('%a %-I:%M %p ET')}"
+            ext=money('Sports',p.get('cur'))
+            return (f'<a class="wkrow {cls}" href="{BASE}/picks/{p["id"]}/"><span class="wkres">{res}</span>'
+                    f'<span class="wkpk"><b>{E(p["label"])}</b><small>{sub}</small></span>'
+                    f'<span class="wkent"><small>entry</small>{money("Sports",p["entry"])} <i>\u2192</i> {ext}{"" if fin else " now"}</span>'
+                    f'{chip(p.get("ret"),fin)}<span class="wkdt">picked {datetime.date.fromisoformat(ed["date"]).strftime("%b %-d")}</span></a>')
+        secs=''; cur=None; buf=[]
+        def flush():
+            nonlocal secs
+            if not buf: return
+            s_=[p for p,_,_ in buf if p.get('final') and p.get('ret') is not None]; ww=sum(p['ret']>0 for p in s_)
+            rec=f'<small class="mut">{ww}-{len(s_)-ww}</small>' if s_ else '<small class="mut">live</small>'
+            secs_=f'<h3 class="hzh">\U0001F3C8 {E(_window(buf[0][2]))} {rec}</h3><div class="wklist">'+''.join(row(*x) for x in buf)+'</div>'
+            secs+=secs_
+        for x in lst:
+            if cur is None or abs((x[2]-cur).total_seconds())>2700: flush(); buf=[]; cur=x[2]
+            buf.append(x)
+        flush()
+        tot=sum(p['ret'] for p,_,_ in st)*100
+        fav=[p for p,_,_ in st if p['entry']>=0.6]; dog=[p for p,_,_ in st if p['entry']<0.6]
+        rec_=lambda ps_: f"{sum(p['ret']>0 for p in ps_)}-{sum(p['ret']<=0 for p in ps_)}"
+        nxt=int(wk)+1
+        lv=''.join(f" Still live: {E(p['label'])} ({E(mtch(p))}, {k.strftime('%a %-I:%M %p ET')}) at {money('Sports',p.get('cur'))}, entry {money('Sports',p['entry'])}." for p,_,k in op)
+        summ=(f"The Daily Five made {len(lst)} NFL Week {wk} picks on Polymarket ({rng}). {len(st)} have settled: {w_} won and {l_} lost ({w_/len(st)*100:.0f}%), "
+              f"an average return of {pct(avg)} per $1 staked at our entry price. $100 on every settled pick would be {'up' if tot>=0 else 'down'} ${abs(tot):,.0f}. "
+              f"Best call: {best[0]['label']} at {money('Sports',best[0]['entry'])} ({pct(best[0]['ret'])}). "
+              +(f"Toughest loss: {worst[0]['label']}, a {money('Sports',worst[0]['entry'])} favorite. " if worst[0]['ret']<0 and worst[0]['entry']>=0.5 else '')
+              +(f"Favorites (entry 60\u00a2+) went {rec_(fav)}; closer games (under 60\u00a2) went {rec_(dog)}." if fav and dog else ''))
+        sumh=E(summ)+lv
+        tiles=(f'<div class="wkbig"><div><span class="k">Week {wk} record</span><b class="{"up" if w_>=l_ else "dn"}">{w_}\u2013{l_}</b><span class="s">{len(st)} settled{f" \u00b7 {len(op)} still live" if op else ""}</span></div>'
+               f'<div><span class="k">Avg return</span><b class="{"up" if avg>=0 else "dn"}">{pct(avg)}</b><span class="s">per $1 at entry</span></div>'
+               f'<div><span class="k">$100 a pick</span><b class="{"up" if tot>=0 else "dn"}">{"+" if tot>=0 else "\u2212"}${abs(tot):,.0f}</b><span class="s">on ${len(st)*100:,} staked</span></div>'
+               f'<div><span class="k">Best call</span><b class="up">{pct(best[0]["ret"])}</b><span class="s">{E(best[0]["label"])} at {money("Sports",best[0]["entry"])}</span></div></div>')
+        ask=(f'<section class="signup wksign"><div><span class="kicker">\U0001F4EC Week {nxt} picks</span><h2>Get our Week {nxt} NFL picks before kickoff.</h2>'
+             f'<p>Every play lands in the free 7 AM ET email with the entry price and the why, then gets graded here in public, wins and losses. No spam, unsubscribe anytime.</p></div>{sform("wk")}</section>')
+        cnav,csch=crumbs([('Home','/'),('NFL picks','/nfl-picks-this-week/'),('NFL results','/nfl-results/'),(f'Week {wk} results',P)])
+        others=''.join(f'<a class="pill ghost" href="{BASE}{o2["url"]}">Week {o2["wk"]}: {o2["w"]}-{o2["l"]} \u2192</a>' for o2 in NFLWK if o2['wk']!=wk)
+        h1=f"NFL Week {wk} Results: Our Picks Went {w_}-{l_}"
+        bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">\U0001F3C8 NFL Week {wk} results \u00b7 {rng}</span><h1 class="pt">{E(h1)}</h1>'
+               f'<p class="sub wksum">{sumh}</p><div class="hubcta"><a class="pill" href="{BASE}/nfl-picks-this-week/">This week\'s NFL picks \u2192</a>'
+               f'<a class="pill ghost" href="{BASE}/track-record/">Full track record \u2192</a><a class="pill ghost" href="{BASE}/picks/">All picks by day \u2192</a>{others}</div></section>'
+               f'{tiles}{ask}'
+               f'<h2 class="h2s">Every Week {wk} pick, graded</h2><p class="sub hub-lead">Entry is the real Polymarket price of our side when we published. A win settles at 100\u00a2, a loss at 0\u00a2; return is per $1 staked at entry. Tap any pick for its line-movement chart.</p>{secs}'
+               +(f'<h2 class="h2s">Still live</h2><div class="grid g3">{"".join(sp_card(p,"") for p,_,_ in op)}</div>' if op else '')+
+               f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Results use real Polymarket prices; prediction markets may not be legal where you live, and you can lose your entire stake.</p>')
+        title=f"NFL Week {wk} Results & Picks Recap: {w_}-{l_}, {pct(avg)} Avg Return | {BRAND}"
+        desc=f"Our NFL Week {wk} picks graded ({rng}): {w_}-{l_} on {len(st)} settled Polymarket plays, {pct(avg)} average return. Every pick with entry, result and return."[:155]
+        modified=TODAY.isoformat() if op else max(lastmod(p,ed) for p,ed,_ in lst)
+        pub=min(TODAY,ws+datetime.timedelta(days=6)).isoformat()
+        art={"@type":"Article","headline":h1,"description":desc,"datePublished":pub,"dateModified":modified,"author":{"@type":"Organization","name":BRAND},
+             "publisher":{"@type":"Organization","name":BRAND,"logo":{"@type":"ImageObject","url":SITE+"/favicon.svg"}},"mainEntityOfPage":SITE+P,
+             "about":{"@type":"SportsOrganization","name":"National Football League"},
+             "mentions":[{"@type":"SportsEvent","name":mtch(p),"startDate":k.isoformat(),"sport":"American football","url":f"{SITE}/picks/{p['id']}/"} for p,_,k in lst]}
+        if OGIMG['v']: art['image']=SITE+OGIMG['v']
+        w(P.strip('/')+'/index.html',shell(title,desc,P,bodyh,{"@context":"https://schema.org","@graph":[art,csch]}))
+        urls.append((P,modified))
+    if NFLWK:
+        cnav,csch=crumbs([('Home','/'),('NFL picks','/nfl-picks-this-week/'),('NFL results','/nfl-results/')])
+        rows=''.join(f'<a class="wkrow {"won" if o["w"]>=o["l"] else "lost"}" href="{BASE}{o["url"]}"><span class="wkres">WK {o["wk"]}</span><span class="wkpk"><b>Week {o["wk"]}: {o["w"]}-{o["l"]}</b><small>{o["rng"]} \u00b7 {o["n"]} picks{f" \u00b7 {o['n_open']} live" if o["n_open"] else ""}</small></span><span class="wkent"><small>avg</small>{pct(o["avg"])}</span>{chip(o["avg"])}<span class="wkdt">recap \u2192</span></a>' for o in NFLWK)
+        tw=sum(o['w'] for o in NFLWK); tl=sum(o['l'] for o in NFLWK)
+        b=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">\U0001F3C8 NFL results</span><h1 class="pt">NFL picks results, week by week</h1><p class="sub">Every NFL play The Daily Five has made on Polymarket, graded by week: {tw}-{tl} so far. Each recap lists every pick with its entry price, final score and return.</p>'
+           f'<div class="hubcta"><a class="pill" href="{BASE}/nfl-picks-this-week/">This week\'s NFL picks \u2192</a><a class="pill ghost" href="{BASE}/track-record/">Track record \u2192</a></div></section><div class="wklist">{rows}</div>')
+        w('nfl-results/index.html',shell(f"NFL Picks Results by Week: {tw}-{tl} on Polymarket | {BRAND}",f"Week-by-week results of every Daily Five NFL pick on Polymarket: {tw}-{tl} so far, with entry prices, final scores and returns.",'/nfl-results/',b,
+              {"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"NFL picks results by week","url":SITE+"/nfl-results/"},csch]}))
+        urls.insert(0,('/nfl-results/',max(u[1] for u in urls)))
+    return urls
+def nfl_results_links(cls='pill ghost'):
+    return ''.join(f'<a class="{cls}" href="{BASE}{o["url"]}">Week {o["wk"]} results: {o["w"]}-{o["l"]} \u2192</a>' for o in NFLWK[:3])
 def seo_pages(eds,rows,tiles):
     urls=[]; by={}
     allp=[(p,ed) for ed in eds for p in ed['finance']+ed['sports']]
@@ -822,7 +955,7 @@ def seo_pages(eds,rows,tiles):
         w(f"ticker/{slug}/index.html",shell(title,desc,f"/ticker/{slug}/",bodyh,sch)); urls.append((f"/ticker/{slug}/",max(lastmod(p,ed) for p,ed in lst)))
     allp=''.join(f'<a class="rc" href="{BASE}/picks/{r["id"]}/"><b class="{r["action"].lower()}">{r["action"]}</b> {E(r["pick"])} \u00b7 {E(r["horizon"])} \u00b7 {r["date"]} {chip(r["ret"],r["final"])}</a>' for r in rows)
     tk=''.join(f'<a class="tkchip" href="{BASE}/ticker/{s}/">{E(l[0][0]["tname"])}</a>' for s,l in by.items())
-    tb=(f'<section class="sbhero"><span class="kicker">\U0001F3C6 Track record</span><h1 class="pt">Every pick, graded in public</h1><p class="sub">We publish an entry price from a real quote for every pick, then mark it to live market data until its horizon ends (1 Day, 1 Month, 1 Year) or its market resolves. Nothing gets deleted. SELL returns are short-side. See the <a href="{BASE}/scoreboard/">Scoreboard</a> for charts.</p></section>'
+    tb=(f'<section class="sbhero"><span class="kicker">\U0001F3C6 Track record</span><h1 class="pt">Every pick, graded in public</h1><p class="sub">We publish an entry price from a real quote for every pick, then mark it to live market data until its horizon ends (1 Day, 1 Month, 1 Year) or its market resolves. Nothing gets deleted. SELL returns are short-side. See the <a href="{BASE}/scoreboard/">Scoreboard</a> for charts.</p>{('<div class="hubcta">'+nfl_results_links('pill')+'<a class="pill ghost" href="'+BASE+'/nfl-results/">All NFL weeks \u2192</a></div>') if NFLWK else ''}</section>'
         f'<div class="tiles">{tiles}</div><h2 class="h2s">Tickers &amp; markets</h2><div class="tks">{tk}</div><h2 class="h2s">All picks</h2><div class="rcs col">{allp}</div>')
     w('track-record/index.html',shell(f"Track Record: Win Rate & Returns of Every Pick | {BRAND}","The Daily Five's public track record: win rate and average return by horizon for every stock and sports-market pick, marked to real prices.",'/track-record/',tb,{"@context":"https://schema.org","@type":"CollectionPage","name":"Daily Five Track Record","url":SITE+"/track-record/"}))
     # /picks/ index: every pick page, newest edition first (the parent of every /picks/<id>/ URL used to 404)
@@ -831,7 +964,7 @@ def seo_pages(eds,rows,tiles):
     rec=lambda rs: f"{sum(r['ret']>0 for r in rs if r['final'] and r['ret'] is not None)}-{sum(r['ret']<=0 for r in rs if r['final'] and r['ret'] is not None)}"
     secs=''.join(f'<h2 class="h2s"><a href="{BASE}/{d}/">{datetime.date.fromisoformat(d).strftime("%A, %B %-d")}</a> <small class="mut">{len(rs)} picks \u00b7 settled {rec(rs)}</small></h2><div class="rcs col">'+''.join(f'<a class="rc" href="{BASE}/picks/{r["id"]}/"><b class="{r["action"].lower()}">{r["action"]}</b> {E(r["pick"])} \u00b7 {E(r["horizon"])} {chip(r["ret"],r["final"])}</a>' for r in rs)+'</div>' for d,rs in sorted(byd.items(),reverse=True))
     cnav,csch=crumbs([('Home','/'),('All picks','/picks/')])
-    pb=(f'{cnav}<section class="sbhero"><span class="kicker">\U0001F5C2 All picks</span><h1 class="pt">Every Daily Five pick, by day</h1><p class="sub">{len(rows)} stock and prediction-market picks since {min(byd)}, each with its entry price, live mark and result. Hubs: <a href="{BASE}/best-stocks-to-buy-today/">stock picks</a>, <a href="{BASE}/nfl-picks-this-week/">NFL picks</a>, <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a>.</p></section>{secs}')
+    pb=(f'{cnav}<section class="sbhero"><span class="kicker">\U0001F5C2 All picks</span><h1 class="pt">Every Daily Five pick, by day</h1><p class="sub">{len(rows)} stock and prediction-market picks since {min(byd)}, each with its entry price, live mark and result. Hubs: <a href="{BASE}/best-stocks-to-buy-today/">stock picks</a>, <a href="{BASE}/nfl-picks-this-week/">NFL picks</a>, <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a>.</p>{('<div class="hubcta">'+nfl_results_links('pill')+'</div>') if NFLWK else ''}</section>{secs}')
     w('picks/index.html',shell(f"All Picks: Every Stock & Prediction-Market Call, by Day | {BRAND}",f"All {len(rows)} Daily Five picks by day: stock BUY/SELL calls and Polymarket sports plays with entry prices, live marks and settled results.",'/picks/',pb,{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"All Daily Five picks","url":SITE+"/picks/"},csch]}))
     urls.insert(0,('/picks/',TODAY.isoformat()))
     return urls
@@ -848,6 +981,7 @@ def main():
     for ed in eds:
         for p in ed['finance']+ed['sports']: score_pick(p,hits)
         ed['finance'].sort(key=lambda p:-p['score']); ed['sports'].sort(key=lambda p:-p['score'])
+    nfl_weeks(eds)
     items=[]
     for i,ed in enumerate(eds):
         prev=eds[i+1] if i+1<len(eds) else None
@@ -882,7 +1016,7 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfh=nfl_hub(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds); nfh=nfl_hub(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
@@ -891,7 +1025,7 @@ def main():
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
     # lastmod: hubs today; an edition page changes until all its picks settle; pick/ticker pages from lastmod()
     edlm=lambda e: max([lastmod(p,e) for p in e['finance']+e['sports']]+[e['date']])
-    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh,'/archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds]+extra
+    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh,'/archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds]+nfr+extra
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
     w(INDEXNOW_KEY+'.txt',INDEXNOW_KEY)  # IndexNow key file (Bing, Yandex, Seznam, Naver); indexnow.py pings after deploy
