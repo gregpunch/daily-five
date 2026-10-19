@@ -1,0 +1,460 @@
+{
+ "date": "2026-10-19",
+ "headline": "Buy the AI-debt panic: CoreWeave tops Monday's board as chips bounce into a monster earnings week; 49ers on MNF, Rays one win from the World Series",
+ "top_call": "Street targets sit more than double CoreWeave's price after its 25% bond-scare crash. Buy the AI-debt panic for the year.",
+ "backdrop": "Nasdaq 100 futures +1.1% and S&P 500 futures +0.5% early Monday as chips rebound from last week's AI rout (Nasdaq -4.5%, S&P -2%); the 10-year yield eased to ~5.09%. Netflix, Meta and Tesla report this week.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/18/stock-market-today-live-updates.html"
+ },
+ "finance": [
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "INTC",
+   "symbol": "INTC",
+   "entry": 93.19,
+   "entry_note": "Yahoo Finance, Mon Oct 19 7:17 AM ET premarket",
+   "why": "Our read: JPMorgan lifts Intel to Neutral after a 36% slide from its June peak; shares are up ~4% premarket.",
+   "risk": "JPMorgan kept its $85 target, below the price, and flagged market-share losses; premarket pops can fade by the close.",
+   "source": {
+    "name": "TipRanks",
+    "url": "https://www.tipranks.com/news/j-p-morgans-take-on-intel"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/j-p-morgans-take-on-intel"
+     },
+     {
+      "name": "Benzinga",
+      "url": "https://www.benzinga.com/news/26/10/62431993/jp-morgan-upgrades-intel-neutral-maintains-price-target-85"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/jpmorgan-upgrades-intel-stock-rating-to-neutral-on-valuation-93CH-4956501"
+     },
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/18/stock-market-today-live-updates.html"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "NVDA",
+   "symbol": "NVDA",
+   "entry": 217.34,
+   "entry_note": "Yahoo Finance, Mon Oct 19 7:17 AM ET premarket",
+   "why": "Our read: chips lead the rebound after the chip index's longest losing streak since 2008; Nvidia is up ~1.5% premarket.",
+   "risk": "Meta and Tesla capex commentary this week could revive AI-spending fears, and the 10-year yield is still above 5%.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/stock-market-news/us-stock-futures-climb-as-investors-return-to-ai-trade-after-selloff-4956195"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/us-stock-futures-climb-as-investors-return-to-ai-trade-after-selloff-4956195"
+     },
+     {
+      "name": "WSJ",
+      "url": "https://www.wsj.com/finance/stocks/stock-futures-rise-as-investors-make-cautious-return-to-risk-cd3b0e6a"
+     },
+     {
+      "name": "Barron's",
+      "url": "https://www.barrons.com/livecoverage/stock-market-news-today-101926"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "META",
+   "symbol": "META",
+   "entry": 704.97,
+   "entry_note": "Yahoo Finance, Mon Oct 19 7:16 AM ET premarket",
+   "why": "Morgan Stanley lifts its PT to $820 from $775 before Wednesday's report; Truist ($1,000) and Citi ($895) also raised.",
+   "risk": "Options imply a ~4.9% earnings move; a bigger 2027 capex guide could reignite the AI-spending selloff.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/analyst-ratings/morgan-stanley-raises-meta-stock-price-target-on-ai-growth-prospects-93CH-4956487"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/morgan-stanley-raises-meta-stock-price-target-on-ai-growth-prospects-93CH-4956487"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/5-big-analyst-ai-moves-meta-gets-streethigh-pt-salesforce-double-upgraded-4955491"
+     },
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/citi-raises-meta-price-target-155138991.html"
+     },
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/18/top-analysts-are-bullish-on-the-growth-potential-of-these-3-stocks.html"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "MSFT",
+   "symbol": "MSFT",
+   "entry": 530.5,
+   "entry_note": "Yahoo Finance, Mon Oct 19 7:15 AM ET premarket",
+   "why": "StoneX lifts its PT to $600 on AI progress ahead of Oct 28 earnings; UBS ($675) and TD Cowen ($625) also raised.",
+   "risk": "StoneX says the reaction hinges on Azure; a miss there or heavier capex could weigh on the stock.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/analyst-ratings/stonex-raises-microsoft-stock-price-target-to-600-on-ai-progress-93CH-4954496"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/stonex-raises-microsoft-stock-price-target-to-600-on-ai-progress-93CH-4954496"
+     },
+     {
+      "name": "StreetInsider",
+      "url": "https://www.streetinsider.com/Analyst+Comments/Microsoft+%28MSFT%29+PT+Raised+to+%24600+at+StoneX/27195370.html"
+     },
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/the-fly/microsoft-price-target-raised-to-600-from-525-at-stonex-thefly-news"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "CRWV",
+   "symbol": "CRWV",
+   "entry": 63.17,
+   "entry_note": "Yahoo Finance, Mon Oct 19 7:17 AM ET premarket",
+   "why": "Down 25% last week on bond fears; Dan Ives calls it a buying chance and the average target implies ~134% upside.",
+   "risk": "Its bonds trade near distressed levels and Q3 interest could top 3x operating income; a high-risk, high-volatility name.",
+   "source": {
+    "name": "TipRanks",
+    "url": "https://www.tipranks.com/news/why-are-coreweave-nebius-and-iren-stocks-rising-in-premarket-today-october-19"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/why-are-coreweave-nebius-and-iren-stocks-rising-in-premarket-today-october-19"
+     },
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/15/coreweave-stock-deutsche-bank-buy-rating.html"
+     },
+     {
+      "name": "Markets Insider",
+      "url": "https://markets.businessinsider.com/news/stocks/coreweave-market-reaction-to-rising-yields-too-harsh-says-jefferies-1036632626"
+     },
+     {
+      "name": "TradeSmrt",
+      "url": "https://tradesmrt.com/en/news/coreweave-wall-street-defends-stock-deutsche-bank-cantor-fitzgerald-buy-the-dip/"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://cn.investing.com/news/stock-market-news/article-3614145"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/cantor-fitzgerald-reiterates-coreweave-stock-rating-on-funding-outlook-93CH-4954023"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/coreweave-stock-fell-25-last-081349155.html"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "UNH",
+   "symbol": "UNH",
+   "entry": 398.35,
+   "entry_note": "Yahoo Finance, Mon Oct 19 7:14 AM ET premarket",
+   "why": "Q3 beat-and-raise (2026 EPS of at least $20.50); Morgan Stanley's top-ranked analyst reiterates Buy with a $529 target.",
+   "risk": "Medicare Advantage cost trends or policy changes could stall the turnaround the bulls are paying for.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/18/top-analysts-are-bullish-on-the-growth-potential-of-these-3-stocks.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/18/top-analysts-are-bullish-on-the-growth-potential-of-these-3-stocks.html"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/truist-reiterates-buy-on-unitedhealth-stock-keeps-500-target-93CH-4949298"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/mizuho-reiterates-unitedhealth-stock-rating-after-q3-earnings-beat-93CH-4946423"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/bernstein-reiterates-unitedhealth-stock-rating-on-strong-earnings-93CH-4949073"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "Anthropic commits 5% of its shares to a new Public Benefit Fund weeks before its expected IPO",
+   "why": "The board can add 2% more for every 50% rise in value; with founder pledges, ~20% of shares are now earmarked for public benefit.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/18/anthropic-ai-public-benefit-fund.html"
+   }
+  },
+  {
+   "category": "Infrastructure",
+   "headline": "Microsoft pulls out of Nscale's Essex AI data centre over power-supply delays",
+   "why": "Grid officials reportedly couldn't power the ~23,000-GPU site until the 2030s; power, not chips, is now the AI buildout's limit.",
+   "source": {
+    "name": "The Guardian",
+    "url": "https://www.theguardian.com/uk-news/2026/oct/18/microsoft-drops-huge-ai-datacentre-project-in-essex-over-power-supply-concerns"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "Execs see only 7 to 10 of hundreds of neoclouds surviving a shakeout as Nvidia backstops them with ~$20B in leases",
+   "why": "Read it next to CoreWeave's 25% drop: GPU renters lean on a few customers and on Nvidia's credit, and most may not make it.",
+   "source": {
+    "name": "The Information",
+    "url": "https://www.theinformation.com/newsletters/ai-infrastructure/neocloud-shakeout-looms-nvidia-lot-lose"
+   }
+  },
+  {
+   "category": "Jobs",
+   "headline": "Anthropic says junior technical hires fell to 9% from 27% as agent runtime hit 6x staff work hours",
+   "why": "Total technical hiring still grew, but a frontier lab is showing in its own data how agents reshape entry-level work.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/17/anthropic-says-its-workforce-has-become-less-junior-and-is-spending-more-time-in-meetings/"
+   }
+  },
+  {
+   "category": "Research",
+   "headline": "Claude traces the mystery seeds behind NIST's P-256 and other elliptic curves to an old C random-number generator",
+   "why": "It answers a decades-old question about curves that secure much of the web, and points away from backdoor theories.",
+   "source": {
+    "name": "Anthropic",
+    "url": "https://www.anthropic.com/research/ecdsa-curve-origins"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "49ers",
+   "market": "Week 6 MNF: WAS @ SF, Mon 8:15 PM ET",
+   "slug": "nfl-was-sf-2026-10-20",
+   "outcome": 1,
+   "entry": 0.785,
+   "event_date": "2026-10-19",
+   "why": "51 of 52 national experts pick the 5-0 49ers (Athlon); numberFire gives SF 84.1% against 78.5¢ here.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-was-sf-2026-10-20"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.nbcsports.com/betting/nfl/news/49ers-vs-commanders-odds-expert-picks-team-and-player-news-betting-trends-and-stats",
+    "odds": [
+     -455,
+     350
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Athlon Sports",
+      "url": "https://www.bnd.com/sports/article317671993.html"
+     },
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/49ers-vs-commanders-predictions-odds-picks-best-bets-for-nfl-week-6-monday-night-football-2026"
+     },
+     {
+      "name": "SharpModels",
+      "url": "https://www.sharpmodels.com/nfl/matchups/2026-10-19/san-francisco-49ers-vs-washington-commanders"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Rays",
+   "market": "ALCS Game 6: CLE @ TB, Mon 8:08 PM ET",
+   "slug": "mlb-cle-tb-2026-10-19",
+   "outcome": 1,
+   "entry": 0.575,
+   "event_date": "2026-10-19",
+   "why": "Up 3-2, Tampa Bay can clinch at home behind Freddy Peralta (1 ER in his last 16.2 IP); numberFire: TB 60.3%.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/mlb-cle-tb-2026-10-19"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://www.fanduel.com/research/rays-vs-guardians-mlb-odds-prediction-point-spread-over-under-and-betting-trends-alcs-game-5-10-19-2026",
+    "odds": [
+     -152,
+     128
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "FanDuel Research",
+      "url": "https://www.fanduel.com/research/rays-vs-guardians-mlb-odds-prediction-point-spread-over-under-and-betting-trends-alcs-game-5-10-19-2026"
+     },
+     {
+      "name": "PickDawgz",
+      "url": "https://pickdawgz.com/mlb-picks/guardians-vs-rays-prediction-10-19-2026-todays-mlb-picks/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Pistons",
+   "market": "NBA opener: BOS @ DET, Tue 3 PM ET",
+   "slug": "nba-bos-det-2026-10-20",
+   "outcome": 1,
+   "entry": 0.485,
+   "event_date": "2026-10-20",
+   "why": "Detroit had the East's best record last season and kept its core; Boston dealt Jaylen Brown. FanDuel: a pick'em.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-bos-det-2026-10-20"
+   },
+   "book": {
+    "name": "FanDuel",
+    "url": "https://sportsbookish.com/sports/nba/2026/boston-vs-detroit-oct-20",
+    "odds": [
+     -108,
+     -108
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Bookmakers Review",
+      "url": "https://www.bookmakersreview.com/analysis/nba-opening-day-odds/628160/"
+     },
+     {
+      "name": "SportsBookISH",
+      "url": "https://sportsbookish.com/sports/nba/2026/boston-vs-detroit-oct-20"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Covers",
+      "url": "https://www.covers.com/sport/basketball/nba/matchup/385502/picks"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Knicks",
+   "market": "NBA opener: PHI @ NYK, Tue 7 PM ET",
+   "slug": "nba-phi-nyk-2026-10-20",
+   "outcome": 1,
+   "entry": 0.615,
+   "event_date": "2026-10-20",
+   "why": "Banner night at MSG as LeBron and Jaylen Brown debut for Philly; Covers' opening card takes NY -4.5.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-phi-nyk-2026-10-20"
+   },
+   "book": {
+    "name": "USA TODAY Sports",
+    "url": "https://sportsdata.usatoday.com/basketball/nba/odds/3015425",
+    "odds": [
+     -185,
+     155
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Covers",
+      "url": "https://www.covers.com/nba/opening-night-odds-picks-predictions-2026"
+     },
+     {
+      "name": "Bookmakers Review",
+      "url": "https://www.bookmakersreview.com/analysis/nba-opening-day-odds/628160/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Seahawks",
+   "market": "Week 7 SNF: KC @ SEA, Sun Oct 25 8:20 PM ET",
+   "slug": "nfl-kc-sea-2026-10-26",
+   "outcome": 1,
+   "entry": 0.545,
+   "event_date": "2026-10-25",
+   "why": "Stats Insider's 10,000-sim model gives Seattle 58% at home vs the 5-0 Chiefs; bet365's -138 is ~56% no-vig vs 54.5¢.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-kc-sea-2026-10-26"
+   },
+   "book": {
+    "name": "bet365",
+    "url": "https://www.foxsports.com/stories/nfl/2026-nfl-odds-week-7-lines-spreads-results-all-14-games",
+    "odds": [
+     -138,
+     118
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Stats Insider",
+      "url": "https://www.statsinsider.com.au/news/seahawks-vs-chiefs-prediction-and-preview-nfl-week-7-2026"
+     },
+     {
+      "name": "Hunchmeter",
+      "url": "https://hunchmeter.com/nfl/games/kc-at-sea-2026-10-25/"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ]
+}
