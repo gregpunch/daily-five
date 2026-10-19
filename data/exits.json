@@ -62,5 +62,13 @@
  "2026-10-17/s3": {
   "price": 1.0,
   "note": "resolved"
+ },
+ "2026-10-18/s2": {
+  "price": 1.0,
+  "note": "resolved"
+ },
+ "2026-10-16/s3": {
+  "price": 1.0,
+  "note": "resolved"
  }
 }
