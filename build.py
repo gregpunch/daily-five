@@ -36,6 +36,9 @@ def stock_close_on(sym,on):
         d=datetime.date.fromtimestamp(t)
         # Today's daily bar is still forming until the close: never freeze an intraday price as an exit.
         if d==TODAY and NOW.time()<datetime.time(16,15): return None,None
+        # Right after the close Yahoo's servers can briefly disagree (one says 271.28, the next 271.29): freeze today's bar
+        # only when it matches the quote's regularMarketPrice, else wait for the next build.
+        if c and d==TODAY and abs(round(c,4)-(s['meta'].get('regularMarketPrice') or 0))>0.005: return None,None
         if c and d>=on: return round(c,4),d.isoformat()
     return None,None
 def pmarket(slug):
@@ -82,11 +85,11 @@ def enrich(ed):
         key=f"{ed['date']}/f{i}"; end=d0+datetime.timedelta(days=HZ.get(p['horizon'],1)); s=yseries(p['symbol'],d0)
         p['pts']=[(t,c) for t,c in (s['pts'] if s else []) if t>=start]
         if key in exits: p['cur'],p['final'],p['note']=exits[key]['price'],True,exits[key]['note']
-        elif TODAY>end:
+        elif TODAY>=end:
             c,dt=stock_close_on(p['symbol'],end); p['cur'],p['final'],p['note']=c,c is not None,f"closed {dt}"
             if c is not None: exits[key]={'price':c,'note':p['note']}
-            else:  # horizon ended on a weekend/holiday: no exit close yet, so mark to the latest price until the next close
-                o=today_open_stock(p['symbol']); p['cur'],p['note']=((o or {}).get('last') or (s['last'] if s else None)),'live (exits at next close)'
+            else:  # exit session still forming (before 4:15 PM ET) or horizon ended on a weekend/holiday: mark live until that close is final
+                o=today_open_stock(p['symbol']); p['cur'],p['note']=((o or {}).get('last') or (s['last'] if s else None)),('live (exits at today\'s close)' if end==TODAY else 'live (exits at next close)')
         else:
             o=today_open_stock(p['symbol']); p['cur'],p['final'],p['note']=((o or {}).get('last') or (s['last'] if s else None)),False,'live'
         o=today_open_stock(p['symbol']) if not p['final'] else None
@@ -135,7 +138,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>Five ideas. Every morning. Free.</h2><p>Get the Daily Five in your inbox before the opening bell.</p></div>
 {sform('cta')}</section>
-</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
+</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def money(kind,v): return '—' if v is None else (f"{v*100:.1f}¢" if kind=='Sports' else f"${v:,.2f}")
@@ -648,7 +651,7 @@ def best_stocks_hub(eds):
     # Past BUYs not in today (for "recent" section if we want extra)
     links=(f'<div class="hubcta"><a class="pill" href="{BASE}/how-we-rank/">How we rank →</a>'
            f'<a class="pill ghost" href="{BASE}/scoreboard/">Full scoreboard →</a>'
-           f'<a class="pill ghost" href="{BASE}/track-record/">Track record →</a></div>')
+           f'<a class="pill ghost" href="{BASE}/track-record/">Track record →</a>{stock_results_link()}</div>')
     faqs=[
         ("How do you pick the best stocks to buy today?",
          "Every morning we pull public analyst notes, upgrades, and market ideas, then score each BUY with the Daily Five Score: source credibility, consensus, edge vs analyst targets, and risk/reward. The highest-scoring calls make the page."),
@@ -1046,6 +1049,84 @@ def nfl_results(eds):
     return urls
 def nfl_results_links(cls='pill ghost'):
     return ''.join(f'<a class="{cls}" href="{BASE}{o["url"]}">Week {o["wk"]} results: {o["w"]}-{o["l"]} \u2192</a>' for o in NFLWK[:3])
+STK={}  # stock results rollup stats (filled by stock_stats before any page renders; empty until a stock pick settles)
+def stock_stats(eds):
+    """Settled vs open finance picks, per edition, for /stock-results/ and the links to it. Real settled exits only."""
+    STK.clear()
+    st=[(p,ed) for ed in eds for p in ed['finance'] if p.get('final') and p.get('ret') is not None]
+    if not st: return
+    w_=sum(p['ret']>0 for p,_ in st); avg=sum(p['ret'] for p,_ in st)/len(st)
+    STK.update(url='/stock-results/',st=st,w=w_,l=len(st)-w_,avg=avg,
+               op=[(p,ed) for ed in eds for p in ed['finance'] if not p.get('final')])
+def stock_results_link(cls='pill ghost'):
+    return f'<a class="{cls}" href="{BASE}/stock-results/">Stock results: {STK["w"]}-{STK["l"]} \u2192</a>' if STK else ''
+def stock_results(eds):
+    """/stock-results/: every settled stock pick graded at its real exit close, grouped by edition, plus open calls marked live."""
+    if not STK: return []
+    st,w_,l_,avg,op,P=STK['st'],STK['w'],STK['l'],STK['avg'],STK['op'],STK['url']
+    n=len(st); tot=sum(p['ret'] for p,_ in st)*100
+    best=max(st,key=lambda x:x[0]['ret']); worst=min(st,key=lambda x:x[0]['ret'])
+    d=lambda s: datetime.date.fromisoformat(s)
+    exitd=lambda p: (re.search(r'\d{4}-\d{2}-\d{2}',p.get('note') or '') or [None])[0]
+    def row(p,ed):
+        fin=p.get('final'); cls='open' if not fin else ('won' if p['ret']>0 else 'lost'); res={'open':'OPEN','won':'WIN','lost':'LOSS'}[cls]
+        xd=exitd(p) if fin else None
+        sub=f"{E(p['horizon'])} \u00b7 "+(f"exit at the {d(xd).strftime('%a %b %-d')} close" if xd else ('exits at the next close' if 'next close' in (p.get('note') or '') else f"marked live \u00b7 horizon ends {(lambda x: x.strftime('%b %-d' if x.year==TODAY.year else '%b %-d, %Y'))(d(ed['date'])+datetime.timedelta(days=HZ.get(p['horizon'],1)))}"))
+        return (f'<a class="wkrow {cls}" href="{BASE}/picks/{p["id"]}/"><span class="wkres">{res}</span>'
+                f'<span class="wkpk"><b>{p["action"]} {E(p["label"])}</b><small>{sub}</small></span>'
+                f'<span class="wkent"><small>entry</small>{money("Finance",p["entry"])} <i>\u2192</i> {money("Finance",p.get("cur"))}{"" if fin else " now"}</span>'
+                f'{chip(p.get("ret"),fin)}<span class="wkdt">picked {d(ed["date"]).strftime("%b %-d")}</span></a>')
+    rec_=lambda ps_: f"{sum(p['ret']>0 for p in ps_)}-{sum(p['ret']<=0 for p in ps_)}"
+    byed={}
+    for p,ed in st: byed.setdefault(ed['date'],[]).append((p,ed))
+    secs=''
+    for dt,lst in sorted(byed.items(),reverse=True):
+        ps_=[p for p,_ in lst]; a_=sum(p['ret'] for p in ps_)/len(ps_)
+        secs+=(f'<h3 class="hzh">\U0001F4C8 <a href="{BASE}/{dt}/">{d(dt).strftime("%A, %B %-d")} edition</a> <small class="mut">{rec_(ps_)} \u00b7 avg {pct(a_)}</small></h3>'
+               '<div class="wklist">'+''.join(row(p,ed) for p,ed in sorted(lst,key=lambda x:-x[0]['ret']))+'</div>')
+    hz=''
+    for h in ['1 Day','1 Month','1 Year']:
+        s_=[p for p,_ in st if p['horizon']==h]; o_=[p for p,_ in op if p['horizon']==h and p.get('ret') is not None]
+        if not s_ and not o_: continue
+        val=rec_(s_) if s_ else '\u2014'
+        sub=(f"{len(s_)} settled, avg {pct(sum(p['ret'] for p in s_)/len(s_))}" if s_ else 'none settled yet')+(f" \u00b7 {len(o_)} open, avg mark {pct(sum(p['ret'] for p in o_)/len(o_))}" if o_ else '')
+        hz+=f'<div class="tile"><span class="h">{h} picks</span><b class="{"up" if s_ and sum(p["ret"]>0 for p in s_)*2>=len(s_) else ("dn" if s_ else "")}">{val}</b><span class="s">{sub}</span></div>'
+    bs=[p for p,_ in st if p['action']=='BUY']; ss=[p for p,_ in st if p['action']=='SELL']
+    side=(f" BUY calls went {rec_(bs)} and SELL (short-side) calls went {rec_(ss)}." if bs and ss else '')
+    first=min(ed['date'] for _,ed in st)
+    summ=(f"The Daily Five has published {sum(len(e['finance']) for e in eds)} stock picks since {d(min(e['date'] for e in eds)).strftime('%B %-d')}, each with a real Yahoo Finance entry quote. "
+          f"{n} have reached the end of their horizon and settled at a real closing price: {w_} won and {l_} lost ({w_/n*100:.0f}%), an average return of {pct(avg)} per pick. "
+          f"$100 on every settled pick would be {'up' if tot>=0 else 'down'} ${abs(tot):,.2f}. Best call: {best[0]['action']} {best[0]['label']} ({best[0]['horizon']}, {pct(best[0]['ret'])}). "
+          f"Worst: {worst[0]['action']} {worst[0]['label']} ({pct(worst[0]['ret'])}).{side} The other {len(op)} picks (mostly 1-Month and 1-Year calls) are still open and marked to live prices below.")
+    tiles=(f'<div class="wkbig"><div><span class="k">Settled record</span><b class="{"up" if w_>=l_ else "dn"}">{w_}\u2013{l_}</b><span class="s">{n} settled \u00b7 {len(op)} still open</span></div>'
+           f'<div><span class="k">Avg return</span><b class="{"up" if avg>=0 else "dn"}">{pct(avg)}</b><span class="s">per settled pick, entry to exit</span></div>'
+           f'<div><span class="k">$100 a pick</span><b class="{"up" if tot>=0 else "dn"}">{"+" if tot>=0 else "\u2212"}${abs(tot):,.2f}</b><span class="s">on ${n*100:,} staked</span></div>'
+           f'<div><span class="k">Best call</span><b class="up">{pct(best[0]["ret"])}</b><span class="s">{best[0]["action"]} {E(best[0]["label"])} \u00b7 {d(best[1]["date"]).strftime("%b %-d")}</span></div></div>')
+    ask=(f'<section class="signup wksign"><div><span class="kicker">\U0001F4EC Tomorrow\'s calls</span><h2>Get tomorrow\'s stock picks before the open.</h2>'
+         f'<p>Six stock calls (1 Day, 1 Month, 1 Year) land in the free 7 AM ET email with a real entry price and the why, then get graded here at the closing bell, wins and losses. No spam, unsubscribe anytime.</p></div>{sform("wk")}</section>')
+    opn=sorted(op,key=lambda x:(x[1]['date'],x[0].get('ret') or 0),reverse=True)
+    faqs=[("How are Daily Five stock picks graded?","Each pick has an entry price from a real Yahoo Finance quote at publish time. It is marked to live prices until its horizon ends (1 day, 30 days or 365 days after the edition), then settles at the first official daily close on or after that date. SELL calls are graded short-side, so a falling stock is a win."),
+          ("When does a 1-Day stock pick settle?","At the regular-session close of the next trading day after the edition. Weekend editions settle at Monday's close. We never freeze an intraday price: a pick still in its exit session reads live until the close is final."),
+          ("Is this financial advice?","No. The Daily Five aggregates public ideas and grades them in public for information and entertainment. Past results don't guarantee future returns, and you can lose money.")]
+    faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
+    cnav,csch=crumbs([('Home','/'),('Stock picks','/best-stocks-to-buy-today/'),('Stock results','/stock-results/')])
+    h1=f"Stock Picks Results: {w_}-{l_} on {n} Settled Calls"
+    bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">\U0001F4C8 Stock picks results \u00b7 since {d(first).strftime("%b %-d, %Y")}</span><h1 class="pt">{E(h1)}</h1>'
+           f'<p class="sub wksum">{E(summ)}</p><div class="hubcta"><a class="pill" href="{BASE}/best-stocks-to-buy-today/">Today\'s stock picks \u2192</a>'
+           f'<a class="pill ghost" href="{BASE}/track-record/">Full track record \u2192</a><a class="pill ghost" href="{BASE}/picks/">All picks by day \u2192</a><a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard \u2192</a></div></section>'
+           f'{tiles}<div class="tiles">{hz}</div>{ask}'
+           f'<h2 class="h2s">Every settled stock pick, by edition</h2><p class="sub hub-lead">Entry is the real quote when we published; exit is the official close at the end of the horizon. Return is per pick, short-side for SELLs. Tap any pick for its price chart and the original why.</p>{secs}'
+           +(f'<h2 class="h2s">Still open: {len(op)} calls marked live</h2><p class="sub hub-lead">Marked to the latest Yahoo Finance price (may lag up to ~15 min in market hours). These settle at the close when their horizon ends.</p><div class="wklist">{"".join(row(p,ed) for p,ed in opn)}</div>' if op else '')+
+           f'{faqh}<p class="disc-bar">\u26a0\ufe0f <b>Not financial advice.</b> Results use real Yahoo Finance prices and ignore commissions, slippage and taxes. Past results don\'t guarantee future returns.</p>')
+    title=f"Stock Picks Results & Track Record: {w_}-{l_}, {pct(avg)} Avg Return | {BRAND}"
+    desc=f"Every Daily Five stock pick graded at its real closing price: {w_}-{l_} on {n} settled calls, {pct(avg)} average return, plus {len(op)} open calls marked live."[:155]
+    modified=TODAY.isoformat()
+    art={"@type":"Article","headline":h1,"description":desc,"datePublished":TODAY.isoformat() if not STK.get('pub') else STK['pub'],"dateModified":modified,"author":{"@type":"Organization","name":BRAND},
+         "publisher":{"@type":"Organization","name":BRAND,"logo":{"@type":"ImageObject","url":SITE+"/favicon.svg"}},"mainEntityOfPage":SITE+P,
+         "mentions":[{"@type":"Corporation","name":p['label'],"tickerSymbol":p['symbol'],"url":f"{SITE}/picks/{p['id']}/"} for p,_ in st]}
+    if OGIMG['v']: art['image']=SITE+OGIMG['v']
+    w('stock-results/index.html',shell(title,desc,P,bodyh,{"@context":"https://schema.org","@graph":[art,csch,{"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}))
+    return [(P,modified)]
 def seo_pages(eds,rows,tiles):
     urls=[]; by={}
     allp=[(p,ed) for ed in eds for p in ed['finance']+ed['sports']]
@@ -1065,7 +1146,7 @@ def seo_pages(eds,rows,tiles):
         w(f"ticker/{slug}/index.html",shell(title,desc,f"/ticker/{slug}/",bodyh,sch)); urls.append((f"/ticker/{slug}/",max(lastmod(p,ed) for p,ed in lst)))
     allp=''.join(f'<a class="rc" href="{BASE}/picks/{r["id"]}/"><b class="{r["action"].lower()}">{r["action"]}</b> {E(r["pick"])} \u00b7 {E(r["horizon"])} \u00b7 {r["date"]} {chip(r["ret"],r["final"])}</a>' for r in rows)
     tk=''.join(f'<a class="tkchip" href="{BASE}/ticker/{s}/">{E(l[0][0]["tname"])}</a>' for s,l in by.items())
-    tb=(f'<section class="sbhero"><span class="kicker">\U0001F3C6 Track record</span><h1 class="pt">Every pick, graded in public</h1><p class="sub">We publish an entry price from a real quote for every pick, then mark it to live market data until its horizon ends (1 Day, 1 Month, 1 Year) or its market resolves. Nothing gets deleted. SELL returns are short-side. See the <a href="{BASE}/scoreboard/">Scoreboard</a> for charts.</p>{('<div class="hubcta">'+nfl_results_links('pill')+'<a class="pill ghost" href="'+BASE+'/nfl-results/">All NFL weeks \u2192</a>'+league_links()+'</div>') if NFLWK else ''}</section>'
+    tb=(f'<section class="sbhero"><span class="kicker">\U0001F3C6 Track record</span><h1 class="pt">Every pick, graded in public</h1><p class="sub">We publish an entry price from a real quote for every pick, then mark it to live market data until its horizon ends (1 Day, 1 Month, 1 Year) or its market resolves. Nothing gets deleted. SELL returns are short-side. See the <a href="{BASE}/scoreboard/">Scoreboard</a> for charts.</p>{('<div class="hubcta">'+stock_results_link('pill')+nfl_results_links('pill')+('<a class="pill ghost" href="'+BASE+'/nfl-results/">All NFL weeks \u2192</a>' if NFLWK else '')+league_links()+'</div>') if (NFLWK or STK) else ''}</section>'
         f'<div class="tiles">{tiles}</div><h2 class="h2s">Tickers &amp; markets</h2><div class="tks">{tk}</div><h2 class="h2s">All picks</h2><div class="rcs col">{allp}</div>')
     w('track-record/index.html',shell(f"Track Record: Win Rate & Returns of Every Pick | {BRAND}","The Daily Five's public track record: win rate and average return by horizon for every stock and sports-market pick, marked to real prices.",'/track-record/',tb,{"@context":"https://schema.org","@type":"CollectionPage","name":"Daily Five Track Record","url":SITE+"/track-record/"}))
     # /picks/ index: every pick page, newest edition first (the parent of every /picks/<id>/ URL used to 404)
@@ -1074,7 +1155,7 @@ def seo_pages(eds,rows,tiles):
     rec=lambda rs: f"{sum(r['ret']>0 for r in rs if r['final'] and r['ret'] is not None)}-{sum(r['ret']<=0 for r in rs if r['final'] and r['ret'] is not None)}"
     secs=''.join(f'<h2 class="h2s"><a href="{BASE}/{d}/">{datetime.date.fromisoformat(d).strftime("%A, %B %-d")}</a> <small class="mut">{len(rs)} picks \u00b7 settled {rec(rs)}</small></h2><div class="rcs col">'+''.join(f'<a class="rc" href="{BASE}/picks/{r["id"]}/"><b class="{r["action"].lower()}">{r["action"]}</b> {E(r["pick"])} \u00b7 {E(r["horizon"])} {chip(r["ret"],r["final"])}</a>' for r in rs)+'</div>' for d,rs in sorted(byd.items(),reverse=True))
     cnav,csch=crumbs([('Home','/'),('All picks','/picks/')])
-    pb=(f'{cnav}<section class="sbhero"><span class="kicker">\U0001F5C2 All picks</span><h1 class="pt">Every Daily Five pick, by day</h1><p class="sub">{len(rows)} stock and prediction-market picks since {min(byd)}, each with its entry price, live mark and result. Hubs: <a href="{BASE}/best-stocks-to-buy-today/">stock picks</a>, <a href="{BASE}/nfl-picks-this-week/">NFL picks</a>, <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a>{''.join(f', <a href="{BASE}{u}">{n}</a>' for n,u in LGHUBS.values())}.</p>{('<div class="hubcta">'+nfl_results_links('pill')+league_links()+'</div>') if NFLWK else ''}</section>{secs}')
+    pb=(f'{cnav}<section class="sbhero"><span class="kicker">\U0001F5C2 All picks</span><h1 class="pt">Every Daily Five pick, by day</h1><p class="sub">{len(rows)} stock and prediction-market picks since {min(byd)}, each with its entry price, live mark and result. Hubs: <a href="{BASE}/best-stocks-to-buy-today/">stock picks</a>, <a href="{BASE}/nfl-picks-this-week/">NFL picks</a>, <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a>{''.join(f', <a href="{BASE}{u}">{n}</a>' for n,u in LGHUBS.values())}.</p>{('<div class="hubcta">'+stock_results_link('pill')+nfl_results_links('pill')+league_links()+'</div>') if (NFLWK or STK) else ''}</section>{secs}')
     w('picks/index.html',shell(f"All Picks: Every Stock & Prediction-Market Call, by Day | {BRAND}",f"All {len(rows)} Daily Five picks by day: stock BUY/SELL calls and Polymarket sports plays with entry prices, live marks and settled results.",'/picks/',pb,{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":"All Daily Five picks","url":SITE+"/picks/"},csch]}))
     urls.insert(0,('/picks/',TODAY.isoformat()))
     return urls
@@ -1091,7 +1172,7 @@ def main():
     for ed in eds:
         for p in ed['finance']+ed['sports']: score_pick(p,hits)
         ed['finance'].sort(key=lambda p:-p['score']); ed['sports'].sort(key=lambda p:-p['score'])
-    nfl_weeks(eds); lgh=league_hubs(eds)
+    nfl_weeks(eds); stock_stats(eds); lgh=league_hubs(eds)
     items=[]
     for i,ed in enumerate(eds):
         prev=eds[i+1] if i+1<len(eds) else None
@@ -1126,7 +1207,7 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds); nfh=nfl_hub(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds); nfh=nfl_hub(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
