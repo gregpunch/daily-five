@@ -248,3 +248,22 @@
 3. Real `book` lines on every sports pick so Edge scores leave neutral.
 4. Free privacy-friendly analytics + UTM links on X posts (weekly report flagged "no site analytics"); needs a free account, so ask first.
 5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+
+## 2026-10-19 · ~10:10 AM ET check-in (Monday)
+
+**Shipped**
+- NFL weekly results pages (growth idea #1). New `/nfl-results/week-6/` built by build.py from real settled data. It grades every NFL Week 6 pick from the Oct 15 to 19 editions (TNF, London, Sunday early and late, SNF, MNF), grouped by kickoff window, each row showing the result, final score (Polymarket events API), entry → exit, return and a link to its pick page. It opens with a factual summary, big tiles (record, avg return, $100-a-pick P/L, best call), a prominent "Get our Week 7 NFL picks before kickoff" Kit signup, Article + BreadcrumbList JSON-LD and a canonical URL. The still-open MNF 49ers pick shows as a live card. It's reusable for future weeks: picks are grouped Tue to Mon by kickoff and the week number comes from the `Week N` in our market text, so the Week 7 Seahawks pick stays out of Week 6. There's also a new `/nfl-results/` index. Links point to it from the NFL hub (results banner + pill), `/picks/`, `/track-record/`, the footer and the sitemap. IndexNow ping on the push returned 200 for 121 URLs. Renders: `shots/nfl-week6-d.png`, `shots/nfl-week6-m.png`, `shots/nfl-hub-banner-m.png`. Push 07f4905, live and verified ~2 min after the push.
+- **Week 6 NFL: 7-5 on 12 settled picks (58%), average return −4.84% per $1 at entry, −$58 on $100 a pick.** Won: Bears +98.0%, Packers +90.5% (SNF, DAL 13–23 GB), Steelers +80.2%, Panthers +65.3%, Bills +48.2%, Patriots +32.5%, Chiefs +27.4%. Lost: Seahawks (TNF), Jaguars (London), Giants, Ravens, Colts. Favorites (60¢+) went 4-2 and closer games went 3-3. MNF 49ers (WAS @ SF, 8:15 PM ET) is still live at 78.5¢, flat to entry.
+- Price refresh (10:15 to 10:22 AM ET builds, Yahoo may lag ~15 min). Today's picks since the premarket entry: UNH +1.45% (404.12), INTC +1.34% (94.44), MSFT +0.61%, NVDA +0.32%, CRWV −0.77% (62.69, about −4.8% from today's open), META −1.09%. Sports today are flat to entry: 49ers 78.5¢, Rays ALCS G6 57.5¢, Knicks 61.5¢, Pistons 48.5¢, Seahawks Wk7 54.5¢.
+
+**Fixed / CI**
+- Bug: weekend-horizon exits were freezing intraday prices. 1-Day picks whose horizon ended on a Saturday or Sunday (Oct 16 SELL QQQ and SELL META, Oct 17 BUY FITB and SELL SMH) were about to be written into `data/exits.json` at Monday's still-forming daily bar, as if it were the close. `stock_close_on` now ignores today's bar before 4:15 PM ET, so they read "live (exits at next close)" and freeze at today's real close. Caught before any CI run committed the bad exits; exits.json unchanged.
+- GitHub cron is lagging badly: no scheduled build ran from 6:14 AM to 10:22 AM ET (the push rebuilt it). live.js still refreshes sports odds client-side; stock marks can be stale between builds.
+- No broken pages: home, /scoreboard/, NFL hub, /picks/, /track-record/, sitemap, the new pages and sampled pick and ticker pages all return 200 locally and live. Local internal link check: 4,015 links, 0 broken.
+
+**Growth ideas still pending**
+1. X scorecard post linking `/nfl-results/week-6/` after MNF settles tonight (honest 7-5 or 8-5, negative avg return, with the Bears/Packers underdog wins as the hook).
+2. Weekly results rollup on `/picks/` for stocks too (per-week record + avg return), mirroring the NFL pages.
+3. Real `book` lines on every sports pick so Edge scores leave neutral.
+4. Free privacy-friendly analytics + UTM links on X posts; needs a free account, so ask first.
+5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
