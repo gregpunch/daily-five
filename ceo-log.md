@@ -267,3 +267,21 @@
 3. Real `book` lines on every sports pick so Edge scores leave neutral.
 4. Free privacy-friendly analytics + UTM links on X posts; needs a free account, so ask first.
 5. Kit welcome sequence + closing-bell recap email (needs OK before any sends).
+
+## 2026-10-19 · ~1:10 PM ET check-in (Monday)
+
+**Shipped**
+- League hubs `/mlb-picks-today/` and `/nba-picks-today/` instead of the stock weekly rollup. Only 2 stock picks have settled so far (Oct 15 1-Day SELL QQQ +1.77% and SELL CRWV +0.94%), so a stock results page would have been thin. 8 more 1-Day picks exit at today's close, so the rollup makes sense from tomorrow. The hubs are built by build.py from real Polymarket picks. The MLB hub is titled "MLB playoff picks today (ALCS, NLCS & World Series)" while our MLB picks are postseason markets. It shows tonight's ALCS G6 Rays play with a live first-pitch/score line, the series futures, an MLB record of **3-2 on 5 settled (games 2-2, avg −0.88%, best Rays ALCS G4 +98.0%)**, every MLB pick graded with final scores, both sides shown where we flipped (Guardians then Rays in G4; Brewers NO then YES for the WS), a Kit signup ask, and FAQ + CollectionPage + BreadcrumbList + SportsEvent ItemList schema. The NBA hub has opening night's Knicks and Pistons, which tip off Tuesday. MLB/NBA pick and ticker pages now breadcrumb to their league hub. Links point to both hubs from the homepage sports header, `/polymarket-picks-today/`, `/picks/`, `/track-record/`, the footer and the sitemap (123 URLs). Renders: `shots/mlb-picks-today-{d,m}.png`, `shots/nba-picks-today-{d,m}.png`. Push 7df6184, live and verified ~2 min after the push. IndexNow 200 for 123 URLs.
+- Price refresh (1:12 PM ET build, Yahoo may lag ~15 min). Today's picks since the premarket entry: UNH +1.10%, MSFT +0.56%, NVDA +0.29%, INTC −0.43%, META −0.56%, CRWV −3.75% (60.80 vs 63.17; it opened at 65.84). Sports: Rays G6 58.5¢ (+1.74%), Seahawks Wk7 55¢ (+0.92%), 49ers 78.5¢, Knicks 61.5¢, Pistons 48.5¢ flat. Holdovers: SELL META (Oct 16) +4.85%, MU +3.29%, MRVL +2.40%, ZETA +2.07%, ECHO +1.98%, SPCX +1.42%, SELL QQQ (Oct 16) +1.12%, FITB +0.75%; SELL SMH −2.25%, MBLY −2.96%, EAT −3.22%, CROX −4.03%; Guardians YES ALCS 18.4¢ (−71.1%), Brewers NO WS −9.86%, Brewers YES WS −3.72%.
+
+**Fixed / CI**
+- The weekend-horizon fix holds. The Oct 16 SELL QQQ/META and Oct 17 BUY FITB/SELL SMH picks still read "live (exits at next close)" and stay non-final, and `data/exits.json` is unchanged. They freeze at today's real close, along with the Oct 18 FOXA/IWM 1-Day picks.
+- GitHub cron is still lagging. After the 10:22 AM push build, the next scheduled build ran at 1:08 PM ET, so there were none for about 2h45m in market hours. live.js covers sports odds client-side, but stock marks were stale until 1:08.
+- No broken pages. Home, /scoreboard/, NFL hub, /picks/, /track-record/, /nfl-results/ (+ week 6), Polymarket and stock hubs, sitemap, and sampled pick and ticker pages all return 200 live. Local internal link check: 130 pages, 4,368 links, 0 broken. JSON-LD parses on the new hubs.
+
+**Growth ideas still pending**
+1. Weekly stock-picks results rollup (`/stock-results/`), first thing tomorrow, once tonight's close settles 8 more 1-Day picks (10 settled).
+2. X scorecard post linking `/nfl-results/week-6/` after MNF settles tonight, and a Rays G6 result post linking `/mlb-picks-today/`.
+3. Fix the cron lag: a box-side job that calls `gh workflow run pages.yml` every 15 min in market hours as a backstop (needs OK, standing automation).
+4. Real `book` lines on every sports pick so Edge scores leave neutral.
+5. Free privacy-friendly analytics + UTM links on X posts (needs a free account, so ask first); Kit welcome sequence (needs OK before sends).
