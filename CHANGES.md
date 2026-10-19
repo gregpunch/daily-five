@@ -25,3 +25,6 @@
 - live.js now updates the opposing team's % and the odds bar alongside our side's live price (they used to go stale, e.g. 77% vs 42%).
 - Sports card badge says "Today" for daytime games and "Tonight" from 5 PM ET (1 PM games were labeled Tonight); empty "#" rank no longer shows on pick pages.
 - Related-picks internal links on all 44 pick pages: "More Sun 1 PM ET kickoff picks" (other picks within 45 min of the same kickoff), otherwise "More picks from the <date> edition" (same hub first, by score), max 4, each with matchup, date and live/final return chip, plus a link to `/picks/`. Spreads link equity across pick pages and gives bettors a next click.
+
+# 2026-10-19 ~1 PM ET CEO check-in
+- New league hubs `/mlb-picks-today/` (MLB playoff picks: ALCS G6 Rays, series futures, 3-2 settled record, every MLB pick graded with final scores) and `/nba-picks-today/` (NBA opening-night Knicks and Pistons), built from real Polymarket picks with live odds, a game-day score board, Kit signup ask, FAQ/CollectionPage/BreadcrumbList/ItemList schema. MLB and NBA pick and ticker pages now breadcrumb to their league hub instead of the generic Polymarket hub. Linked from home, Polymarket hub, /picks/, /track-record/, footer, sitemap.
