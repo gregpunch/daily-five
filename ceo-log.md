@@ -356,3 +356,29 @@
 3. Weekly sections on `/stock-results/` and `/sports-results/` once a second week settles.
 4. Make the dispatch loop sturdier (the autostart only fires when a shell opens).
 5. Free privacy-friendly analytics + UTM links on X posts (needs a free account, so ask first); Kit welcome sequence (needs OK before sends).
+
+## 2026-10-20 · ~1 PM ET check-in (Tuesday)
+
+**Shipped**
+- Value verdict on every sports pick, acting on the 10 AM finding. Each sports card now has a bold verdict strip built from the existing edge-vs-books number, with a 2-pt threshold (`VAL_PTS`): **💰 Value** means Polymarket is ≥ 2 pts under the no-vig sportsbook line; **🪙 Coin flip** means within 2 pts either way, a fair price with no edge on the books; **⚠️ Pricey** means ≥ 2 pts over the line; **❔ Unchecked** means there's no real line. Each strip has a plain sentence, and coin-flip/value/pricey strips add our settled record for that verdict, e.g. "Our settled coin flip picks: 8-6, −5.47% avg." Started and settled picks keep their verdict at entry, in the past tense.
+  - Pick pages get a "Value verdict" row in Pick details. The home and edition sports header gets a "Value check vs the sportsbooks" box: today it shows 3 cheaper than the books (Rays YES +3.8, Patriots +3.3, Packers +2.2) and 2 coin flips (Lakers +0.9, Thunder +0.1).
+  - `/sports-results/` gets a "Results by value verdict" section (`#value`) and tags every settled row with its verdict. The section replaces the old ±1-pt tiles, so the site uses one taxonomy throughout.
+  - `/how-we-rank/#value` explains the verdicts, and there's a new FAQ, "What does coin flip at a fair price mean?" (also in the FAQPage JSON-LD). The email (`email_build.py`) shows a VALUE / COIN FLIP / PRICEY pill under each sports why, starting with tomorrow's edition. I left the already-sent `email/2026-10-20.html` untouched.
+  - FORMAT.md has a new **Sports value rule** for the 7 AM routine: read the DraftKings line for every candidate game and fill the 5 with plays ≥ 2 pts under the no-vig line first. A coin flip is allowed only when there aren't 5 value plays, and its `why` must say "Coin flip at a fair price: …". Never pick a side that's ≥ 2 pts over the line, and always fill `book`.
+  - Renders: `shots/vv-pick-{d,m}.png`, `shots/vv-sports-results-{d,m}.png`, `shots/vv-home-sports-d2.png`, `shots/vv-home-summary-d.png` (not committed).
+  - Push d6b151a. Run 39464622744 succeeded and deployed at 1:19 PM ET. Verified live with curl: the home page has "Value check vs the sportsbooks" with 3 `vv val` and 2 `vv flip` strips; `/sports-results/` has "Results by value verdict" and its JSON-LD parses; `/how-we-rank/` has `id='value'` and the new FAQ; the Patriots pick page shows the Value verdict row; `.vvsum` is in the live style.css.
+- **Results by verdict (settled, graded at entry):** Value 0–0 (none yet), Coin flip **8-6, −5.47% avg** (14 picks), Pricey 1-0 (+10.68%; only the Brewers YES NLCS, against a stale Oct 14 series line), Unchecked 3-2 (+0.96%). Every settled pick that had a line was a coin flip at our price except that one. So the new rule is the first real filter on pick quality.
+- **Records:** Sports **12-8 on 20 settled, −3.06% avg per $1**. Stocks **6-2 on 8 settled, +1.05% avg**. Both are unchanged since 10 AM; nothing settled midday.
+- Live marks (1:08 PM ET build; Yahoo `regularMarketPrice` checked directly at 1:09 PM: GM 75.79, UNH 421.85, GE 298.03, all matching): today's 1-Day picks are red, GM 75.72 (−3.69%) and RTX 191.09 (−1.75%). GE 297.95 (−2.97%), AMZN 263.10 (+0.27%), DDOG −1.08%, SELL AAPL 340.41 (−0.24%). Holdovers: UNH 421.75 (+5.87%), ZETA +5.89%, MU +3.49%, KLAC −6.22%, AMAT −5.19%, GE (Oct 18) −5.06%. The Oct 19 1-Day picks INTC 92.60 (−0.63%) and NVDA 216.81 (−0.24%) exit at today's close; they freeze after 4:15 PM ET.
+- Sports (Polymarket Gamma checked directly; all matched): Pistons 47.5¢ (−2.06%; BOS @ DET tips 3 PM ET, verdict coin flip −1.8 vs DraftKings now), Thunder 49.5¢ (+2.06%), Knicks 62.5¢ (+1.63%), Rays YES WS 37.4¢ (−0.27%), Packers 38.5¢ (−1.28%; that drop is what moved it to value at +2.2), Patriots and Lakers flat. Holdovers: Brewers YES WS 62.2¢ (−3.49%), Brewers NO WS 37.8¢ (−10.21%).
+
+**Fixed / CI**
+- Nothing broken. Home, /scoreboard/, /track-record/, /picks/, /stock-results/, /sports-results/, /nfl-results/ (+ week 6), NFL/MLB/NBA/Polymarket/stock hubs, /how-we-rank/, the sitemap, feed and live.json all return 200 live, before and after the deploy. Local check: 155 pages, 5,936 internal links, 0 broken, and all 146 JSON-LD blocks parse.
+- Dispatch loop v4 is alive (PID 494544). Dispatches since 10 AM: 12:01, 12:17, 12:34 and 1:07 PM ET (all success). There was a 33-min gap from 12:34 to 1:07 PM.
+
+**Growth ideas still pending**
+1. Tomorrow's 7 AM edition is the first under the value rule. Check that it picks ≥ 2-pt plays first and labels any coin flip, then see whether "Value" picks beat coin flips once ~10 settle.
+2. X post (brand account): "We now grade every sports pick vs DraftKings: 14 fair-priced picks went 8-6 and still lost money," linking `/sports-results/#value`. It's honest and differentiating. Also the NFL Week 6 8-5 recap.
+3. Weekly sections on `/stock-results/` and `/sports-results/` once a second week settles.
+4. Make the dispatch loop sturdier (the autostart only fires when a shell opens; one 33-min gap today).
+5. Free privacy-friendly analytics + UTM links on X posts (needs a free account, so ask first); Kit welcome sequence (needs OK before sends).
