@@ -54,7 +54,26 @@ def ai(n,i):
       f'<div style="{F}font-size:14px;line-height:20px;color:#c3c8d8;padding-top:6px;">{E(n["why"])}</div>'
       f'<div style="{F}font-size:11px;font-weight:700;color:{MUT};text-transform:uppercase;letter-spacing:1px;padding-top:6px;">Source: {E(src(n["source"]["name"]))}</div>')
     return row(inner,'#1a1533')
-def render(ed):
+def recap(prev):
+    # Yesterday's picks with real results (same numbers as the site's recap block)
+    if not prev: return ''
+    ps=prev['finance']+prev['sports']; rs=[p['ret'] for p in ps if p.get('ret') is not None]
+    if not rs: return ''
+    d=datetime.date.fromisoformat(prev['date'])
+    summ=f"{sum(r>0 for r in rs)}/{len(rs)} winning · avg {sum(rs)/len(rs)*100:+.2f}%"
+    def chip(p):
+        r=p.get('ret')
+        if r is None: return ''
+        c=UP if r>0 else (DN if r<0 else MUT)
+        return f'<span style="{M}font-size:12px;font-weight:700;color:{c};">{r*100:+.1f}%{" final" if p.get("final") else ""}</span>'
+    order=sorted(ps,key=lambda p:(not p.get('final'),-(p.get('ret') or 0)))
+    items=' &nbsp;·&nbsp; '.join(f'<span style="{F}font-size:13px;color:#e6e9f3;white-space:nowrap;"><b>{E(p["action"])} {E(p["label"])}</b> {chip(p)}</span>' for p in order if p.get('ret') is not None)
+    inner=(f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;padding-bottom:4px;">📬 Yesterday\'s results · {E(d.strftime("%a %b ")+str(d.day))}</div>'
+      f'<div style="{F}font-size:17px;font-weight:800;color:{TXT};padding-bottom:6px;">{E(summ)}</div>'
+      f'<div style="line-height:22px;">{items}</div>'
+      f'<div style="{F}font-size:12px;padding-top:8px;"><a href="{SITE}/scoreboard/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={prev["date"]}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Full Scoreboard →</a></div>')
+    return row(inner,'#2a2110')
+def render(ed,prev=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'1 Day':0,'1 Month':1,'1 Year':2}
     finl=sorted([p for p in ed['finance'] if keep(p)],key=lambda p:(order.get(p['horizon'],9),-(p.get('score') or 0)))
@@ -68,7 +87,10 @@ def render(ed):
       f'<div style="{F}font-size:22px;line-height:28px;font-weight:800;color:{TXT};padding-top:8px;">{E(hl)}</div>'
       f'<div style="{F}font-size:14px;line-height:21px;color:#cdd2e1;padding:12px 0 6px;">{E(ed["backdrop"])}</div>'
       f'<div style="padding:14px 0 10px;">{btn}</div></td></tr>',
-      sec('💰','Money','Top ideas by horizon · BUY/SELL at publish price')]
+      ]
+    rc=recap(prev)
+    if rc: rows.append('<tr><td style="padding:14px 0 0;"></td></tr>'); rows.append(rc)
+    rows.append(sec('💰','Money','Top ideas by horizon · BUY/SELL at publish price'))
     last=None
     for i,p in enumerate(finl,1):
         if p['horizon']!=last:
@@ -90,12 +112,16 @@ def render(ed):
       f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="{BG}" style="background:{BG};"><tr><td align="center" style="padding:16px 0;">'
       f'<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" bgcolor="{BG}" style="width:600px;max-width:600px;background:{BG};border:1px solid {LINE};border-radius:18px;overflow:hidden;">'
       + ''.join(rows) + '</table></td></tr></table></body></html>')
-def write(ed):
+def write(ed,prev=None):
     os.makedirs(os.path.join(ROOT,'email'),exist_ok=True); path=os.path.join(ROOT,'email',ed['date']+'.html')
-    open(path,'w').write(render(ed)); return path
+    open(path,'w').write(render(ed,prev)); return path
 if __name__=='__main__':
     sys.path.insert(0,ROOT); import build
     f=os.path.join(ROOT,'editions',(sys.argv[1] if len(sys.argv)>1 else sorted(os.listdir(os.path.join(ROOT,'editions')))[-1].replace('.json',''))+'.json')
-    ed=json.load(open(f)); build.enrich(ed); hits=build.source_hits([ed])
+    ed=json.load(open(f)); build.enrich(ed)
+    eds=[json.load(open(x)) for x in sorted(glob.glob(os.path.join(ROOT,'editions','*.json')),reverse=True)]
+    prev=next((e for e in eds if e['date']<ed['date']),None)
+    if prev: build.enrich(prev)
+    hits=build.source_hits([e for e in [ed,prev] if e])
     for p in ed['finance']+ed['sports']: build.score_pick(p,hits)
-    print(write(ed))
+    print(write(ed,prev))

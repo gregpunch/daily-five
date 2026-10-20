@@ -1,0 +1,428 @@
+{
+ "date": "2026-10-20",
+ "headline": "Buy Amazon for the year: Morgan Stanley's new top pick leads Tuesday's board as GE and RTX beat and raise; Rays priced at 37.5¢ to win the World Series",
+ "top_call": "Morgan Stanley's new top pick is Amazon, with a $350 target 33% above the price. Buy it for the year.",
+ "backdrop": "Nasdaq 100 futures -0.3% and S&P 500 futures flat early Tuesday as chips slip again after Monday's rebound (Nasdaq +1.1%, S&P +0.4%); Brent crude is near $110 on Houthi attacks. GM, GE and RTX report before the bell, Netflix after.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/19/stock-market-today-live-updates.html"
+ },
+ "finance": [
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "RTX",
+   "symbol": "RTX",
+   "entry": 194.5,
+   "entry_note": "Yahoo Finance, Tue Oct 20 7:14 AM ET premarket",
+   "why": "Our read: RTX beat and lifted its 2026 EPS view to $7.65-7.75 on a record $340B backlog; shares are up ~1% premarket.",
+   "risk": "Defense and aerospace names have run hard into the print, so a beat-and-raise can still fade by the close.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://ae.marketscreener.com/news/rtx-lifts-2026-forecasts-as-aerospace-defense-demand-drives-record-backlog-ce785cd8d981ff23"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Reuters",
+      "url": "https://ae.marketscreener.com/news/rtx-lifts-2026-forecasts-as-aerospace-defense-demand-drives-record-backlog-ce785cd8d981ff23"
+     },
+     {
+      "name": "RTX",
+      "url": "https://www.prnewswire.com/news-releases/rtx-reports-q3-2026-results-302913803.html"
+     },
+     {
+      "name": "Quiver Quantitative",
+      "url": "https://www.quiverquant.com/news/RTX+Reports+%2425+Billion+Q3+Sales+and+Raises+2026+Adjusted+Outlook"
+     },
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/the-fly/rtx-raises-fy26-adjusted-eps-view-to-7-10-7-25-from-6-70-6-90-thefly-news"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "GM",
+   "symbol": "GM",
+   "entry": 78.62,
+   "entry_note": "Yahoo Finance, Tue Oct 20 7:13 AM ET premarket",
+   "why": "Our read: GM beat ($3.70 vs $3.63), raised its cash-flow guide $2B and added a $20B buyback; a ~5% drop looks overdone.",
+   "risk": "It narrowed rather than raised profit guidance and flagged $2B of commodity and DRAM costs; gap-downs can keep sliding.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/20/general-motors-gm-earnings-q3-2026.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/20/general-motors-gm-earnings-q3-2026.html"
+     },
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/article/gm-beats-on-q3-results-tightens-profit-outlook-and-unveils-new-20-billion-buyback-103044849.html"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/why-is-general-motors-stock-sliding-today-93CH-4959549"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "DDOG",
+   "symbol": "DDOG",
+   "entry": 258.5,
+   "entry_note": "Yahoo Finance, Tue Oct 20 5:20 AM ET premarket",
+   "why": "Bernstein upgrades Datadog to Outperform, PT $350 from $237, as AI labs' enterprise token use grew at least 50% q/q.",
+   "risk": "Shares have nearly doubled this year and jumped ~5% Monday on the call; software multiples are rate-sensitive.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/19/this-software-has-nearly-doubled-for-the-year-bernstein-sees-even-more-upside.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/19/this-software-has-nearly-doubled-for-the-year-bernstein-sees-even-more-upside.html"
+     },
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/datadog-gets-350-target-bernstein-142145378.html"
+     },
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/datadog-soars-6-bernstein-upgrade-190628609.html"
+     },
+     {
+      "name": "Markets Insider",
+      "url": "https://markets.businessinsider.com/news/stocks/datadog-upgraded-to-outperform-from-market-perform-at-bernstein-1036639496"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "SELL",
+   "label": "AAPL",
+   "symbol": "AAPL",
+   "entry": 339.58,
+   "entry_note": "Yahoo Finance, Tue Oct 20 7:13 AM ET premarket",
+   "why": "Our read: Loop Capital cuts Apple to Hold, PT $330 from $370, on iPhone ship cuts; it trades at a 5-year-high 36x P/E.",
+   "risk": "25 of 43 analysts still rate it a Buy (LSEG), and Services or AI news could lift the stock instead.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/20/apple-loop-capital-downgrade-iphone-sales.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/20/apple-loop-capital-downgrade-iphone-sales.html"
+     },
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/the-fly/5-star-loop-analyst-downgrades-apple-to-hold-on-iphone-concerns-thefly-news"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/loop-capital-downgrades-apple-stock-rating-on-iphone-shipment-concerns-93CH-4959100"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "AMZN",
+   "symbol": "AMZN",
+   "entry": 262.39,
+   "entry_note": "Yahoo Finance, Tue Oct 20 7:14 AM ET premarket",
+   "why": "Morgan Stanley names Amazon a top pick, PT $350 from $335, on AWS growth (47% in 2027 est.), Bedrock and robotics.",
+   "risk": "AI capex and debt worries are hitting the group again, and AWS has to accelerate the way Morgan Stanley expects.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/19/amazon-morgan-stanley-top-pick-catalysts.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/19/amazon-morgan-stanley-top-pick-catalysts.html"
+     },
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/article/amazon-stock-pops-after-morgan-stanley-details-5-catalysts-lifts-price-target-140841569.html"
+     },
+     {
+      "name": "investingLive",
+      "url": "https://investinglive.com/stocks/icymi-morgan-stanley-names-amazon-a-top-pick-lifts-target-to-350-on-five-catalysts-led-by-aws/"
+     },
+     {
+      "name": "Proactive Investors",
+      "url": "https://www.proactiveinvestors.com/companies/news/1100331/amazon-shares-jump-as-morgan-stanley-calls-aws-runway-under-appreciated-1100331.html"
+     },
+     {
+      "name": "Investor's Business Daily",
+      "url": "https://www.investors.com/news/technology/amazon-stock-top-pick-2026-aws-growth/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "GE",
+   "symbol": "GE",
+   "entry": 307.08,
+   "entry_note": "Yahoo Finance, Tue Oct 20 7:14 AM ET premarket",
+   "why": "Our read: GE Aerospace beat ($2.25 vs $2.00), orders jumped 49% and it raised 2026 EPS to $8.00-8.10; we buy the dip.",
+   "risk": "The Street already expected a raise; slower air traffic or engine supply problems could cool aftermarket demand.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/earnings/ge-aerospace-beats-estimates-raises-guidance-on-strong-demand-4959577"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/earnings/ge-aerospace-beats-estimates-raises-guidance-on-strong-demand-4959577"
+     },
+     {
+      "name": "GE Aerospace",
+      "url": "https://www.geaerospace.com/news/press-releases/ge-aerospace-announces-third-quarter-2026-results"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/bernstein-reiterates-ge-aerospace-stock-rating-on-strong-outlook-93CH-4954323"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "OpenAI races to raise about $30B at a valuation above $1.4 trillion before Anthropic's mid-November IPO",
+   "why": "The two labs are chasing the same investors; OpenAI says it hit $50B in annualized revenue and wants to close before Anthropic's disclosures invite comparisons.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.business-standard.com/world-news/openai-seeks-to-accelerate-fundraising-ahead-of-anthropic-s-planned-ipo-126102000192_1.html"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "One hacker used AI agents to break into 100+ company sites, including Deere and SharkNinja, for about $50 a hack",
+   "why": "Agents ran the intrusions almost on their own from a few terse instructions: real evidence that attacks now scale with tokens, not people.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.investing.com/news/stock-market-news/exclusivehow-one-hacker-used-ai-agents-and-a-few-thousand-dollars-to-break-into-scores-of-sites-4956846"
+   }
+  },
+  {
+   "category": "Infrastructure",
+   "headline": "Korean AI data-centre firm Elice plunges 30% in its market debut",
+   "why": "Its IPO was priced before the AI selloff; with Firmus, AirTrunk and SB Energy listings shelved, the market now asks who pays for the buildout.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/20/south-korea-elice-plunges-in-market-debut.html"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "DHS bans DeepSeek from federal civilian agencies and future government purchases",
+   "why": "It's the first Chinese AI model named in a formal federal exclusion order, citing data sent to servers in China; agencies must also remove existing installs.",
+   "source": {
+    "name": "CyberScoop",
+    "url": "https://cyberscoop.com/dhs-bans-deepseek-federal-agencies/"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "Microsoft rolls out controls that score each AI agent's risk and can block, pause or shut it down",
+   "why": "Companies are now treating agents as insiders with real system access, and the same week shows what agents can do in the wrong hands.",
+   "source": {
+    "name": "Microsoft",
+    "url": "https://blogs.microsoft.com/blog/2026/10/19/securing-the-agentic-insider/"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "Rays YES",
+   "market": "Rays win World Series",
+   "slug": "will-the-tampa-bay-rays-win-the-2026-world-series",
+   "outcome": 0,
+   "entry": 0.375,
+   "event_date": null,
+   "why": "Rays won the ALCS 7-3 in Game 6; DraftKings' +135 series price is ~41% no-vig and ESPN's sims say 41%, vs 37.5¢ here.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/mlb-world-series-champion-2026"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://dknetwork.draftkings.com/2026/10/19/opening-odds-for-rays-vs-brewers-in-2026-world-series/",
+    "odds": [
+     135,
+     -155
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/how-rays-brewers-can-win-world-series-n1-50214717/"
+     },
+     {
+      "name": "DraftKings Network",
+      "url": "https://dknetwork.draftkings.com/2026/10/19/opening-odds-for-rays-vs-brewers-in-2026-world-series/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Thunder",
+   "market": "NBA opener: OKC @ SAS, Tue 9:30 PM ET",
+   "slug": "nba-okc-sas-2026-10-20",
+   "outcome": 0,
+   "entry": 0.485,
+   "event_date": "2026-10-20",
+   "why": "Heavy action on OKC moved the line from +105 at open to -102 at DraftKings for the West finals rematch; Prop Professor backs the Thunder.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-okc-sas-2026-10-20"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.vegasinsider.com/nba/matchups/spurs-vs-thunder/",
+    "odds": [
+     -102,
+     -118
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Prop Professor",
+      "url": "https://www.propprofessor.com/blog/nba-thunder-vs-spurs-odds-picks-ev-oct-20-2026"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Covers",
+      "url": "https://www.covers.com/nba/thunder-vs-spurs-prediction-picks-odds-oct-20-2026"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Patriots",
+   "market": "Week 7 TNF: NE @ CHI, Thu Oct 22 8:15 PM ET",
+   "slug": "nfl-ne-chi-2026-10-23",
+   "outcome": 0,
+   "entry": 0.395,
+   "event_date": "2026-10-22",
+   "why": "The NY Post backs New England (+3.5), which rates better than Chicago by DVOA; bet365's +139 is ~40% no-vig vs 39.5¢.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-ne-chi-2026-10-23"
+   },
+   "book": {
+    "name": "bet365",
+    "url": "https://www.foxsports.com/stories/nfl/2026-nfl-odds-week-7-lines-spreads-results-all-14-games",
+    "odds": [
+     139,
+     -164
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "New York Post",
+      "url": "https://nypost.com/2026/10/19/betting/nfl-week-7-early-predictions-patriots-vs-bears-giants-vs-texans-packers-vs-lions-best-bets/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Packers",
+   "market": "Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",
+   "slug": "nfl-gb-det-2026-10-25",
+   "outcome": 0,
+   "entry": 0.39,
+   "event_date": "2026-10-25",
+   "why": "The NY Post says Green Bay is far better than the market thinks, with Josh Jacobs expected back and a No. 8 DVOA defense.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-gb-det-2026-10-25"
+   },
+   "book": {
+    "name": "bet365",
+    "url": "https://www.foxsports.com/stories/nfl/2026-nfl-odds-week-7-lines-spreads-results-all-14-games",
+    "odds": [
+     147,
+     -174
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "New York Post",
+      "url": "https://nypost.com/2026/10/19/betting/nfl-week-7-early-predictions-patriots-vs-bears-giants-vs-texans-packers-vs-lions-best-bets/"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Lakers",
+   "market": "NBA: GSW @ LAL, Wed Oct 21 10 PM ET",
+   "slug": "nba-gsw-lal-2026-10-21",
+   "outcome": 1,
+   "entry": 0.655,
+   "event_date": "2026-10-21",
+   "why": "Golden State is without Porzingis, Butler and Moody; the line moved from -198 at open to -225 at DraftKings (~66% no-vig).",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-gsw-lal-2026-10-21"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.vegasinsider.com/nba/matchups/lakers-vs-warriors/",
+    "odds": [
+     -225,
+     185
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "iHeart Sports",
+      "url": "https://iheartsportsbayarea.iheart.com/content/2026-10-20-warriors-vs-lakers-predictions-odds-stats-oct-21/"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ]
+}
