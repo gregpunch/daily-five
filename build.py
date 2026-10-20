@@ -326,6 +326,56 @@ def today_strip(ps,where='home',settled=None):
             f'<span class="tsc"><small>best</small> <span data-t="best">{lab(best)}</span></span>'
             f'<span class="tsc"><small>worst</small> <span data-t="worst">{lab(worst)}</span></span>{sett}'
             f'<span class="tsc nx"><small>next edition</small> <b class="nxc">7 AM ET</b></span><span class="tsc mk" data-t="mk" hidden></span></div>')
+ALLEDS=[]  # all editions, newest first (set in main before pages render)
+def _cb_show(ed):
+    """Closing-bell recap shows on the newest edition once today's stock session is over (4:15 PM ET, when exits freeze),
+    and stays up overnight until the next 7 AM edition replaces it."""
+    if not ALLEDS or ed is not ALLEDS[0]: return False
+    d=datetime.date.fromisoformat(ed['date'])
+    if d<TODAY: return True
+    return d==TODAY and NOW.time()>=datetime.time(16,15)
+def closing_bell(ed):
+    """'How today's picks finished': picks that settled on this edition's day (stock exits at that close + sports games
+    that went final), today's stock calls marked at the close, games still to play, and tomorrow's 7 AM hook + signup.
+    Real settled exits / final scores and real Yahoo/Polymarket marks only."""
+    if not _cb_show(ed): return ''
+    S=ed['date']; sd=datetime.date.fromisoformat(S); trade=sd.weekday()<5
+    st_s=[(p,e) for e in ALLEDS for p in e['finance'] if p.get('final') and p.get('ret') is not None and p.get('note')==f'closed {S}']
+    st_g=[(p,e) for e in ALLEDS for p in e['sports'] if p.get('final') and p.get('ret') is not None and kickoff(p) and kickoff(p).date()==sd]
+    st=st_s+st_g
+    todo=[p for p in ed['sports']+[q for e in ALLEDS[1:] for q in e['sports']] if not p.get('final') and kickoff(p) and kickoff(p).date()==sd]
+    seen=set(); todo=sorted([p for p in todo if not (p['slug'] in seen or seen.add(p['slug']))],key=kickoff)
+    mk=[p for p in ed['finance'] if p.get('ret') is not None] if trade else []
+    for p in mk:  # mark today's calls at the real daily close bar (same Yahoo read that freezes exits), not the last intraday quote
+        c,cd=stock_close_on(p['symbol'],sd) if not p.get('final') else (None,None)
+        if c is not None and cd==S: p['cb_cur']=c; p['cb_ret']=(c-p['entry'])/p['entry']*(-1 if p['action']=='SELL' else 1)
+    if not st and not mk and not todo: return ''
+    def row(p,e,kind):
+        a=p['action'].lower()
+        if kind=='s': det=f'<small>{money("F",p["entry"])} \u2192 <b>{money("F",p["cur"])}</b> close \u00b7 {E(p["horizon"])} call from {datetime.date.fromisoformat(e["date"]).strftime("%b %-d")}</small>'
+        elif kind=='g':
+            fl=final_line(p); det=f'<small>{"Final " + fl[0] + " \u00b7 " if fl else ""}{money("Sports",p["entry"])} \u2192 {money("Sports",p["cur"])}</small>'
+        else: det=f'<small>{money("F",p["entry"])} \u2192 <b>{money("F",p.get("cb_cur",p["cur"]))}</b> at the close \u00b7 {"exits at the next close" if p["horizon"]=="1 Day" else "open, "+E(p["horizon"])}</small>'
+        res=('<i class="wl w">W</i>' if p['ret']>0 else '<i class="wl l">L</i>' if p['ret']<0 else '<i class="wl">P</i>') if kind!='m' else ''
+        return f'<a class="cbr" href="{BASE}/picks/{p["id"]}/">{res}<b class="act {a}">{p["action"]}</b><span class="cbn">{E(p["label"])}{det}</span>{chip(p.get("cb_ret",p["ret"]) if kind=="m" else p["ret"],kind!="m")}</a>'
+    w_=sum(p['ret']>0 for p,_ in st); l_=sum(p['ret']<0 for p,_ in st); avg=sum(p['ret'] for p,_ in st)/len(st) if st else None
+    R=lambda p: p.get('cb_ret',p['ret']); up=sum(R(p)>0 for p in mk); dn=sum(R(p)<0 for p in mk); mavg=sum(R(p) for p in mk)/len(mk) if mk else None
+    tl=lambda v: 'up' if (v or 0)>0 else 'dn' if (v or 0)<0 else ''
+    tiles=''
+    if st: tiles+=f'<div class="cbt"><span>Settled {"today" if sd==TODAY else sd.strftime("%b %-d")}</span><b class="{tl(avg)}">{w_}-{l_}</b><small>avg {pct(avg)} per pick</small></div>'
+    if mk: tiles+=f'<div class="cbt"><span>Today\'s stock calls at the close</span><b class="{tl(mavg)}">{up}\u25b2 {dn}\u25bc</b><small>avg {pct(mavg)} since pick</small></div>'
+    if STK: tiles+=f'<a class="cbt" href="{BASE}/stock-results/"><span>Stocks, all settled</span><b class="{tl(STK["avg"])}">{STK["w"]}-{STK["l"]}</b><small>avg {pct(STK["avg"])} \u2192</small></a>'
+    if SPR: tiles+=f'<a class="cbt" href="{BASE}/sports-results/"><span>Sports, all settled</span><b class="{tl(SPR["avg"])}">{SPR["w"]}-{SPR["l"]}</b><small>avg {pct(SPR["avg"])} \u2192</small></a>'
+    cols=''
+    if st: cols+='<div class="cbc"><h3>\u2705 Settled '+('today' if sd==TODAY else sd.strftime('%b %-d'))+'</h3>'+''.join(row(p,e,'s') for p,e in st_s)+''.join(row(p,e,'g') for p,e in st_g)+'</div>'
+    if mk: cols+='<div class="cbc"><h3>\U0001F4C8 Today\'s stock calls at the close</h3>'+''.join(row(p,ed,'m') for p in mk)+'</div>'
+    if todo: cols+='<div class="cbc"><h3>\U0001F3DF Still playing tonight</h3>'+''.join(f'<a class="cbr" href="{BASE}/picks/{p["id"]}/"><b class="act buy">BUY</b><span class="cbn">{E(p["label"])}<small>{E(p["market"].split(",")[0])} \u00b7 {"\U0001F534 live now" if kickoff(p)<=datetime.datetime.now().astimezone() else kickoff(p).strftime("%-I:%M %p ET")} \u00b7 now {money("Sports",p.get("cur"))}</small></span>{chip(p.get("ret"))}</a>' for p in todo)+'<p class="cbn2">These settle on the final score overnight; the scores update live on the cards below.</p></div>'
+    when=sd.strftime('%A, %b %-d')
+    return (f'<section class="cbell" id="closing-bell" aria-labelledby="cbh"><div class="cbhd"><span class="kicker">\U0001F514 Closing bell \u00b7 {when}</span>'
+            f'<h2 id="cbh">How {"today" if sd==TODAY else when.split(",")[0]}\u2019s picks finished</h2>'
+            f'<p class="sub">Real closing prices from Yahoo Finance and final scores from Polymarket. Stock exits freeze at 4:15 PM ET; nothing is hand-entered.</p></div>'
+            f'<div class="cbts">{tiles}</div><div class="cbcols">{cols}</div>'
+            f'<div class="cbcta"><div><b>\u23f0 Tomorrow\'s five drop at 7 AM ET.</b><span class="tmc">Next edition <b class="nxc">at 7 AM ET</b></span><p>Get them before the opening bell, with yesterday\'s results graded, free.</p></div>{sform("bell")}</div></section>')
 def body(ed,prev=None):
     rank=0; fin=''
     for h,ic in [('1 Day','⚡'),('1 Month','📅'),('1 Year','🌱')]:
@@ -338,7 +388,7 @@ def body(ed,prev=None):
     sp=''.join(sp_card(p,i+1) for i,p in enumerate(ed['sports']))
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
     upd=NOW.strftime('%-I:%M %p ET')
-    return recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
+    return closing_bell(ed)+recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">The best ideas from AI agents, analysts and public sources, by horizon.</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
 <section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a>{''.join(f' · <a href="{BASE}{u}">{n[:1].upper()+n[1:]} →</a>' for n,u in LGHUBS.values())}</p></div></div>{verdict_summary(ed["sports"])}{gd_board(ed["sports"])}<div class="grid g3">{sp}</div></section>"""
@@ -1447,6 +1497,7 @@ def main():
     if host and not host.endswith('github.io'): w('CNAME',host+'\n')
     eds=[json.load(open(f)) for f in sorted(glob.glob(os.path.join(ROOT,'editions','*.json')),reverse=True)]
     for ed in eds: enrich(ed)
+    ALLEDS[:]=eds
     attach_books(eds)
     hits=source_hits(eds)
     for ed in eds:
