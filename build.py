@@ -59,6 +59,69 @@ def pgame(slug):
         return {'score':e.get('score') or '','period':e.get('period') or '','elapsed':e.get('elapsed') or '','live':bool(e.get('live')),'ended':bool(e.get('ended')),
                 'teams':sorted([{'ab':(t.get('abbreviation') or '').upper(),'al':t.get('alias') or '','nm':t.get('name') or '','o':t.get('ordering')} for t in tm],key=lambda t:0 if t['o']=='away' else 1)}
     return memo(('pg',slug),f)
+ESPN_LG={'nfl':'football/nfl','nba':'basketball/nba','mlb':'baseball/mlb','nhl':'hockey/nhl','wnba':'basketball/wnba'}
+BK=os.path.join(ROOT,'data','books.json')
+def _am(x):
+    x=str(x or '').strip().upper().replace('\u2212','-')
+    if x in ('EVEN','EV','PK'): return 100
+    try: v=int(float(x)); return v if abs(v)>=100 else None
+    except Exception: return None
+def espn_line(p):
+    """Real sportsbook moneyline for a Polymarket game pick from ESPN's free public scoreboard JSON (no account or key).
+    Returns {'name','url','odds':[ours,theirs],'teams':[ours,theirs],'state','at'} or None. Matches on start time (within 4h) and team name."""
+    slug=p.get('slug') or ''; m=p.get('m') or {}
+    if not GAME_RE.match(slug) or slug.split('-')[0] not in ESPN_LG: return None
+    ko=kickoff(p); outs=m.get('outcomes') or []
+    if not ko or len(outs)!=2: return None
+    lg=ESPN_LG[slug.split('-')[0]]; day=ko.strftime('%Y%m%d')
+    sb=memo(('espn',lg,day),lambda: get(f"https://site.api.espn.com/apis/site/v2/sports/{lg}/scoreboard?dates={day}"))
+    if not sb: return None
+    ours,theirs=outs[p['outcome']].lower(),outs[1-p['outcome']].lower()
+    def hit(c,nm):
+        t=c.get('team') or {}; full=(t.get('displayName') or '').lower(); short=(t.get('name') or '').lower()
+        return bool(full) and (nm in full or (short and short in nm))
+    for ev in sb.get('events') or []:
+        try: et=datetime.datetime.fromisoformat(ev['date'].replace('Z','+00:00'))
+        except Exception: continue
+        if abs((et-ko).total_seconds())>4*3600: continue
+        c=ev['competitions'][0]; cs=c.get('competitors') or []
+        me=[x for x in cs if hit(x,ours)]; op=[x for x in cs if hit(x,theirs)]
+        if len(cs)!=2 or len(me)!=1 or len(op)!=1 or me[0] is op[0]: continue
+        sides={x.get('homeAway'):x for x in cs}; mys=me[0].get('homeAway'); ops=op[0].get('homeAway')
+        for o in c.get('odds') or []:
+            ml=o.get('moneyline') or {}
+            a,b=[_am(((ml.get(s) or {}).get('close') or {}).get('odds')) for s in (mys,ops)]
+            if a is None or b is None:  # older ESPN shape
+                a,b=[_am((o.get(f"{s}TeamOdds") or {}).get('moneyLine')) for s in (mys,ops)]
+            if a is None or b is None: continue
+            # a real two-way line has a vig: implied probabilities sum to more than 100% (guards against bad data)
+            if not (1.0<am2p(a)+am2p(b)<1.15): continue
+            prov=((o.get('provider') or {}).get('name') or 'Sportsbook').replace('Draft Kings','DraftKings')
+            url=next((l['href'] for l in ev.get('links') or [] if 'summary' in (l.get('rel') or [])),f"https://www.espn.com/{lg.split('/')[1]}/game/_/gameId/{ev['id']}")
+            ab=lambda x:(x.get('team') or {}).get('abbreviation') or ''
+            return {'name':f"{prov} via ESPN",'url':url,'odds':[a,b],'teams':[ab(me[0]),ab(op[0])],'state':(ev.get('status') or {}).get('type',{}).get('state',''),
+                    'at':NOW.astimezone().isoformat(timespec='minutes')}
+    return None
+def attach_books(eds):
+    """Sportsbook line used for each sports pick's Edge score.
+    Open game, not started: the live ESPN moneyline (DraftKings), refreshed every build, vs the live Polymarket price.
+    Started or settled: the line at publish (edition `book`) vs our entry; if there was none, the last pre-game ESPN line
+    we stored in data/books.json (committed by local/edition builds, not by CI) vs our entry. Futures keep the edition `book` vs the live price."""
+    bk=json.load(open(BK)) if os.path.exists(BK) else {}; now=NOW.astimezone(); fresh=set()
+    for ed in eds:
+        for i,p in enumerate(ed['sports']):
+            key=f"{ed['date']}/s{i}"; ko=kickoff(p); started=bool(p.get('final') or (ko and ko<=now))
+            if p.get('book'): p['book0']=dict(p['book'],at=ed['date'],pub=True)
+            if not started:
+                ln=memo(('line',key),lambda: espn_line(p))
+                if ln and ln['state']=='pre':
+                    ln=dict(ln); ln.pop('state',None); ln['pm']=p.get('cur'); bk[key]=ln; fresh.add(key)
+            esp=dict(bk[key],auto=True,closing=started,fresh=key in fresh) if key in bk else None
+            p['espn']=esp
+            if not started and esp: p['book'],p['bmode']=esp,'live'
+            elif started: p['book'],p['bmode']=(p.get('book0') or esp),'entry'
+            else: p['bmode']='live'; p['book']=p.get('book0') or p.get('book')
+    json.dump(bk,open(BK,'w'),indent=1)
 def phistory(token):
     return memo(('ph',token),lambda: [(h['t'],h['p']) for h in get(f"https://clob.polymarket.com/prices-history?market={token}&interval=1w&fidelity=60")['history']])
 HZ={'1 Day':1,'1 Month':30,'1 Year':365}
@@ -227,7 +290,7 @@ def sp_card(p,rank):
     vol=f'<span class="vol">${m["volume"]/1e6:.1f}M vol</span>' if m and m['volume']>=1e5 else ''
     return f"""<article class="card sc"><div class="ctop">{f'<span class="rank">#{rank}</span>' if rank else ''}<span class="hz">🏟 {E(when)}</span>{badge(p)}</div>
 <a class="mkt" href="{BASE}/ticker/{p['tslug']}/">{E(p['market'])}</a>{bars}{gd(p)}
-<div class="crow"><span class="act buy">BUY</span><span class="tk sm">{E(p['label'])}</span>{vol}{spark(p.get('pts'),100,30)}</div>{livebox(p)}{breakdown(p)}
+<div class="crow"><span class="act buy">BUY</span><span class="tk sm">{E(p['label'])}</span>{vol}{spark(p.get('pts'),100,30)}</div>{livebox(p)}{breakdown(p)}{book_line(p)}
 <p class="why"><b>Why BUY:</b> {E(p['why'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
 def tape(ed):
     it=''.join(f'<span class="ti"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} <i>${p["entry"]:,.2f}</i> {chip(p.get("ret"))}</span>' for p in ed['finance'])
@@ -337,13 +400,52 @@ def score_pick(p,hits):
             hd=TD.get(p['horizon'],1); ratio=(gap*min(hd/252,1))/(v*math.sqrt(hd)); b['rr']=round(12.5+12.5*math.tanh(ratio),1); p['vol']=v
         else: b['rr']=12.5
     else:
-        bk=p.get('book'); px=p.get('cur') or p['entry']
+        bk=p.get('book')
+        # started/settled game picks are graded at our entry (vs the line at publish); open picks at the live Polymarket price
+        px=p['entry'] if (p.get('final') or p.get('bmode')=='entry') else (p.get('cur') or p['entry'])
         if bk and bk.get('odds'):
-            q=[am2p(o) for o in bk['odds']]; fair=q[0]/sum(q); p['fair']=fair
-            pts=(fair-px)*100; b['edge']=round(clamp(12.5+pts*1.25),1); notes.insert(0,f"edge {pts:+.0f} pts vs books")
+            q=[am2p(o) for o in bk['odds']]; fair=q[0]/sum(q); p['fair']=fair; p['vig']=sum(q)-1; p['bpx']=px
+            pts=(fair-px)*100; p['edge_pts']=pts; b['edge']=round(clamp(12.5+pts*1.25),1)
+            notes.insert(0,f"edge {pts:+.1f} pts vs {bk['name'].split(' via ')[0].split(' (')[0]}")
             ev=(fair-px)/px; b['rr']=round(12.5+12.5*math.tanh(ev*5),1)
         else: b['edge']=12.5; b['rr']=12.5; notes.insert(0,"no sportsbook line")
     p['score']=round(sum(b.values())); p['sb']=b; p['snote']=' · '.join(notes)
+def _fo(o): return f"+{o}" if o>0 else f"\u2212{-o}"
+def _bwhen(bk):
+    if bk.get('pub'): return 'at publish'
+    try: return datetime.datetime.fromisoformat(bk['at']).astimezone().strftime('%b %-d %-I:%M %p ET')
+    except Exception: return ''
+def _bteams(p,bk):
+    oc=(p.get('m') or {}).get('outcomes') or []
+    if bk.get('teams'): return bk['teams']
+    if len(oc)==2 and {o.lower() for o in oc}=={'yes','no'}:
+        return [p['label'],re.sub(r'\bYES\b','NO',p['label']) if 'YES' in p['label'] else 'the other side']
+    return [oc[p['outcome']],oc[1-p['outcome']]] if len(oc)==2 else [p['label'],'the other side']
+def book_line(p,full=False):
+    """Transparent sportsbook check: real moneyline, de-vigged fair probability, vs the Polymarket price, edge in points."""
+    bk=p.get('book'); fair=p.get('fair')
+    if p.get('kind')!='Sports' or not bk or fair is None: return ''
+    tm=_bteams(p,bk); o=bk['odds']; pts=p['edge_pts']; px=p['bpx']; when=_bwhen(bk)
+    lab='Pre-game line' if (bk.get('auto') and bk.get('closing')) else ('Line at publish' if bk.get('pub') else ('Books now' if bk.get('fresh') else 'Last line read'))
+    vs='our entry' if p.get('bmode')=='entry' else 'Polymarket'
+    cls='up' if pts>=1 else 'dn' if pts<=-1 else 'flat'
+    src=f'<a href="{E(bk["url"])}" rel="nofollow noopener" target="_blank">{E(bk["name"])}{(" · "+when) if when else ""} ↗</a>'
+    if not full:
+        return (f'<p class="bk"><span class="bkl">\U0001F4D2 {lab}</span> {E(tm[0])} {_fo(o[0])} / {E(tm[1])} {_fo(o[1])} → no-vig <b>{fair*100:.1f}%</b> vs {vs} <b>{px*100:.1f}¢</b> '
+                f'<span class="chip {cls}">{pts:+.1f} pts</span><small>{src}</small></p>')
+    q=[am2p(x) for x in o]
+    verdict=('Polymarket was cheaper than the books' if pts>=1 else 'Polymarket was pricier than the books' if pts<=-1 else 'Polymarket and the books agreed') if p.get('bmode')=='entry' else \
+            ('Polymarket is cheaper than the books' if pts>=1 else 'Polymarket is pricier than the books' if pts<=-1 else 'Polymarket and the books agree')
+    out=(f'<dt>Sportsbook check</dt><dd>{src}: {E(tm[0])} {_fo(o[0])} ({q[0]*100:.1f}% implied), {E(tm[1])} {_fo(o[1])} ({q[1]*100:.1f}%). '
+         f'The {p["vig"]*100:.1f}% vig comes out, so the no-vig fair chance is <b>{fair*100:.1f}%</b>. {"Our entry" if p.get("bmode")=="entry" else "Polymarket now"}: {px*100:.1f}¢, '
+         f'edge <b>{pts:+.1f} pts</b> ({E(verdict)}). Edge score {p["sb"]["edge"]}/25 = 12.5 + 1.25 × points.</dd>')
+    for e in (p.get('book0'),p.get('espn')):  # the other real line(s) we have, for comparison
+        if not e or e is bk: continue
+        q2=[am2p(x) for x in e['odds']]; t2=_bteams(p,e)
+        nm='Line at publish' if e.get('pub') else ('Pre-game line' if e.get('closing') else ('Books now' if e.get('fresh') else 'Last line read'))
+        out+=(f'<dt>{nm}</dt><dd><a href="{E(e["url"])}" rel="nofollow noopener" target="_blank">{E(e["name"])} · {_bwhen(e)} ↗</a>: '
+              f'{E(t2[0])} {_fo(e["odds"][0])} / {E(t2[1])} {_fo(e["odds"][1])}, no-vig {q2[0]/sum(q2)*100:.1f}%.</dd>')
+    return out
 def badge(p):
     s=p.get('score')
     if s is None: return ''
@@ -359,14 +461,14 @@ FAQS=[
  ("What is the Daily Five Score?","Every finance and sports pick gets a 0–100 score from four components worth 25 points each: source credibility, consensus, edge vs fair value, and risk/reward. The Top 5 in each section are ordered by it. We only use real data; when a component can't be computed, it gets a neutral 12.5 and we say so on the card."),
  ("How does source credibility work?","Credibility is the source's historical hit rate on our own track record: closed picks from that source that made money. Until a source has at least 5 closed picks it gets a neutral 12.5, labeled new source."),
  ("What is consensus in the score?","Consensus measures how many independent, credible sources we found agreeing with the call versus dissenting. The formula is 12.5 + 12.5 × (agree − dissent)/(agree + dissent), scaled down when there are fewer than four sources. With no sources checked, it stays a neutral 12.5."),
- ("How is edge vs fair value calculated?","For stocks, edge is the % gap between the live price and the consensus analyst mean price target (Yahoo Finance), signed for BUY or SELL: 12.5 + 50 × gap. Peer valuation isn't computed yet. For sports and markets, it's the sportsbook's no-vig implied probability minus the Polymarket price, in points: 12.5 + 1.25 × points."),
+ ("How is edge vs fair value calculated?","For stocks, edge is the % gap between the live price and the consensus analyst mean price target (Yahoo Finance), signed for BUY or SELL: 12.5 + 50 × gap. Peer valuation isn't computed yet. For sports and markets, it's the sportsbook's no-vig implied probability minus the Polymarket price, in points: 12.5 + 1.25 × points. Before an NFL, NBA, MLB or NHL game starts we use DraftKings' live moneyline from ESPN's public scoreboard against the live Polymarket price; once it starts we grade the line at publish (or the last pre-game line we read) against our entry. Every sports card shows the line, the vig-free chance and the gap."),
  ("How often do prices and scores update?","Scores recompute every time live prices refresh. Stock quotes come from Yahoo Finance (may lag up to ~15 minutes). Sports-market odds come from Polymarket. The site rebuilds on a schedule during market hours and less often off-hours; the live strip marks prices stale when the rebuild is behind."),
  ("Is The Daily Five financial or betting advice?","No. A high score isn't a guarantee. The Daily Five Score and every pick are for information and education only — not financial, investment, or betting advice."),
 ]
 HOWTO=("<section class='sbhero'><span class='kicker'>🧮 Methodology</span><h1 class='pt'>How we rank: the Daily Five Score</h1><p class='sub'>Every finance and sports pick gets a 0–100 score from four components worth 25 points each. The Top 5 in each section are ordered by it. We only use real data; when a component can't be computed, it gets a neutral 12.5 and we say so on the card.</p></section>"
  "<div class='how'><div class='hw'><h2>1 · Source credibility (0–25)</h2><p>The source's historical hit rate on our own <a href='/track-record/'>track record</a>: closed picks from that source that made money. Until a source has at least 5 closed picks it gets a neutral 12.5, labeled <b>new source</b>.</p></div>"
  "<div class='hw'><h2>2 · Consensus (0–25)</h2><p>How many independent, credible sources we found agreeing with the call versus dissenting. 12.5 + 12.5 × (agree − dissent)/(agree + dissent), scaled down when there are fewer than four sources. With no sources checked, it's a neutral 12.5.</p></div>"
- "<div class='hw'><h2>3 · Edge vs fair value (0–25)</h2><p><b>Stocks:</b> % gap between the live price and the consensus analyst mean price target (Yahoo Finance), signed for BUY or SELL: 12.5 + 50 × gap. Peer valuation isn't computed yet. <b>Sports and markets:</b> the sportsbook's no-vig implied probability minus the Polymarket price, in points: 12.5 + 1.25 × points.</p></div>"
+ "<div class='hw'><h2>3 · Edge vs fair value (0–25)</h2><p><b>Stocks:</b> % gap between the live price and the consensus analyst mean price target (Yahoo Finance), signed for BUY or SELL: 12.5 + 50 × gap. Peer valuation isn't computed yet. <b>Sports and markets:</b> the sportsbook's no-vig implied probability minus the Polymarket price, in points: 12.5 + 1.25 × points. Example: Patriots +124 / Bears −148 imply 44.6% and 59.7% (104.3% total, the extra 4.3% is the book's vig); removing it gives the Patriots a 42.8% fair chance, so a 39.5¢ Polymarket price is a +3.3-point edge. Before an NFL, NBA, MLB or NHL game starts we use DraftKings' live moneyline from ESPN's public scoreboard against the live Polymarket price, refreshed every build; once it starts we grade the line at publish (or the last pre-game line we read) against our entry. Every sports card shows the line, the vig-free chance and the gap. Futures use a published line when we find one; with none, Edge stays a neutral 12.5.</p></div>"
  "<div class='hw'><h2>4 · Risk/reward (0–25)</h2><p><b>Stocks:</b> the horizon-scaled share of the target gap divided by the horizon's volatility (60-day daily volatility × √trading days): 12.5 + 12.5 × tanh(ratio). <b>Markets:</b> expected value per $1 at the fair probability: 12.5 + 12.5 × tanh(5 × EV).</p></div></div>"
  "<p class='sub'>Scores recompute every time live prices refresh. A high score isn't a guarantee. Not financial or betting advice.</p>"
  "<h2 class='h2s'>FAQ</h2><div class='faq'>"+''.join(f"<details class='fq'><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q,a in FAQS)+"</div>")
@@ -585,7 +687,7 @@ def pick_page(p,ed,allp=()):
     hn,hu=hub_of(p); cnav,csch=crumbs([('Home','/'),(hn,hu),(p['tname'],f"/ticker/{p['tslug']}/"),(f"{p['action']} {p['label']}",f"/picks/{p['id']}/")])
     det=(f'{cnav}<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
          f'<h2>Pick details</h2><dl><dt>Published</dt><dd>{ed["date"]} in <a href="{BASE}/{ed["date"]}/">that day\'s edition</a></dd><dt>Entry</dt><dd>{money(k,p["entry"])}{note}</dd>'
-         f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd><dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
+         f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd>{book_line(p,True)}<dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
          f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh+related(p,ed,allp))
     sch={"@context":"https://schema.org","@type":"Article","headline":h[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":about}
     og=pick_og(p,ed)
@@ -1198,6 +1300,13 @@ def sports_results(eds):
     gm=[p for p,_ in st if isgame(p)]; fu=[p for p,_ in st if not isgame(p)]
     split=lambda name,ps_,note: f'<div class="tile"><span class="h">{name}</span><b class="{"up" if (avg_(ps_) or 0)>=0 else "dn"}">{rec_(ps_)}</b><span class="s">{note} \u00b7 avg {pct(avg_(ps_))}</span></div>' if ps_ else ''
     ltiles+=split('Favorites (60\u00a2+)',fav,f'{len(fav)} settled')+split('Under 60\u00a2',dog,f'{len(dog)} settled')+(split('Single games',gm,f'{len(gm)} settled')+split('Series futures',fu,f'{len(fu)} settled') if gm and fu else '')
+    # sportsbook check at entry: Polymarket price vs the no-vig sportsbook line (real lines only)
+    eb=[p for p,_ in st if p.get('edge_pts') is not None and p.get('bmode')=='entry']
+    ecs=[p for p in eb if p['edge_pts']>=1]; eeq=[p for p in eb if -1<p['edge_pts']<1]; epr=[p for p in eb if p['edge_pts']<=-1]
+    ltiles+=(split('\U0001F4D2 Cheaper than books',ecs,'Polymarket \u2265 1 pt under the no-vig line')+split('\U0001F4D2 Matched the books',eeq,'within 1 pt of the no-vig line')
+             +split('\U0001F4D2 Pricier than books',epr,'Polymarket \u2265 1 pt over the line'))
+    bksum=(f"Against the sportsbooks: {len(eb)} settled picks had a real moneyline at publish, and {len(eeq)} of them were within 1 point of the no-vig line at our entry ({rec_(eeq)}, avg {pct(avg_(eeq))}). "
+           +("So most of our sports picks have not had a price edge on the books. " if len(eeq)*2>len(eb) else "") if len(eb)>=5 else '')
     # copy
     lgsum=', '.join(f"{LGN.get(l,('Other',''))[0]} {rec_([p for p,_ in st if lg(p)==l])}" for l in order if any(lg(p)==l for p,_ in st))
     since=datetime.date.fromisoformat(min(ed['date'] for ed in eds if ed['sports'])).strftime('%B %-d')
@@ -1209,7 +1318,7 @@ def sports_results(eds):
           f"Best call: {best[0]['label']} ({mk(best[0])}) at {money('Sports',best[0]['entry'])}, {pct(best[0]['ret'])}"+''.join(f", tied with {p['label']} ({mk(p)})" for p,_ in st if p is not best[0] and abs(p['ret']-best[0]['ret'])<1e-9)+". "
           +(f"Toughest loss: {worst[0]['label']} ({mk(worst[0])}), a {money('Sports',worst[0]['entry'])} favorite. " if worst[0]['ret']<0 and worst[0]['entry']>=0.5 else '')
           +(f"Favorites (entry 60\u00a2+) went {rec_(fav)}; picks under 60\u00a2 went {rec_(dog)}. " if fav and dog else '')
-          +f"{len(op)} picks are still open and marked to live Polymarket odds below.")
+          +bksum+f"{len(op)} picks are still open and marked to live Polymarket odds below.")
     tiles=(f'<div class="wkbig"><div><span class="k">Settled record</span><b class="{"up" if w_>=l_ else "dn"}">{w_}\u2013{l_}</b><span class="s">{n} settled \u00b7 {len(op)} still open</span></div>'
            f'<div><span class="k">Avg return</span><b class="{"up" if avg>=0 else "dn"}">{pct(avg)}</b><span class="s">per $1 staked at entry</span></div>'
            f'<div><span class="k">$100 a pick</span><b class="{"up" if tot>=0 else "dn"}">{"+" if tot>=0 else "\u2212"}${abs(tot):,.0f}</b><span class="s">on ${staked:,} staked</span></div>'
@@ -1219,6 +1328,7 @@ def sports_results(eds):
     opn=sorted(op,key=lambda x:(_sp_when(*x),x[1]['date']))
     faqs=[("How are Daily Five sports picks graded?","Each pick records the real Polymarket price of our side when the edition publishes. A game pick settles at 100 cents if our side wins and 0 cents if it loses, as soon as the final score is in (the official market resolution confirms it); a series or championship future settles when its market resolves. Return is per $1 staked at the entry price, so a win at 50 cents is +100% and any loss is -100%."),
           ("Why can the average return be negative with a winning record?","Because price matters. A win on a 75-cent favorite pays about +33%, while every loss costs the full -100%. A record above .500 only makes money if it beats the prices paid, which is why we show the average return and $100-a-pick result next to the win-loss record."),
+          ("Do you compare Polymarket prices to sportsbooks?","Yes. Every sports pick with a real sportsbook moneyline shows it: we remove the vig to get the fair win chance and compare it to the Polymarket price, in points. Before a game starts we track DraftKings' live moneyline from ESPN's public scoreboard; once it starts, the pick is graded against the line at publish (or the last pre-game line we read) versus our entry. That gap is the Edge part of the Daily Five Score."),
           ("Do you ever pick both sides of a game?","Yes, and both stay on the record. If the market moves and a later edition prefers the other side, both picks are graded, so nothing gets hidden."),
           ("Is this betting advice?","No. These are public prediction-market ideas we score and grade in the open for information and entertainment. Prediction markets may not be legal where you live, and you can lose your entire stake.")]
     faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
@@ -1286,6 +1396,7 @@ def main():
     if host and not host.endswith('github.io'): w('CNAME',host+'\n')
     eds=[json.load(open(f)) for f in sorted(glob.glob(os.path.join(ROOT,'editions','*.json')),reverse=True)]
     for ed in eds: enrich(ed)
+    attach_books(eds)
     hits=source_hits(eds)
     for ed in eds:
         for p in ed['finance']+ed['sports']: score_pick(p,hits)
