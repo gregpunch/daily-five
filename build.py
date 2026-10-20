@@ -290,7 +290,7 @@ def sp_card(p,rank):
     vol=f'<span class="vol">${m["volume"]/1e6:.1f}M vol</span>' if m and m['volume']>=1e5 else ''
     return f"""<article class="card sc"><div class="ctop">{f'<span class="rank">#{rank}</span>' if rank else ''}<span class="hz">🏟 {E(when)}</span>{badge(p)}</div>
 <a class="mkt" href="{BASE}/ticker/{p['tslug']}/">{E(p['market'])}</a>{bars}{gd(p)}
-<div class="crow"><span class="act buy">BUY</span><span class="tk sm">{E(p['label'])}</span>{vol}{spark(p.get('pts'),100,30)}</div>{livebox(p)}{breakdown(p)}{book_line(p)}
+<div class="crow"><span class="act buy">BUY</span><span class="tk sm">{E(p['label'])}</span>{vol}{spark(p.get('pts'),100,30)}</div>{livebox(p)}{breakdown(p)}{verdict(p)}{book_line(p)}
 <p class="why"><b>Why BUY:</b> {E(p['why'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
 def tape(ed):
     it=''.join(f'<span class="ti"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} <i>${p["entry"]:,.2f}</i> {chip(p.get("ret"))}</span>' for p in ed['finance'])
@@ -341,7 +341,7 @@ def body(ed,prev=None):
     return recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">The best ideas from AI agents, analysts and public sources, by horizon.</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
-<section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a>{''.join(f' · <a href="{BASE}{u}">{n[:1].upper()+n[1:]} →</a>' for n,u in LGHUBS.values())}</p></div></div>{gd_board(ed["sports"])}<div class="grid g3">{sp}</div></section>"""
+<section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a>{''.join(f' · <a href="{BASE}{u}">{n[:1].upper()+n[1:]} →</a>' for n,u in LGHUBS.values())}</p></div></div>{verdict_summary(ed["sports"])}{gd_board(ed["sports"])}<div class="grid g3">{sp}</div></section>"""
 def bar_chart(rows):
     rs=[r for r in rows if r['ret'] is not None]
     if not rs: return ''
@@ -446,6 +446,52 @@ def book_line(p,full=False):
         out+=(f'<dt>{nm}</dt><dd><a href="{E(e["url"])}" rel="nofollow noopener" target="_blank">{E(e["name"])} · {_bwhen(e)} ↗</a>: '
               f'{E(t2[0])} {_fo(e["odds"][0])} / {E(t2[1])} {_fo(e["odds"][1])}, no-vig {q2[0]/sum(q2)*100:.1f}%.</dd>')
     return out
+VAL_PTS=2.0  # value threshold in points vs the no-vig sportsbook line (FORMAT.md: prefer plays >= 2 pts under the books)
+VV={'val':('\U0001F4B0','Value','cheaper than the books'),'flip':('\U0001FA99','Coin flip','fair price, no edge on the books'),
+    'pricey':('\u26A0\uFE0F','Pricey','pricier than the books'),'nl':('\u2754','Unchecked','no sportsbook line')}
+def vkey(p):
+    """Plain value verdict key from the edge vs the no-vig sportsbook line: val / flip / pricey / nl (no real line)."""
+    pts=p.get('edge_pts') if p.get('kind')=='Sports' else None
+    if pts is None: return 'nl'
+    return 'val' if pts>=VAL_PTS else ('pricey' if pts<=-VAL_PTS else 'flip')
+def _bkname(p):
+    n=((p.get('book') or {}).get('name') or 'the books').split(' via ')[0].split(' (')[0]
+    return n+("'" if n.endswith('s') else "'s")  # possessive: DraftKings', FanDuel's
+def vrec_txt(k):
+    """Our settled record for a verdict bucket (graded at entry), e.g. '8-6, -5.47% avg' or ''."""
+    ps=(SPR.get('vb') or {}).get(k) or []
+    return f"{sum(q['ret']>0 for q in ps)}-{sum(q['ret']<=0 for q in ps)}, {pct(sum(q['ret'] for q in ps)/len(ps))} avg" if ps else ''
+def verdict(p,full=False):
+    """Honest one-line value verdict for a sports pick (card strip; full=True gives the pick-page sentence)."""
+    if p.get('kind')!='Sports': return ''
+    k=vkey(p); ic,lab,sub=VV[k]; pts=p.get('edge_pts'); past=p.get('bmode')=='entry' or p.get('final')
+    is_=('was' if past else 'is'); bn=_bkname(p); px=p.get('bpx')
+    if k=='nl':
+        txt=("We had no real sportsbook line for this market, so we can't say whether the price "+('was' if past else 'is')+" fair.")
+    elif k=='val':
+        txt=(f"Polymarket {is_} {pts:.1f} pts under {bn} no-vig line ({p['fair']*100:.1f}% fair vs {px*100:.1f}\u00a2"+(" at our entry" if past else "")+"). That's the price gap we look for.")
+    elif k=='flip':
+        txt=(f"Polymarket {is_} within {VAL_PTS:.0f} pts of {bn} no-vig line ({pts:+.1f} pts), so the price {is_} fair: a coin flip at the market's own odds, with no edge on the books.")
+    else:
+        txt=(f"Polymarket {is_} {-pts:.1f} pts over {bn} no-vig line: the books {'had' if past else 'have'} this side cheaper.")
+    rec=vrec_txt(k)
+    if rec and k!='nl': txt+=f" Our settled {lab.lower()} picks: {rec}."
+    if full: return f'<dt>Value verdict</dt><dd><b class="vvt {k}">{ic} {E(lab)}</b> {E(txt)}</dd>'
+    return f'<p class="vv {k}"><b>{ic} {E(lab)}</b><span><em>{E(sub)}</em> {E(txt)}</span></p>'
+def verdict_summary(ps):
+    """Home/edition sports header: how many of today's plays beat the books, honestly."""
+    ps=[p for p in ps if p.get('kind')=='Sports' and not p.get('final')]
+    if not ps: return ''
+    b={k:[p for p in ps if vkey(p)==k] for k in VV}
+    def nm(k): return ', '.join(f"{E(p['label'])} {p['edge_pts']:+.1f}" if p.get('edge_pts') is not None else E(p['label']) for p in b[k])
+    parts=[]
+    if b['val']: parts.append(f'<span class="vvs val">\U0001F4B0 {len(b["val"])} cheaper than the books <small>({nm("val")})</small></span>')
+    if b['flip']: parts.append(f'<span class="vvs flip">\U0001FA99 {len(b["flip"])} coin flip{"s" if len(b["flip"])>1 else ""} at a fair price <small>({nm("flip")})</small></span>')
+    if b['pricey']: parts.append(f'<span class="vvs pricey">\u26A0\uFE0F {len(b["pricey"])} pricier than the books <small>({nm("pricey")})</small></span>')
+    if b['nl']: parts.append(f'<span class="vvs nl">\u2754 {len(b["nl"])} with no line to check</span>')
+    rec=vrec_txt('flip')
+    tail=(f' Fair-priced picks have gone {rec} for us so far, so we only call it value at {VAL_PTS:.0f}+ pts under the books.' if rec else '')
+    return f'<div class="vvsum"><b class="vvh">Value check vs the sportsbooks</b>{"".join(parts)}<p>Edge in points = no-vig sportsbook chance minus the Polymarket price.{E(tail)} <a href="{BASE}/how-we-rank/#value">How it works \u2192</a></p></div>'
 def badge(p):
     s=p.get('score')
     if s is None: return ''
@@ -462,6 +508,7 @@ FAQS=[
  ("How does source credibility work?","Credibility is the source's historical hit rate on our own track record: closed picks from that source that made money. Until a source has at least 5 closed picks it gets a neutral 12.5, labeled new source."),
  ("What is consensus in the score?","Consensus measures how many independent, credible sources we found agreeing with the call versus dissenting. The formula is 12.5 + 12.5 × (agree − dissent)/(agree + dissent), scaled down when there are fewer than four sources. With no sources checked, it stays a neutral 12.5."),
  ("How is edge vs fair value calculated?","For stocks, edge is the % gap between the live price and the consensus analyst mean price target (Yahoo Finance), signed for BUY or SELL: 12.5 + 50 × gap. Peer valuation isn't computed yet. For sports and markets, it's the sportsbook's no-vig implied probability minus the Polymarket price, in points: 12.5 + 1.25 × points. Before an NFL, NBA, MLB or NHL game starts we use DraftKings' live moneyline from ESPN's public scoreboard against the live Polymarket price; once it starts we grade the line at publish (or the last pre-game line we read) against our entry. Every sports card shows the line, the vig-free chance and the gap."),
+ ("What does coin flip at a fair price mean?","It means the Polymarket price is within 2 points of the sportsbook's no-vig chance, so the market and the books agree on the odds. A fair-priced pick can still win, but over many picks you only make money by paying less than the true chance. We call a sports play value only when Polymarket is at least 2 points cheaper than the no-vig DraftKings line, and we say so plainly on every card."),
  ("How often do prices and scores update?","Scores recompute every time live prices refresh. Stock quotes come from Yahoo Finance (may lag up to ~15 minutes). Sports-market odds come from Polymarket. The site rebuilds on a schedule during market hours and less often off-hours; the live strip marks prices stale when the rebuild is behind."),
  ("Is The Daily Five financial or betting advice?","No. A high score isn't a guarantee. The Daily Five Score and every pick are for information and education only — not financial, investment, or betting advice."),
 ]
@@ -469,6 +516,7 @@ HOWTO=("<section class='sbhero'><span class='kicker'>🧮 Methodology</span><h1 
  "<div class='how'><div class='hw'><h2>1 · Source credibility (0–25)</h2><p>The source's historical hit rate on our own <a href='/track-record/'>track record</a>: closed picks from that source that made money. Until a source has at least 5 closed picks it gets a neutral 12.5, labeled <b>new source</b>.</p></div>"
  "<div class='hw'><h2>2 · Consensus (0–25)</h2><p>How many independent, credible sources we found agreeing with the call versus dissenting. 12.5 + 12.5 × (agree − dissent)/(agree + dissent), scaled down when there are fewer than four sources. With no sources checked, it's a neutral 12.5.</p></div>"
  "<div class='hw'><h2>3 · Edge vs fair value (0–25)</h2><p><b>Stocks:</b> % gap between the live price and the consensus analyst mean price target (Yahoo Finance), signed for BUY or SELL: 12.5 + 50 × gap. Peer valuation isn't computed yet. <b>Sports and markets:</b> the sportsbook's no-vig implied probability minus the Polymarket price, in points: 12.5 + 1.25 × points. Example: Patriots +124 / Bears −148 imply 44.6% and 59.7% (104.3% total, the extra 4.3% is the book's vig); removing it gives the Patriots a 42.8% fair chance, so a 39.5¢ Polymarket price is a +3.3-point edge. Before an NFL, NBA, MLB or NHL game starts we use DraftKings' live moneyline from ESPN's public scoreboard against the live Polymarket price, refreshed every build; once it starts we grade the line at publish (or the last pre-game line we read) against our entry. Every sports card shows the line, the vig-free chance and the gap. Futures use a published line when we find one; with none, Edge stays a neutral 12.5.</p></div>"
+ "<div class='hw' id='value'><h2>Value verdict: value, coin flip or pricey</h2><p>Every sports pick also gets a plain verdict from that same edge number. <b>💰 Value:</b> Polymarket is at least 2 points cheaper than the no-vig sportsbook line. <b>🪙 Coin flip:</b> within 2 points either way, so the price is fair and there's no edge on the books; the pick can still win, but you're paying what it's worth. <b>⚠️ Pricey:</b> Polymarket is 2+ points over the line. <b>❔ Unchecked:</b> no real sportsbook line to compare. Settled picks keep the verdict they had at our entry, and <a href='/sports-results/#value'>sports results</a> show our record for each. Why 2 points: small gaps come from how the vig is split and from prices moving minute to minute, and our early fair-priced picks lost money despite a winning record.</p></div>"
  "<div class='hw'><h2>4 · Risk/reward (0–25)</h2><p><b>Stocks:</b> the horizon-scaled share of the target gap divided by the horizon's volatility (60-day daily volatility × √trading days): 12.5 + 12.5 × tanh(ratio). <b>Markets:</b> expected value per $1 at the fair probability: 12.5 + 12.5 × tanh(5 × EV).</p></div></div>"
  "<p class='sub'>Scores recompute every time live prices refresh. A high score isn't a guarantee. Not financial or betting advice.</p>"
  "<h2 class='h2s'>FAQ</h2><div class='faq'>"+''.join(f"<details class='fq'><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q,a in FAQS)+"</div>")
@@ -687,7 +735,7 @@ def pick_page(p,ed,allp=()):
     hn,hu=hub_of(p); cnav,csch=crumbs([('Home','/'),(hn,hu),(p['tname'],f"/ticker/{p['tslug']}/"),(f"{p['action']} {p['label']}",f"/picks/{p['id']}/")])
     det=(f'{cnav}<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
          f'<h2>Pick details</h2><dl><dt>Published</dt><dd>{ed["date"]} in <a href="{BASE}/{ed["date"]}/">that day\'s edition</a></dd><dt>Entry</dt><dd>{money(k,p["entry"])}{note}</dd>'
-         f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd>{book_line(p,True)}<dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
+         f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd>{verdict(p,True)}{book_line(p,True)}<dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
          f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh+related(p,ed,allp))
     sch={"@context":"https://schema.org","@type":"Article","headline":h[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":about}
     og=pick_og(p,ed)
@@ -1243,6 +1291,7 @@ def sports_stats(eds):
     st=[(p,ed) for p,ed in allp if p.get('final') and p.get('ret') is not None]
     if not st: return
     w_=sum(p['ret']>0 for p,_ in st)
+    SPR['vb']={k:[p for p,_ in st if vkey(p)==k] for k in ('val','flip','pricey','nl')}  # settled picks by value verdict at entry
     SPR.update(url='/sports-results/',st=st,w=w_,l=len(st)-w_,avg=sum(p['ret'] for p,_ in st)/len(st),op=[(p,ed) for p,ed in allp if not p.get('final')],n=len(allp))
 def sports_results_link(cls='pill ghost'):
     return f'<a class="{cls}" href="{BASE}/sports-results/">Sports results: {SPR["w"]}-{SPR["l"]} \u2192</a>' if SPR else ''
@@ -1272,6 +1321,7 @@ def sports_results(eds):
             fl=final_line(p) if g else None
             sub=(f"{fl[0]} \u00b7 Final" if fl else f"{E(mk(p))} \u00b7 Final") if g else f"{E(p['market'])} \u00b7 market resolved"
             if p.get('note')=='final score, awaiting resolution': sub+=' \u00b7 awaiting on-chain resolution'
+            vk=vkey(p); sub+=f' \u00b7 <span class="vvt {vk}">{VV[vk][0]} {VV[vk][1]}'+(f' {p["edge_pts"]:+.1f}' if p.get('edge_pts') is not None else '')+'</span>'
         else:
             sub=f"{E(mk(p))} \u00b7 "+(k.strftime('%a %b %-d, %-I:%M %p ET') if k else 'series future, settles when the market resolves')
         return (f'<a class="wkrow {cls}" href="{BASE}/picks/{p["id"]}/"><span class="wkres">{res}</span>'
@@ -1301,12 +1351,13 @@ def sports_results(eds):
     split=lambda name,ps_,note: f'<div class="tile"><span class="h">{name}</span><b class="{"up" if (avg_(ps_) or 0)>=0 else "dn"}">{rec_(ps_)}</b><span class="s">{note} \u00b7 avg {pct(avg_(ps_))}</span></div>' if ps_ else ''
     ltiles+=split('Favorites (60\u00a2+)',fav,f'{len(fav)} settled')+split('Under 60\u00a2',dog,f'{len(dog)} settled')+(split('Single games',gm,f'{len(gm)} settled')+split('Series futures',fu,f'{len(fu)} settled') if gm and fu else '')
     # sportsbook check at entry: Polymarket price vs the no-vig sportsbook line (real lines only)
-    eb=[p for p,_ in st if p.get('edge_pts') is not None and p.get('bmode')=='entry']
-    ecs=[p for p in eb if p['edge_pts']>=1]; eeq=[p for p in eb if -1<p['edge_pts']<1]; epr=[p for p in eb if p['edge_pts']<=-1]
-    ltiles+=(split('\U0001F4D2 Cheaper than books',ecs,'Polymarket \u2265 1 pt under the no-vig line')+split('\U0001F4D2 Matched the books',eeq,'within 1 pt of the no-vig line')
-             +split('\U0001F4D2 Pricier than books',epr,'Polymarket \u2265 1 pt over the line'))
-    bksum=(f"Against the sportsbooks: {len(eb)} settled picks had a real moneyline at publish, and {len(eeq)} of them were within 1 point of the no-vig line at our entry ({rec_(eeq)}, avg {pct(avg_(eeq))}). "
-           +("So most of our sports picks have not had a price edge on the books. " if len(eeq)*2>len(eb) else "") if len(eb)>=5 else '')
+    vb=SPR['vb']; ecs,eeq,epr,enl=vb['val'],vb['flip'],vb['pricey'],vb['nl']; eb=ecs+eeq+epr
+    vt=lambda k,ps_,note: (f'<div class="tile vvtile {k}"><span class="h">{VV[k][0]} {VV[k][1]}: {VV[k][2]}</span><b class="{"up" if (avg_(ps_) or 0)>=0 else "dn"}">{rec_(ps_)}</b><span class="s">{note} \u00b7 {len(ps_)} settled \u00b7 avg {pct(avg_(ps_))}</span></div>' if ps_ else
+                          f'<div class="tile vvtile {k}"><span class="h">{VV[k][0]} {VV[k][1]}: {VV[k][2]}</span><b>0\u20130</b><span class="s">{note} \u00b7 none settled yet</span></div>')
+    vtiles=(vt('val',ecs,f'Polymarket \u2265 {VAL_PTS:.0f} pts under the no-vig line')+vt('flip',eeq,f'within {VAL_PTS:.0f} pts of the no-vig line')
+            +vt('pricey',epr,f'Polymarket \u2265 {VAL_PTS:.0f} pts over the line')+(vt('nl',enl,'no real sportsbook line at publish') if enl else ''))
+    bksum=(f"Against the sportsbooks: {len(eb)} settled picks had a real moneyline at publish, and {len(eeq)} of them were coin flips at a fair price, within {VAL_PTS:.0f} points of the no-vig line at our entry ({rec_(eeq)}, avg {pct(avg_(eeq))}). "
+           +("So most of our sports picks have not had a price edge on the books, and from here we only call a play value when Polymarket is at least 2 points cheaper than the books. " if len(eeq)*2>len(eb) else "") if len(eb)>=5 else '')
     # copy
     lgsum=', '.join(f"{LGN.get(l,('Other',''))[0]} {rec_([p for p,_ in st if lg(p)==l])}" for l in order if any(lg(p)==l for p,_ in st))
     since=datetime.date.fromisoformat(min(ed['date'] for ed in eds if ed['sports'])).strftime('%B %-d')
@@ -1341,7 +1392,7 @@ def sports_results(eds):
     bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">\U0001F3DF Sports picks results \u00b7 since {datetime.date.fromisoformat(first).strftime("%b %-d, %Y")}</span><h1 class="pt">{E(h1)}</h1>'
            f'<p class="sub wksum">{E(summ)}{(" "+E(lv)) if lv else ""}</p>{cta}</section>'
            f'{tiles}<h2 class="h2s">Every result, in order</h2><p class="sub hub-lead">Oldest first. Tap any square for the pick, its entry price and its line-movement chart.</p>{strip}'
-           f'<div class="tiles">{ltiles}</div>{ask}'
+           f'<div class="tiles">{ltiles}</div><h2 class="h2s" id="value">Results by value verdict</h2><p class="sub hub-lead">Every settled pick graded at our entry against the no-vig sportsbook moneyline: <b>value</b> means Polymarket was at least {VAL_PTS:.0f} points cheaper than the books, a <b>coin flip</b> was within {VAL_PTS:.0f} points (a fair price, no edge), and <b>pricey</b> was at least {VAL_PTS:.0f} points over. <a href="{BASE}/how-we-rank/#value">How it works \u2192</a></p><div class="tiles">{vtiles}</div>{ask}'
            +gd_board([p for p,_ in opn],'Game day: our open games')+
            f'<h2 class="h2s">Every settled sports pick, by league</h2><p class="sub hub-lead">Entry is the real Polymarket price of our side when we published; exit is 100\u00a2 for a win and 0\u00a2 for a loss. Final scores from Polymarket\'s events API. Newest game first.</p>{secs}'
            +(f'<h2 class="h2s">Still open: {len(op)} picks marked live</h2><p class="sub hub-lead">Marked to the live Polymarket price. Games settle at the final whistle; futures when their market resolves.</p><div class="wklist">{"".join(row(p,ed) for p,ed in opn)}</div>' if op else '')+

@@ -45,9 +45,19 @@ def sp(p,i):
       f'{act(p["action"])} <span style="{M}font-size:18px;font-weight:700;color:{TXT};vertical-align:middle;">&nbsp;{E(p["label"])}</span>'
       f'<span style="{M}font-size:14px;color:{MUT};vertical-align:middle;">&nbsp;@ {p["entry"]*100:.1f}¢</span>'
       f'<div style="{F}font-size:14px;line-height:20px;color:#e6e9f3;padding-top:8px;"><b style="color:{AMB};">Why {E(p["action"])}:</b> {E(p["why"])}</div>'
+      f'{value(p)}'
       f'<div style="{F}font-size:12px;padding-top:6px;"><a href="{E(p["source"]["url"])}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">{E(src(p["source"]["name"]))} →</a></div>'
       f'</td>{score(p)}</tr></table>')
     return row(inner,'#2a2110')
+def value(p):
+    """Plain value verdict vs the no-vig sportsbook line (same 2-pt rule as the site): value / coin flip / pricey."""
+    pts=p.get('edge_pts')
+    if pts is None: return ''
+    if pts>=2: c,fg,lab,t=UP,'#04130c','💰 VALUE',f'Polymarket is {pts:.1f} pts cheaper than the books'
+    elif pts<=-2: c,fg,lab,t=DN,'#ffffff','⚠️ PRICEY',f'Polymarket is {-pts:.1f} pts over the books'
+    else: c,fg,lab,t='#e9ecf5','#0a0b12','🪙 COIN FLIP',f'fair price, within 2 pts of the books ({pts:+.1f})'
+    return (f'<div style="{F}font-size:13px;line-height:18px;color:#dfe3ef;padding-top:8px;">'
+            f'<span style="display:inline-block;background:{c};color:{fg};font-weight:900;font-size:11px;letter-spacing:1px;padding:3px 9px;border-radius:999px;">{lab}</span>&nbsp; {E(t)}</div>')
 def ai(n,i):
     inner=(f'<div style="{F}font-size:11px;font-weight:800;color:#b9a8ff;letter-spacing:1px;text-transform:uppercase;padding-bottom:4px;">{i} · {E(n.get("category","AI"))}</div>'
       f'<a href="{E(n["source"]["url"])}" style="{F}font-size:17px;line-height:22px;font-weight:800;color:{TXT};text-decoration:none;">{E(n["headline"])}</a>'

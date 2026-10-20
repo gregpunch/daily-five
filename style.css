@@ -175,3 +175,21 @@ nav.crumbs a:hover{background:none;color:var(--amb);border-bottom-color:var(--am
 @media(max-width:600px){.wlstrip{gap:5px;padding:12px}.wlstrip a{width:32px;height:32px;font-size:13px}}
 .bk{margin:8px 0 0;padding:9px 11px;border-radius:12px;background:linear-gradient(135deg,rgba(255,176,32,.10),rgba(124,92,255,.10));border:1px solid rgba(255,176,32,.28);font-size:13px;line-height:1.55;color:#e6e9f2}
 .bk .bkl{font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:11px;color:#ffcf70;margin-right:4px}.bk b{font-family:var(--mono);color:#fff}.bk .chip{font-size:12px;padding:2px 8px}.bk small{display:block;margin-top:2px}.bk small a{color:#aab1c7}
+/* value verdict (sports): value / coin flip / pricey / unchecked, from edge vs the no-vig sportsbook line */
+.vv{margin:10px 0 0;display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:13px;line-height:1.45;color:#dfe3ef}
+.vv>b{flex:none;font-family:var(--disp);font-weight:900;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;white-space:nowrap}
+.vv em{display:block;font-style:normal;font-weight:800;color:#fff;font-size:13.5px;margin-bottom:1px}
+.vv.val{border-color:rgba(22,199,132,.55);background:linear-gradient(135deg,rgba(22,199,132,.18),rgba(22,199,132,.04))}.vv.val>b{background:var(--up);color:#04130c;box-shadow:0 6px 18px -8px rgba(22,199,132,.9)}
+.vv.flip{border-color:rgba(156,163,186,.4);background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(124,92,255,.06))}.vv.flip>b{background:#e9ecf5;color:#0a0b12}
+.vv.pricey{border-color:rgba(255,77,94,.5);background:linear-gradient(135deg,rgba(255,77,94,.16),rgba(255,77,94,.03))}.vv.pricey>b{background:var(--dn);color:#fff}
+.vv.nl{opacity:.85}.vv.nl>b{background:rgba(255,255,255,.08);color:#cfd4e4}
+.vvt{display:inline-block;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.vvt.val{background:rgba(22,199,132,.18);color:#3ee6a3}.vvt.flip{background:rgba(255,255,255,.1);color:#e9ecf5}.vvt.pricey{background:rgba(255,77,94,.16);color:#ff7a87}.vvt.nl{background:rgba(255,255,255,.06);color:#9ba3ba}
+dd .vvt{font-size:12px;margin-right:6px}
+.vvsum{margin:0 0 18px;padding:14px 16px;border-radius:16px;border:1px solid rgba(255,176,32,.35);background:linear-gradient(135deg,rgba(255,176,32,.10),rgba(124,92,255,.08));display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.vvsum .vvh{font-family:var(--disp);font-weight:900;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--amb);margin-right:4px}
+.vvs{font-weight:800;font-size:14px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(0,0,0,.25)}.vvs small{font-weight:600;color:var(--mut);font-family:var(--mono);font-size:12px}
+.vvs.val{border-color:rgba(22,199,132,.6);color:#3ee6a3}.vvs.flip{color:#e9ecf5}.vvs.pricey{border-color:rgba(255,77,94,.55);color:#ff7a87}.vvs.nl{color:var(--mut)}
+.vvsum p{flex-basis:100%;margin:2px 0 0;font-size:13px;color:#c9cede}.vvsum p a{color:var(--amb)}
+.vvtile.val{border-color:rgba(22,199,132,.45)}.vvtile.pricey{border-color:rgba(255,77,94,.4)}
+@media(max-width:720px){.vvs{font-size:13px}}
