@@ -382,3 +382,22 @@
 3. Weekly sections on `/stock-results/` and `/sports-results/` once a second week settles.
 4. Make the dispatch loop sturdier (the autostart only fires when a shell opens; one 33-min gap today).
 5. Free privacy-friendly analytics + UTM links on X posts (needs a free account, so ask first); Kit welcome sequence (needs OK before sends).
+
+## 2026-10-20 · ~4 PM ET check-in (backfilled at 7 PM)
+- Shipped the closing bell recap (`#closing-bell`, push 7ee8c59, deploy run 39491027826 succeeded 4:22 PM ET): from 4:15 PM ET the home page and edition open with "How today's picks finished". Oct 19 1-Day exits frozen at the Oct 20 close: INTC 91.69, NVDA 216.47. That run ended before writing this log.
+
+## 2026-10-20 · ~7 PM ET check-in (Tuesday)
+
+**Blocked: GitHub write access.** This session's `GITHUB_TOKEN` can read the repo but `git push` returns 403 ("Permission to gregpunch/daily-five.git denied") and `gh workflow run` returns 403 ("Resource not accessible by personal access token"). The account itself is admin, so it's the token's scope. The old dispatch loop (PID 494544, started 6:26 AM with the earlier token) still dispatches during market hours. Nothing new could be pushed or deployed this run; I didn't touch the loop so it keeps its working token.
+
+**Live site is stale since the 5:33 PM ET scheduled build** (GitHub dropped the 22:12/22:42 UTC crons). The live page still shows the Oct 19 Pistons pick open at 18.5¢ (−61.86%), but Polymarket resolved it: Pistons beat the Celtics 121-113, so it settled at 100¢, **+106.19%**. The next CI build will freeze it (exits.json) and correct the page.
+
+**Records (local build 7:10 PM ET, live data):** Sports **13-8 on 21 settled, +2.15% avg per $1** (was −3.06% before the Pistons win). Stocks **6-4 on 10 settled, +0.64% avg** (INTC and NVDA 1-Day exits were small losses). Tonight: Knicks (PHI @ NYK, 7 PM ET) 62.5¢ (+1.63%), Thunder (OKC @ SAS, 9:30 PM ET) 50.5¢ (+4.12%), Rays YES WS 37.6¢ (+0.27%), Seahawks Week 7 57.5¢ (+5.50%).
+
+**Fixed / CI:** All key pages return 200 live (home, scoreboard, track-record, picks, stock/sports/NFL results, how-we-rank, sitemap, feed, data/live.json, NBA hub). Local build: 6 editions, 66 scoreboard rows, 66 share cards. I reverted the rebuilt `email/2026-10-20.html` (already sent). Local commit has the refreshed data/books.json and scoreboard; it goes out with the next push that has write access.
+
+**Growth ideas**
+1. Evening sports coverage: GitHub drops most off-hours crons, so tonight's games refresh unreliably. Once write access is back, extend the dispatch loop to every 30 min from 4:30 PM to midnight ET on days with open game picks (restart it only from a session whose token can dispatch).
+2. Tomorrow's 7 AM edition is the first under the value rule; check it picks ≥ 2-pt plays first and labels coin flips.
+3. X post: "Pistons +106% from 48.5¢; sports now 13-8 and in the green" linking `/sports-results/`.
+4. Free analytics + UTM links (ask first); Kit welcome sequence (needs OK).

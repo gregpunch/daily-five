@@ -3,28 +3,28 @@
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nba/game/_/gameId/401909090/thunder-spurs",
   "odds": [
-   -115,
-   -105
+   -118,
+   -102
   ],
   "teams": [
    "OKC",
    "SA"
   ],
-  "at": "2026-10-20T16:18-04:00",
-  "pm": 0.515
+  "at": "2026-10-20T19:09-04:00",
+  "pm": 0.505
  },
  "2026-10-20/s2": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nfl/game/_/gameId/401873010/patriots-bears",
   "odds": [
-   124,
-   -148
+   130,
+   -155
   ],
   "teams": [
    "NE",
    "CHI"
   ],
-  "at": "2026-10-20T16:18-04:00",
+  "at": "2026-10-20T19:09-04:00",
   "pm": 0.395
  },
  "2026-10-20/s3": {
@@ -38,21 +38,21 @@
    "GB",
    "DET"
   ],
-  "at": "2026-10-20T16:18-04:00",
+  "at": "2026-10-20T19:09-04:00",
   "pm": 0.385
  },
  "2026-10-20/s4": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nba/game/_/gameId/401909092/warriors-lakers",
   "odds": [
-   -225,
-   185
+   -218,
+   180
   ],
   "teams": [
    "LAL",
    "GS"
   ],
-  "at": "2026-10-20T16:18-04:00",
+  "at": "2026-10-20T19:09-04:00",
   "pm": 0.655
  },
  "2026-10-19/s2": {
@@ -87,14 +87,14 @@
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nfl/game/_/gameId/401873022/chiefs-seahawks",
   "odds": [
-   -142,
-   120
+   -155,
+   130
   ],
   "teams": [
    "SEA",
    "KC"
   ],
-  "at": "2026-10-20T16:18-04:00",
-  "pm": 0.555
+  "at": "2026-10-20T19:09-04:00",
+  "pm": 0.575
  }
 }
