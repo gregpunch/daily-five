@@ -45,7 +45,7 @@ u.searchParams.delete('subscribed');history.replaceState(null,'',u.pathname+(u.s
 (()=>{document.addEventListener('click',e=>{const a=e.target.closest('a.shr');if(!a)return;
 const c=a.closest('.card'),r=c&&c.querySelector('[data-k=ret] .chip'),m=r&&r.textContent.match(/[+-]\d+(\.\d+)?%/);
 const what=a.dataset.shareWhat,url=a.dataset.shareUrl;
-const text=m?`${what}: ${m[0]} since The Daily Five called it${/final/.test(r.textContent)?' (final)':''}`:`${what}, a call from The Daily Five`;
+const text=a.dataset.shareText||(m?`${what}: ${m[0]} since The Daily Five called it${/final/.test(r.textContent)?' (final)':''}`:`${what}, a call from The Daily Five`);
 if(navigator.share&&matchMedia('(pointer:coarse)').matches){e.preventDefault();navigator.share({title:'The Daily Five',text,url}).catch(()=>{});return;}
 a.href='https://x.com/intent/post?'+new URLSearchParams({text,url,via:'ReadDailyFive'}).toString();});})();
 (()=>{const G=[...document.querySelectorAll('.gd[data-ev]')];if(!G.length)return;const st={};

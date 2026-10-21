@@ -400,7 +400,7 @@ def body(ed,prev=None):
     sp=''.join(sp_card(p,i+1) for i,p in enumerate(ed['sports']))
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
     upd=NOW.strftime('%-I:%M %p ET')
-    return closing_bell(ed)+recap(prev)+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
+    return closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">The best ideas from AI agents, analysts and public sources, by horizon.</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
 <section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a>{''.join(f' · <a href="{BASE}{u}">{n[:1].upper()+n[1:]} →</a>' for n,u in LGHUBS.values())}</p></div></div>{verdict_summary(ed["sports"])}{gd_board(ed["sports"])}<div class="grid g3">{sp}</div></section>"""
@@ -1390,6 +1390,34 @@ def final_line(p):
     a,h=g['score'].split('-'); aw,hm=g['teams']; ps=pick_side(p,g,p.get('m') or {})
     B_=lambda t,sd: f'<b>{E(t)}</b>' if sd==ps else E(t)
     return f"{B_(aw['ab'],'a')} {a}\u2013{h} {B_(hm['ab'],'h')}", f"{aw['ab']} {a}, {hm['ab']} {h}"
+def win_share(p,txt):
+    """Share-the-win button: static X intent with the settled result baked in (live.js uses data-share-text as-is)."""
+    u=f"{SITE}/picks/{p['id']}/?utm_source=win_share&utm_medium=x&utm_campaign=wins"
+    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
+    return f'<a class="shr" href="{E(href)}" target="_blank" rel="noopener" data-share-text="{E(txt)}" data-share-what="{E(p["label"])}" data-share-url="{E(u)}" aria-label="Share this win"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>Share the win</a>'
+def wins_wall(n=6,days=None,where='hub'):
+    """'Biggest wins' wall: top real settled winners (sports + stocks) by return, each with a share-the-win button."""
+    ws=[]
+    for S,kind in ((SPR,'Sports'),(STK,'Stock')):
+        for p,ed in (S.get('st') or []):
+            if p['ret']<=0: continue
+            dd=_sp_when(p,ed).date() if kind=='Sports' else datetime.date.fromisoformat((re.search(r'\d{4}-\d{2}-\d{2}',p.get('note') or '') or [ed['date']])[0])
+            if days and (TODAY-dd).days>days: continue
+            ws.append((p,ed,kind,dd))
+    ws=sorted(ws,key=lambda x:-x[0]['ret'])[:n]
+    if not ws: return ''
+    def card(p,ed,kind,dd):
+        fl=final_line(p) if kind=='Sports' and GAME_RE.match(p.get('slug') or '') else None
+        sub=(fl[0]+' \u00b7 Final') if fl else (E(p['market']) if kind=='Sports' else f"{E(p['horizon'])} call \u00b7 closed {dd.strftime('%b %-d')}")
+        ent=f"{money('Sports' if kind=='Sports' else 'x',p['entry'])} \u2192 {money('Sports' if kind=='Sports' else 'x',p.get('cur'))}"
+        txt=(f"Called it: {p['action']} {p['label']} at {money('Sports' if kind=='Sports' else 'x',p['entry'])} on {datetime.date.fromisoformat(ed['date']).strftime('%b %-d')}, "
+             f"settled {pct(p['ret'])}"+(f" ({fl[1]})" if fl else '')+". Every Daily Five pick is graded in public, wins and losses.")
+        return (f'<div class="wwc"><a class="wwl" href="{BASE}/picks/{p["id"]}/"><span class="wwp">{pct(p["ret"])}</span>'
+                f'<b>{E(p["action"])} {E(p["label"])}</b><small>{sub}</small><small class="mut">{"\U0001F3DF" if kind=="Sports" else "\U0001F4B0"} picked {datetime.date.fromisoformat(ed["date"]).strftime("%b %-d")} \u00b7 {ent}</small></a>{win_share(p,txt)}</div>')
+    hd=(f'\U0001F525 Biggest wins, last {days} days' if days else '\U0001F525 Our biggest wins')
+    lead=('Real settled picks, graded at our published entry price. Losses stay on the record too: '
+          +' \u00b7 '.join(x for x in (f'<a href="{BASE}/sports-results/">sports {SPR["w"]}-{SPR["l"]}</a>' if SPR else '',f'<a href="{BASE}/stock-results/">stocks {STK["w"]}-{STK["l"]}</a>' if STK else '') if x)+'.')
+    return f'<section class="wwall {where}" id="wins"><h2 class="h2s">{hd}</h2><p class="sub hub-lead">{lead}</p><div class="wwg">{"".join(card(*x) for x in ws)}</div></section>'
 def sports_results(eds):
     """/sports-results/: every settled Polymarket sports pick graded with its real final score and real entry/exit price,
     by league, with a W/L strip, favorites vs underdogs, games vs futures, open picks live, Kit ask, FAQ + JSON-LD."""
@@ -1479,7 +1507,7 @@ def sports_results(eds):
          +f'<a class="pill ghost" href="{BASE}/track-record/">Full track record \u2192</a>{stock_results_link()}</div>')
     bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">\U0001F3DF Sports picks results \u00b7 since {datetime.date.fromisoformat(first).strftime("%b %-d, %Y")}</span><h1 class="pt">{E(h1)}</h1>'
            f'<p class="sub wksum">{E(summ)}{(" "+E(lv)) if lv else ""}</p>{cta}</section>'
-           f'{tiles}<h2 class="h2s">Every result, in order</h2><p class="sub hub-lead">Oldest first. Tap any square for the pick, its entry price and its line-movement chart.</p>{strip}'
+           f'{tiles}{wins_wall(6)}<h2 class="h2s">Every result, in order</h2><p class="sub hub-lead">Oldest first. Tap any square for the pick, its entry price and its line-movement chart.</p>{strip}'
            f'<div class="tiles">{ltiles}</div>{week_rows([(_sp_when(p,ed).date(),p["ret"]) for p,ed in st])}<h2 class="h2s" id="value">Results by value verdict</h2><p class="sub hub-lead">Every settled pick graded at our entry against the no-vig sportsbook moneyline: <b>value</b> means Polymarket was at least {VAL_PTS:.0f} points cheaper than the books, a <b>coin flip</b> was within {VAL_PTS:.0f} points (a fair price, no edge), and <b>pricey</b> was at least {VAL_PTS:.0f} points over. <a href="{BASE}/how-we-rank/#value">How it works \u2192</a></p><div class="tiles">{vtiles}</div>{ask}'
            +gd_board([p for p,_ in opn],'Game day: our open games')+
            f'<h2 class="h2s">Every settled sports pick, by league</h2><p class="sub hub-lead">Entry is the real Polymarket price of our side when we published; exit is 100\u00a2 for a win and 0\u00a2 for a loss. Final scores from Polymarket\'s events API. Newest game first.</p>{secs}'
