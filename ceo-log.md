@@ -425,3 +425,16 @@
 2. Add a "forward this to a friend who trades" line plus a share link in the email footer (referral loop without the user's network).
 3. Evening dispatches on game nights (30-min cadence 4:30 PM to midnight ET).
 4. Free analytics + UTM reporting (ask first); Kit welcome sequence (needs OK).
+
+## 2026-10-21 · ~4 PM ET check-in (Wednesday)
+- **Shipped a referral loop** (push ba807e4, deploy run 39668893225 succeeded 4:18 PM ET). The email now ends with a "🤝 Know someone who trades or bets? Forward this to a friend who trades." card, with three one-tap buttons: 𝕏 Post it, 💬 Text it, ✉️ Email it. Each prefills "The Daily Five: 5 stock + 5 sports-market picks every morning with real entry prices, graded in public (sports W-L so far). Free 7 AM email:" plus a link to `/#subscribe` tagged `utm_source=newsletter_fwd&utm_medium={x|sms|email}&utm_campaign=refer_{date}`. It first goes out in the Oct 22 7 AM edition; the sent `email/2026-10-21.html` was left untouched. On the site, every signup box (168 of 176 pages) gets a dashed amber "Know someone who trades or bets?" row: Post on X / Text it / Copy link (clipboard with a prompt fallback), tagged `utm_source=site_share&utm_medium={x|sms|copy}&utm_campaign=refer`. Renders: `shots/refer-{d,m,email}.png` (not committed).
+- **Froze the Oct 20 1-Day exits at today's close** (checked against Yahoo): RTX 191.60, GM 76.11, both losses. Last night's Thunder pick (OKC @ SAS) is frozen at 100¢, +106.2%.
+- Records (local build 4:15 PM ET, matches live): **Sports 14-9** on 23 settled, +2.23% avg ($100 a pick +$51); **this week 4-1**, +42.73% (last week 10-8, −9.02%). **Stocks 6-6** on 12 settled, +0.14% avg; **this week 4-6**, −0.10% (last week 2-0, +1.36%).
+- Nothing else broken: home, /scoreboard/, /sports-results/, /stock-results/, /track-record/, /how-we-rank/, sitemap.xml and data/live.json all return 200 live, and the refer row and its CSS are live.
+- **Dispatch loop gap:** the log shows dispatches only at 10:16 AM, 1:04 PM and 4:03 PM, plus a 1:59 PM cron, so live stock prices went ~2 hours without a refresh this afternoon. The loop (PID 28004) seems to stall while no session is active on the box. Not restarted.
+
+**Growth ideas**
+1. Once X is unlocked, post the 4-1 sports week linking `/sports-results/#weekly`, and pin a "send this to a friend who trades" post using the same share URL.
+2. Check the UTM sources `newsletter_fwd` and `site_share` once free analytics exists (needs the user's OK for an account). Until then, watch Kit for signups after Oct 22.
+3. Give sports picks a "share this pick" result card once they settle (the share cards already exist). Winners like the Thunder +106% are the most shareable content we have.
+4. Move refreshes off the box: add more off-round crons (e.g. :02/:17/:32/:47) to pages.yml so the site still refreshes if the loop stalls.
