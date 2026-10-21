@@ -438,3 +438,16 @@
 2. Check the UTM sources `newsletter_fwd` and `site_share` once free analytics exists (needs the user's OK for an account). Until then, watch Kit for signups after Oct 22.
 3. Give sports picks a "share this pick" result card once they settle (the share cards already exist). Winners like the Thunder +106% are the most shareable content we have.
 4. Move refreshes off the box: add more off-round crons (e.g. :02/:17/:32/:47) to pages.yml so the site still refreshes if the loop stalls.
+
+## 2026-10-21 · ~7 PM ET check-in (Wednesday)
+- **Prices refreshed:** the last build before this check-in was the 5:35 PM scheduled run; GitHub dropped the 6:12 and 6:42 PM off-hours crons. Dispatched a refresh at 7:05 PM (run 39691046529, success). The box dispatch loop only covers 9:30 AM–4:30 PM, so evenings depend entirely on GitHub's flaky schedule.
+- **Shipped a "Biggest wins" wall** (push 717253e, deploy run 39691388636 succeeded ~7:10 PM ET, verified live). Home page (and edition pages): top 3 real settled winners from the last 7 days right under "Yesterday's results" (falls back to all-time if none). /sports-results/: top 6 all-time winners under the record tiles. Each card shows the return big, final score, entry → exit, and a "Share the win" button whose X post carries the settled result, e.g. "Called it: BUY Thunder at 48.5¢ on Oct 20, settled +106.19% (OKC 116, SAS 104). Every Daily Five pick is graded in public, wins and losses." Links tagged `utm_source=win_share&utm_medium=x&utm_campaign=wins`. live.js now honors `data-share-text`. A lead line links both records (sports 14-9, stocks 6-6) so it doesn't read as cherry-picking. Renders: `shots/wins-d-crop.png`.
+- Nothing broken: /, /sports-results/, /stock-results/, /scoreboard/, /track-record/, sitemap.xml, data/live.json, live.js all 200 live.
+- Records unchanged since 4 PM: Sports 14-9 (+2.23%), stocks 6-6 (+0.14%). Tonight's open games: Flyers, Lakers, Kings.
+- X still locked pending the unlock code sent to hello@readdailyfive.com.
+
+**Growth ideas**
+1. Extend d5-dispatch.sh to game nights (every 30 min, 4:30 PM–midnight ET) so live sports odds and settles don't wait on GitHub crons.
+2. Once X is unlocked, post the three win cards as a thread ("Graded in public: Thunder +106%, Pistons +106%, Rays +98%"), each linking its pick page.
+3. Add the top win of the week to the Monday email as a shareable card.
+4. Free analytics to read `win_share` / `newsletter_fwd` / `site_share` UTMs (ask first).
