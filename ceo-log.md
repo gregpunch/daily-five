@@ -413,3 +413,15 @@
 2. Add the weekly line to the Monday email ("Last week: X-Y") once the week closes.
 3. Evening dispatches on game nights (30-min cadence 4:30 PM to midnight ET).
 4. Free analytics + UTM links (ask first); Kit welcome sequence (needs OK).
+
+## 2026-10-21 · ~1 PM ET check-in (Wednesday)
+- **Shipped a track-record row in the daily email** (push 294b9bc, deploy run 39640997939 succeeded ~1:10 PM ET). Right under "Yesterday's results", every email now shows the all-time record and avg return for sports and stocks plus the latest week's record, each linking (with UTM tags) to `/sports-results/#weekly` and `/stock-results/#weekly`. Numbers come from the same settled-pick stats as the results pages; if the stats fail the email still builds without the row. First appears in tomorrow's 7 AM edition (today's sent email in `email/` was left as sent).
+- Records (local build ~1:05 PM ET): Sports 14-9, +2.2% avg; this week 4-1, +42.7%. Stocks 6-4, +0.6% avg; this week 4-4, +0.5%.
+- Nothing broken: home, scoreboard, sports/stock results, track record, how-we-rank, sitemap, live.json all 200 live after the deploy. The 1:04 PM dispatch and push deploy both succeeded; dispatch loop running.
+- X still locked pending the unlock code sent to hello@readdailyfive.com (needs the user).
+
+**Growth ideas**
+1. Once X is unlocked: post the weekly sports line (4-1, +42.7%) linking `/sports-results/#weekly`.
+2. Add a "forward this to a friend who trades" line plus a share link in the email footer (referral loop without the user's network).
+3. Evening dispatches on game nights (30-min cadence 4:30 PM to midnight ET).
+4. Free analytics + UTM reporting (ask first); Kit welcome sequence (needs OK).
