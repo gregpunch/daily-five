@@ -83,7 +83,25 @@ def recap(prev):
       f'<div style="line-height:22px;">{items}</div>'
       f'<div style="{F}font-size:12px;padding-top:8px;"><a href="{SITE}/scoreboard/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={prev["date"]}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Full Scoreboard →</a></div>')
     return row(inner,'#2a2110')
-def render(ed,prev=None):
+def record(rec,date):
+    # Running track record (all-time + latest week), same numbers as /sports-results/ and /stock-results/
+    if not rec: return ''
+    nm={'sports':'🏆 Sports','stocks':'💰 Stocks'}
+    cells=''
+    for k in ('sports','stocks'):
+        r=rec.get(k)
+        if not r: continue
+        c=UP if r['avg']>=0 else DN; wc=UP if r['wavg']>=0 else DN
+        cells+=(f'<td valign="top" style="padding:0 8px 0 0;width:50%;"><a href="{SITE}{r["url"]}?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={date}#weekly" style="text-decoration:none;">'
+          f'<div style="{F}font-size:12px;font-weight:800;color:{MUT};text-transform:uppercase;letter-spacing:1px;">{nm[k]}</div>'
+          f'<div style="{F}font-size:24px;font-weight:900;color:{TXT};line-height:30px;">{r["w"]}-{r["l"]} <span style="{M}font-size:14px;color:{c};">{r["avg"]*100:+.1f}% avg</span></div>'
+          f'<div style="{F}font-size:13px;color:#c3c8d8;">{E(r["wk"])}: <b>{r["ww"]}-{r["wl"]}</b> <span style="{M}color:{wc};font-weight:700;">{r["wavg"]*100:+.1f}%</span></div></a></td>')
+    if not cells: return ''
+    inner=(f'<div style="{F}font-size:11px;font-weight:800;color:#86efac;letter-spacing:1px;text-transform:uppercase;padding-bottom:8px;">🏁 Our track record · every settled pick</div>'
+      f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>{cells}</tr></table>'
+      f'<div style="{F}font-size:12px;color:{MUT};padding-top:8px;">Avg return per $1 at our published entry price. Wins and losses both count.</div>')
+    return row(inner,'#0f2018')
+def render(ed,prev=None,rec=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'1 Day':0,'1 Month':1,'1 Year':2}
     finl=sorted([p for p in ed['finance'] if keep(p)],key=lambda p:(order.get(p['horizon'],9),-(p.get('score') or 0)))
@@ -100,6 +118,8 @@ def render(ed,prev=None):
       ]
     rc=recap(prev)
     if rc: rows.append('<tr><td style="padding:14px 0 0;"></td></tr>'); rows.append(rc)
+    tr_=record(rec,ed['date'])
+    if tr_: rows.append('<tr><td style="padding:10px 0 0;"></td></tr>'); rows.append(tr_)
     rows.append(sec('💰','Money','Top ideas by horizon · BUY/SELL at publish price'))
     last=None
     for i,p in enumerate(finl,1):
@@ -122,9 +142,9 @@ def render(ed,prev=None):
       f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="{BG}" style="background:{BG};"><tr><td align="center" style="padding:16px 0;">'
       f'<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" bgcolor="{BG}" style="width:600px;max-width:600px;background:{BG};border:1px solid {LINE};border-radius:18px;overflow:hidden;">'
       + ''.join(rows) + '</table></td></tr></table></body></html>')
-def write(ed,prev=None):
+def write(ed,prev=None,rec=None):
     os.makedirs(os.path.join(ROOT,'email'),exist_ok=True); path=os.path.join(ROOT,'email',ed['date']+'.html')
-    open(path,'w').write(render(ed,prev)); return path
+    open(path,'w').write(render(ed,prev,rec)); return path
 if __name__=='__main__':
     sys.path.insert(0,ROOT); import build
     f=os.path.join(ROOT,'editions',(sys.argv[1] if len(sys.argv)>1 else sorted(os.listdir(os.path.join(ROOT,'editions')))[-1].replace('.json',''))+'.json')

@@ -1355,6 +1355,20 @@ def sports_stats(eds):
     w_=sum(p['ret']>0 for p,_ in st)
     SPR['vb']={k:[p for p,_ in st if vkey(p)==k] for k in ('val','flip','pricey','nl')}  # settled picks by value verdict at entry
     SPR.update(url='/sports-results/',st=st,w=w_,l=len(st)-w_,avg=sum(p['ret'] for p,_ in st)/len(st),op=[(p,ed) for p,ed in allp if not p.get('final')],n=len(allp))
+def rec_summary():
+    """All-time and latest-week records for the email's track-record row. Real settled picks only; {} if none."""
+    out={}
+    exitd=lambda p,ed: datetime.date.fromisoformat((re.search(r'\d{4}-\d{2}-\d{2}',p.get('note') or '') or [ed['date']])[0])
+    for k,S,when in (('sports',SPR,lambda p,ed:_sp_when(p,ed).date()),('stocks',STK,exitd)):
+        if not S: continue
+        g={}
+        for p,ed in S['st']: dd=when(p,ed); g.setdefault(dd-datetime.timedelta(days=dd.weekday()),[]).append(p['ret'])
+        ws=max(g); rs=g[ws]; cur=ws<=TODAY<=ws+datetime.timedelta(days=6)
+        out[k]=dict(w=S['w'],l=S['l'],avg=S['avg'],url=S['url'],wk=('This week' if cur else f"Week of {ws.strftime('%b %-d')}"),ww=sum(r>0 for r in rs),wl=sum(r<=0 for r in rs),wavg=sum(rs)/len(rs))
+    return out
+def safe_rec():
+    try: return rec_summary()
+    except Exception as ex: print('track record skipped:',ex); return {}
 def sports_results_link(cls='pill ghost'):
     return f'<a class="{cls}" href="{BASE}/sports-results/">Sports results: {SPR["w"]}-{SPR["l"]} \u2192</a>' if SPR else ''
 def final_line(p):
@@ -1570,7 +1584,7 @@ def main():
     w('feed.xml','<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel>'+f"<title>{BRAND}</title><link>{SITE}/</link><description>{E(TAG)}</description>"+''.join(f"<item><title>{E(t)}</title><link>{SITE}/{d}/</link><guid>{SITE}/{d}/</guid><pubDate>{rfc(d)}</pubDate><description>{E(ds)}</description></item>" for d,_,t,ds,_,_ in items)+'</channel></rss>')
     w('404.html',shell(f"Not found | {BRAND}","Page not found",'/404.html',f'<h1 class="pt">Not found</h1><p><a href="{BASE}/">Go to today\'s edition →</a></p>'))
     try:
-        import email_build; print('email ->',email_build.write(eds[0],eds[1] if len(eds)>1 else None))
+        import email_build; print('email ->',email_build.write(eds[0],eds[1] if len(eds)>1 else None,safe_rec()))
     except Exception as ex: print('email build skipped:',ex)
     print(f"built {len(items)} editions, {len(rows)} scoreboard rows -> {OUT}")
 if __name__=='__main__': main()
