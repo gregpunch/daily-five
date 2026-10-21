@@ -1249,6 +1249,18 @@ def nfl_results(eds):
     return urls
 def nfl_results_links(cls='pill ghost'):
     return ''.join(f'<a class="{cls}" href="{BASE}{o["url"]}">Week {o["wk"]} results: {o["w"]}-{o["l"]} \u2192</a>' for o in NFLWK[:3])
+def week_rows(items):
+    """Week-by-week (Mon..Sun, by settle date) rows for a results page. items: [(date, ret)] of settled picks only. Newest week first."""
+    g={}
+    for dd,r in items: g.setdefault(dd-datetime.timedelta(days=dd.weekday()),[]).append(r)
+    if len(g)<2: return ''
+    out=''
+    for ws,rs in sorted(g.items(),reverse=True):
+        we=ws+datetime.timedelta(days=6); ww=sum(r>0 for r in rs); a=sum(rs)/len(rs); cur=ws<=TODAY<=we
+        rng=f"{ws.strftime('%b %-d')}\u2013{we.strftime('%-d') if we.month==ws.month else we.strftime('%b %-d')}"
+        out+=(f'<div class="wkrow {"won" if a>=0 else "lost"}"><span class="wkres">{"THIS WK" if cur else "WK"}</span><span class="wkpk"><b>Week of {rng}: {ww}-{len(rs)-ww}</b>'
+              f'<small>{len(rs)} settled{" so far" if cur else ""} \u00b7 $100 a pick {"+" if a>=0 else "\u2212"}${abs(sum(rs))*100:,.0f}</small></span><span class="wkent"><small>avg</small>{pct(a)}</span>{chip(a)}</div>')
+    return f'<h2 class="h2s" id="weekly">Week by week</h2><p class="sub hub-lead">Settled picks grouped by the Monday-to-Sunday week they settled in. Average return is per $1 staked at entry.</p><div class="wklist">{out}</div>'
 STK={}  # stock results rollup stats (filled by stock_stats before any page renders; empty until a stock pick settles)
 def stock_stats(eds):
     """Settled vs open finance picks, per edition, for /stock-results/ and the links to it. Real settled exits only."""
@@ -1314,7 +1326,7 @@ def stock_results(eds):
     bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">\U0001F4C8 Stock picks results \u00b7 since {d(first).strftime("%b %-d, %Y")}</span><h1 class="pt">{E(h1)}</h1>'
            f'<p class="sub wksum">{E(summ)}</p><div class="hubcta"><a class="pill" href="{BASE}/best-stocks-to-buy-today/">Today\'s stock picks \u2192</a>'
            f'<a class="pill ghost" href="{BASE}/track-record/">Full track record \u2192</a><a class="pill ghost" href="{BASE}/picks/">All picks by day \u2192</a><a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard \u2192</a>{sports_results_link()}</div></section>'
-           f'{tiles}<div class="tiles">{hz}</div>{ask}'
+           f'{tiles}<div class="tiles">{hz}</div>{week_rows([(d(exitd(p) or ed["date"]),p["ret"]) for p,ed in st])}{ask}'
            f'<h2 class="h2s">Every settled stock pick, by edition</h2><p class="sub hub-lead">Entry is the real quote when we published; exit is the official close at the end of the horizon. Return is per pick, short-side for SELLs. Tap any pick for its price chart and the original why.</p>{secs}'
            +(f'<h2 class="h2s">Still open: {len(op)} calls marked live</h2><p class="sub hub-lead">Marked to the latest Yahoo Finance price (may lag up to ~15 min in market hours). These settle at the close when their horizon ends.</p><div class="wklist">{"".join(row(p,ed) for p,ed in opn)}</div>' if op else '')+
            f'{faqh}<p class="disc-bar">\u26a0\ufe0f <b>Not financial advice.</b> Results use real Yahoo Finance prices and ignore commissions, slippage and taxes. Past results don\'t guarantee future returns.</p>')
@@ -1442,7 +1454,7 @@ def sports_results(eds):
     bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">\U0001F3DF Sports picks results \u00b7 since {datetime.date.fromisoformat(first).strftime("%b %-d, %Y")}</span><h1 class="pt">{E(h1)}</h1>'
            f'<p class="sub wksum">{E(summ)}{(" "+E(lv)) if lv else ""}</p>{cta}</section>'
            f'{tiles}<h2 class="h2s">Every result, in order</h2><p class="sub hub-lead">Oldest first. Tap any square for the pick, its entry price and its line-movement chart.</p>{strip}'
-           f'<div class="tiles">{ltiles}</div><h2 class="h2s" id="value">Results by value verdict</h2><p class="sub hub-lead">Every settled pick graded at our entry against the no-vig sportsbook moneyline: <b>value</b> means Polymarket was at least {VAL_PTS:.0f} points cheaper than the books, a <b>coin flip</b> was within {VAL_PTS:.0f} points (a fair price, no edge), and <b>pricey</b> was at least {VAL_PTS:.0f} points over. <a href="{BASE}/how-we-rank/#value">How it works \u2192</a></p><div class="tiles">{vtiles}</div>{ask}'
+           f'<div class="tiles">{ltiles}</div>{week_rows([(_sp_when(p,ed).date(),p["ret"]) for p,ed in st])}<h2 class="h2s" id="value">Results by value verdict</h2><p class="sub hub-lead">Every settled pick graded at our entry against the no-vig sportsbook moneyline: <b>value</b> means Polymarket was at least {VAL_PTS:.0f} points cheaper than the books, a <b>coin flip</b> was within {VAL_PTS:.0f} points (a fair price, no edge), and <b>pricey</b> was at least {VAL_PTS:.0f} points over. <a href="{BASE}/how-we-rank/#value">How it works \u2192</a></p><div class="tiles">{vtiles}</div>{ask}'
            +gd_board([p for p,_ in opn],'Game day: our open games')+
            f'<h2 class="h2s">Every settled sports pick, by league</h2><p class="sub hub-lead">Entry is the real Polymarket price of our side when we published; exit is 100\u00a2 for a win and 0\u00a2 for a loss. Final scores from Polymarket\'s events API. Newest game first.</p>{secs}'
            +(f'<h2 class="h2s">Still open: {len(op)} picks marked live</h2><p class="sub hub-lead">Marked to the live Polymarket price. Games settle at the final whistle; futures when their market resolves.</p><div class="wklist">{"".join(row(p,ed) for p,ed in opn)}</div>' if op else '')+

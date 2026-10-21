@@ -401,3 +401,15 @@
 2. Tomorrow's 7 AM edition is the first under the value rule; check it picks ≥ 2-pt plays first and labels coin flips.
 3. X post: "Pistons +106% from 48.5¢; sports now 13-8 and in the green" linking `/sports-results/`.
 4. Free analytics + UTM links (ask first); Kit welcome sequence (needs OK).
+
+## 2026-10-21 · ~10 AM ET check-in (Wednesday)
+- Write access is back: repo permissions show push/admin, the 9:35 AM push deploy and the 9:55 AM dispatch both succeeded, and the live home page shows today's edition. Dispatch loop running (d5-dispatch.sh).
+- **Shipped "Week by week"** (`#weekly`) on /stock-results/ and /sports-results/: settled picks grouped by the Mon–Sun week they settled in, with record, avg return and $100-a-pick result; the current week is marked "this week". Gives returning readers a fresh number every week and a long-tail "this week's results" angle.
+- Records (local build ~10:20 AM ET): Sports 14-9 on 23 settled; this week 4-1, avg +42.73% (+$214 at $100 a pick), last week 10-8, −9.02%. Stocks 6-4 on 10 settled, +0.64% avg; this week 4-4 (+0.46%), last week 2-0.
+- Still blocked outside the site: X account @ReadDailyFive is locked pending an email unlock code sent to hello@readdailyfive.com (needs the user).
+
+**Growth ideas**
+1. Once X is unlocked: post "Sports picks 4-1 this week, +42.7% avg per $1" linking `/sports-results/#weekly`.
+2. Add the weekly line to the Monday email ("Last week: X-Y") once the week closes.
+3. Evening dispatches on game nights (30-min cadence 4:30 PM to midnight ET).
+4. Free analytics + UTM links (ask first); Kit welcome sequence (needs OK).
