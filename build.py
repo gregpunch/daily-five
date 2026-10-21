@@ -189,6 +189,18 @@ def sform(cls=''):
     return f'<form class="kform {cls}" action="{KIT}" method="post" target="_self" onsubmit="var b=this.querySelector(&quot;button&quot;);b.textContent=&quot;Subscribing...&quot;;b.disabled=true"><label class="sr" for="em-{cls or "x"}">Email address</label><input id="em-{cls or "x"}" type="email" name="email_address" required autocomplete="email" placeholder="you@email.com"><button type="submit">Subscribe free →</button></form>'
 FONTS='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">'
 OGIMG={'v':None}
+def refer_bar():
+    """'Know someone who trades?' share row under every signup box: X intent, SMS and copy-link, each to the subscribe form with its own UTM tags."""
+    q=urllib.parse.quote
+    hook='5 stock + 5 sports-market picks every morning with real entry prices, graded in public'
+    if SPR: hook+=f" (sports {SPR['w']}-{SPR['l']} so far)"
+    txt=f'The Daily Five: {hook}. Free 7 AM email:'
+    u=lambda m: f'{SITE}/?utm_source=site_share&utm_medium={m}&utm_campaign=refer#subscribe'
+    cp=u('copy')
+    return (f'<div class="refer"><span class="rtxt"><b>Know someone who trades or bets?</b> Send them the free signup.</span><span class="rbtns">'
+            f'<a class="rb rx" href="https://x.com/intent/tweet?text={q(txt)}&amp;url={q(u("x"))}" target="_blank" rel="noopener">Post on X</a>'
+            f'<a class="rb" href="sms:?&amp;body={q(txt+" "+u("sms"))}">Text it</a>'
+            f'<button type="button" class="rb" data-copy="{E(cp)}" onclick="var b=this,u=b.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){{b.textContent=&quot;Link copied \u2713&quot;}},function(){{window.prompt(&quot;Copy this link&quot;,u)}})">Copy link</button></span></div>')
 def shell(title,desc,path,body,schema=None,hero='',og=None):
     og=og or OGIMG['v']; ogm=f'<meta property="og:image" content="{SITE}{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:image" content="{SITE}{og}">' if og else ''
     url=SITE+path; s=f'<script type="application/ld+json">{json.dumps(schema)}</script>' if schema else ''
@@ -200,7 +212,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 <nav><a href="{BASE}/#finance">Money</a><a href="{BASE}/track-record/">Track record</a><a href="{BASE}/#ai">AI</a><a href="{BASE}/#sports">Sports</a><a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg><span class="sr">X</span></a><a href="{BASE}/scoreboard/" class="pill-nav">Scoreboard</a></nav></div></header>
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>Five ideas. Every morning. Free.</h2><p>Get the Daily Five in your inbox before the opening bell.</p></div>
-{sform('cta')}</section>
+{sform('cta')}{refer_bar()}</section>
 </main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer><script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)

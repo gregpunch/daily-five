@@ -2,7 +2,7 @@
 """Newsletter HTML for an edition -> email/<date>.html (email-safe: tables + inline CSS, 600px).
 Run: python3 email_build.py [YYYY-MM-DD]   (also called from build.py for the latest edition).
 Named email_build.py (not email.py) so it doesn't shadow Python's stdlib `email` module."""
-import sys, os, json, glob, html, datetime
+import sys, os, json, glob, html, datetime, urllib.parse
 ROOT=os.path.dirname(os.path.abspath(__file__)); E=lambda s: html.escape(str(s))
 BG,CARD,LINE,TXT,MUT,UP,DN,VIO,AMB='#07080d','#11131e','#22263a','#f2f4fa','#9ba3ba','#16c784','#ff4d5e','#7c5cff','#ffb020'
 F="font-family:Inter,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;"
@@ -101,6 +101,23 @@ def record(rec,date):
       f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>{cells}</tr></table>'
       f'<div style="{F}font-size:12px;color:{MUT};padding-top:8px;">Avg return per $1 at our published entry price. Wins and losses both count.</div>')
     return row(inner,'#0f2018')
+def refer(rec,date):
+    # "Forward this to a friend who trades": share links (X / text / email) to the subscribe form, UTM-tagged per channel
+    q=urllib.parse.quote
+    hook='5 stock + 5 sports-market picks every morning with real entry prices, graded in public'
+    r=(rec or {}).get('sports')
+    if r: hook+=f" (sports {r['w']}-{r['l']} so far)"
+    txt=f'The Daily Five: {hook}. Free 7 AM email:'
+    u=lambda m: f'{SITE}/?utm_source=newsletter_fwd&utm_medium={m}&utm_campaign=refer_{date}#subscribe'
+    links=[('\U0001D54F Post it',f"https://x.com/intent/tweet?text={q(txt)}&url={q(u('x'))}",UP,'#04130c'),
+           ('\U0001F4AC Text it',f"sms:?&body={q(txt+' '+u('sms'))}",'#ffffff','#07080d'),
+           ('\u2709\ufe0f Email it',f"mailto:?subject={q('Free daily stock + sports picks, graded in public')}&body={q(txt+' '+u('email'))}",'#ffffff','#07080d')]
+    btns=''.join(f'<a href="{E(h)}" style="display:inline-block;margin:6px 6px 0 0;padding:10px 16px;background:{bg};color:{fg};{F}font-size:14px;font-weight:900;text-decoration:none;border-radius:999px;">{E(t)}</a>' for t,h,bg,fg in links)
+    inner=(f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;padding-bottom:6px;">\U0001F91D Know someone who trades or bets?</div>'
+      f'<div style="{F}font-size:20px;line-height:26px;font-weight:900;color:{TXT};">Forward this to a friend who trades.</div>'
+      f'<div style="{F}font-size:14px;line-height:21px;color:#cdd2e1;padding:6px 0 4px;">Or send them the free signup in one tap. Every pick is graded in public, wins and losses.</div>'
+      f'<div>{btns}</div>')
+    return row(inner,'#1a1530')
 def render(ed,prev=None,rec=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'1 Day':0,'1 Month':1,'1 Year':2}
@@ -131,6 +148,7 @@ def render(ed,prev=None,rec=None):
     rows.append(sec('🏆','Sports','Prediction markets · Polymarket & Kalshi'))
     rows+= [sp(p,i) for i,p in enumerate(sorted([p for p in ed['sports'] if keep(p)],key=lambda p:-(p.get('score') or 0))[:5],1)]
     rows.append(f'<tr><td style="padding:30px 24px;" align="center"><div style="{F}font-size:15px;color:{MUT};padding-bottom:14px;">Prices move all day. Track every pick live and on the Scoreboard.</div>{btn}</td></tr>')
+    rows.append('<tr><td style="padding:4px 0 0;"></td></tr>'); rows.append(refer(rec,ed['date'])); rows.append('<tr><td style="padding:14px 0 0;"></td></tr>')
     rows.append(f'<tr><td style="padding:22px 24px 30px;border-top:1px solid {LINE};{F}font-size:12px;line-height:18px;color:{MUT};">'
       f'<b style="color:{TXT};font-size:14px;">The Daily Five</b> · <a href="https://x.com/ReadDailyFive" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Follow @ReadDailyFive on X</a> · <a href="{SITE}/scoreboard/" style="color:#a5b4fc;text-decoration:none;">Scoreboard</a><br><br>'
       f'<b>Not financial advice.</b> Not financial, investment, or betting advice. The Daily Five aggregates public ideas and market prices for information and entertainment only. Past results don\'t guarantee future returns. You can lose money. D5 Score = 0–100 from source credibility, consensus, edge and risk/reward.</td></tr>')

@@ -209,3 +209,5 @@ a.cbt:hover{border-color:#ffb020}.cbt span{font-size:12px;text-transform:upperca
 .cbn2{margin:2px 0 0;font-size:12.5px;color:var(--mut)}
 .cbcta{display:grid;gap:12px;align-items:center;margin:18px 0 0;padding:14px 16px;border-radius:16px;background:rgba(0,0,0,.35);border:1px dashed rgba(255,176,32,.5)}@media(min-width:860px){.cbcta{grid-template-columns:1.2fr 1fr}}
 .cbcta b{font-family:var(--disp);font-size:20px}.cbcta p{margin:4px 0 0;color:#dfe3f0;font-size:14px}.cbcta .kform{margin:0}
+.refer{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:14px 16px;border-radius:16px;border:1px dashed rgba(255,176,32,.55);background:rgba(255,176,32,.07)}.refer .rtxt{color:#dfe3ef;font-size:15px}.refer .rtxt b{color:#ffb020}
+.refer .rbtns{display:flex;flex-wrap:wrap;gap:8px}.refer .rb{display:inline-block;padding:9px 14px;border-radius:999px;border:1px solid #3a4062;background:#0a0b12;color:#fff;font:800 14px/1.2 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer}.refer .rb:hover{border-color:#ffb020}.refer .rb.rx{background:#fff;color:#000;border-color:#fff}
