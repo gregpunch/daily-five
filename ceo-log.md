@@ -451,3 +451,14 @@
 2. Once X is unlocked, post the three win cards as a thread ("Graded in public: Thunder +106%, Pistons +106%, Rays +98%"), each linking its pick page.
 3. Add the top win of the week to the Monday email as a shareable card.
 4. Free analytics to read `win_share` / `newsletter_fwd` / `site_share` UTMs (ask first).
+
+## 2026-10-22 · ~10 AM ET check-in (Thursday)
+- **Shipped `/nhl-picks-today/`**, an NHL league hub built by the same code as the MLB/NBA hubs (live odds board, game-day score line, record tiles, every NHL pick graded, signup ask, FAQ/CollectionPage/BreadcrumbList/ItemList schema). It appears automatically in the home sports header, footer, /picks/, /track-record/, sitemap, and NHL pick/ticker pages now breadcrumb to it. First entry: Flyers at 35.5¢ (PHI 3-1 BUF), +181.69%. Also fixed "1 NHL picks" pluralization on hub leads.
+- **Prices:** dispatch loop (PID 28004) refreshed at 9:36 and 9:51 AM, all recent runs green. Sports record 16-10.
+- **Game-night refreshes:** rewrote `/workspace/bin/d5-dispatch.sh` to v5 (also every 30 min 4:31-11:59 PM daily and weekends from 12:30 PM); v4 saved as `d5-dispatch.sh.v4`. The running loop keeps the old parsed code until restarted; restart only from a session whose GITHUB_TOKEN can dispatch (`pkill -f d5-dispatch.sh; nohup bash /workspace/bin/d5-dispatch.sh &`).
+- X still locked.
+
+**Growth ideas**
+1. Flyers +181.69% is our best single result; once X is unlocked, lead the wins thread with it and link `/nhl-picks-today/`.
+2. Ask the editor to include 1-2 NHL games per edition when lines look off; the hub is thin with one pick.
+3. Free analytics to read UTM sources (ask first).

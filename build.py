@@ -1036,6 +1036,7 @@ POST=re.compile(r'ALCS|NLCS|ALDS|NLDS|World Series|Wild Card|League Championship
 LEAGUES={
  'mlb':dict(P='/mlb-picks-today/',emo='\u26be',name='MLB',sport='Baseball',start='First pitch',board='MLB game day',fut='Series futures'),
  'nba':dict(P='/nba-picks-today/',emo='\U0001F3C0',name='NBA',sport='Basketball',start='Tip-off',board='NBA game day',fut='Futures'),
+ 'nhl':dict(P='/nhl-picks-today/',emo='\U0001F3D2',name='NHL',sport='Ice hockey',start='Puck drop',board='NHL game day',fut='Futures'),
 }
 LGHUBS={}  # league -> hub path, filled by league_hubs() before pick pages render
 def league_label(lg,eds):
@@ -1043,7 +1044,7 @@ def league_label(lg,eds):
     post=lg=='mlb' and any(POST.search(p['market']) for ed in eds[:3] for p in ed['sports'] if league_of(p)=='mlb')
     return f"{LEAGUES[lg]['name']} {'playoff ' if post else ''}picks"
 def league_hubs(eds):
-    """Evergreen SEO hubs per league (/mlb-picks-today/, /nba-picks-today/) from real Polymarket picks only.
+    """Evergreen SEO hubs per league (/mlb-picks-today/, /nba-picks-today/, /nhl-picks-today/) from real Polymarket picks only.
     Built for a league once we have published at least one pick on it."""
     out=[]
     for lg,c in LEAGUES.items():
@@ -1100,7 +1101,7 @@ def league_hub_pages(eds):
         post='playoff' in hname
         H1=f"{c['name']} {'playoff ' if post else ''}picks today"
         n_open=sum(1 for p,_ in allp if not p.get('final')); since=datetime.date.fromisoformat(min(ed['date'] for _,ed in allp)).strftime('%b %-d')
-        lead=(f"We've made {len(allp)} {c['name']} picks since {since}: {sw}-{len(settled)-sw} on {len(settled)} settled"+(f" ({pct(savg)} average return per $1 at entry; best call {best[0]['label']} ({best[0]['market'].split(':')[0]}) {pct(best[0]['ret'])})" if best else '')+f", with {n_open} still open." if settled else
+        lead=(f"We've made {len(allp)} {c['name']} pick{'s'*(len(allp)!=1)} since {since}: {sw}-{len(settled)-sw} on {len(settled)} settled"+(f" ({pct(savg)} average return per $1 at entry; best call {best[0]['label']} ({best[0]['market'].split(':')[0]}) {pct(best[0]['ret'])})" if best else '')+f", with {n_open} still open." if settled else
               f"Our first {len(allp)} {c['name']} pick(s) are on the board below, graded live against Polymarket.")
         links=(f'<div class="hubcta"><a class="pill" href="{BASE}/#sports">Today\'s edition \u2192</a><a class="pill ghost" href="{BASE}/polymarket-picks-today/">All Polymarket picks \u2192</a>'
                +''.join(f'<a class="pill ghost" href="{BASE}{u}">{E(n.split(" picks")[0])} picks \u2192</a>' for l,(n,u) in LGHUBS.items() if l!=lg)
@@ -1122,7 +1123,7 @@ def league_hub_pages(eds):
                f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
                f'{gd_board([p for p,_ in slate],c["board"])}{tb}{ask}{hb}{fq}<p class="sub hub-foot">Trade stocks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
         tag=' (ALCS, NLCS & World Series)' if post else ''
-        title=f"{H1.title().replace('Mlb','MLB').replace('Nba','NBA')}{tag}: Live Odds & Results | {BRAND}"
+        title=f"{H1.title().replace('Mlb','MLB').replace('Nba','NBA').replace('Nhl','NHL')}{tag}: Live Odds & Results | {BRAND}"
         desc=(f"Today's {c['name']} {'playoff ' if post else ''}picks ranked by the Daily Five Score, with live Polymarket odds, start times, and a public record"+(f" ({sw}-{len(settled)-sw} settled)" if settled else '')+f". Updated {eds[0]['date']}.")[:155]
         evs=[{"@type":"SportsEvent","name":' vs. '.join(p['m']['outcomes']) if (p.get('m') or {}).get('outcomes') else p['market'],"startDate":kickoff(p).isoformat(),"sport":c['sport'],"url":f"{SITE}/picks/{p['id']}/"} for p,_ in slate if kickoff(p)]
         sch={"@context":"https://schema.org","@graph":[
