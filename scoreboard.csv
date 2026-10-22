@@ -1,14 +1,25 @@
 date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
+2026-10-22,Finance,1 Year,BUY,STX,671.0,696.89,open,3.86,https://www.tipranks.com/news/the-fly/seagate-price-target-raised-to-1200-from-1150-at-bofa-thefly-news
+2026-10-22,Finance,1 Year,BUY,XYZ,78.27,78.21,open,-0.08,https://blog.tipranks.com/bmo-upgrades-block-to-outperform-on-square-volume-acceleration-thefly-news/
+2026-10-22,Finance,1 Month,BUY,META,684.86,697.52,open,1.85,https://www.investing.com/news/analyst-ratings/barclays-raises-meta-stock-price-target-to-880-on-muse-growth-93CH-4964895
+2026-10-22,Finance,1 Day,BUY,LMT,569.46,551.51,open,-3.15,https://www.streetinsider.com/Earnings/Lockheed+Martin+%28LMT%29+Tops+Q3+EPS+by+45c%2C+Beats+on+Revenue%3B+Offers+FY26+Guidance/27218504.html
+2026-10-22,Finance,1 Day,SELL,TSLA,373.07,386.47,open,-3.59,https://www.investing.com/news/earnings/tesla-stock-up-after-hours-on-results-beat-improved-automotive-gross-margin-4963976
+2026-10-22,Finance,1 Month,BUY,IBM,239.49,251.46,open,5.00,https://www.gurufocus.com/news/9135940/ibm-stock-target-price-raised-to-269-by-jpmorgan
+2026-10-22,Sports,Sports,BUY,"Clippers · NBA: LAC @ LAL, Fri Oct 23 10 PM ET",0.215,0.215,open,0.00,https://polymarket.com/event/nba-lac-lal-2026-10-23
+2026-10-22,Sports,Sports,BUY,"Packers · Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",0.375,0.375,open,0.00,https://polymarket.com/event/nfl-gb-det-2026-10-25
+2026-10-22,Sports,Sports,BUY,"Kings · NBA: POR @ SAC, Fri Oct 23 10 PM ET",0.275,0.275,open,0.00,https://polymarket.com/event/nba-por-sac-2026-10-23
+2026-10-22,Sports,Sports,BUY,"Grizzlies · NBA: MEM @ GSW, Fri Oct 23 10 PM ET",0.39,0.395,open,1.28,https://polymarket.com/event/nba-mem-gsw-2026-10-23
+2026-10-22,Sports,Sports,BUY,"Jazz · NBA: NOP @ UTA, Fri Oct 23 9:30 PM ET",0.605,0.605,open,0.00,https://polymarket.com/event/nba-nop-uta-2026-10-23
 2026-10-21,Finance,1 Year,BUY,SPCX,160.0,159.31,open,-0.43,https://www.investing.com/news/analyst-ratings/ubs-raises-spacex-stock-price-target-to-230-on-ai-compute-strength-93CH-4962416
 2026-10-21,Finance,1 Year,BUY,LITE,860.0,850.7,open,-1.08,https://www.tipranks.com/news/the-fly/lumentum-price-target-raised-to-1250-from-1200-at-jefferies-thefly-news
 2026-10-21,Finance,1 Day,BUY,SMCI,36.42,35.57,open,-2.33,https://www.supermicro.com/en/pressreleases/supermicro-provides-first-quarter-fiscal-year-2027-preliminary-business-update
 2026-10-21,Finance,1 Month,BUY,NOC,535.0,539.31,open,0.81,https://www.investing.com/news/analyst-ratings/baird-upgrades-northrop-grumman-stock-rating-on-strong-results-93CH-4961691
 2026-10-21,Finance,1 Month,BUY,HOOD,100.33,101.93,open,1.59,https://finance.yahoo.com/markets/stocks/articles/hood-stock-rises-overnight-market-020443262.html
 2026-10-21,Finance,1 Day,BUY,BE,230.44,238.53,open,3.51,https://finance.yahoo.com/markets/stocks/articles/nasdaq-futures-rise-premarket-spacex-084106939.html
-2026-10-21,Sports,Sports,BUY,Rays YES · Rays win World Series,0.373,0.3705,open,-0.67,https://polymarket.com/event/mlb-world-series-champion-2026
-2026-10-21,Sports,Sports,BUY,"Patriots · Week 7 TNF: NE @ CHI, Thu Oct 22 8:15 PM ET",0.395,0.395,open,0.00,https://polymarket.com/event/nfl-ne-chi-2026-10-23
-2026-10-21,Sports,Sports,BUY,"Flyers · NHL: PHI @ BUF, Wed Oct 21 7:30 PM ET",0.355,0.345,open,-2.82,https://polymarket.com/event/nhl-phi-buf-2026-10-21
-2026-10-21,Sports,Sports,BUY,"Kings · NBA: SAC @ LAC, Wed Oct 21 10:30 PM ET",0.355,0.365,open,2.82,https://polymarket.com/event/nba-sac-lac-2026-10-21
+2026-10-21,Sports,Sports,BUY,Rays YES · Rays win World Series,0.373,0.3695,open,-0.94,https://polymarket.com/event/mlb-world-series-champion-2026
+2026-10-21,Sports,Sports,BUY,"Flyers · NHL: PHI @ BUF, Wed Oct 21 7:30 PM ET",0.355,1.0,final,181.69,https://polymarket.com/event/nhl-phi-buf-2026-10-21
+2026-10-21,Sports,Sports,BUY,"Patriots · Week 7 TNF: NE @ CHI, Thu Oct 22 8:15 PM ET",0.395,0.405,open,2.53,https://polymarket.com/event/nfl-ne-chi-2026-10-23
+2026-10-21,Sports,Sports,BUY,"Kings · NBA: SAC @ LAC, Wed Oct 21 10:30 PM ET",0.355,0.0,final,-100.00,https://polymarket.com/event/nba-sac-lac-2026-10-21
 2026-10-21,Sports,Sports,BUY,"Spurs · NBA: HOU @ SAS, Fri Oct 23 9:30 PM ET",0.685,0.695,open,1.46,https://polymarket.com/event/nba-hou-sas-2026-10-23
 2026-10-20,Finance,1 Year,BUY,AMZN,262.39,262.37,open,-0.01,https://www.cnbc.com/2026/10/19/amazon-morgan-stanley-top-pick-catalysts.html
 2026-10-20,Finance,1 Year,BUY,GE,307.08,295.88,open,-3.65,https://www.investing.com/news/earnings/ge-aerospace-beats-estimates-raises-guidance-on-strong-demand-4959577
@@ -16,10 +27,10 @@ date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
 2026-10-20,Finance,1 Day,BUY,GM,78.62,76.11,final,-3.19,https://www.cnbc.com/2026/10/20/general-motors-gm-earnings-q3-2026.html
 2026-10-20,Finance,1 Month,BUY,DDOG,258.5,273.09,open,5.64,https://www.cnbc.com/2026/10/19/this-software-has-nearly-doubled-for-the-year-bernstein-sees-even-more-upside.html
 2026-10-20,Finance,1 Month,SELL,AAPL,339.58,343.99,open,-1.30,https://www.cnbc.com/2026/10/20/apple-loop-capital-downgrade-iphone-sales.html
-2026-10-20,Sports,Sports,BUY,Rays YES · Rays win World Series,0.375,0.3705,open,-1.20,https://polymarket.com/event/mlb-world-series-champion-2026
+2026-10-20,Sports,Sports,BUY,Rays YES · Rays win World Series,0.375,0.3695,open,-1.47,https://polymarket.com/event/mlb-world-series-champion-2026
 2026-10-20,Sports,Sports,BUY,"Packers · Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",0.39,0.375,open,-3.85,https://polymarket.com/event/nfl-gb-det-2026-10-25
-2026-10-20,Sports,Sports,BUY,"Patriots · Week 7 TNF: NE @ CHI, Thu Oct 22 8:15 PM ET",0.395,0.395,open,0.00,https://polymarket.com/event/nfl-ne-chi-2026-10-23
-2026-10-20,Sports,Sports,BUY,"Lakers · NBA: GSW @ LAL, Wed Oct 21 10 PM ET",0.655,0.675,open,3.05,https://polymarket.com/event/nba-gsw-lal-2026-10-21
+2026-10-20,Sports,Sports,BUY,"Patriots · Week 7 TNF: NE @ CHI, Thu Oct 22 8:15 PM ET",0.395,0.405,open,2.53,https://polymarket.com/event/nfl-ne-chi-2026-10-23
+2026-10-20,Sports,Sports,BUY,"Lakers · NBA: GSW @ LAL, Wed Oct 21 10 PM ET",0.655,1.0,final,52.67,https://polymarket.com/event/nba-gsw-lal-2026-10-21
 2026-10-20,Sports,Sports,BUY,"Thunder · NBA opener: OKC @ SAS, Tue 9:30 PM ET",0.485,1.0,final,106.19,https://polymarket.com/event/nba-okc-sas-2026-10-20
 2026-10-19,Finance,1 Year,BUY,CRWV,63.17,61.82,open,-2.14,https://www.tipranks.com/news/why-are-coreweave-nebius-and-iren-stocks-rising-in-premarket-today-october-19
 2026-10-19,Finance,1 Year,BUY,UNH,398.35,417.0,open,4.68,https://www.cnbc.com/2026/10/18/top-analysts-are-bullish-on-the-growth-potential-of-these-3-stocks.html
@@ -46,9 +57,9 @@ date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
 2026-10-17,Finance,1 Year,BUY,MLM,500.84,509.02,open,1.63,https://www.investing.com/news/analyst-ratings/da-davidson-upgrades-martin-marietta-materials-stock-rating-to-buy-93CH-4953924
 2026-10-17,Finance,1 Year,BUY,SPCX,146.03,159.31,open,9.09,https://www.cnbc.com/2026/10/16/spacex-evercore-isi-price-target.html
 2026-10-17,Finance,1 Day,BUY,FITB,50.37,50.51,final,0.28,https://finance.yahoo.com/markets/stocks/articles/growth-nii-lower-expenses-likely-162500720.html
+2026-10-17,Finance,1 Month,BUY,NFLX,70.53,65.04,open,-7.78,https://finance.yahoo.com/markets/stocks/articles/earnings-calendar-analysis-week-june-162434561.html
 2026-10-17,Finance,1 Month,BUY,EAT,204.14,188.06,open,-7.88,https://finance.yahoo.com/markets/stocks/articles/workday-downgraded-fox-corp-upgraded-133833134.html
 2026-10-17,Finance,1 Day,SELL,SMH,539.79,548.46,final,-1.61,https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-friday-10162026-137331951
-2026-10-17,Finance,1 Month,BUY,NFLX,70.53,65.04,open,-7.78,https://finance.yahoo.com/markets/stocks/articles/earnings-calendar-analysis-week-june-162434561.html
 2026-10-17,Sports,Sports,BUY,"Steelers · Week 6: PIT @ TB, Sun 1 PM ET",0.555,1.0,final,80.18,https://polymarket.com/event/nfl-pit-tb-2026-10-18
 2026-10-17,Sports,Sports,BUY,"Giants · Week 6: NO @ NYG, Sun 1 PM ET",0.495,0.0,final,-100.00,https://polymarket.com/event/nfl-no-nyg-2026-10-18
 2026-10-17,Sports,Sports,BUY,"Rays · ALCS Game 4: TB @ CLE, Sat 8 PM ET",0.505,1.0,final,98.02,https://polymarket.com/event/mlb-tb-cle-2026-10-16
@@ -72,7 +83,7 @@ date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
 2026-10-15,Finance,1 Day,SELL,QQQ,722.62,709.8,final,1.77,https://www.investing.com/news/stock-market-news/nasdaq-futures-dive-1-as-ai-rout-deepens-on-debt-concerns-4950779
 2026-10-15,Finance,1 Day,SELL,CRWV,61.975,61.39,final,0.94,https://finance.yahoo.com/markets/stocks/articles/asian-markets-sell-off-ai-005808521.html
 2026-10-15,Sports,Sports,BUY,"Dodgers · NLCS Game 4: MIL @ LAD, 8 PM ET",0.585,0.0,final,-100.00,https://polymarket.com/event/mlb-mil-lad-2026-10-15
-2026-10-15,Sports,Sports,BUY,"Seahawks · TNF: SEA @ DEN, 8:15 PM ET",0.565,0.0,final,-100.00,https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/
 2026-10-15,Sports,Sports,BUY,"Guardians · ALCS Game 3: TB @ CLE, 1 PM ET",0.535,1.0,final,86.92,https://polymarket.com/event/mlb-tb-cle-2026-10-15
 2026-10-15,Sports,Sports,BUY,Brewers NO · Brewers win World Series,0.421,0.3695,open,-12.23,https://polymarket.com/event/mlb-world-series-champion-2026
+2026-10-15,Sports,Sports,BUY,"Seahawks · TNF: SEA @ DEN, 8:15 PM ET",0.565,0.0,final,-100.00,https://defirate.com/odds/nfl/seahawks-vs-broncos-10-15-2026/
 2026-10-15,Sports,Sports,BUY,Brewers YES · Brewers win NLCS,0.9035,1.0,final,10.68,https://polymarket.com/event/mlb-2026-national-league-champion

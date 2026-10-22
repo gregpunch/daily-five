@@ -1,0 +1,405 @@
+{
+ "date": "2026-10-22",
+ "headline": "Buy Seagate for the year: BofA and Morgan Stanley both see $1,200, ~79% above the premarket price, as Nasdaq futures slide 1.8%; Lockheed beats and raises, Block gets a BMO upgrade, and the Clippers, Packers, Kings, Grizzlies and Jazz trade under the sportsbook lines",
+ "top_call": "BofA and Morgan Stanley both see Seagate at $1,200, about 79% above today's dip on hard-drive demand. Buy it for the year.",
+ "backdrop": "Nasdaq 100 futures -1.8% and S&P 500 futures -1.0% early Thursday as Tesla (-3.5% premarket) and AI chip names slide and Brent tops $111 on Mideast tensions; Meta's beat did little to calm AI-spending worries. P&G, Lockheed and Honeywell report this morning.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/21/stock-market-today-live-updates.html"
+ },
+ "finance": [
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "LMT",
+   "symbol": "LMT",
+   "entry": 569.46,
+   "entry_note": "Yahoo Finance, Thu Oct 22 7:10 AM ET premarket",
+   "why": "Q3 EPS of $7.97 beat by 45 cents, sales rose 11%, backlog hit a record $292B and 2026 guidance went up again.",
+   "risk": "Shares are already up ~3% premarket, and F-35 Lot 20 costs are running past current government funding.",
+   "source": {
+    "name": "StreetInsider",
+    "url": "https://www.streetinsider.com/Earnings/Lockheed+Martin+%28LMT%29+Tops+Q3+EPS+by+45c%2C+Beats+on+Revenue%3B+Offers+FY26+Guidance/27218504.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "StreetInsider",
+      "url": "https://www.streetinsider.com/Earnings/Lockheed+Martin+%28LMT%29+Tops+Q3+EPS+by+45c%2C+Beats+on+Revenue%3B+Offers+FY26+Guidance/27218504.html"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/earnings/lockheed-martin-beats-estimates-as-defense-sales-surge-4965368"
+     },
+     {
+      "name": "Lockheed Martin",
+      "url": "https://www.prnewswire.com/news-releases/lockheed-martin-reports-third-quarter-2026-financial-results-302916797.html"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Day",
+   "action": "SELL",
+   "label": "TSLA",
+   "symbol": "TSLA",
+   "entry": 373.07,
+   "entry_note": "Yahoo Finance, Thu Oct 22 7:11 AM ET premarket",
+   "why": "Our read: Tesla cut its sales goal to 5M cars by 2030 (from 20M) and Musk tempered Optimus hopes; fade it in a risk-off tape.",
+   "risk": "It beat on EPS ($0.48 vs $0.45), margins improved and SpaceX merger headlines can squeeze shorts at any moment.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/earnings/tesla-stock-up-after-hours-on-results-beat-improved-automotive-gross-margin-4963976"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/earnings/tesla-stock-up-after-hours-on-results-beat-improved-automotive-gross-margin-4963976"
+     },
+     {
+      "name": "Benzinga",
+      "url": "https://www.benzinga.com/markets/equities/26/10/62519510/tesla-shares-fall-premarket-q3-earnings-results"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "MarketScreener",
+      "url": "https://au.marketscreener.com/news/analyst-recommendations-block-halliburton-qiagen-tesla-coreweavea--ce785cd9d08ef421"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "META",
+   "symbol": "META",
+   "entry": 684.86,
+   "entry_note": "Yahoo Finance, Thu Oct 22 7:11 AM ET premarket",
+   "why": "Barclays lifts its Meta PT to $880 (Overweight): core ads grew 26% ex-FX vs 24% expected and Muse passed 10M sign-ups.",
+   "risk": "Capex runs $135-145B this year with no 2027 number yet, and legal costs ($9.9B charge) keep hitting headlines.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/analyst-ratings/barclays-raises-meta-stock-price-target-to-880-on-muse-growth-93CH-4964895"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/barclays-raises-meta-stock-price-target-to-880-on-muse-growth-93CH-4964895"
+     },
+     {
+      "name": "MarketScreener",
+      "url": "https://au.marketscreener.com/news/analyst-recommendations-block-halliburton-qiagen-tesla-coreweavea--ce785cd9d08ef421"
+     },
+     {
+      "name": "AP",
+      "url": "https://apnews.com/article/meta-earnings-facebook-instagram-muse-capex-13ecd6c459e39a3602f302bcc2412fe9"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "IBM",
+   "symbol": "IBM",
+   "entry": 239.49,
+   "entry_note": "Yahoo Finance, Thu Oct 22 7:10 AM ET premarket",
+   "why": "JPMorgan lifts IBM's PT to $269 after a beat ($2.95 EPS) and a raised software outlook; we buy the ~5% premarket dip.",
+   "risk": "Investors fear the software rebound was delayed deals closing, and 2027 growth may not hold near double digits.",
+   "source": {
+    "name": "GuruFocus",
+    "url": "https://www.gurufocus.com/news/9135940/ibm-stock-target-price-raised-to-269-by-jpmorgan"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "GuruFocus",
+      "url": "https://www.gurufocus.com/news/9135940/ibm-stock-target-price-raised-to-269-by-jpmorgan"
+     },
+     {
+      "name": "Reuters",
+      "url": "https://www.investing.com/news/stock-market-news/ibm-raises-annual-software-revenue-outlook-as-deal-delays-ease-4963970"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/ibm-stock-slides-over-5-102041781.html"
+     }
+    ]
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "XYZ",
+   "symbol": "XYZ",
+   "entry": 78.27,
+   "entry_note": "Yahoo Finance, Thu Oct 22 7:02 AM ET premarket",
+   "why": "BMO upgrades Block to Outperform, PT $101 from $85, on accelerating Square payment volume heading into 2027.",
+   "risk": "Fintech multiples are volatile in a risk-off market, and Cash App growth still has to keep pace with Square.",
+   "source": {
+    "name": "TipRanks",
+    "url": "https://blog.tipranks.com/bmo-upgrades-block-to-outperform-on-square-volume-acceleration-thefly-news/"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TipRanks",
+      "url": "https://blog.tipranks.com/bmo-upgrades-block-to-outperform-on-square-volume-acceleration-thefly-news/"
+     },
+     {
+      "name": "MarketScreener",
+      "url": "https://au.marketscreener.com/news/analyst-recommendations-block-halliburton-qiagen-tesla-coreweavea--ce785cd9d08ef421"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "STX",
+   "symbol": "STX",
+   "entry": 671.0,
+   "entry_note": "Yahoo Finance, Thu Oct 22 7:11 AM ET premarket",
+   "why": "BofA lifts its Seagate PT to $1,200 (Buy) on hard-drive demand and pricing; Morgan Stanley also sits at $1,200.",
+   "risk": "Fiscal Q1 results land Oct 27, and the stock is down ~4% premarket with AI hardware names selling off.",
+   "source": {
+    "name": "TipRanks",
+    "url": "https://www.tipranks.com/news/the-fly/seagate-price-target-raised-to-1200-from-1150-at-bofa-thefly-news"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/the-fly/seagate-price-target-raised-to-1200-from-1150-at-bofa-thefly-news"
+     },
+     {
+      "name": "Proactive Investors",
+      "url": "https://www.proactiveinvestors.com/companies/news/1100497/seagate-price-target-raised-as-bank-of-america-sees-strong-demand-for-hard-drives-1100497.html"
+     },
+     {
+      "name": "AD HOC NEWS",
+      "url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/bank-of-america-raises-target-for-seagate-technology-stock-to-usd-1-200/70393101"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Security",
+   "headline": "AI helped find two critical PHP flaws that let attackers run code on web servers without logging in",
+   "why": "Wiz says 'PHP2Shell' touches ~70% of the web; Finland briefly shut government sites. AI is now speeding up both bug hunting and exploits.",
+   "source": {
+    "name": "Wiz",
+    "url": "https://www.wiz.io/blog/php2shell-php-rce"
+   }
+  },
+  {
+   "category": "Money",
+   "headline": "Meta narrows 2026 capex to $135-145B as Q3 revenue hits $64.6B and Muse tops 10 million accounts",
+   "why": "The biggest AI spender says ads are paying for it (core ads +26%), but gave no 2027 number, and Nasdaq futures still fell 1.8%.",
+   "source": {
+    "name": "AP",
+    "url": "https://apnews.com/article/meta-earnings-facebook-instagram-muse-capex-13ecd6c459e39a3602f302bcc2412fe9"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "OpenAI's frontier models and Codex are coming to Google Cloud, sold through its Marketplace",
+   "why": "Google Cloud customers can spend existing commitments on a rival's models; OpenAI widens its reach beyond Microsoft Azure.",
+   "source": {
+    "name": "OpenAI",
+    "url": "https://openai.com/index/openai-models-google-cloud"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "Anthropic opens a waitlist for Claude Duet, a proactive agent that works in the background and asks before acting",
+   "why": "It's Anthropic's answer to Meta's Muse: personal agents that watch your apps and finish tasks are the next consumer AI battleground.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/21/anthropic-preview-of-claude-duet-personal-ai-agent-take-on-muse-dots.html"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "DHS orders federal civilian agencies to remove DeepSeek products and anything built on them",
+   "why": "A formal FASCSA order turns China AI worries into a procurement ban; vendors using DeepSeek models in their products are covered too.",
+   "source": {
+    "name": "Federal Register",
+    "url": "https://www.federalregister.gov/documents/2026/10/20/2026-21447/notice-of-order-regarding-exclusion-and-removal-of-deepseek-products-from-federal-civilian-executive"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "Kings",
+   "market": "NBA: POR @ SAC, Fri Oct 23 10 PM ET",
+   "slug": "nba-por-sac-2026-10-23",
+   "outcome": 1,
+   "entry": 0.275,
+   "event_date": "2026-10-23",
+   "why": "Value: DraftKings +210 makes Sacramento ~30.9% no-vig and Kalshi has ~31%, both above 27.5¢ here; HoopVantage's model says 28.5%.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-por-sac-2026-10-23"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909852/trail-blazers-kings",
+    "odds": [
+     210,
+     -258
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": [
+     {
+      "name": "HoopVantage",
+      "url": "https://hoopvantage.com/prediction/trail-blazers-vs-kings-2026-10-23-401909852"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Grizzlies",
+   "market": "NBA: MEM @ GSW, Fri Oct 23 10 PM ET",
+   "slug": "nba-mem-gsw-2026-10-23",
+   "outcome": 0,
+   "entry": 0.39,
+   "event_date": "2026-10-23",
+   "why": "Value: DraftKings +130 is ~41.7% no-vig vs 39¢ here; Golden State is without Butler, Moody and Porzingis, and Curry is day to day.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-mem-gsw-2026-10-23"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909850/grizzlies-warriors",
+    "odds": [
+     130,
+     -155
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TeamRankings",
+      "url": "https://www.teamrankings.com/nba/matchup/grizzlies-warriors-2026-10-23/injuries"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Sports Mole",
+      "url": "https://www.sportsmole.co.uk/basketball/golden-state-warriors/preview/memphis-grizzlies-vs-golden-state-warriors-player-props-injury-report-and-prediction--nba_607421.html"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Clippers",
+   "market": "NBA: LAC @ LAL, Fri Oct 23 10 PM ET",
+   "slug": "nba-lac-lal-2026-10-23",
+   "outcome": 0,
+   "entry": 0.215,
+   "event_date": "2026-10-23",
+   "why": "Value: DraftKings +300 is ~24% no-vig vs 21.5¢; the Lakers list Doncic and Sexton out, and HoopVantage gives LA's Clippers 39%.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-lac-lal-2026-10-23"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909851/clippers-lakers",
+    "odds": [
+     300,
+     -380
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "HoopVantage",
+      "url": "https://hoopvantage.com/prediction/clippers-vs-lakers-2026-10-23-401909851"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Jazz",
+   "market": "NBA: NOP @ UTA, Fri Oct 23 9:30 PM ET",
+   "slug": "nba-nop-uta-2026-10-23",
+   "outcome": 1,
+   "entry": 0.605,
+   "event_date": "2026-10-23",
+   "why": "Our read: a price play. DraftKings -192 makes Utah ~63.1% no-vig vs 60.5¢ here, though HoopVantage's model leans New Orleans.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-nop-uta-2026-10-23"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909849/pelicans-jazz",
+    "odds": [
+     -192,
+     160
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": [
+     {
+      "name": "HoopVantage",
+      "url": "https://hoopvantage.com/prediction/pelicans-vs-jazz-2026-10-23-401909849"
+     }
+    ]
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Packers",
+   "market": "Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",
+   "slug": "nfl-gb-det-2026-10-25",
+   "outcome": 0,
+   "entry": 0.375,
+   "event_date": "2026-10-25",
+   "why": "Value: Green Bay has slipped to 37.5¢ (we first bought at 39¢ Tuesday) while DraftKings +140 is still ~40% no-vig.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-gb-det-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nfl/game/_/gameId/401873020/packers-lions",
+    "odds": [
+     140,
+     -166
+    ]
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "New York Post",
+      "url": "https://nypost.com/2026/10/19/betting/nfl-week-7-early-predictions-patriots-vs-bears-giants-vs-texans-packers-vs-lions-best-bets/"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ]
+}
