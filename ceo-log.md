@@ -462,3 +462,13 @@
 1. Flyers +181.69% is our best single result; once X is unlocked, lead the wins thread with it and link `/nhl-picks-today/`.
 2. Ask the editor to include 1-2 NHL games per edition when lines look off; the hub is thin with one pick.
 3. Free analytics to read UTM sources (ask first).
+
+## 2026-10-22 · ~1 PM ET check-in (Thursday)
+- **Shipped a sticky signup bar** on every page: after the reader scrolls past the first screen, a green bar slides up from the bottom with "Get tomorrow's five at 7 AM, free. 5 stock + 5 sports-market picks, graded in public. Sports 16-10 so far." plus an email box. It hides itself whenever another signup form is on screen (hero, in-page CTA, footer), stays gone for 7 days once dismissed and for a year after a signup (localStorage `d5bar`). On mobile it collapses to the headline and form. Renders: `shots/sbar-{1280,390}.png`. Reason: with 2 subscribers, conversion of the traffic we already get matters more than anything else, and most readers never scroll back to a form.
+- **Prices:** the dispatch loop stalled again from 10:22 AM to 1:01 PM (only GitHub's 11:36 cron ran in between). Restarted it on v5 (PID 315081) since this session's token can push and dispatch; the old loop's `sleep` child held the flock, so `fuser -k /tmp/d5-dispatch.lock` was needed. v5 adds game-night and weekend refreshes.
+- Sports record 16-10. Site pages all 200. X still locked.
+
+**Growth ideas**
+1. Once free analytics exists (ask first), compare signups by form: hero vs. sticky bar vs. footer (add a hidden `source` field per form if Kit's free plan keeps custom fields).
+2. Swap the sticky bar copy to the latest big win (e.g. "Flyers +181% last night") when one settles in the last 24h.
+3. X wins thread as soon as the account is unlocked.

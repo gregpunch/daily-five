@@ -66,3 +66,15 @@ async function poll(){const now=Date.now(),evs=[...new Set(G.filter(el=>{const e
  await Promise.all(evs.map(async ev=>{try{const e=(await (await fetch('https://gamma-api.polymarket.com/events?slug='+encodeURIComponent(ev),{cache:'no-store'})).json())[0];
   if(e)st[ev]={score:e.score||'',period:e.period||'',elapsed:e.elapsed||'',live:!!e.live,ended:!!e.ended};}catch(x){}}));paint();}
 paint();poll();setInterval(paint,30000);setInterval(poll,60000);})();
+
+(function(){var b=document.getElementById('sbar');if(!b)return;var K='d5bar',now=Date.now();
+try{var t=+localStorage.getItem(K)||0;if(t>now)return;}catch(e){}
+var vis=0,past=false;function upd(){var on=past&&vis===0;b.classList.toggle('on',on);}
+b.hidden=false;
+var fs=[].slice.call(document.querySelectorAll('form.kform')).filter(function(f){return !b.contains(f);});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target._v=e.isIntersecting;});vis=fs.filter(function(f){return f._v;}).length;upd();});fs.forEach(function(f){io.observe(f);});}
+function sc(){past=window.scrollY>window.innerHeight*0.9;upd();}window.addEventListener('scroll',sc,{passive:true});sc();
+function hide(d){b.classList.remove('on');try{localStorage.setItem(K,String(Date.now()+d));}catch(e){}setTimeout(function(){b.hidden=true;},400);}
+b.querySelector('.sbclose').addEventListener('click',function(){hide(7*864e5);});
+document.addEventListener('submit',function(e){if(e.target&&e.target.classList&&e.target.classList.contains('kform'))try{localStorage.setItem(K,String(Date.now()+365*864e5));}catch(x){}},true);
+})();

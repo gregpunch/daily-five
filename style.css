@@ -215,3 +215,12 @@ a.cbt:hover{border-color:#ffb020}.cbt span{font-size:12px;text-transform:upperca
 .wwc{display:flex;flex-direction:column;gap:10px;background:linear-gradient(160deg,rgba(22,199,132,.16),rgba(124,92,255,.10));border:1px solid rgba(22,199,132,.35);border-radius:16px;padding:14px 16px}
 .wwl{display:flex;flex-direction:column;gap:4px;color:#fff;text-decoration:none}.wwl:hover b{text-decoration:underline}
 .wwp{font-size:30px;font-weight:900;color:var(--up);letter-spacing:-.5px;line-height:1}.wwl small{font-size:13px;color:#c9cfe0}.wwc .shr{align-self:flex-start}
+
+/* sticky signup bar */
+.sbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(90deg,rgba(8,30,20,.97),rgba(12,14,24,.97));border-top:2px solid var(--up);box-shadow:0 -10px 30px rgba(0,0,0,.5);transform:translateY(110%);transition:transform .35s ease}
+.sbar.on{transform:none}.sbar[hidden]{display:none}
+.sbin{max-width:1100px;margin:0 auto;padding:10px 44px 10px 16px;display:flex;gap:14px;align-items:center;position:relative}
+.sbt{margin:0;flex:1;font-size:14px;color:#dfe3f0;line-height:1.35}.sbt b{color:#fff;font-family:var(--disp);font-size:16px}
+.sbar .kform{flex:0 0 auto;margin:0;flex-wrap:nowrap}.sbar .kform input{min-width:220px;padding:10px 12px}.sbar .kform button{padding:10px 16px;font-size:15px;background:var(--up);color:#00150a}
+.sbclose{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;color:#9aa3bd;font-size:26px;line-height:1;cursor:pointer;padding:4px 8px}.sbclose:hover{color:#fff}
+@media(max-width:760px){.sbin{flex-direction:column;align-items:stretch;gap:8px;padding:10px 40px 10px 12px}.sbt span{display:none}.sbar .kform input{min-width:0;flex:1}.sbar .kform button{width:auto}.sbclose{top:14px;transform:none}}
