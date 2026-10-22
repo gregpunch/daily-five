@@ -110,7 +110,6 @@ def refer(rec,date):
     txt=f'The Daily Five: {hook}. Free 7 AM email:'
     u=lambda m: f'{SITE}/?utm_source=newsletter_fwd&utm_medium={m}&utm_campaign=refer_{date}#subscribe'
     links=[('\U0001D54F Post it',f"https://x.com/intent/tweet?text={q(txt)}&url={q(u('x'))}",UP,'#04130c'),
-           ('\U0001F4AC Text it',f"sms:?&body={q(txt+' '+u('sms'))}",'#ffffff','#07080d'),
            ('\u2709\ufe0f Email it',f"mailto:?subject={q('Free daily stock + sports picks, graded in public')}&body={q(txt+' '+u('email'))}",'#ffffff','#07080d')]
     btns=''.join(f'<a href="{E(h)}" style="display:inline-block;margin:6px 6px 0 0;padding:10px 16px;background:{bg};color:{fg};{F}font-size:14px;font-weight:900;text-decoration:none;border-radius:999px;">{E(t)}</a>' for t,h,bg,fg in links)
     inner=(f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;padding-bottom:6px;">\U0001F91D Know someone who trades or bets?</div>'
