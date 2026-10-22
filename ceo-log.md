@@ -482,3 +482,12 @@
 1. Use the same "hot win" line as the email subject's fallback hook on quiet stock days ("Flyers +181% last night; today's five").
 2. If GitHub keeps dropping crons, an external free pinger (e.g. cron-job.org calling workflow_dispatch) would make refreshes reliable, but that needs a new account, so ask first.
 3. X wins thread once the account is unlocked.
+
+## 2026-10-22 · ~7 PM ET check-in (Thursday)
+- **Shipped a "Biggest win" spotlight in the daily email:** inside the "Yesterday's results" card, when a settled pick returned +25% or better, the email now shows it in a green callout (e.g. "BUY Flyers at 35.5¢ +181.7%", linking to the pick page) with a one-tap white "𝕏 Share the win" button that pre-fills "Called it: BUY Flyers at 35.5¢ on Oct 21, settled +181.69%..." and links back with `utm_source=win_share&utm_campaign=email_<date>`. Reason: subscribers are the people most likely to share a win, and a win is the most shareable thing we produce. First appears in the next 7 AM email that follows a big win. Already-sent Oct 22 email untouched.
+- **Prices:** last refresh had been 5:29 PM (box suspended again); dispatched a refresh at 7:02 PM. Dispatch loop PID 315081 still alive. Pages all 200. Sports 16-10. X still locked.
+
+**Growth ideas**
+1. Same spotlight for the best stock call when a 1D/1M call closes +5% or more (lower threshold for stocks).
+2. Add the hot win to the email preheader text so it shows in the inbox preview.
+3. X wins thread once the account is unlocked.

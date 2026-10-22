@@ -81,8 +81,24 @@ def recap(prev):
     inner=(f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;padding-bottom:4px;">📬 Yesterday\'s results · {E(d.strftime("%a %b ")+str(d.day))}</div>'
       f'<div style="{F}font-size:17px;font-weight:800;color:{TXT};padding-bottom:6px;">{E(summ)}</div>'
       f'<div style="line-height:22px;">{items}</div>'
+      f'{bigwin(prev,ps)}'
       f'<div style="{F}font-size:12px;padding-top:8px;"><a href="{SITE}/scoreboard/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={prev["date"]}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Full Scoreboard →</a></div>')
     return row(inner,'#2a2110')
+def bigwin(prev,ps):
+    # Spotlight yesterday's best settled win (+25% or better) with a one-tap 'Share the win' X post (utm_source=win_share)
+    ws=[p for p in ps if p.get('final') and (p.get('ret') or 0)>=0.25 and p.get('id')]
+    if not ws: return ''
+    p=max(ws,key=lambda p:p['ret']); sport=p in prev['sports']
+    ent=f"{p['entry']*100:.1f}\u00a2" if sport else f"${p['entry']:,.2f}"
+    d=datetime.date.fromisoformat(prev['date'])
+    txt=f"Called it: {p['action']} {p['label']} at {ent} on {d.strftime('%b ')}{d.day}, settled {p['ret']*100:+.2f}%. Every Daily Five pick is graded in public, wins and losses."
+    u=f"{SITE}/picks/{p['id']}/?utm_source=win_share&utm_medium=x&utm_campaign=email_{prev['date']}"
+    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
+    return (f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px;background:#0f2a22;border:1px solid {UP};border-radius:12px;"><tr><td style="padding:12px 14px;">'
+      f'<div style="{F}font-size:11px;font-weight:800;color:{UP};letter-spacing:1px;text-transform:uppercase;">🔥 Biggest win</div>'
+      f'<div style="{F}font-size:18px;font-weight:900;color:{TXT};padding-top:2px;"><a href="{SITE}/picks/{p["id"]}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={prev["date"]}" style="color:{TXT};text-decoration:none;">{E(p["action"])} {E(p["label"])} at {E(ent)}</a> <span style="{M}color:{UP};">{p["ret"]*100:+.1f}%</span></div>'
+      f'<a href="{E(href)}" style="display:inline-block;margin-top:8px;padding:8px 14px;background:#ffffff;color:#07080d;{F}font-size:13px;font-weight:900;text-decoration:none;border-radius:999px;">\U0001D54F Share the win</a>'
+      f'</td></tr></table>')
 def record(rec,date):
     # Running track record (all-time + latest week), same numbers as /sports-results/ and /stock-results/
     if not rec: return ''
