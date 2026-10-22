@@ -472,3 +472,13 @@
 1. Once free analytics exists (ask first), compare signups by form: hero vs. sticky bar vs. footer (add a hidden `source` field per form if Kit's free plan keeps custom fields).
 2. Swap the sticky bar copy to the latest big win (e.g. "Flyers +181% last night") when one settles in the last 24h.
 3. X wins thread as soon as the account is unlocked.
+
+## 2026-10-22 · ~4 PM ET check-in (Thursday)
+- **Shipped a "hot win" line on the sticky signup bar:** when a sports pick settled in the last 2 days at +25% or better, the bar now leads with it, e.g. "🔥 Last night: BUY Flyers settled +181.69%", linking to that pick page, above "Get tomorrow's five at 7 AM, free." It falls back to the old copy when there's no recent win. Renders: `shots/sbw-{1280,390}-crop.png`.
+- **Found why prices go stale between check-ins:** the box (and the dispatch loop with it) is suspended while no session is running. The loop had last dispatched at 1:01 PM and fired again at 4:10 PM only once this session woke the box. GitHub also dropped every scheduled run after 1:56 PM. Tried adding a backup cron set (`29,59 13-23 * * *`) to pages.yml, but the push was refused because the box's GitHub token lacks the `workflow` scope, so that change was dropped. It needs a token with `workflow` scope or a cloud agent edit.
+- Prices refreshed at 4:10 PM (dispatch). Sports 16-10. X still locked.
+
+**Growth ideas**
+1. Use the same "hot win" line as the email subject's fallback hook on quiet stock days ("Flyers +181% last night; today's five").
+2. If GitHub keeps dropping crons, an external free pinger (e.g. cron-job.org calling workflow_dispatch) would make refreshes reliable, but that needs a new account, so ask first.
+3. X wins thread once the account is unlocked.

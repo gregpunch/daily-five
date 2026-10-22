@@ -201,10 +201,17 @@ def refer_bar():
             f'<a class="rb rx" href="https://x.com/intent/tweet?text={q(txt)}&amp;url={q(u("x"))}" target="_blank" rel="noopener">Post on X</a>'
             f'<a class="rb" href="sms:?&amp;body={q(txt+" "+u("sms"))}">Text it</a>'
             f'<button type="button" class="rb" data-copy="{E(cp)}" onclick="var b=this,u=b.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){{b.textContent=&quot;Link copied \u2713&quot;}},function(){{window.prompt(&quot;Copy this link&quot;,u)}})">Copy link</button></span></div>')
+def recent_win(days=2,floor=0.25):
+    """Best real settled sports winner from the last `days` days (by game date), if it returned at least `floor`; else None."""
+    c=[(p,_sp_when(p,ed).date()) for p,ed in (SPR.get('st') or []) if p['ret']>=floor]
+    c=[x for x in c if 0<=(TODAY-x[1]).days<=days]
+    return max(c,key=lambda x:x[0]['ret']) if c else None
 def stickybar():
     """Dismissible sticky signup bar: shown by live.js after the reader scrolls past the first screen, hidden while any other signup form is on screen, after a signup, or for 7 days once dismissed."""
     rec=f" Sports {SPR['w']}-{SPR['l']} so far." if SPR else ''
-    return (f'<div class="sbar" id="sbar" hidden role="region" aria-label="Get The Daily Five by email"><div class="sbin"><p class="sbt"><b>Get tomorrow\'s five at 7 AM, free.</b><span> 5 stock + 5 sports-market picks, graded in public.{rec}</span></p>'
+    bw=recent_win()
+    hot=(f'<a class="sbw" href="{BASE}/picks/{bw[0]["id"]}/">\U0001F525 {"Today" if bw[1]==TODAY else "Last night" if (TODAY-bw[1]).days==1 else bw[1].strftime("%a")}: {E(bw[0]["action"])} {E(bw[0]["label"])} settled {pct(bw[0]["ret"])}</a>' if bw else '')
+    return (f'<div class="sbar" id="sbar" hidden role="region" aria-label="Get The Daily Five by email"><div class="sbin"><p class="sbt">{hot}<b>Get tomorrow\'s five at 7 AM, free.</b><span> 5 stock + 5 sports-market picks, graded in public.{rec}</span></p>'
             f'{sform("bar")}<button type="button" class="sbclose" aria-label="Dismiss">\u00d7</button></div></div>')
 def shell(title,desc,path,body,schema=None,hero='',og=None):
     og=og or OGIMG['v']; ogm=f'<meta property="og:image" content="{SITE}{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:image" content="{SITE}{og}">' if og else ''

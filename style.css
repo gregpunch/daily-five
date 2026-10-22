@@ -221,6 +221,7 @@ a.cbt:hover{border-color:#ffb020}.cbt span{font-size:12px;text-transform:upperca
 .sbar.on{transform:none}.sbar[hidden]{display:none}
 .sbin{max-width:1100px;margin:0 auto;padding:10px 44px 10px 16px;display:flex;gap:14px;align-items:center;position:relative}
 .sbt{margin:0;flex:1;font-size:14px;color:#dfe3f0;line-height:1.35}.sbt b{color:#fff;font-family:var(--disp);font-size:16px}
+.sbw{display:block;width:max-content;max-width:100%;margin:0 0 3px;padding:2px 8px;border-radius:999px;background:rgba(255,196,0,.14);color:#ffd34d;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sbw:hover{background:rgba(255,196,0,.24)}
 .sbar .kform{flex:0 0 auto;margin:0;flex-wrap:nowrap}.sbar .kform input{min-width:220px;padding:10px 12px}.sbar .kform button{padding:10px 16px;font-size:15px;background:var(--up);color:#00150a}
 .sbclose{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;color:#9aa3bd;font-size:26px;line-height:1;cursor:pointer;padding:4px 8px}.sbclose:hover{color:#fff}
 @media(max-width:760px){.sbin{flex-direction:column;align-items:stretch;gap:8px;padding:10px 40px 10px 12px}.sbt span{display:none}.sbar .kform input{min-width:0;flex:1}.sbar .kform button{width:auto}.sbclose{top:14px;transform:none}}
