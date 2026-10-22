@@ -146,5 +146,9 @@
  "2026-10-20/s4": {
   "price": 1.0,
   "note": "resolved"
+ },
+ "2026-10-21/s1": {
+  "price": 0.0,
+  "note": "resolved"
  }
 }
