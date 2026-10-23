@@ -517,3 +517,12 @@
 1. Post the approved Reddit results post (reddit-post-2026-10-23.md) in a CFB/sports-betting subreddit Saturday morning, linking the new hub with utm_source=reddit.
 2. Saturday X thread: our CFB plays with kickoff times, linking /college-football-picks/?utm_source=x.
 3. Add a college basketball (cbb) hub the same way when the season opens in November.
+
+## 2026-10-23 · ~7:15 PM ET check-in (Friday)
+- **Shipped stock wins in the email's "Biggest win" spotlight and inbox preview:** a settled stock call now qualifies at +5% or better (sports stays +25%), and the best one is picked by multiple of its threshold. Example check: the Oct 22 BUY LMT 1-day call settled +6.1%, so it would have been spotlighted with a "Share the win" button and "Yesterday: BUY LMT settled +6.1%" preview text. Reason: stock days often had no sports win big enough, leaving the email's most shareable slot empty. First applies to tomorrow's 7 AM email. Already-sent emails untouched.
+- Prices: CI refreshes at 5:58 PM and 6:40 PM ET succeeded; dispatch loop PID 134583 alive. Abacus pv-all = 4, no signups, no utm sources yet.
+
+**Growth ideas**
+1. Saturday morning: post the approved Reddit results post with the CFB hub link (utm_source=reddit).
+2. Saturday X thread of CFB plays linking /college-football-picks/?utm_source=x.
+3. Sunday report: if traffic is still ~0, bring the pivot plan (channel focus over site features).

@@ -84,11 +84,16 @@ def recap(prev):
       f'{bigwin(prev,ps)}'
       f'<div style="{F}font-size:12px;padding-top:8px;"><a href="{SITE}/scoreboard/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={prev["date"]}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Full Scoreboard →</a></div>')
     return row(inner,'#2a2110')
+def topwin(prev):
+    # Best settled win yesterday: sports-market picks need +25%, stock calls +5% (1 Day calls settle at the close); ranked by multiple of threshold
+    if not prev: return None
+    ws=[(p,0.25) for p in prev['sports'] if p.get('final') and (p.get('ret') or 0)>=0.25]+[(p,0.05) for p in prev['finance'] if p.get('final') and (p.get('ret') or 0)>=0.05]
+    return max(ws,key=lambda x:x[0]['ret']/x[1])[0] if ws else None
 def bigwin(prev,ps):
-    # Spotlight yesterday's best settled win (+25% or better) with a one-tap 'Share the win' X post (utm_source=win_share)
-    ws=[p for p in ps if p.get('final') and (p.get('ret') or 0)>=0.25 and p.get('id')]
-    if not ws: return ''
-    p=max(ws,key=lambda p:p['ret']); sport=p in prev['sports']
+    # Spotlight yesterday's best settled win (sports +25%, stocks +5%) with a one-tap 'Share the win' X post (utm_source=win_share)
+    p=topwin(prev)
+    if not p or not p.get('id'): return ''
+    sport=p in prev['sports']
     ent=f"{p['entry']*100:.1f}\u00a2" if sport else f"${p['entry']:,.2f}"
     d=datetime.date.fromisoformat(prev['date'])
     txt=f"Called it: {p['action']} {p['label']} at {ent} on {d.strftime('%b ')}{d.day}, settled {p['ret']*100:+.2f}%. Every Daily Five pick is graded in public, wins and losses."
@@ -137,9 +142,8 @@ def preheader(ed,prev,rec):
     # Inbox preview text: lead with yesterday's biggest settled win (+25%+) or the running sports record, then the headline
     bits=[]
     if prev:
-        ws=[p for p in prev['finance']+prev['sports'] if p.get('final') and (p.get('ret') or 0)>=0.25]
-        if ws:
-            w=max(ws,key=lambda p:p['ret']); bits.append(f"Yesterday: {w['action']} {w['label']} settled {w['ret']*100:+.0f}%")
+        w=topwin(prev)
+        if w: bits.append(f"Yesterday: {w['action']} {w['label']} settled {w['ret']*100:+.{0 if w['ret']>=0.25 else 1}f}%")
     r=(rec or {}).get('sports')
     if r and not bits: bits.append(f"Sports picks {r['w']}-{r['l']}, graded in public")
     bits.append(ed['headline'])
