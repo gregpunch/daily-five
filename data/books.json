@@ -24,21 +24,21 @@
    "NE",
    "CHI"
   ],
-  "at": "2026-10-22T10:06-04:00",
+  "at": "2026-10-22T16:11-04:00",
   "pm": 0.405
  },
  "2026-10-20/s3": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nfl/game/_/gameId/401873020/packers-lions",
   "odds": [
-   140,
-   -166
+   142,
+   -170
   ],
   "teams": [
    "GB",
    "DET"
   ],
-  "at": "2026-10-22T10:06-04:00",
+  "at": "2026-10-23T07:08-04:00",
   "pm": 0.375
  },
  "2026-10-20/s4": {
@@ -87,14 +87,14 @@
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nfl/game/_/gameId/401873022/chiefs-seahawks",
   "odds": [
-   -155,
-   130
+   -142,
+   120
   ],
   "teams": [
    "SEA",
    "KC"
   ],
-  "at": "2026-10-22T10:06-04:00",
+  "at": "2026-10-23T07:08-04:00",
   "pm": 0.575
  },
  "2026-10-21/s0": {
@@ -129,15 +129,15 @@
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nba/game/_/gameId/401909096/rockets-spurs",
   "odds": [
-   -258,
-   210
+   -205,
+   170
   ],
   "teams": [
    "SA",
    "HOU"
   ],
-  "at": "2026-10-22T10:06-04:00",
-  "pm": 0.695
+  "at": "2026-10-23T07:08-04:00",
+  "pm": 0.645
  },
  "2026-10-21/s4": {
   "name": "DraftKings via ESPN",
@@ -150,77 +150,105 @@
    "NE",
    "CHI"
   ],
-  "at": "2026-10-22T10:06-04:00",
+  "at": "2026-10-22T16:11-04:00",
   "pm": 0.405
  },
  "2026-10-22/s0": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nba/game/_/gameId/401909852/trail-blazers-kings",
   "odds": [
-   245,
-   -305
+   260,
+   -325
   ],
   "teams": [
    "SAC",
    "POR"
   ],
-  "at": "2026-10-22T10:06-04:00",
-  "pm": 0.275
+  "at": "2026-10-23T07:08-04:00",
+  "pm": 0.245
  },
  "2026-10-22/s1": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nba/game/_/gameId/401909850/grizzlies-warriors",
   "odds": [
-   130,
-   -155
+   124,
+   -148
   ],
   "teams": [
    "MEM",
    "GS"
   ],
-  "at": "2026-10-22T10:06-04:00",
-  "pm": 0.405
+  "at": "2026-10-23T07:08-04:00",
+  "pm": 0.425
  },
  "2026-10-22/s2": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nba/game/_/gameId/401909851/clippers-lakers",
   "odds": [
-   330,
-   -425
+   300,
+   -380
   ],
   "teams": [
    "LAC",
    "LAL"
   ],
-  "at": "2026-10-22T10:06-04:00",
-  "pm": 0.215
+  "at": "2026-10-23T07:08-04:00",
+  "pm": 0.235
  },
  "2026-10-22/s3": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nba/game/_/gameId/401909849/pelicans-jazz",
   "odds": [
-   -166,
-   140
+   -122,
+   102
   ],
   "teams": [
    "UTAH",
    "NO"
   ],
-  "at": "2026-10-22T10:06-04:00",
-  "pm": 0.595
+  "at": "2026-10-23T07:08-04:00",
+  "pm": 0.535
  },
  "2026-10-22/s4": {
   "name": "DraftKings via ESPN",
   "url": "https://www.espn.com/nfl/game/_/gameId/401873020/packers-lions",
   "odds": [
-   140,
-   -166
+   142,
+   -170
   ],
   "teams": [
    "GB",
    "DET"
   ],
-  "at": "2026-10-22T10:06-04:00",
+  "at": "2026-10-23T07:08-04:00",
+  "pm": 0.375
+ },
+ "2026-10-23/s3": {
+  "name": "DraftKings via ESPN",
+  "url": "https://www.espn.com/nba/game/_/gameId/401909852/trail-blazers-kings",
+  "odds": [
+   260,
+   -325
+  ],
+  "teams": [
+   "SAC",
+   "POR"
+  ],
+  "at": "2026-10-23T07:08-04:00",
+  "pm": 0.245
+ },
+ "2026-10-23/s4": {
+  "name": "DraftKings via ESPN",
+  "url": "https://www.espn.com/nfl/game/_/gameId/401873020/packers-lions",
+  "odds": [
+   142,
+   -170
+  ],
+  "teams": [
+   "GB",
+   "DET"
+  ],
+  "at": "2026-10-23T07:08-04:00",
   "pm": 0.375
  }
 }
