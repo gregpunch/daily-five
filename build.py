@@ -206,12 +206,25 @@ def recent_win(days=2,floor=0.25):
     c=[(p,_sp_when(p,ed).date()) for p,ed in (SPR.get('st') or []) if p['ret']>=floor]
     c=[x for x in c if 0<=(TODAY-x[1]).days<=days]
     return max(c,key=lambda x:x[0]['ret']) if c else None
+def hook():
+    """Signup hook from tonight's best open sports Value pick (game only, never the side; the pick itself is in the email). Fallback: None."""
+    c=[p for p,ed in (SPR.get('op') or []) if vkey(p)=='val' and (p.get('event_date') or '')>=TODAY.isoformat()]
+    if not c: return None
+    t=[p for p in c if p.get('event_date')==TODAY.isoformat()]
+    p=max(t or c,key=lambda p:p.get('score') or 0)
+    return (p['market'].split(',')[0],bool(t))
+def hook_copy():
+    g=hook()
+    if g:
+        w="tonight's" if g[1] else "our next"
+        return (f"Get {w} best value play + tomorrow's five at 7 AM, free.",f"Our top-scored value pick for {g[0]} is priced under the sportsbooks. The side is in the email.")
+    return ("Get tomorrow's five at 7 AM, free.","5 stock + 5 sports-market picks with real entry prices, graded in public, before the opening bell.")
 def stickybar():
     """Dismissible sticky signup bar: shown by live.js after the reader scrolls past the first screen, hidden while any other signup form is on screen, after a signup, or for 7 days once dismissed."""
     rec=f" Sports {SPR['w']}-{SPR['l']} so far." if SPR else ''
     bw=recent_win()
     hot=(f'<a class="sbw" href="{BASE}/picks/{bw[0]["id"]}/">\U0001F525 {"Today" if bw[1]==TODAY else "Last night" if (TODAY-bw[1]).days==1 else bw[1].strftime("%a")}: {E(bw[0]["action"])} {E(bw[0]["label"])} settled {pct(bw[0]["ret"])}</a>' if bw else '')
-    return (f'<div class="sbar" id="sbar" hidden role="region" aria-label="Get The Daily Five by email"><div class="sbin"><p class="sbt">{hot}<b>Get tomorrow\'s five at 7 AM, free.</b><span> 5 stock + 5 sports-market picks, graded in public.{rec}</span></p>'
+    return (f'<div class="sbar" id="sbar" hidden role="region" aria-label="Get The Daily Five by email"><div class="sbin"><p class="sbt">{hot}<b>{E(hook_copy()[0])}</b><span> {E(hook_copy()[1])}{rec}</span></p>'
             f'{sform("bar")}<button type="button" class="sbclose" aria-label="Dismiss">\u00d7</button></div></div>')
 def shell(title,desc,path,body,schema=None,hero='',og=None):
     og=og or OGIMG['v']; ogm=f'<meta property="og:image" content="{SITE}{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:image" content="{SITE}{og}">' if og else ''
@@ -223,7 +236,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 <header class="top"><div class="wrap nav"><a class="logo" href="{BASE}/" aria-label="{BRAND} home">{LOGO}<span class="word"><span class="the">The</span> Daily Five</span></a>
 <nav><a href="{BASE}/#finance">Money</a><a href="{BASE}/track-record/">Track record</a><a href="{BASE}/#ai">AI</a><a href="{BASE}/#sports">Sports</a><a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg><span class="sr">X</span></a><a href="{BASE}/scoreboard/" class="pill-nav">Scoreboard</a></nav></div></header>
 {hero}<main class="wrap">{body}
-<section class="signup" id="subscribe"><div><h2>Five ideas. Every morning. Free.</h2><p>Get the Daily Five in your inbox before the opening bell.</p></div>
+<section class="signup" id="subscribe"><div><h2>{E(hook_copy()[0])}</h2><p>{E(hook_copy()[1])}</p></div>
 {sform('cta')}{refer_bar()}</section>
 </main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer>{stickybar()}<script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):

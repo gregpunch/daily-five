@@ -78,3 +78,16 @@ function hide(d){b.classList.remove('on');try{localStorage.setItem(K,String(Date
 b.querySelector('.sbclose').addEventListener('click',function(){hide(7*864e5);});
 document.addEventListener('submit',function(e){if(e.target&&e.target.classList&&e.target.classList.contains('kform'))try{localStorage.setItem(K,String(Date.now()+365*864e5));}catch(x){}},true);
 })();
+
+/* Cookieless analytics: anonymous public counters (Abacus, no account, no cookies, no IDs). Pageviews per path + signup and share events. */
+(function(){
+if(navigator.doNotTrack==='1'||/bot|crawl|spider|headless/i.test(navigator.userAgent)||location.hostname!=='readdailyfive.com')return;
+var NS='readdailyfive';
+function k(s){return String(s).toLowerCase().replace(/[^a-z0-9_.-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)||'home';}
+function hit(key){try{fetch('https://abacus.jasoncameron.dev/hit/'+NS+'/'+k(key),{mode:'no-cors',keepalive:true}).catch(function(){});}catch(e){}}
+window.d5hit=hit;
+hit('pv-all');hit('pv-'+(location.pathname.replace(/\/$/,'')||'home'));
+var u=new URLSearchParams(location.search).get('utm_source');if(u)hit('src-'+u);
+document.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('kform')){var c=(f.className.replace('kform','').trim()||'x');hit('ev-signup-'+c);hit('ev-signup-all');}},true);
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.shr,.rb');if(!a)return;var t=a.classList.contains('shr')?'pick':(a.classList.contains('rx')?'refer-x':(a.dataset.copy?'refer-copy':'refer-sms'));hit('ev-share-'+t);hit('ev-share-all');},true);
+})();

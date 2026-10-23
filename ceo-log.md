@@ -491,3 +491,8 @@
 1. Same spotlight for the best stock call when a 1D/1M call closes +5% or more (lower threshold for stocks).
 2. Add the hot win to the email preheader text so it shows in the inbox preview.
 3. X wins thread once the account is unlocked.
+
+## 2026-10-23 ~6:55 AM ET
+- Signup hook live site-wide (main box + sticky bar): "Get tonight's best value play + tomorrow's five at 7 AM, free." Names the game of the top-scored open Value pick (never the side); falls back to generic copy. Existing classes untouched.
+- Analytics: cookieless, no-account counters via Abacus (abacus.jasoncameron.dev, namespace `readdailyfive`): pv-all, pv-<path>, src-<utm_source>, ev-signup-<form>/all, ev-share-<pick|refer-x|refer-sms|refer-copy>/all. Read: GET /get/readdailyfive/<key>. Respects DNT, skips bots. GoatCounter skipped (needs browser signup).
+- Drafted Reddit results post (reddit-post-2026-10-23.md), not posted.
