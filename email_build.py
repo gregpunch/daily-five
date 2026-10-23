@@ -133,6 +133,18 @@ def refer(rec,date):
       f'<div style="{F}font-size:14px;line-height:21px;color:#cdd2e1;padding:6px 0 4px;">Or send them the free signup in one tap. Every pick is graded in public, wins and losses.</div>'
       f'<div>{btns}</div>')
     return row(inner,'#1a1530')
+def preheader(ed,prev,rec):
+    # Inbox preview text: lead with yesterday's biggest settled win (+25%+) or the running sports record, then the headline
+    bits=[]
+    if prev:
+        ws=[p for p in prev['finance']+prev['sports'] if p.get('final') and (p.get('ret') or 0)>=0.25]
+        if ws:
+            w=max(ws,key=lambda p:p['ret']); bits.append(f"Yesterday: {w['action']} {w['label']} settled {w['ret']*100:+.0f}%")
+    r=(rec or {}).get('sports')
+    if r and not bits: bits.append(f"Sports picks {r['w']}-{r['l']}, graded in public")
+    bits.append(ed['headline'])
+    t=' \u00b7 '.join(bits)
+    return t+'\u00a0\u200c'*40
 def render(ed,prev=None,rec=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'1 Day':0,'1 Month':1,'1 Year':2}
@@ -167,7 +179,7 @@ def render(ed,prev=None,rec=None):
     rows.append(f'<tr><td style="padding:22px 24px 30px;border-top:1px solid {LINE};{F}font-size:12px;line-height:18px;color:{MUT};">'
       f'<b style="color:{TXT};font-size:14px;">The Daily Five</b> · <a href="https://x.com/ReadDailyFive" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Follow @ReadDailyFive on X</a> · <a href="{SITE}/scoreboard/" style="color:#a5b4fc;text-decoration:none;">Scoreboard</a><br><br>'
       f'<b>Not financial advice.</b> Not financial, investment, or betting advice. The Daily Five aggregates public ideas and market prices for information and entertainment only. Past results don\'t guarantee future returns. You can lose money. D5 Score = 0–100 from source credibility, consensus, edge and risk/reward.</td></tr>')
-    pre=E(ed['headline'])
+    pre=E(preheader(ed,prev,rec))
     return ('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
       '<meta name="color-scheme" content="dark light"><meta name="supported-color-schemes" content="dark light">'
       f'<title>The Daily Five · {E(nice)}</title><style>:root{{color-scheme:dark light;}}body{{margin:0;padding:0;}}@media (max-width:620px){{.wrap{{width:100%!important;}}}}</style></head>'

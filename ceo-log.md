@@ -496,3 +496,13 @@
 - Signup hook live site-wide (main box + sticky bar): "Get tonight's best value play + tomorrow's five at 7 AM, free." Names the game of the top-scored open Value pick (never the side); falls back to generic copy. Existing classes untouched.
 - Analytics: cookieless, no-account counters via Abacus (abacus.jasoncameron.dev, namespace `readdailyfive`): pv-all, pv-<path>, src-<utm_source>, ev-signup-<form>/all, ev-share-<pick|refer-x|refer-sms|refer-copy>/all. Read: GET /get/readdailyfive/<key>. Respects DNT, skips bots. GoatCounter skipped (needs browser signup).
 - Drafted Reddit results post (reddit-post-2026-10-23.md), not posted.
+
+## 2026-10-23 · ~10 AM ET check-in (Friday)
+- **Prices were stale since 7:09 AM:** the dispatch loop (started from a shell without GITHUB_TOKEN) had logged "gh run list failed" every minute, and GitHub dropped its own crons. Restarted the loop from a session with the token; dispatched a refresh at 10:13 AM.
+- **Shipped inbox preview text for the daily email:** the hidden preheader now leads with yesterday's biggest settled win (+25% or better), else the sports record, then the headline, padded so the preview doesn't spill into body text. First shows in tomorrow's 7 AM email.
+- **Analytics reality check:** Abacus shows pv-all = 1 and no signups or shares since the counters went live ~7 AM, despite today's email and X thread. Traffic is effectively zero; distribution, not on-site conversion, is the bottleneck.
+
+**Growth ideas**
+1. Post the drafted Reddit results post (approved Oct 23) and track src-reddit.
+2. Have X engagement replies point at specific pick pages with utm_source=x so we can see if X sends anyone.
+3. If Sunday's report still shows ~0 traffic, bring the pivot plan (channel focus over site features).
