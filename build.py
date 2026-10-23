@@ -1053,7 +1053,7 @@ def nfl_hub(eds):
 _FUT=re.compile(r'world-series|league-championship|american-league|national-league|\balcs\b|\bnlcs\b',re.I)
 def league_of(p):
     """'nfl'/'mlb'/'nba'/'nhl' for a sports pick (game slugs by prefix, MLB series futures by slug text), else None."""
-    s=p.get('slug') or ''; m=re.match(r'(nfl|mlb|nba|nhl)-',s)
+    s=p.get('slug') or ''; m=re.match(r'(nfl|mlb|nba|nhl|cfb)-',s)
     if m: return m.group(1)
     if _FUT.search(s): return 'mlb'
     return None
@@ -1062,6 +1062,7 @@ LEAGUES={
  'mlb':dict(P='/mlb-picks-today/',emo='\u26be',name='MLB',sport='Baseball',start='First pitch',board='MLB game day',fut='Series futures'),
  'nba':dict(P='/nba-picks-today/',emo='\U0001F3C0',name='NBA',sport='Basketball',start='Tip-off',board='NBA game day',fut='Futures'),
  'nhl':dict(P='/nhl-picks-today/',emo='\U0001F3D2',name='NHL',sport='Ice hockey',start='Puck drop',board='NHL game day',fut='Futures'),
+ 'cfb':dict(P='/college-football-picks/',emo='\U0001F3C8',name='College football',sport='American football',start='Kickoff',board='College football Saturday',fut='Futures'),
 }
 LGHUBS={}  # league -> hub path, filled by league_hubs() before pick pages render
 def league_label(lg,eds):
@@ -1378,7 +1379,7 @@ def stock_results(eds):
     w('stock-results/index.html',shell(title,desc,P,bodyh,{"@context":"https://schema.org","@graph":[art,csch,{"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}))
     return [(P,modified)]
 SPR={}  # sports results rollup stats (filled by sports_stats before any page renders; empty until a sports pick settles)
-LGN={'nfl':('NFL','\U0001F3C8'),'mlb':('MLB','\u26be'),'nba':('NBA','\U0001F3C0'),'nhl':('NHL','\U0001F3D2')}
+LGN={'nfl':('NFL','\U0001F3C8'),'mlb':('MLB','\u26be'),'nba':('NBA','\U0001F3C0'),'nhl':('NHL','\U0001F3D2'),'cfb':('College football','\U0001F3C8')}
 def _sp_when(p,ed):
     """Sort/settle key for a sports pick: kickoff, else event date, else edition date (futures)."""
     k=kickoff(p)
@@ -1475,7 +1476,7 @@ def sports_results(eds):
     strip=('<div class="wlstrip" role="list" aria-label="Every settled sports pick, oldest first">'+''.join(
         f'<a role="listitem" class="{"w" if p["ret"]>0 else "l"}" href="{BASE}/picks/{p["id"]}/" title="{E(p["label"])} ({E(mk(p))}): {"won" if p["ret"]>0 else "lost"}, entry {money("Sports",p["entry"])}">{"W" if p["ret"]>0 else "L"}</a>' for p,ed in chron)+'</div>')
     # by league
-    order=[l for l in ['nfl','mlb','nba','nhl','other'] if any(lg(p)==l for p,_ in st+op)]
+    order=[l for l in ['nfl','cfb','mlb','nba','nhl','other'] if any(lg(p)==l for p,_ in st+op)]
     secs=''; ltiles=''
     for l in order:
         s_=sorted([(p,ed) for p,ed in st if lg(p)==l],key=lambda x:(_sp_when(*x),x[1]['date']),reverse=True)

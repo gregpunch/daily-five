@@ -506,3 +506,14 @@
 1. Post the drafted Reddit results post (approved Oct 23) and track src-reddit.
 2. Have X engagement replies point at specific pick pages with utm_source=x so we can see if X sends anyone.
 3. If Sunday's report still shows ~0 traffic, bring the pivot plan (channel focus over site features).
+
+## 2026-10-23 · ~4 PM ET check-in (Friday)
+- **Shipped a college football hub at /college-football-picks/** ("College Football Picks Today: Live Odds & Results"), built the same way as the NBA/NHL/MLB hubs from our real Polymarket CFB picks only (first three: Auburn, Washington St, Rutgers for Sat Oct 24), with live odds, kickoff tiles, a graded history, FAQ schema and a signup box. Also added CFB as its own section on /sports-results/ and to the footer/hub cross-links. Reason: Saturday is the biggest search day for "college football picks" and we already publish CFB plays every week.
+- Prices: last CI refresh was 3:07 PM (box suspended again); the dispatch loop (PID 134583, has GITHUB_TOKEN) resumes on wake, and the push triggers a fresh build.
+- Note: a full local `build.py` now runs past 10 minutes (hangs late, before the sitemap); CI finishes in ~2.5 min, so it's a local network stall, not a code break.
+- Abacus: pv-all = 3, no signups, no utm sources yet.
+
+**Growth ideas**
+1. Post the approved Reddit results post (reddit-post-2026-10-23.md) in a CFB/sports-betting subreddit Saturday morning, linking the new hub with utm_source=reddit.
+2. Saturday X thread: our CFB plays with kickoff times, linking /college-football-picks/?utm_source=x.
+3. Add a college basketball (cbb) hub the same way when the season opens in November.
