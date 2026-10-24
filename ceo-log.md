@@ -556,3 +556,13 @@
 1. 7 PM: check whether the r/Polymarket post was approved; if removed, try r/NicheSportsBetting with the required picks/ROI/Last-5 lines.
 2. Build karma on u/ReadDailyFive with genuine comments in r/Polymarket/r/Kalshi so future posts skip the mod queue.
 3. Sunday report: traffic still ~0, bring the pivot plan (channel focus over site features).
+
+## 2026-10-24 · ~7 PM ET check-in (Saturday)
+- **Shipped a dated title on /nfl-picks-this-week/:** it now names the next NFL game day, e.g. "NFL Picks This Week (Week 7, Sun Oct 25): Live Polymarket Odds & Results", completing the dated-title pass across every hub right before Sunday, the peak NFL search day.
+- Prices: scheduled CI refresh at ~5:51 PM ET succeeded; a dispatch fired at 7:05 PM (run 40141277419). Dispatch loop PID 134583 alive.
+- Reddit: the r/Polymarket post status can't be read from the box (Reddit blocks unauthenticated fetches); check it in the browser at the next run.
+
+**Growth ideas**
+1. Sunday X thread: lead with the NFL slate and link /nfl-picks-this-week/?utm_source=x.
+2. If the Reddit post was removed, try r/NicheSportsBetting with its required picks/ROI/Last-5 format.
+3. Sunday report: traffic still ~0, bring the pivot plan (channel focus over site features).

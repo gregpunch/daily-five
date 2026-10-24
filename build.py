@@ -1045,7 +1045,9 @@ def nfl_hub(eds):
            f'<div class="tiles">{tiles}</div>{wkban}'
            f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
            f'{gd_board([p for p,_ in slate],"NFL game day")}{tb}{hb}{fq}<p class="sub hub-foot">Trade stocks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
-    title=f'NFL Picks This Week{wl}: Live Polymarket Odds & Results | {BRAND}'
+    _gd=nk or next((k for k in (kickoff(p) for p,_ in slate) if k),None)  # next NFL game day, for a visibly current title
+    _tl=', '.join(x for x in ((f'Week {wk}' if wk else ''),(_gd.astimezone().strftime('%a %b %-d') if _gd else '')) if x)
+    title=f'NFL Picks This Week{f" ({_tl})" if _tl else ""}: Live Polymarket Odds & Results | {BRAND}'
     desc=(f'This week\'s NFL picks{wl}, ranked by the Daily Five Score, with live Polymarket odds, kickoff times, and a public win/loss record. Updated {latest}.')[:155]
     evs=[{"@type":"SportsEvent","name":(p.get('m') or {}).get('outcomes') and ' vs. '.join(p['m']['outcomes']) or p['market'],"startDate":kickoff(p).isoformat(),"sport":"American football","url":f"{SITE}/picks/{p['id']}/"} for p,_ in slate if kickoff(p)]
     sch={"@context":"https://schema.org","@graph":[
