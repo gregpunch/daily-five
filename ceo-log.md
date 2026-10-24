@@ -536,3 +536,13 @@
 1. Post the approved Reddit results post today with the CFB hub link (utm_source=reddit); it still hasn't gone out.
 2. Same dated-title treatment for /best-stocks-to-buy-today/ on weekdays.
 3. Sunday report: traffic is still near zero, so bring the pivot plan (channel focus over site features).
+
+## 2026-10-24 · ~1 PM ET check-in (Saturday)
+- **Shipped a dated title on /best-stocks-to-buy-today/:** weekdays read "Best Stocks to Buy Today (Mon, Oct 26): Live Scores & Track Record"; weekend editions read "Best Stocks to Buy Monday (Oct 26): ..." because weekend searchers look for next-session buys (today's lead call is TSM into Monday). Finishes the dated-title pass started on the sports hubs this morning.
+- Prices: scheduled CI refresh at 12:56 PM ET succeeded; dispatch loop PID 134583 alive (weekend game-night cadence starts 12:30 PM).
+- Abacus: pv-all = 7 (flat since 10 AM), no signups.
+
+**Growth ideas**
+1. Reddit results post (approved Oct 23) still unposted; it's the one channel test we haven't run, so do it before Sunday's report.
+2. Sunday-morning "stocks to buy this week" angle in the X thread, linking the stocks hub with utm_source=x.
+3. Sunday report: traffic is still near zero, so bring the pivot plan.

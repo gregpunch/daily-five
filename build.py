@@ -908,7 +908,12 @@ def best_stocks_hub(eds):
            f'<p class="disc-bar">⚠️ <b>Not financial advice.</b> These are public ideas we score and track — not a recommendation to buy or sell. Past results don\'t guarantee future returns.</p>'
            f'{today_block}{hz_blocks}{faq_html}'
            f'<p class="sub hub-foot">Want SELLs, AI news, and sports markets too? See <a href="{BASE}/">today\'s full edition</a>.</p>')
-    title=f'Best Stocks to Buy Today (Live Scores & Track Record) | {BRAND}'
+    _ld=datetime.date.fromisoformat(latest) if eds else TODAY
+    if _ld.weekday()>=5:  # weekend edition: searchers look for next session's buys
+        _mon=_ld+datetime.timedelta(days=7-_ld.weekday())
+        title=f'Best Stocks to Buy Monday ({_mon.strftime("%b %-d")}): Live Scores & Track Record | {BRAND}'
+    else:
+        title=f'Best Stocks to Buy Today ({_ld.strftime("%a, %b %-d")}): Live Scores & Track Record | {BRAND}'
     desc=(f'Today\'s best stocks to buy, ranked by the Daily Five Score: real entry prices, live Yahoo Finance performance, and a public BUY track record. Updated {latest}.')[:155]
     sch={"@context":"https://schema.org","@graph":[
         {"@type":"CollectionPage","name":"Best Stocks to Buy Today","description":desc,"url":SITE+"/best-stocks-to-buy-today/","isPartOf":{"@type":"WebSite","name":BRAND,"url":SITE+"/"}},
