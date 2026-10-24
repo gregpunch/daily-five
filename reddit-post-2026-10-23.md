@@ -1,4 +1,4 @@
-# Reddit draft (NOT POSTED) — week of Oct 19–23, 2026
+# Reddit post (POSTED r/Polymarket Oct 24 4:05 PM ET, awaiting mod approval: https://www.reddit.com/r/Polymarket/comments/1xeigeu/) — week of Oct 19–23, 2026
 
 **Title:** Week 3 of logging every Polymarket sports pick at the price we actually got: 6-3 this week, plus our stock day-trades went 0-6
 

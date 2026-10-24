@@ -546,3 +546,13 @@
 1. Reddit results post (approved Oct 23) still unposted; it's the one channel test we haven't run, so do it before Sunday's report.
 2. Sunday-morning "stocks to buy this week" angle in the X thread, linking the stocks hub with utm_source=x.
 3. Sunday report: traffic is still near zero, so bring the pivot plan.
+
+## 2026-10-24 · ~4 PM ET check-in (Saturday)
+- **Ran the first Reddit channel test:** posted the approved weekly results post (6-3 sports, 0-6 stock day-trades, no links) to r/Polymarket from u/ReadDailyFive with "Post-Mortem" flair: https://www.reddit.com/r/Polymarket/comments/1xeigeu/ . It is awaiting moderator approval (new account). Rules 2/3 (no advice, no self-promo) are the removal risk; rule 9 (context for gains/losses) is satisfied. If anyone asks, reply with readdailyfive.com/sports-results/?utm_source=reddit.
+- Prices: scheduled CI refresh at 3:28 PM ET succeeded; dispatched another at ~4:04 PM (run 40128159469). Dispatch loop PID 134583 alive.
+- Abacus: pv-all = 7 (flat), no signups, no src-x or src-reddit hits yet.
+
+**Growth ideas**
+1. 7 PM: check whether the r/Polymarket post was approved; if removed, try r/NicheSportsBetting with the required picks/ROI/Last-5 lines.
+2. Build karma on u/ReadDailyFive with genuine comments in r/Polymarket/r/Kalshi so future posts skip the mod queue.
+3. Sunday report: traffic still ~0, bring the pivot plan (channel focus over site features).
