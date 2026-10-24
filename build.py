@@ -964,7 +964,7 @@ def polymarket_hub(eds):
            f'<div class="tiles">{tiles}</div>'
            f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
            f'{tb}{hb}{fq}<p class="sub hub-foot">Betting Sunday? See <a href="{BASE}/nfl-picks-this-week/">NFL picks this week</a>.{''.join(f' {n[:1].upper()+n[1:]}: <a href="{BASE}{u}">{n} today</a>.' for n,u in LGHUBS.values())} Want stock picks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
-    title=f'Polymarket Sports Picks Today (Live Odds & Results) | {BRAND}'
+    title=f'Polymarket Sports Picks Today{datetime.date.fromisoformat(latest).strftime(" (%a, %b %-d)")}: Live Odds & Results | {BRAND}'
     desc=f'Today\'s best Polymarket sports picks, ranked by the Daily Five Score, with live odds, real entry prices, and a public win/loss record. Updated {latest}.'[:155]
     sch={"@context":"https://schema.org","@graph":[
         {"@type":"CollectionPage","name":"Polymarket Sports Picks Today","description":desc,"url":SITE+P,"isPartOf":{"@type":"WebSite","name":BRAND,"url":SITE+"/"}},
@@ -1149,7 +1149,8 @@ def league_hub_pages(eds):
                f'<p class="disc-bar">\u26a0\ufe0f <b>Not betting advice.</b> Prices are real Polymarket snapshots; check local laws before trading prediction markets.</p>'
                f'{gd_board([p for p,_ in slate],c["board"])}{tb}{ask}{hb}{fq}<p class="sub hub-foot">Trade stocks too? See <a href="{BASE}/best-stocks-to-buy-today/">best stocks to buy today</a>.</p>')
         tag=' (ALCS, NLCS & World Series)' if post else ''
-        title=f"{H1.title().replace('Mlb','MLB').replace('Nba','NBA').replace('Nhl','NHL')}{tag}: Live Odds & Results | {BRAND}"
+        dtag=datetime.date.fromisoformat(eds[0]['date']).strftime(' (%a, %b %-d)')
+        title=f"{H1.title().replace('Mlb','MLB').replace('Nba','NBA').replace('Nhl','NHL')}{tag or dtag}: Live Odds & Results | {BRAND}"
         desc=(f"Today's {c['name']} {'playoff ' if post else ''}picks ranked by the Daily Five Score, with live Polymarket odds, start times, and a public record"+(f" ({sw}-{len(settled)-sw} settled)" if settled else '')+f". Updated {eds[0]['date']}.")[:155]
         evs=[{"@type":"SportsEvent","name":' vs. '.join(p['m']['outcomes']) if (p.get('m') or {}).get('outcomes') else p['market'],"startDate":kickoff(p).isoformat(),"sport":c['sport'],"url":f"{SITE}/picks/{p['id']}/"} for p,_ in slate if kickoff(p)]
         sch={"@context":"https://schema.org","@graph":[

@@ -526,3 +526,13 @@
 1. Saturday morning: post the approved Reddit results post with the CFB hub link (utm_source=reddit).
 2. Saturday X thread of CFB plays linking /college-football-picks/?utm_source=x.
 3. Sunday report: if traffic is still ~0, bring the pivot plan (channel focus over site features).
+
+## 2026-10-24 · ~10 AM ET check-in (Saturday)
+- **Shipped dated titles on the sports hubs:** the NBA, NHL, MLB, college football and Polymarket hub page titles now carry the day, e.g. "College Football Picks Today (Sat, Oct 24): Live Odds & Results". "Picks today" searchers favor results that are visibly current, and Saturday is the peak CFB search day. The MLB playoff tag still takes precedence while the postseason runs.
+- Prices: last CI refresh was 9:17 AM (box was suspended overnight; dispatch loop PID 134583 last logged 7:10 PM Fri). Dispatched a refresh at ~10:05 AM; the push triggers another build.
+- Abacus: pv-all = 7 (up from 4 last night), still no signups and no utm sources.
+
+**Growth ideas**
+1. Post the approved Reddit results post today with the CFB hub link (utm_source=reddit); it still hasn't gone out.
+2. Same dated-title treatment for /best-stocks-to-buy-today/ on weekdays.
+3. Sunday report: traffic is still near zero, so bring the pivot plan (channel focus over site features).
