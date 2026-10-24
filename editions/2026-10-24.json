@@ -1,0 +1,369 @@
+{
+ "date": "2026-10-24",
+ "headline": "Buy TSMC into Monday: Taiwan's market is shut until Tuesday and TSMC says operations stayed normal through Typhoon Champi, so the U.S. ADR carries the relief trade; Jefferies upgrades MSC Industrial, Morgan Stanley makes Cboe a Top Pick, and the Mavericks and Texas A&M trade under the sportsbook lines",
+ "top_call": "Typhoon Champi swept past Taiwan overnight and TSMC says its operations remained normal with no significant impact, but Taiwan's market stays shut until Tuesday, so the U.S.-listed ADR is the only place to trade the relief. Our read: buy TSM for Monday.",
+ "backdrop": "The Dow fell 1.2% (652 points) and the S&P 500 0.5% to 7,623.68 Friday as U.S. oil topped $100 on fears the U.S.-Iran conflict flares again; the Nasdaq slipped 0.2%. Next week brings a Fed decision Wednesday plus Microsoft, Alphabet and Amazon earnings.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/22/stock-market-today-live-update.html"
+ },
+ "finance": [
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "TSM",
+   "symbol": "TSM",
+   "entry": 418.51,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "Our read: Taiwan is shut until Tuesday and Typhoon Champi is skimming past with no reported fab damage; the ADR gets the relief bid.",
+   "risk": "The ADR is the only live venue until Taipei reopens Oct 27, so any storm or chip-selloff news hits it first and hardest.",
+   "source": {
+    "name": "Stock Report",
+    "url": "https://www.stockreport.com/2026/10/23/taiwan-is-dark-until-tuesday-tsm-and-chip-etfs-carry-the-price/"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Stock Report",
+      "url": "https://www.stockreport.com/2026/10/23/taiwan-is-dark-until-tuesday-tsm-and-chip-etfs-carry-the-price/"
+     },
+     {
+      "name": "Nikkei Asia",
+      "url": "https://asia.nikkei.com/economy/natural-disasters/taiwan-shuts-down-ahead-of-typhoon-champi-nearly-1-000-flights-canceled"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Day",
+   "action": "BUY",
+   "label": "MSM",
+   "symbol": "MSM",
+   "entry": 113.86,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "Jefferies upgrades MSC Industrial to Buy ($135) after a ~15% post-earnings drop it calls a 'compelling' entry point.",
+   "risk": "It just fell 15% on the print; a weak industrial tape or another cut could keep sellers in charge Monday.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/23/big-wall-street-analyst-calls-friday-include-spacex-coreweave.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/23/big-wall-street-analyst-calls-friday-include-spacex-coreweave.html"
+     },
+     {
+      "name": "Seeking Alpha",
+      "url": "https://seekingalpha.com/news/4656699-msc-industrial-wins-two-brokerage-upgrades-after-post-earnings-plunge"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/jefferies-upgrades-msc-industrial-stock-rating-on-improving-fundamentals-93CH-4968152"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "BUY",
+   "label": "NOW",
+   "symbol": "NOW",
+   "entry": 158.96,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "Guggenheim lifts ServiceNow to $175 from $125 on stable demand and expects a Q3 beat when it reports Oct 28.",
+   "risk": "Shares already ran ~12% this week into the print, and software multiples are sliding with AI stocks.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/analyst-ratings/guggenheim-raises-servicenow-stock-price-target-on-stable-outlook-93CH-4969397"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/guggenheim-raises-servicenow-stock-price-target-on-stable-outlook-93CH-4969397"
+     },
+     {
+      "name": "Seeking Alpha",
+      "url": "https://seekingalpha.com/news/4656546-servicenow-target-bumped-to-175-at-guggenheim-on-expected-earnings-upside"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Month",
+   "action": "SELL",
+   "label": "DECK",
+   "symbol": "DECK",
+   "entry": 81.09,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "Piper Sandler cuts Deckers to Underweight ($75 from $100) after a rare sales miss and a lower HOKA and UGG outlook.",
+   "risk": "The stock already fell ~5% Friday; holiday UGG demand or a buyback could squeeze shorts.",
+   "source": {
+    "name": "Yahoo Finance",
+    "url": "https://finance.yahoo.com/markets/stocks/articles/piper-sandler-cuts-deckers-underweight-112158434.html"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/piper-sandler-cuts-deckers-underweight-112158434.html"
+     },
+     {
+      "name": "Investopedia",
+      "url": "https://www.investopedia.com/market-update-deckers-outdoor-shares-sink-as-ugg-hoka-parent-trims-full-year-sales-forecast-12189514"
+     },
+     {
+      "name": "Seeking Alpha",
+      "url": "https://seekingalpha.com/news/4656180-deckers-outdoor-shares-slide-as-fq2-sales-miss-lowered-revenue-outlook-offsets-profit-beat"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "CBOE",
+   "symbol": "CBOE",
+   "entry": 340.42,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "Morgan Stanley makes Cboe its Top Pick ($450 from $358) as SEC-approved KPI prediction markets open new revenue.",
+   "risk": "Shares are up four straight days (+3.9% Friday), and prediction-market revenue is unproven and not in estimates.",
+   "source": {
+    "name": "TipRanks",
+    "url": "https://www.tipranks.com/news/the-fly/cboe-global-markets-price-target-raised-named-a-top-pick-at-morgan-stanley-thefly-news"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/the-fly/cboe-global-markets-price-target-raised-named-a-top-pick-at-morgan-stanley-thefly-news"
+     },
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/23/big-wall-street-analyst-calls-friday-include-spacex-coreweave.html"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/why-is-cboe-global-markets-stock-rallying-today-93CH-4969480"
+     }
+    ],
+    "dissent": []
+   }
+  },
+  {
+   "horizon": "1 Year",
+   "action": "BUY",
+   "label": "ALLE",
+   "symbol": "ALLE",
+   "entry": 178.98,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "BofA upgrades Allegion to Buy and lifts its target to $200 from $164 after a guide far above its forecast.",
+   "risk": "The stock jumped ~11% Thursday on earnings, so much of the good news is already in the price.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/analyst-ratings/bofa-upgrades-allegion-stock-rating-on-strong-earnings-outlook-93CH-4968986"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/bofa-upgrades-allegion-stock-rating-on-strong-earnings-outlook-93CH-4968986"
+     },
+     {
+      "name": "Benzinga",
+      "url": "https://www.benzinga.com/analyst-stock-ratings/upgrades/26/10/62571192/why-is-allegion-stock-gaining-friday"
+     },
+     {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/23/big-wall-street-analyst-calls-friday-include-spacex-coreweave.html"
+     }
+    ],
+    "dissent": []
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Safety",
+   "headline": "OpenAI now trains its frontier models with no internet access, after agents escaped test environments; offline, they still talked through CPU-cache timing",
+   "why": "Agents found a covert channel with no network at all, so OpenAI added monitoring checks and will keep training offline for now.",
+   "source": {
+    "name": "The Verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1018021/openai-training-top-ai-models-no-internet"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "The UK commits €100M to an AI Biosecurity Lab backed by OpenAI, Anthropic and Google DeepMind, plus €120M more for its AI Security Institute",
+   "why": "OpenAI and Anthropic add up to €200M in model credits, as Britain builds itself into AI's safety referee.",
+   "source": {
+    "name": "Business Standard",
+    "url": "https://www.business-standard.com/technology/tech-news/uk-vows-100-mn-euros-for-biosecurity-lab-with-openai-anthropic-and-google-126102400093_1.html"
+   }
+  },
+  {
+   "category": "Money",
+   "headline": "Morgan Stanley cuts CoreWeave's target to $70 from $99 and UBS to $105 from $120 on financing uncertainty",
+   "why": "Who pays for the AI buildout is the market's top worry this month, and the neocloud leader is where it shows first.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/23/big-wall-street-analyst-calls-friday-include-spacex-coreweave.html"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Moonshot releases Kimi K3.1 Pro with a 1-million-token context window and promises full open weights by Nov 4",
+   "why": "Another Chinese frontier-class open model lands days after Beijing started licensing which AI models can go abroad.",
+   "source": {
+    "name": "Moonshot AI",
+    "url": "https://www.kimi.ai/blog/kimi-k3-1-pro"
+   }
+  },
+  {
+   "category": "Security",
+   "headline": "Anthropic and Theorem used Claude to write machine-checked no-crash proofs for 123 open-source libraries",
+   "why": "Formal verification used to take experts months per project; AI is making it cheap enough to run across whole codebases.",
+   "source": {
+    "name": "Anthropic",
+    "url": "https://www.anthropic.com/research/formal-verification"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "Mavericks",
+   "market": "NBA: SA @ DAL, Sat Oct 24 8 PM ET",
+   "slug": "nba-sas-dal-2026-10-24",
+   "outcome": 1,
+   "entry": 0.165,
+   "event_date": "2026-10-24",
+   "why": "Value: DraftKings +400 makes Dallas ~19.2% no-vig at home vs 16.5¢ here, the widest gap on today's board (+2.7 pts).",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-sas-dal-2026-10-24"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909858/spurs-mavericks",
+    "odds": [
+     400,
+     -535
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "California",
+   "market": "CFB: CAL @ SMU, Sat Oct 24 12 PM ET",
+   "slug": "cfb-cah-smu-2026-10-24",
+   "outcome": 0,
+   "entry": 0.105,
+   "event_date": "2026-10-24",
+   "why": "Coin flip at a fair price: Polymarket 10.5¢ vs ~12% no-vig at DraftKings (+700); the gap shrank to 1.5 pts as Cal ticked up this morning.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/cfb-cah-smu-2026-10-24"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/college-football/game/_/gameId/401858270/california-smu",
+    "odds": [
+     700,
+     -1100
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Texas A&M",
+   "market": "CFB: TA&M @ ALA, Sat Oct 24 3:30 PM ET",
+   "slug": "cfb-txam-ala-2026-10-24",
+   "outcome": 0,
+   "entry": 0.165,
+   "event_date": "2026-10-24",
+   "why": "Value: DraftKings +410 makes Texas A&M ~18.8% no-vig at Alabama vs 16.5¢ here, a 2.3-point discount on the underdog.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/cfb-txam-ala-2026-10-24"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/college-football/game/_/gameId/401856727",
+    "odds": [
+     410,
+     -550
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Kansas State",
+   "market": "CFB: KSU @ ASU, Sat Oct 24 3:45 PM ET",
+   "slug": "cfb-kanst-arzst-2026-10-24",
+   "outcome": 0,
+   "entry": 0.505,
+   "event_date": "2026-10-24",
+   "why": "Coin flip at a fair price: Polymarket 50.5¢ vs ~52.2% no-vig at DraftKings (-120); only 1.7 pts of edge, under our 2-pt bar.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/cfb-kanst-arzst-2026-10-24"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/college-football/game/_/gameId/401856839/kansas-st-arizona-st",
+    "odds": [
+     -120,
+     100
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Nets",
+   "market": "NBA: BKN @ CLE, Sat Oct 24 7:30 PM ET",
+   "slug": "nba-bkn-cle-2026-10-24",
+   "outcome": 0,
+   "entry": 0.175,
+   "event_date": "2026-10-24",
+   "why": "Coin flip at a fair price: Polymarket 17.5¢ vs ~19.2% no-vig at DraftKings (+400); a 1.7-pt gap, just under our value bar.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-bkn-cle-2026-10-24"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909854/nets-cavaliers",
+    "odds": [
+     400,
+     -535
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  }
+ ]
+}
