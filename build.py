@@ -453,8 +453,15 @@ def clip_html(d):
         'publisher':{'@type':'Organization','name':'The Daily Five','url':SITE}}
     if iso: vo['duration']=iso
     ld='<script type="application/ld+json">'+json.dumps(vo).replace('</','<\\/')+'</script>'
-    return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><video controls playsinline muted preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000" src="{BASE}/video/max-{d}.mp4"></video>'
-            f'<figcaption class="sub" style="font-size:.85em">🎙️ Max Edge, {d}. AI-generated host. Not financial advice. 21+.</figcaption></figure>')
+    secs=f'{round(dur)}-second ' if dur else ''
+    # muted preview autoplays only while the clip is on screen; one tap turns sound on and restarts it
+    js=("<script>(function(){var v=document.getElementById('mxv'),b=document.getElementById('mxs');if(!v)return;"
+        "if('IntersectionObserver'in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting&&x.intersectionRatio>=.6){if(v.muted)v.play().catch(function(){})}else if(v.muted)v.pause()})},{threshold:[0,.6]}).observe(v)}"
+        "b.onclick=function(){v.muted=false;v.currentTime=0;v.play();b.style.display='none'};v.addEventListener('volumechange',function(){if(!v.muted)b.style.display='none'})})()</script>")
+    return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><h2 style="font-size:1.05em;margin:0 0 8px">🎙️ Max Edge\'s {secs}rundown: today\'s calls + the Bold Bet</h2>'
+            f'<div style="position:relative"><video id="mxv" controls playsinline muted loop preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000;display:block" src="{BASE}/video/max-{d}.mp4"></video>'
+            f'<button type="button" id="mxs" style="position:absolute;top:10px;right:10px;border:0;border-radius:999px;padding:6px 12px;font-weight:700;background:rgba(0,0,0,.7);color:#fff;cursor:pointer">🔊 Tap for sound</button></div>'
+            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+.</figcaption></figure>'+js)
 def latest_clip():
     fs=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))
     return clip_html(os.path.basename(fs[-1])[4:14]) if fs else ''

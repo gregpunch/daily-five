@@ -586,3 +586,13 @@
 1. Ask the user to add video-sitemap.xml in Search Console (optional; robots.txt already points to it).
 2. Once clip posting is approved, native X uploads of each clip linking the edition with utm_source=x.
 3. Short on-page clip title plus muted autoplay preview on mobile to lift watch rate.
+
+## 2026-10-25 · ~4:30 PM ET check-in (Sunday, relaunch Day 1)
+- **Shipped a watch-rate upgrade for the Max Edge clip:** the clip now has a real on-page heading ("🎙️ Max Edge's 55-second rundown: today's calls + the Bold Bet", length read from the MP4), plays as a muted looping preview only while it's at least 60% on screen (pauses when scrolled away, respects reduced-motion), and shows a "🔊 Tap for sound" button that unmutes and restarts from the top. Visitors were scrolling past a static poster; motion plus a clear label should lift plays, which is the whole point of the relaunch.
+- Prices: box was suspended ~1:15-4:10 PM so the dispatch loop (PID 134583, alive) missed slots; last scheduled CI refresh 1:50 PM; this push triggers a live rebuild. Local full build hangs on live fetches (killed at 10 min); verified the clip markup via clip_html() directly instead.
+- Abacus: pv-all = 11 (flat all day), no signups.
+
+**Growth ideas**
+1. Native X upload of each day's clip with an edition link (utm_source=x), pending the user's OK on posting clips.
+2. A 15-second vertical cut of just the Bold Bet for X/Shorts; shorter clips get finished more.
+3. Tonight's weekly report: Day 1 of relaunch, distribution (not site features) is the bottleneck.
