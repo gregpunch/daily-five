@@ -250,7 +250,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>{E(hook_copy()[0])}</h2><p>{E(hook_copy()[1])}</p></div>
 {sform('cta')}{refer_bar()}</section>
-</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a href="{BASE}/beta-archive/">Beta archive (Oct 2026)</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer>{stickybar()}<script src="{BASE}/live.js" defer></script></body></html>"""
+</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/max-edge/">Max Edge videos</a> · <a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a href="{BASE}/beta-archive/">Beta archive (Oct 2026)</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer>{stickybar()}<script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def money(kind,v): return '—' if v is None else (f"{v*100:.1f}¢" if kind=='Sports' else f"${v:,.2f}")
@@ -461,7 +461,33 @@ def clip_html(d):
     return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><h2 style="font-size:1.05em;margin:0 0 8px">🎙️ Max Edge\'s {secs}rundown: today\'s calls + the Bold Bet</h2>'
             f'<div style="position:relative"><video id="mxv" controls playsinline muted loop preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000;display:block" src="{BASE}/video/max-{d}.mp4"></video>'
             f'<button type="button" id="mxs" style="position:absolute;top:10px;right:10px;border:0;border-radius:999px;padding:6px 12px;font-weight:700;background:rgba(0,0,0,.7);color:#fff;cursor:pointer">🔊 Tap for sound</button></div>'
-            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+.</figcaption></figure>'+js)
+            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+. <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption></figure>'+js)
+def max_edge_hub(eds):
+    """/max-edge/: every Max Edge daily clip in one place (latest playable on top, past clips linked to their editions)."""
+    P='/max-edge/'; byd={e['date']:e for e in eds}
+    ds=sorted((os.path.basename(f)[4:14] for f in glob.glob(os.path.join(ROOT,'clips','max-*.mp4'))),reverse=True)
+    if not ds: return None
+    rows=''; items=[]
+    for i,d in enumerate(ds):
+        ed=byd.get(d) or {}; dur=mp4_secs(os.path.join(ROOT,'clips',f'max-{d}.mp4'))
+        bb=next((p for p in ed.get('sports',[]) if p.get('bold')),None)
+        nice=datetime.date.fromisoformat(d).strftime('%a, %b %-d, %Y')
+        bbh=f'<span class="sub"> · Bold Bet: {E(bb.get("outcome") or "")} ({E(bb["market"])}) at {money("Sports",bb.get("entry"))}</span>' if bb else ''
+        rows+=(f'<li style="display:flex;gap:12px;align-items:center;margin:10px 0"><a href="{BASE}/{d}/"><img src="{BASE}/video/max-{d}.jpg" alt="Max Edge clip thumbnail, {nice}" width="72" height="128" loading="lazy" style="border-radius:8px;object-fit:cover;background:#000"></a>'
+               f'<div><a href="{BASE}/{d}/"><b>{nice}</b></a>{f" · {round(dur)} s" if dur else ""}<br>{E(ed.get("headline",""))}{bbh}</div></li>')
+        vo={'@type':'VideoObject','name':f'Max Edge: The Daily Five picks for {d}','description':f"Max Edge, The Daily Five's AI-generated host, runs through the {d} stock calls, sports-market plays and Bold Bet of the Day. Not financial advice.",
+            'thumbnailUrl':[f'{SITE}/video/max-{d}.jpg'],'uploadDate':f'{d}T07:00:00-04:00','contentUrl':f'{SITE}/video/max-{d}.mp4','url':f'{SITE}/{d}/'}
+        if dur: vo['duration']=f'PT{round(dur)//60}M{round(dur)%60}S'
+        items.append({'@type':'ListItem','position':i+1,'item':vo})
+    desc=f'Watch Max Edge, The Daily Five\'s AI-generated host, call a 3-month stock pick and the Bold Bet of the Day in under a minute. New clip every morning; {len(ds)} so far, every call graded in public.'[:155]
+    bodyh=(f'<section class="sbhero hubhero"><span class="kicker">🎙️ Max Edge</span><h1 class="pt">Max Edge: daily stock & sports picks in 60 seconds</h1>'
+           f'<p class="sub">An AI-generated host (yes, clearly a bot, and proud of it) reads the day\'s 3-month stock calls and the Bold Bet of the Day. Every pick he says out loud lands on the <a href="{BASE}/scoreboard/">public scoreboard</a>, wins and faceplants alike.</p></section>'
+           f'{clip_html(ds[0])}<h2>Every Max Edge clip</h2><ul style="list-style:none;padding:0">{rows}</ul>'
+           f'<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Max Edge is AI-generated. 21+.</p>')
+    sch={'@context':'https://schema.org','@graph':[{'@type':'CollectionPage','name':'Max Edge daily picks videos','description':desc,'url':SITE+P,'isPartOf':{'@type':'WebSite','name':BRAND,'url':SITE+'/'}},
+         {'@type':'ItemList','name':'Max Edge clips','itemListElement':items}]}
+    w('max-edge/index.html',shell(f'Max Edge: Daily AI Stock & Sports Picks Video (60 Seconds) | {BRAND}',desc,P,bodyh,sch))
+    return P
 def latest_clip():
     fs=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))
     return clip_html(os.path.basename(fs[-1])[4:14]) if fs else ''
@@ -1726,7 +1752,7 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
@@ -1735,7 +1761,7 @@ def main():
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
     # lastmod: hubs today; an edition page changes until all its picks settle; pick/ticker pages from lastmod()
     edlm=lambda e: max([lastmod(p,e) for p in e['finance']+e['sports']]+[e['date']])
-    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+nfr+extra
+    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+nfr+extra
     seen={u for u,_ in urls}; urls+=[x for x in beta_extra if x[0] not in seen]
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')

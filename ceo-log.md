@@ -596,3 +596,12 @@
 1. Native X upload of each day's clip with an edition link (utm_source=x), pending the user's OK on posting clips.
 2. A 15-second vertical cut of just the Bold Bet for X/Shorts; shorter clips get finished more.
 3. Tonight's weekly report: Day 1 of relaunch, distribution (not site features) is the bottleneck.
+
+## 2026-10-25 · ~7:15 PM ET check-in (Sunday, relaunch Day 1)
+- **Shipped a /max-edge/ video hub:** one page collecting every Max Edge clip (latest playable on top with the muted preview, then every past clip with thumbnail, length, that day's headline and its Bold Bet, each linked to its edition). It carries CollectionPage + ItemList-of-VideoObject structured data, is in sitemap.xml, linked from the footer on every page and from each clip's caption ("Every Max Edge clip →"). Gives the video relaunch a permanent, shareable URL to target searches like "AI stock picks video" and to point X clip posts at once those are approved.
+- Prices: dispatch loop PID 134583 alive; 7:00 PM refresh run 40242772058 succeeded (one 6:59 PM dispatch failed and retried fine). This push triggers another live rebuild.
+
+**Growth ideas**
+1. Point native X clip uploads (once approved) at /max-edge/?utm_source=x so the bio/pinned post always has a current clip.
+2. Save each day's clip script next to the MP4 (clips/max-<date>.txt) and render it as an on-page transcript for SEO and sound-off viewers.
+3. 15-second vertical Bold Bet cut for X.
