@@ -218,5 +218,17 @@
  "2026-10-24/s3": {
   "price": 0.0,
   "note": "resolved"
+ },
+ "2026-10-24/s0": {
+  "price": 0.0,
+  "note": "resolved"
+ },
+ "2026-10-24/s4": {
+  "price": 0.0,
+  "note": "resolved"
+ },
+ "2026-10-23/s1": {
+  "price": 0.0,
+  "note": "resolved"
  }
 }
