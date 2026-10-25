@@ -1,7 +1,7 @@
 {
  "date": "2026-10-25",
- "headline": "Buy T-Mobile at its cheapest valuation in a decade: Barron's says the wireless leader survives the SpaceX threat after Friday's 7.7% drop; AT&T and Applied Digital for Monday, NextEra on AI power demand, and the Canucks, Kings and 76ers trade under the sportsbook lines",
- "top_call": "Wireless stocks got crushed Friday on a report that SpaceX wants 80,000 U.S. cell sites, but Barron's says T-Mobile has five times SpaceX's spectrum and trades at about 12.5x forward earnings, its lowest in over a decade. Our read: buy TMUS for the year.",
+ "headline": "Day 1 of Max Edge: Bold Bet on the 76ers over the Pistons at 53.5¢, plus a 3-month buy on T-Mobile at its cheapest valuation in a decade after Friday's SpaceX scare",
+ "top_call": "Wireless stocks got crushed Friday on a report that SpaceX wants 80,000 U.S. cell sites, but Barron's says T-Mobile has five times SpaceX's spectrum and trades at about 12.5x forward earnings, its lowest in over a decade. Our read: buy TMUS as a 3-month call, graded against the S&P 500.",
  "backdrop": "The Dow fell 1.2% (653 points) to 52,215.16 and the S&P 500 0.5% to 7,623.68 Friday as WTI crude settled at $103.27; the Nasdaq slipped 0.2%. This week brings a Fed decision Wednesday plus Microsoft, Alphabet, Amazon and Verizon (Monday) earnings.",
  "backdrop_source": {
   "name": "AP",
@@ -133,33 +133,6 @@
  "sports": [
   {
    "action": "BUY",
-   "label": "Canucks",
-   "market": "NHL: MIN @ VAN, Sun Oct 25 10 PM ET",
-   "slug": "nhl-min-van-2026-10-25",
-   "outcome": 1,
-   "entry": 0.355,
-   "event_date": "2026-10-25",
-   "why": "Value: DraftKings +150 makes Vancouver ~38.4% no-vig at home vs 35.5¢ here, the widest gap on today's board (+2.9 pts).",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nhl-min-van-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nhl/game/_/gameId/401892581",
-    "odds": [
-     150,
-     -180
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   },
-   "bold": true
-  },
-  {
-   "action": "BUY",
    "label": "76ers",
    "market": "NBA: DET @ PHI, Sun Oct 25 7:30 PM ET",
    "slug": "nba-det-phi-2026-10-25",
@@ -182,85 +155,8 @@
    "consensus": {
     "agree": [],
     "dissent": []
-   }
-  },
-  {
-   "action": "BUY",
-   "label": "Kings",
-   "market": "NBA: MEM @ SAC, Sun Oct 25 9 PM ET",
-   "slug": "nba-mem-sac-2026-10-25",
-   "outcome": 1,
-   "entry": 0.365,
-   "event_date": "2026-10-25",
-   "why": "Value: DraftKings +145 makes Sacramento ~39.1% no-vig at home vs 36.5¢ here (+2.6 pts).",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nba-mem-sac-2026-10-25"
    },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nba/game/_/gameId/401909867",
-    "odds": [
-     145,
-     -175
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   }
-  },
-  {
-   "action": "BUY",
-   "label": "Packers",
-   "market": "Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",
-   "slug": "nfl-gb-det-2026-10-25",
-   "outcome": 0,
-   "entry": 0.365,
-   "event_date": "2026-10-25",
-   "why": "Coin flip at a fair price: 36.5¢ vs ~37.8% no-vig at DraftKings (+154); we like it because the NY Post says GB is better than the market thinks.",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nfl-gb-det-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nfl/game/_/gameId/401873020",
-    "odds": [
-     154,
-     -185
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   }
-  },
-  {
-   "action": "BUY",
-   "label": "Falcons",
-   "market": "Week 7: SF @ ATL, Sun Oct 25 1 PM ET",
-   "slug": "nfl-sf-atl-2026-10-25",
-   "outcome": 1,
-   "entry": 0.425,
-   "event_date": "2026-10-25",
-   "why": "Coin flip at a fair price: 42.5¢ vs ~43.7% no-vig at DraftKings (+120); we like it because SF ruled out Bosa, Evans and Samuel.",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nfl-sf-atl-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nfl/game/_/gameId/401873017",
-    "odds": [
-     120,
-     -142
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   }
+   "bold": true
   }
  ],
  "withdrawn_finance": [
@@ -375,6 +271,116 @@
     ],
     "dissent": []
    }
+  }
+ ],
+ "withdrawn_sports": [
+  {
+   "action": "BUY",
+   "label": "Canucks",
+   "market": "NHL: MIN @ VAN, Sun Oct 25 10 PM ET",
+   "slug": "nhl-min-van-2026-10-25",
+   "outcome": 1,
+   "entry": 0.355,
+   "event_date": "2026-10-25",
+   "why": "Value: DraftKings +150 makes Vancouver ~38.4% no-vig at home vs 35.5¢ here, the widest gap on today's board (+2.9 pts).",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nhl-min-van-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nhl/game/_/gameId/401892581",
+    "odds": [
+     150,
+     -180
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   },
+   "withdrawn_reason": "Longshot lean (under 40¢), not graded"
+  },
+  {
+   "action": "BUY",
+   "label": "Kings",
+   "market": "NBA: MEM @ SAC, Sun Oct 25 9 PM ET",
+   "slug": "nba-mem-sac-2026-10-25",
+   "outcome": 1,
+   "entry": 0.365,
+   "event_date": "2026-10-25",
+   "why": "Value: DraftKings +145 makes Sacramento ~39.1% no-vig at home vs 36.5¢ here (+2.6 pts).",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-mem-sac-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909867",
+    "odds": [
+     145,
+     -175
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   },
+   "withdrawn_reason": "Longshot lean (under 40¢), not graded"
+  },
+  {
+   "action": "BUY",
+   "label": "Packers",
+   "market": "Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",
+   "slug": "nfl-gb-det-2026-10-25",
+   "outcome": 0,
+   "entry": 0.365,
+   "event_date": "2026-10-25",
+   "why": "Coin flip at a fair price: 36.5¢ vs ~37.8% no-vig at DraftKings (+154); we like it because the NY Post says GB is better than the market thinks.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-gb-det-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nfl/game/_/gameId/401873020",
+    "odds": [
+     154,
+     -185
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   },
+   "withdrawn_reason": "Longshot lean (under 40¢), not graded"
+  },
+  {
+   "action": "BUY",
+   "label": "Falcons",
+   "market": "Week 7: SF @ ATL, Sun Oct 25 1 PM ET",
+   "slug": "nfl-sf-atl-2026-10-25",
+   "outcome": 1,
+   "entry": 0.425,
+   "event_date": "2026-10-25",
+   "why": "Coin flip at a fair price: 42.5¢ vs ~43.7% no-vig at DraftKings (+120); we like it because SF ruled out Bosa, Evans and Samuel.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-sf-atl-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nfl/game/_/gameId/401873017",
+    "odds": [
+     120,
+     -142
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   },
+   "withdrawn_reason": "Coin flip (thin edge), not graded"
   }
  ]
 }
