@@ -428,6 +428,17 @@ def closing_bell(ed):
             f'<p class="sub">Real closing prices from Yahoo Finance and final scores from Polymarket. Stock exits freeze at 4:15 PM ET; nothing is hand-entered.</p></div>'
             f'<div class="cbts">{tiles}</div><div class="cbcols">{cols}</div>'
             f'<div class="cbcta"><div><b>\u23f0 Tomorrow\'s five drop at 7 AM ET.</b><span class="tmc">Next edition <b class="nxc">at 7 AM ET</b></span><p>Get them before the opening bell, with yesterday\'s results graded, free.</p></div>{sform("bell")}</div></section>')
+def mp4_secs(path):
+    """Duration in seconds from the MP4 mvhd atom (no ffprobe needed in CI)."""
+    try:
+        import struct
+        b=open(path,'rb').read(); i=b.find(b'mvhd')
+        if i<0: return None
+        ver=b[i+4]
+        if ver==1: ts,du=struct.unpack('>IQ',b[i+24:i+36])
+        else: ts,du=struct.unpack('>II',b[i+16:i+24])
+        return du/ts if ts else None
+    except Exception: return None
 def clip_html(d):
     v=os.path.join(ROOT,'clips',f'max-{d}.mp4')
     if not os.path.exists(v): return ''
@@ -435,7 +446,14 @@ def clip_html(d):
     for x in ('mp4','jpg'):
         f=os.path.join(ROOT,'clips',f'max-{d}.{x}')
         if os.path.exists(f): shutil.copy(f,os.path.join(OUT,'video',f'max-{d}.{x}'))
-    return (f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><video controls playsinline muted preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000" src="{BASE}/video/max-{d}.mp4"></video>'
+    dur=mp4_secs(v); iso=f'PT{round(dur)//60}M{round(dur)%60}S' if dur else None
+    vo={'@context':'https://schema.org','@type':'VideoObject','name':f'Max Edge: The Daily Five picks for {d}',
+        'description':f"Max Edge, The Daily Five's AI-generated host, runs through the {d} stock calls, sports-market plays and Bold Bet of the Day. Not financial advice.",
+        'thumbnailUrl':[f'{SITE}/video/max-{d}.jpg'],'uploadDate':f'{d}T07:00:00-04:00','contentUrl':f'{SITE}/video/max-{d}.mp4',
+        'publisher':{'@type':'Organization','name':'The Daily Five','url':SITE}}
+    if iso: vo['duration']=iso
+    ld='<script type="application/ld+json">'+json.dumps(vo).replace('</','<\\/')+'</script>'
+    return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><video controls playsinline muted preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000" src="{BASE}/video/max-{d}.mp4"></video>'
             f'<figcaption class="sub" style="font-size:.85em">🎙️ Max Edge, {d}. AI-generated host. Not financial advice. 21+.</figcaption></figure>')
 def latest_clip():
     fs=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))

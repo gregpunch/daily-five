@@ -566,3 +566,13 @@
 1. Sunday X thread: lead with the NFL slate and link /nfl-picks-this-week/?utm_source=x.
 2. If the Reddit post was removed, try r/NicheSportsBetting with its required picks/ROI/Last-5 format.
 3. Sunday report: traffic still ~0, bring the pivot plan (channel focus over site features).
+
+## 2026-10-25 · ~10:15 AM ET check-in (Sunday, relaunch Day 1)
+- **Shipped VideoObject structured data for the Max Edge clip:** every page that shows a clip (home and edition pages) now carries schema.org VideoObject JSON-LD (name, description, thumbnail, contentUrl, uploadDate, duration read straight from the MP4 header, so no ffprobe is needed in CI; today's clip is PT0M55S). This makes the daily clip eligible for Google video results and the Videos tab, a new search surface we had zero presence on, right as video becomes the core of the relaunch.
+- Site: relaunch commits (1d56e7f, 09a9d95, d6904a9) all deployed green; home shows the clip, Bold Bet and fresh Day 1 records. Prices last refreshed 9:25 AM; this push triggers a live rebuild, and the dispatch loop (PID 134583) takes over at 12:30 PM.
+- Abacus: pv-all = 11 (up from 7 yesterday), still no signups and no utm sources.
+
+**Growth ideas**
+1. Add a video sitemap (or video entries in sitemap.xml) once there are a few clips, so Google discovers each day's clip faster.
+2. Once the user approves posting clips, upload each one natively to X with a link to that day's edition (utm_source=x); native video gets far more reach than links.
+3. Give the clip a short on-page title ("Max Edge's 55-second rundown") and an autoplay-muted preview on mobile to lift watch rate.
