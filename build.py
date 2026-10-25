@@ -428,7 +428,19 @@ def closing_bell(ed):
             f'<p class="sub">Real closing prices from Yahoo Finance and final scores from Polymarket. Stock exits freeze at 4:15 PM ET; nothing is hand-entered.</p></div>'
             f'<div class="cbts">{tiles}</div><div class="cbcols">{cols}</div>'
             f'<div class="cbcta"><div><b>\u23f0 Tomorrow\'s five drop at 7 AM ET.</b><span class="tmc">Next edition <b class="nxc">at 7 AM ET</b></span><p>Get them before the opening bell, with yesterday\'s results graded, free.</p></div>{sform("bell")}</div></section>')
-def body(ed,prev=None):
+def clip_html(d):
+    v=os.path.join(ROOT,'clips',f'max-{d}.mp4')
+    if not os.path.exists(v): return ''
+    os.makedirs(os.path.join(OUT,'video'),exist_ok=True)
+    for x in ('mp4','jpg'):
+        f=os.path.join(ROOT,'clips',f'max-{d}.{x}')
+        if os.path.exists(f): shutil.copy(f,os.path.join(OUT,'video',f'max-{d}.{x}'))
+    return (f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><video controls playsinline muted preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000" src="{BASE}/video/max-{d}.mp4"></video>'
+            f'<figcaption class="sub" style="font-size:.85em">🎙️ Max Edge, {d}. AI-generated host. Not financial advice. 21+.</figcaption></figure>')
+def latest_clip():
+    fs=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))
+    return clip_html(os.path.basename(fs[-1])[4:14]) if fs else ''
+def body(ed,prev=None,home=False):
     rank=0; fin=''
     for h,ic in [('3 Month','📅'),('1 Day','⚡'),('1 Month','📅'),('1 Year','🌱')]:
         ps=[p for p in ed['finance'] if p['horizon']==h]
@@ -445,7 +457,7 @@ def body(ed,prev=None):
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
     upd=NOW.strftime('%-I:%M %p ET')
     beta=(f'<p class="disc-bar">🧪 <b>Beta edition (pre-launch).</b> This is from our October 2026 beta, before Max Edge\'s Day 1 on Oct 25. Its picks are graded on the <a href="{BASE}/beta-archive/">Beta archive</a>, not the main scoreboard.</p>' if ed['date']<LAUNCH else '')
-    return beta+closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
+    return beta+(latest_clip() if home else clip_html(ed['date']))+closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">{'Buy-and-hold 3-month calls (1–2 a week), graded against the S&amp;P 500.' if ed['date']>=LAUNCH else 'The best ideas from AI agents, analysts and public sources, by horizon.'}</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
 <section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a>{''.join(f' · <a href="{BASE}{u}">{n[:1].upper()+n[1:]} →</a>' for n,u in LGHUBS.values())}</p></div></div>{verdict_summary(ed["sports"])}{gd_board(ed["sports"])}<div class="grid g3">{sp}</div></section>"""
@@ -1667,7 +1679,7 @@ def main():
         hr=hero(ed,nice); w(f'{d}/index.html',shell(title,desc,f'/{d}/',body(ed,prev),sch,hr,og)); items.append((d,nice,title,desc,ed,hr))
     if items:
         d,nice,title,desc,ed,hr=items[0]
-        w('index.html',shell(f"The Daily Five: Today's Best Stock Picks, AI News & Sports Market Plays",f"{TAG} Today: {desc}",'/',body(ed,eds[1] if len(eds)>1 else None),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG,"sameAs":["https://x.com/ReadDailyFive"]},hr))
+        w('index.html',shell(f"The Daily Five: Today's Best Stock Picks, AI News & Sports Market Plays",f"{TAG} Today: {desc}",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG,"sameAs":["https://x.com/ReadDailyFive"]},hr))
     items=[x for x in items]  # archive lists every edition, beta included
     w('archive/index.html',shell(f"Archive | {BRAND}","Every past edition of The Daily Five.",'/archive/','<h1 class="pt">Archive</h1><div class="arch">'+''.join(f'<a href="{BASE}/{d}/"><span class="ad">{n}</span><b>{E(e["headline"])}</b></a>' for d,n,_,_,e,_ in items)+'</div>'))
     rows=[]
