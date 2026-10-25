@@ -9,6 +9,262 @@
  },
  "finance": [
   {
+   "horizon": "3 Month",
+   "action": "BUY",
+   "label": "TMUS",
+   "symbol": "TMUS",
+   "entry": 146.54,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "Barron's: T-Mobile has ~400 MHz of spectrum to SpaceX's 80 and trades at ~12.5x forward earnings, a decade low.",
+   "risk": "It fell 7.7% Friday; if SpaceX lands cell-site deals faster than Citi's 'years away' estimate, the multiple can compress more.",
+   "source": {
+    "name": "Barron's",
+    "url": "https://www.barrons.com/articles/att-tmobile-telecom-stock-picks-spacex-b4f3b77e"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Barron's",
+      "url": "https://www.barrons.com/articles/att-tmobile-telecom-stock-picks-spacex-b4f3b77e"
+     },
+     {
+      "name": "TipRanks",
+      "url": "https://www.tipranks.com/news/t-mobile-stock-tmus-rises-as-raymond-james-upgrades-to-buy-calls-spacex-competition-fears-overblown"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Yahoo Finance",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/spacex-starlink-mobile-push-prompts-142205454.html"
+     }
+    ]
+   },
+   "spy_entry": 759.97,
+   "target_price": 236.84,
+   "target_note": "Yahoo Finance analyst mean target (25 analysts), Oct 25"
+  },
+  {
+   "horizon": "3 Month",
+   "action": "BUY",
+   "label": "NEE",
+   "symbol": "NEE",
+   "entry": 82.1,
+   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
+   "why": "Melius rates NextEra a Buy ($100) as the best-placed utility for AI data-center power demand, with Dominion joining.",
+   "risk": "The all-stock Dominion deal adds integration risk, and higher rates weigh on utilities.",
+   "source": {
+    "name": "Barron's",
+    "url": "https://www.barrons.com/articles/buy-nextera-energy-stock-to-tap-into-power-demand-says-analyst-plus-bending-spoons-and-3-more-82f84e73"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Barron's",
+      "url": "https://www.barrons.com/articles/buy-nextera-energy-stock-to-tap-into-power-demand-says-analyst-plus-bending-spoons-and-3-more-82f84e73"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/btig-raises-nextera-energy-stock-price-target-on-solid-q3-results-93CH-4966272"
+     },
+     {
+      "name": "TradingView",
+      "url": "https://www.tradingview.com/news/tradingview:6f82781d6234e:0-bernstein-reiterates-outperform-rating-on-nextera-energy-108-price-target/"
+     }
+    ],
+    "dissent": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/analyst-ratings/hsbc-cuts-nextera-energy-stock-price-target-on-valuation-review-93CH-4965823"
+     }
+    ]
+   },
+   "spy_entry": 759.97,
+   "target_price": 94.58,
+   "target_note": "Yahoo Finance analyst mean target (19 analysts), Oct 25"
+  }
+ ],
+ "ai": [
+  {
+   "category": "Security",
+   "headline": "Microsoft says China-aligned hackers used the ARTEX agentic AI framework after the ConnectWise breach, hitting 2,250 Microsoft 365 tenants at ~2,900 sign-in attempts a minute",
+   "why": "Some attacks reached privileged cloud access in under three hours; AI agents are now running intrusions at machine speed.",
+   "source": {
+    "name": "Microsoft",
+    "url": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "Sweden's Government Offices block ChatGPT and Claude on staff computers from Monday and keep Microsoft Copilot as the only approved assistant",
+   "why": "Governments are picking AI vendors on security contracts, and the enterprise incumbent is winning that fight.",
+   "source": {
+    "name": "Decrypt",
+    "url": "https://decrypt.co/381763/sweden-government-offices-block-chatgpt-claude"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "Anthropic donates Agent Skills to the Linux Foundation's Agentic AI Foundation, as OpenAI, Hugging Face and Alibaba add projects too",
+   "why": "Skills are already in 70+ agent platforms with ~280M installs; the agent stack's plumbing is going vendor-neutral.",
+   "source": {
+    "name": "Anthropic",
+    "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation"
+   }
+  },
+  {
+   "category": "Robots",
+   "headline": "Hugging Face's $399 Microduck robots pass 20,000 preorders after Jensen Huang played with them on stage at GTC Berlin",
+   "why": "Consumer robots are finding real demand at toy prices, a market Nvidia wants to supply with chips and models.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/23/hottest-toy-for-christmas-nvidia-ceo-plays-with-adorable-microduck-robots-20000-sell/"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "The VanEck Semiconductor ETF (SMH) fell 2.3% on the week to $527.20, and 5.3% from Wednesday, as the AI trade wobbled into Big Tech earnings",
+   "why": "Microsoft, Alphabet and Amazon report this week; their AI capex guidance decides whether the chip selloff deepens.",
+   "source": {
+    "name": "Yahoo Finance",
+    "url": "https://finance.yahoo.com/quote/SMH/history/"
+   }
+  }
+ ],
+ "sports": [
+  {
+   "action": "BUY",
+   "label": "Canucks",
+   "market": "NHL: MIN @ VAN, Sun Oct 25 10 PM ET",
+   "slug": "nhl-min-van-2026-10-25",
+   "outcome": 1,
+   "entry": 0.355,
+   "event_date": "2026-10-25",
+   "why": "Value: DraftKings +150 makes Vancouver ~38.4% no-vig at home vs 35.5¢ here, the widest gap on today's board (+2.9 pts).",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nhl-min-van-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nhl/game/_/gameId/401892581",
+    "odds": [
+     150,
+     -180
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   },
+   "bold": true
+  },
+  {
+   "action": "BUY",
+   "label": "76ers",
+   "market": "NBA: DET @ PHI, Sun Oct 25 7:30 PM ET",
+   "slug": "nba-det-phi-2026-10-25",
+   "outcome": 1,
+   "entry": 0.535,
+   "event_date": "2026-10-25",
+   "why": "Value: DraftKings -142 makes Philadelphia ~56.3% no-vig at home vs 53.5¢ here, a 2.8-point discount on the favorite.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-det-phi-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909866",
+    "odds": [
+     -142,
+     120
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Kings",
+   "market": "NBA: MEM @ SAC, Sun Oct 25 9 PM ET",
+   "slug": "nba-mem-sac-2026-10-25",
+   "outcome": 1,
+   "entry": 0.365,
+   "event_date": "2026-10-25",
+   "why": "Value: DraftKings +145 makes Sacramento ~39.1% no-vig at home vs 36.5¢ here (+2.6 pts).",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nba-mem-sac-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nba/game/_/gameId/401909867",
+    "odds": [
+     145,
+     -175
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Packers",
+   "market": "Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",
+   "slug": "nfl-gb-det-2026-10-25",
+   "outcome": 0,
+   "entry": 0.365,
+   "event_date": "2026-10-25",
+   "why": "Coin flip at a fair price: 36.5¢ vs ~37.8% no-vig at DraftKings (+154); we like it because the NY Post says GB is better than the market thinks.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-gb-det-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nfl/game/_/gameId/401873020",
+    "odds": [
+     154,
+     -185
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  },
+  {
+   "action": "BUY",
+   "label": "Falcons",
+   "market": "Week 7: SF @ ATL, Sun Oct 25 1 PM ET",
+   "slug": "nfl-sf-atl-2026-10-25",
+   "outcome": 1,
+   "entry": 0.425,
+   "event_date": "2026-10-25",
+   "why": "Coin flip at a fair price: 42.5¢ vs ~43.7% no-vig at DraftKings (+120); we like it because SF ruled out Bosa, Evans and Samuel.",
+   "source": {
+    "name": "Polymarket",
+    "url": "https://polymarket.com/event/nfl-sf-atl-2026-10-25"
+   },
+   "book": {
+    "name": "DraftKings",
+    "url": "https://www.espn.com/nfl/game/_/gameId/401873017",
+    "odds": [
+     120,
+     -142
+    ]
+   },
+   "consensus": {
+    "agree": [],
+    "dissent": []
+   }
+  }
+ ],
+ "withdrawn_finance": [
+  {
    "horizon": "1 Day",
    "action": "BUY",
    "label": "T",
@@ -117,253 +373,6 @@
       "url": "https://www.barrons.com/articles/the-consumer-staples-rally-hersheys-flawed-fundamentals-0742e219"
      }
     ],
-    "dissent": []
-   }
-  },
-  {
-   "horizon": "1 Year",
-   "action": "BUY",
-   "label": "TMUS",
-   "symbol": "TMUS",
-   "entry": 146.54,
-   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
-   "why": "Barron's: T-Mobile has ~400 MHz of spectrum to SpaceX's 80 and trades at ~12.5x forward earnings, a decade low.",
-   "risk": "It fell 7.7% Friday; if SpaceX lands cell-site deals faster than Citi's 'years away' estimate, the multiple can compress more.",
-   "source": {
-    "name": "Barron's",
-    "url": "https://www.barrons.com/articles/att-tmobile-telecom-stock-picks-spacex-b4f3b77e"
-   },
-   "consensus": {
-    "agree": [
-     {
-      "name": "Barron's",
-      "url": "https://www.barrons.com/articles/att-tmobile-telecom-stock-picks-spacex-b4f3b77e"
-     },
-     {
-      "name": "TipRanks",
-      "url": "https://www.tipranks.com/news/t-mobile-stock-tmus-rises-as-raymond-james-upgrades-to-buy-calls-spacex-competition-fears-overblown"
-     }
-    ],
-    "dissent": [
-     {
-      "name": "Yahoo Finance",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/spacex-starlink-mobile-push-prompts-142205454.html"
-     }
-    ]
-   }
-  },
-  {
-   "horizon": "1 Year",
-   "action": "BUY",
-   "label": "NEE",
-   "symbol": "NEE",
-   "entry": 82.1,
-   "entry_note": "Yahoo Finance, Fri Oct 23 close (weekend edition)",
-   "why": "Melius rates NextEra a Buy ($100) as the best-placed utility for AI data-center power demand, with Dominion joining.",
-   "risk": "The all-stock Dominion deal adds integration risk, and higher rates weigh on utilities.",
-   "source": {
-    "name": "Barron's",
-    "url": "https://www.barrons.com/articles/buy-nextera-energy-stock-to-tap-into-power-demand-says-analyst-plus-bending-spoons-and-3-more-82f84e73"
-   },
-   "consensus": {
-    "agree": [
-     {
-      "name": "Barron's",
-      "url": "https://www.barrons.com/articles/buy-nextera-energy-stock-to-tap-into-power-demand-says-analyst-plus-bending-spoons-and-3-more-82f84e73"
-     },
-     {
-      "name": "Investing.com",
-      "url": "https://www.investing.com/news/analyst-ratings/btig-raises-nextera-energy-stock-price-target-on-solid-q3-results-93CH-4966272"
-     },
-     {
-      "name": "TradingView",
-      "url": "https://www.tradingview.com/news/tradingview:6f82781d6234e:0-bernstein-reiterates-outperform-rating-on-nextera-energy-108-price-target/"
-     }
-    ],
-    "dissent": [
-     {
-      "name": "Investing.com",
-      "url": "https://www.investing.com/news/analyst-ratings/hsbc-cuts-nextera-energy-stock-price-target-on-valuation-review-93CH-4965823"
-     }
-    ]
-   }
-  }
- ],
- "ai": [
-  {
-   "category": "Security",
-   "headline": "Microsoft says China-aligned hackers used the ARTEX agentic AI framework after the ConnectWise breach, hitting 2,250 Microsoft 365 tenants at ~2,900 sign-in attempts a minute",
-   "why": "Some attacks reached privileged cloud access in under three hours; AI agents are now running intrusions at machine speed.",
-   "source": {
-    "name": "Microsoft",
-    "url": "https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/"
-   }
-  },
-  {
-   "category": "Policy",
-   "headline": "Sweden's Government Offices block ChatGPT and Claude on staff computers from Monday and keep Microsoft Copilot as the only approved assistant",
-   "why": "Governments are picking AI vendors on security contracts, and the enterprise incumbent is winning that fight.",
-   "source": {
-    "name": "Decrypt",
-    "url": "https://decrypt.co/381763/sweden-government-offices-block-chatgpt-claude"
-   }
-  },
-  {
-   "category": "Agents",
-   "headline": "Anthropic donates Agent Skills to the Linux Foundation's Agentic AI Foundation, as OpenAI, Hugging Face and Alibaba add projects too",
-   "why": "Skills are already in 70+ agent platforms with ~280M installs; the agent stack's plumbing is going vendor-neutral.",
-   "source": {
-    "name": "Anthropic",
-    "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation"
-   }
-  },
-  {
-   "category": "Robots",
-   "headline": "Hugging Face's $399 Microduck robots pass 20,000 preorders after Jensen Huang played with them on stage at GTC Berlin",
-   "why": "Consumer robots are finding real demand at toy prices, a market Nvidia wants to supply with chips and models.",
-   "source": {
-    "name": "TechCrunch",
-    "url": "https://techcrunch.com/2026/10/23/hottest-toy-for-christmas-nvidia-ceo-plays-with-adorable-microduck-robots-20000-sell/"
-   }
-  },
-  {
-   "category": "Chips",
-   "headline": "The VanEck Semiconductor ETF (SMH) fell 2.3% on the week to $527.20, and 5.3% from Wednesday, as the AI trade wobbled into Big Tech earnings",
-   "why": "Microsoft, Alphabet and Amazon report this week; their AI capex guidance decides whether the chip selloff deepens.",
-   "source": {
-    "name": "Yahoo Finance",
-    "url": "https://finance.yahoo.com/quote/SMH/history/"
-   }
-  }
- ],
- "sports": [
-  {
-   "action": "BUY",
-   "label": "Canucks",
-   "market": "NHL: MIN @ VAN, Sun Oct 25 10 PM ET",
-   "slug": "nhl-min-van-2026-10-25",
-   "outcome": 1,
-   "entry": 0.355,
-   "event_date": "2026-10-25",
-   "why": "Value: DraftKings +150 makes Vancouver ~38.4% no-vig at home vs 35.5¢ here, the widest gap on today's board (+2.9 pts).",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nhl-min-van-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nhl/game/_/gameId/401892581",
-    "odds": [
-     150,
-     -180
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   }
-  },
-  {
-   "action": "BUY",
-   "label": "76ers",
-   "market": "NBA: DET @ PHI, Sun Oct 25 7:30 PM ET",
-   "slug": "nba-det-phi-2026-10-25",
-   "outcome": 1,
-   "entry": 0.535,
-   "event_date": "2026-10-25",
-   "why": "Value: DraftKings -142 makes Philadelphia ~56.3% no-vig at home vs 53.5¢ here, a 2.8-point discount on the favorite.",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nba-det-phi-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nba/game/_/gameId/401909866",
-    "odds": [
-     -142,
-     120
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   }
-  },
-  {
-   "action": "BUY",
-   "label": "Kings",
-   "market": "NBA: MEM @ SAC, Sun Oct 25 9 PM ET",
-   "slug": "nba-mem-sac-2026-10-25",
-   "outcome": 1,
-   "entry": 0.365,
-   "event_date": "2026-10-25",
-   "why": "Value: DraftKings +145 makes Sacramento ~39.1% no-vig at home vs 36.5¢ here (+2.6 pts).",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nba-mem-sac-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nba/game/_/gameId/401909867",
-    "odds": [
-     145,
-     -175
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   }
-  },
-  {
-   "action": "BUY",
-   "label": "Packers",
-   "market": "Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",
-   "slug": "nfl-gb-det-2026-10-25",
-   "outcome": 0,
-   "entry": 0.365,
-   "event_date": "2026-10-25",
-   "why": "Coin flip at a fair price: 36.5¢ vs ~37.8% no-vig at DraftKings (+154); we like it because the NY Post says GB is better than the market thinks.",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nfl-gb-det-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nfl/game/_/gameId/401873020",
-    "odds": [
-     154,
-     -185
-    ]
-   },
-   "consensus": {
-    "agree": [],
-    "dissent": []
-   }
-  },
-  {
-   "action": "BUY",
-   "label": "Falcons",
-   "market": "Week 7: SF @ ATL, Sun Oct 25 1 PM ET",
-   "slug": "nfl-sf-atl-2026-10-25",
-   "outcome": 1,
-   "entry": 0.425,
-   "event_date": "2026-10-25",
-   "why": "Coin flip at a fair price: 42.5¢ vs ~43.7% no-vig at DraftKings (+120); we like it because SF ruled out Bosa, Evans and Samuel.",
-   "source": {
-    "name": "Polymarket",
-    "url": "https://polymarket.com/event/nfl-sf-atl-2026-10-25"
-   },
-   "book": {
-    "name": "DraftKings",
-    "url": "https://www.espn.com/nfl/game/_/gameId/401873017",
-    "odds": [
-     120,
-     -142
-    ]
-   },
-   "consensus": {
-    "agree": [],
     "dissent": []
    }
   }

@@ -16,6 +16,29 @@ git add -A && git commit -m "Edition YYYY-MM-DD" && git push   # auth: credentia
 
 - **Sports value rule (pick quality).** For every candidate game, read the DraftKings moneyline (ESPN scoreboard JSON above, or another real published line) and compute the edge: no-vig sportsbook chance minus the Polymarket price, in points. Prefer plays where Polymarket is **≥ 2 pts under** the no-vig line (verdict 💰 Value); fill the 5 with those first. A play within 2 pts either way is a **coin flip at a fair price** (🪙): use one only when there aren't 5 value plays, and its `why` must say so plainly, e.g. "Coin flip at a fair price: Polymarket 41¢ vs 41.5% no-vig at DraftKings; we like it because …". Never pick a side that is ≥ 2 pts **over** the line (⚠️ Pricey). Always fill `book` with the line you used. Why: through Oct 20, 14 settled picks bought within 2 pts of the books went 8-6 but averaged −5.5% per $1; a winning record at fair prices still loses money.
 
+
+## Relaunch rules (from Oct 25, 2026: Max Edge Day 1) — these override older rules below
+Data behind them (beta, Oct 15–24, 42 settled sports picks, 16 settled 1-day stock calls):
+- Sports under 40¢ went **2-13, avg −64% per $1**, even with a +2–3 pt "value" edge (13 picks at +2–3 pts went 3-10, −46%). A 2-pt edge on a longshot is inside the noise of the line.
+- Coin flips (within 2 pts of the no-vig line) went 11-11, **−14%**.
+- 40–60¢ picks went 8-6, **+10%**; that's the only bucket that made money.
+- 1-day stock calls went 8-8, −0.3%: noise.
+
+**Sports (pick quality gate). A pick qualifies only if ALL hold:**
+1. Real DraftKings/ESPN (or other published) moneyline in `book`; no line, no pick.
+2. Edge = no-vig book chance − Polymarket price **≥ +2.5 pts**.
+3. Polymarket price **between 40¢ and 70¢** (no longshots, no heavy favorites).
+4. No futures.
+Publish **0–5** sports picks: only the ones that qualify. Fewer than 5 is fine; zero is fine ("No bets today: nothing cleared our bar" is a valid section). Never pad with coin flips.
+**Bold Bet of the Day:** set `"bold": true` on exactly one qualifying sports pick, the one with the highest edge (tie → closer to 50¢). Max Edge's daily video leads with it. If nothing qualifies, no Bold Bet that day (Max says so).
+
+**Stocks: single 3-month horizon.** `horizon` must be `"3 Month"`. No 1 Day / 1 Month / 1 Year calls.
+- Make **1–2 new calls per week** (not daily). On other days `finance` is `[]`; the site and email automatically show the open 3-month calls with live performance.
+- Each call: `action` BUY, `entry` (real quote), `target_price` (number, e.g. Yahoo `financialData.targetMeanPrice` or a named analyst target; say which in `target_note`), `spy_entry` (SPY price at the same moment as `entry`), and a one-line `why`.
+- Selection: favor an upcoming catalyst (earnings within the window), recent analyst target raises, reasonable valuation (forward P/E vs history/peers) and positive momentum (above 50-day average). Ignore daily noise and single-day moves.
+- Grading: exits at the first close on/after entry + 91 days. **Win = beat SPY** over the same window. build.py sets `ret` = stock return − SPY return and shows both.
+- The sports and stock records shown on the site/email count only picks dated ≥ 2026-10-25 (`LAUNCH` in build.py). Earlier picks live on `/beta-archive/`.
+
 ## Schema
 ```json
 {

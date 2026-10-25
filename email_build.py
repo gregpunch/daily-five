@@ -35,6 +35,7 @@ def fin(p,i):
       f'<div style="{F}font-size:11px;font-weight:700;color:{MUT};letter-spacing:1px;text-transform:uppercase;padding-bottom:6px;">#{i} · {E(p["horizon"])}</div>'
       f'{act(p["action"])} <span style="{M}font-size:22px;font-weight:700;color:{TXT};vertical-align:middle;">&nbsp;{E(p["label"])}</span>'
       f'<span style="{M}font-size:14px;color:{MUT};vertical-align:middle;">&nbsp;@ ${p["entry"]:,.2f}</span>'
+      +(f'<div style="{F}font-size:13px;font-weight:800;color:#ffb020;padding-top:8px;">Buy and hold 3 months · entry ${p["entry"]:,.2f} · target ${p["target_price"]:,.2f}</div>' if p.get("target_price") else '')+
       f'<div style="{F}font-size:14px;line-height:20px;color:#e6e9f3;padding-top:8px;">{E(p["why"])}</div>'
       f'<div style="{F}font-size:12px;padding-top:6px;"><a href="{E(p["source"]["url"])}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">{E(src(p["source"]["name"]))} →</a></div>'
       f'</td>{score(p)}</tr></table>')
@@ -125,7 +126,7 @@ def record(rec,date):
 def refer(rec,date):
     # "Forward this to a friend who trades": share links (X / text / email) to the subscribe form, UTM-tagged per channel
     q=urllib.parse.quote
-    hook='5 stock + 5 sports-market picks every morning with real entry prices, graded in public'
+    hook='Max Edge\'s Bold Bet, the sports plays that clear our bar, and 3-month stock calls vs the S&P 500, graded in public'
     r=(rec or {}).get('sports')
     if r: hook+=f" (sports {r['w']}-{r['l']} so far)"
     txt=f'The Daily Five: {hook}. Free 7 AM email:'
@@ -149,9 +150,9 @@ def preheader(ed,prev,rec):
     bits.append(ed['headline'])
     t=' \u00b7 '.join(bits)
     return t+'\u00a0\u200c'*40
-def render(ed,prev=None,rec=None):
+def render(ed,prev=None,rec=None,open3=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
-    order={'1 Day':0,'1 Month':1,'1 Year':2}
+    order={'3 Month':0,'1 Day':1,'1 Month':2,'1 Year':3}
     finl=sorted([p for p in ed['finance'] if keep(p)],key=lambda p:(order.get(p['horizon'],9),-(p.get('score') or 0)))
     hl=ed.get('top_call') or ed['headline']
     btn=(f'<table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td style="border-radius:999px;background:{UP};">'
@@ -168,12 +169,16 @@ def render(ed,prev=None,rec=None):
     if rc: rows.append('<tr><td style="padding:14px 0 0;"></td></tr>'); rows.append(rc)
     tr_=record(rec,ed['date'])
     if tr_: rows.append('<tr><td style="padding:10px 0 0;"></td></tr>'); rows.append(tr_)
-    rows.append(sec('💰','Money','Top ideas by horizon · BUY/SELL at publish price'))
+    rows.append(sec('💰','Money','Buy-and-hold 3-month calls · graded vs the S&P 500'))
     last=None
     for i,p in enumerate(finl,1):
         if p['horizon']!=last:
             rows.append(f'<tr><td style="padding:12px 24px 2px;{F}font-size:12px;font-weight:800;color:{AMB};letter-spacing:2px;text-transform:uppercase;">{E(p["horizon"])}</td></tr>'); last=p['horizon']
         rows.append(fin(p,i))
+    newids={id(p) for p in finl}; oc=[p for p in (open3 or []) if id(p) not in newids]
+    if oc or not finl:
+        li=''.join(f'<div style="padding:3px 0;">{E(p["action"])} <b>{E(p["label"])}</b> · entry ${p["entry"]:,.2f}'+(f' · target ${p["target_price"]:,.2f}' if p.get("target_price") else '')+(f' · {p["ret"]*100:+.1f}% vs S&amp;P' if p.get("ret") is not None else '')+'</div>' for p in oc)
+        rows.append(f'<tr><td style="padding:8px 24px;{F}font-size:14px;line-height:20px;color:{TXT};">'+('<b>Open 3-month calls</b>'+li if oc else 'No new stock call today. We make 1–2 buy-and-hold 3-month calls a week.')+'</td></tr>')
     rows.append(sec('🤖','AI','The 5 stories that matter today'))
     rows+= [ai(n,i) for i,n in enumerate(ed['ai'][:5],1)]
     rows.append(sec('🏆','Sports','Prediction markets · Polymarket & Kalshi'))
@@ -191,15 +196,15 @@ def render(ed,prev=None,rec=None):
       f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="{BG}" style="background:{BG};"><tr><td align="center" style="padding:16px 0;">'
       f'<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" bgcolor="{BG}" style="width:600px;max-width:600px;background:{BG};border:1px solid {LINE};border-radius:18px;overflow:hidden;">'
       + ''.join(rows) + '</table></td></tr></table></body></html>')
-def write(ed,prev=None,rec=None):
+def write(ed,prev=None,rec=None,open3=None):
     os.makedirs(os.path.join(ROOT,'email'),exist_ok=True); path=os.path.join(ROOT,'email',ed['date']+'.html')
-    open(path,'w').write(render(ed,prev,rec)); return path
+    open(path,'w').write(render(ed,prev,rec,open3)); return path
 if __name__=='__main__':
     sys.path.insert(0,ROOT); import build
     f=os.path.join(ROOT,'editions',(sys.argv[1] if len(sys.argv)>1 else sorted(os.listdir(os.path.join(ROOT,'editions')))[-1].replace('.json',''))+'.json')
     ed=json.load(open(f)); build.enrich(ed)
     eds=[json.load(open(x)) for x in sorted(glob.glob(os.path.join(ROOT,'editions','*.json')),reverse=True)]
-    prev=next((e for e in eds if e['date']<ed['date']),None)
+    prev=next((e for e in eds if e['date']<ed['date'] and e['date']>=build.LAUNCH),None)
     if prev: build.enrich(prev)
     hits=build.source_hits([e for e in [ed,prev] if e])
     for p in ed['finance']+ed['sports']: build.score_pick(p,hits)
