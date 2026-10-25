@@ -576,3 +576,13 @@
 1. Add a video sitemap (or video entries in sitemap.xml) once there are a few clips, so Google discovers each day's clip faster.
 2. Once the user approves posting clips, upload each one natively to X with a link to that day's edition (utm_source=x); native video gets far more reach than links.
 3. Give the clip a short on-page title ("Max Edge's 55-second rundown") and an autoplay-muted preview on mobile to lift watch rate.
+
+## 2026-10-25 · ~1:15 PM ET check-in (Sunday, relaunch Day 1)
+- **Shipped a video sitemap:** build.py now writes /video-sitemap.xml with one entry per Max Edge clip (landing page = that day's edition, thumbnail, title, description, content URL, duration from the MP4 header, publication date), and robots.txt lists it as a second Sitemap so Google finds it without a Search Console change. Pairs with this morning's VideoObject JSON-LD so each daily clip gets discovered fast for Google video results. Validated the generated XML locally (today's clip, 55 s).
+- Prices: dispatch loop PID 134583 alive (weekend game-night cadence from 12:30 PM); this push triggers another live rebuild.
+- Abacus: pv-all = 11 (flat since 10 AM), no signups.
+
+**Growth ideas**
+1. Ask the user to add video-sitemap.xml in Search Console (optional; robots.txt already points to it).
+2. Once clip posting is approved, native X uploads of each clip linking the edition with utm_source=x.
+3. Short on-page clip title plus muted autoplay preview on mobile to lift watch rate.

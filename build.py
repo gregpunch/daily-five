@@ -1733,7 +1733,17 @@ def main():
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
     w(INDEXNOW_KEY+'.txt',INDEXNOW_KEY)  # IndexNow key file (Bing, Yandex, Seznam, Naver); indexnow.py pings after deploy
-    w('robots.txt',f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
+    # video sitemap: one <url> per Max Edge clip, landing on that day's edition page (Google video results)
+    vids=''
+    for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4'))):
+        d=os.path.basename(f)[4:14]; dur=mp4_secs(f)
+        vids+=(f"<url><loc>{SITE}/{d}/</loc><video:video><video:thumbnail_loc>{SITE}/video/max-{d}.jpg</video:thumbnail_loc>"
+               f"<video:title>{E(f'Max Edge: The Daily Five picks for {d}')}</video:title>"
+               f"<video:description>{E(f'Max Edge, the AI-generated host of The Daily Five, runs through the {d} stock calls, sports-market plays and Bold Bet of the Day. Not financial advice.')}</video:description>"
+               f"<video:content_loc>{SITE}/video/max-{d}.mp4</video:content_loc>"+(f"<video:duration>{round(dur)}</video:duration>" if dur else '')+
+               f"<video:publication_date>{d}T07:00:00-04:00</video:publication_date><video:family_friendly>yes</video:family_friendly></video:video></url>")
+    w('video-sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">'+vids+'</urlset>')
+    w('robots.txt',f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\nSitemap: {SITE}/video-sitemap.xml\n")
     os.makedirs(os.path.join(OUT,'email'),exist_ok=True)
     for f in glob.glob(os.path.join(ROOT,'email','*.html')): shutil.copy(f,os.path.join(OUT,'email'))
     rfc=lambda d: datetime.datetime.fromisoformat(d+'T09:00:00-04:00').strftime('%a, %d %b %Y %H:%M:%S %z')
