@@ -706,13 +706,21 @@ HOWTO=("<section class='sbhero'><span class='kicker'>🧮 Methodology</span><h1 
  "<h2 class='h2s'>FAQ</h2><div class='faq'>"+''.join(f"<details class='fq'><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q,a in FAQS)+"</div>")
 
 def ed_desc(ed,nice,picks):
-    """Meta description for an edition; never leaves an empty slot when a day has no new stock call."""
+    """Meta description for an edition (~160 chars for search snippets). On days with no new stock call,
+    lead with the open 3-month calls and their live edge vs the S&P 500 so the snippet shows the record."""
     if picks: lead=f"{nice}: {picks}"
     else:
-        sp=", ".join(f"{p['action']} {p['label']}" for p in ed.get('sports',[])[:2])
-        lead=f"{nice}: {sp}" if sp else f"{nice}: {ed['headline']}"
-    d=f"{lead}, plus the top AI news and sports prediction-market plays."
-    if len(d)>300: d=lead[:240].rsplit(' ',1)[0].rstrip(',:;')+"…"
+        oc=open3(ed['date']) if ed['date']>=LAUNCH else []
+        def edge(p):
+            r=p.get('ret')
+            return f"{p['action']} {p['label']}"+(f" ({r*100:+.1f}% vs S&P)" if r is not None and p.get('spy_ret') is not None else "")
+        if oc: lead=f"{nice}: open 3-month calls "+", ".join(edge(p) for p in oc[:3])
+        else:
+            sp=", ".join(f"{p['action']} {p['label']}" for p in ed.get('sports',[])[:2])
+            lead=f"{nice}: {sp}" if sp else f"{nice}: {ed['headline']}"
+    tail=". Plus Max Edge's Bold Bet and sports market plays." if not picks and ed['date']>=LAUNCH else ", plus the top AI news and sports prediction-market plays."
+    d=lead+tail
+    if len(d)>165: d=lead if len(lead)<=165 else lead[:160].rsplit(' ',1)[0].rstrip(',:;(')+"…"
     return d
 
 def ogimage(ed,nice):
