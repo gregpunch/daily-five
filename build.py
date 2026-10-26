@@ -725,7 +725,15 @@ def ed_desc(ed,nice,picks):
 
 def ogimage(ed,nice):
     fin=ed['finance'][:4]
-    rowsvg=''.join(f'<g transform="translate(70,{330+i*62})"><rect width="128" height="48" rx="24" fill="{"#16c784" if p["action"]=="BUY" else "#ff4d5e"}"/><text x="64" y="33" text-anchor="middle" font-size="24" font-weight="800" fill="#06130c">{p["action"]}</text><text x="150" y="36" font-family="monospace" font-size="38" font-weight="700" fill="#fff">{E(p["label"])}</text><text x="380" y="36" font-family="monospace" font-size="30" fill="#9ba3ba">${p["entry"]:,.2f}</text><text x="640" y="36" font-size="24" fill="#c9cede">{E(p["horizon"])}</text></g>' for i,p in enumerate(fin))
+    oc=open3(ed['date'])[:4] if not fin and ed['date']>=LAUNCH else []
+    def vs(p):
+        r=p.get('ret')
+        if r is None or p.get('spy_ret') is None: return '<text x="640" y="36" font-size="24" fill="#c9cede">3 Month · open</text>'
+        return f'<text x="640" y="36" font-size="28" font-weight="800" fill="{"#16c784" if r>0 else "#ff4d5e" if r<0 else "#9ba3ba"}">{r*100:+.1f}% vs S&amp;P</text>'
+    def hz(p): return '<text x="640" y="36" font-size="24" fill="#c9cede">'+E(p["horizon"])+'</text>'
+    if oc:
+        fin=oc
+    rowsvg=('<text x="70" y="315" font-size="22" font-weight="700" fill="#9ba3ba" letter-spacing="2">OPEN 3-MONTH CALLS · LIVE</text>' if oc else '')+''.join(f'<g transform="translate(70,{(345 if oc else 330)+i*62})"><rect width="128" height="48" rx="24" fill="{"#16c784" if p["action"]=="BUY" else "#ff4d5e"}"/><text x="64" y="33" text-anchor="middle" font-size="24" font-weight="800" fill="#06130c">{p["action"]}</text><text x="150" y="36" font-family="monospace" font-size="38" font-weight="700" fill="#fff">{E(p["label"])}</text><text x="380" y="36" font-family="monospace" font-size="30" fill="#9ba3ba">${p["entry"]:,.2f}</text>{vs(p) if oc else hz(p)}</g>' for i,p in enumerate(fin))
     import textwrap
     hl=''.join(f'<text x="70" y="{240+i*40}" font-size="32" font-weight="700" fill="#fff">{E(l)}</text>' for i,l in enumerate(textwrap.wrap(ed['headline'],58)[:2]))
     logo=LOGO.replace('class="mark" ','').replace(' width="34" height="34"','').replace('<svg ','<svg width="40" height="40" ')
