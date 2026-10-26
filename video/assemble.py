@@ -66,6 +66,7 @@ for i,(s,f,t0,t1,words) in enumerate(segs):
         if not chunk: return
         a=off+chunk[0].start-t0; b=off+chunk[-1].end-t0+0.08
         txt=' '.join(w.word.strip() for w in chunk).replace('A.I.','AI')
+        txt=re.sub(r' (?=[.\-]\w)','',txt).replace('Phillies priced',"Philly's priced")
         ass.append(f"Dialogue: 0,{ts(max(a,off))},{ts(b)},Cap,,0,0,0,,{txt}")
     for w in ws:
         chunk.append(w)
