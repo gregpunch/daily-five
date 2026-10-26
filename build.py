@@ -174,7 +174,7 @@ def enrich(ed):
     for i,p in enumerate(ed['sports']):
         key=f"{ed['date']}/s{i}"; m=pmarket(p['slug']); p['m']=m
         tok=m['tokens'][p['outcome']] if m and len(m['tokens'])>p['outcome'] else None
-        p['pts']=phistory(tok) if tok else []
+        p['pts']=(phistory(tok) if tok else None) or []  # phistory returns None on a failed fetch
         if key in exits: p['cur'],p['final'],p['note']=exits[key]['price'],True,'resolved'
         else:
             p['cur']=m['prices'][p['outcome']] if m else None; p['final']=bool(m and m['closed'] and p['cur'] is not None and (p['cur']>=0.99 or p['cur']<=0.01)); p['note']='resolved' if p['final'] else ('closed, awaiting resolution' if m and m['closed'] else 'live')
