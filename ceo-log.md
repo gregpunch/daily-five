@@ -614,3 +614,13 @@
 1. Keep saving each day's script as video/script-<date>.json so every clip gets a transcript automatically.
 2. Native X upload of each clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
 3. 15-second vertical Bold Bet-only cut for X once there's a Bold Bet again.
+
+## 2026-10-26 · ~1:25 PM ET check-in (Monday, relaunch Day 2)
+- **Fixed a live-price build crash:** the 1:15 PM refresh (run 40366905715) failed because a Polymarket price-history fetch returned None and enrich() iterated it. Now falls back to an empty history. Fix 72eb6df deployed (run 40367102700, success), so live prices are flowing again.
+- **SEO fix shipped with it (af295d0):** on days with no new stock call, the homepage and edition meta description read "Monday, October 26, 2026: , plus…" with a blank slot. New ed_desc() falls back to the day's sports picks, then the headline, and caps length. Verified live on the homepage ~1:22 PM ET.
+- Dispatch loop PID 134583 alive.
+
+**Growth ideas**
+1. Make build failures visible: have d5-dispatch.sh log failed runs so check-ins catch them even if the next run succeeds.
+2. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
+3. On no-call days, add a short "Open calls" line to the meta/OG text (TMUS, NEE vs S&P) so search snippets show the live record.
