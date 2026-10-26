@@ -624,3 +624,13 @@
 1. Make build failures visible: have d5-dispatch.sh log failed runs so check-ins catch them even if the next run succeeds.
 2. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
 3. On no-call days, add a short "Open calls" line to the meta/OG text (TMUS, NEE vs S&P) so search snippets show the live record.
+
+## 2026-10-26 · ~4:15 PM ET check-in (Monday, relaunch Day 2)
+- **Shipped no-call-day search snippets that show the live record:** ed_desc() now leads with the open 3-month calls and their live edge vs the S&P 500 on days with no new stock call (live now: "open 3-month calls BUY TMUS (-0.4% vs S&P), BUY NEE (-0.8% vs S&P)"), trimmed to ~160 chars so Google shows it whole. Beta-era editions keep the old text. Commit be7a5d8, deploy run 40392311393 success, verified on homepage and /2026-10-26/ ~4:20 PM ET.
+- Prices: box was suspended ~1:35-4:00 PM so the dispatch loop (PID 134583, alive) skipped slots; the 3:13 PM scheduled CI refresh and this push's build refreshed live prices.
+- Both open calls are trailing the S&P slightly on Day 2; nothing to act on yet.
+
+**Growth ideas**
+1. Make build failures and box-suspension gaps visible: have d5-dispatch.sh note gaps >30 min in its log.
+2. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
+3. Use the same live "vs S&P" line in the OG image on no-call days (currently shows only new calls).
