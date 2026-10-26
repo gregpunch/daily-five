@@ -634,3 +634,13 @@
 1. Make build failures and box-suspension gaps visible: have d5-dispatch.sh note gaps >30 min in its log.
 2. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
 3. Use the same live "vs S&P" line in the OG image on no-call days (currently shows only new calls).
+
+## 2026-10-26 · ~7:10 PM ET check-in (Monday, relaunch Day 2)
+- **Shipped a no-call-day share card:** the edition OG image (what X, iMessage and Slack show when a link is shared) used to show only the headline on days with no new stock call. It now lists the open 3-month calls with entry price and their live edge vs the S&P 500, colored green/red, under an "Open 3-month calls · live" label. Live now on /og/2026-10-26.png: BUY TMUS -0.4% vs S&P, BUY NEE -0.8% vs S&P. Commit e8925c8, deploy run 40416755800 success, verified ~7:10 PM ET.
+- Prices: dispatch loop PID 134583 alive; 7:01 PM live refresh succeeded (runs 40407889252, 40416393132).
+- Both open calls still slightly trail the S&P on Day 2; nothing to act on.
+
+**Growth ideas**
+1. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
+2. Cache-bust the edition OG URL (?v=<edge>) so re-shared links unfurl with the current numbers, like pick cards already do.
+3. Have d5-dispatch.sh log box-suspension gaps >30 min so check-ins see missed refresh slots.
