@@ -705,6 +705,16 @@ HOWTO=("<section class='sbhero'><span class='kicker'>🧮 Methodology</span><h1 
  "<p class='sub'>Scores recompute every time live prices refresh. A high score isn't a guarantee. Not financial or betting advice.</p>"
  "<h2 class='h2s'>FAQ</h2><div class='faq'>"+''.join(f"<details class='fq'><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q,a in FAQS)+"</div>")
 
+def ed_desc(ed,nice,picks):
+    """Meta description for an edition; never leaves an empty slot when a day has no new stock call."""
+    if picks: lead=f"{nice}: {picks}"
+    else:
+        sp=", ".join(f"{p['action']} {p['label']}" for p in ed.get('sports',[])[:2])
+        lead=f"{nice}: {sp}" if sp else f"{nice}: {ed['headline']}"
+    d=f"{lead}, plus the top AI news and sports prediction-market plays."
+    if len(d)>300: d=lead[:240].rsplit(' ',1)[0].rstrip(',:;')+"…"
+    return d
+
 def ogimage(ed,nice):
     fin=ed['finance'][:4]
     rowsvg=''.join(f'<g transform="translate(70,{330+i*62})"><rect width="128" height="48" rx="24" fill="{"#16c784" if p["action"]=="BUY" else "#ff4d5e"}"/><text x="64" y="33" text-anchor="middle" font-size="24" font-weight="800" fill="#06130c">{p["action"]}</text><text x="150" y="36" font-family="monospace" font-size="38" font-weight="700" fill="#fff">{E(p["label"])}</text><text x="380" y="36" font-family="monospace" font-size="30" fill="#9ba3ba">${p["entry"]:,.2f}</text><text x="640" y="36" font-size="24" fill="#c9cede">{E(p["horizon"])}</text></g>' for i,p in enumerate(fin))
@@ -1737,7 +1747,7 @@ def main():
         d=ed['date']; dd=datetime.date.fromisoformat(d); nice=dd.strftime('%A, %B %-d, %Y')
         picks=", ".join(f"{p['action']} {p['label']}" for p in ed['finance'][:4])
         title=f"{ed['headline']} | Daily Five, {dd.strftime('%b %-d')}"
-        desc=f"{nice}: {picks}, plus the top AI news and sports prediction-market plays."
+        desc=ed_desc(ed,nice,picks)
         sch={"@context":"https://schema.org","@type":"NewsArticle","headline":ed['headline'][:110],"datePublished":d,"dateModified":d,"description":desc,"publisher":{"@type":"Organization","name":BRAND,"url":SITE,"logo":{"@type":"ImageObject","url":SITE+"/favicon.svg"}},"author":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/{d}/"}
         og=ogimage(ed,nice); sch['image']=SITE+og
         if i==0: OGIMG['v']=og
