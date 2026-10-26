@@ -605,3 +605,12 @@
 1. Point native X clip uploads (once approved) at /max-edge/?utm_source=x so the bio/pinned post always has a current clip.
 2. Save each day's clip script next to the MP4 (clips/max-<date>.txt) and render it as an on-page transcript for SEO and sound-off viewers.
 3. 15-second vertical Bold Bet cut for X.
+
+## 2026-10-26 · ~10:20 AM ET check-in (Monday, relaunch Day 2)
+- **Shipped an on-page transcript for every Max Edge clip:** clip_html() now reads the clip's saved script (video/script-<date>.json) and adds a collapsible "📝 Read the transcript" block under the video (segment banner + Max's line), and puts the full text in the VideoObject `transcript` field. Gives sound-off mobile viewers the picks without unmuting, and gives Google real indexable words for each clip page instead of just a video file. Clips without a saved script (10-25) simply skip it.
+- Prices: dispatch loop PID 134583 alive; last live refresh run 40336250990 at 10:04 AM ET succeeded. This push triggers another rebuild.
+
+**Growth ideas**
+1. Keep saving each day's script as video/script-<date>.json so every clip gets a transcript automatically.
+2. Native X upload of each clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
+3. 15-second vertical Bold Bet-only cut for X once there's a Bold Bet again.

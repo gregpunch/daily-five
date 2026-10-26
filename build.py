@@ -439,6 +439,11 @@ def mp4_secs(path):
         else: ts,du=struct.unpack('>II',b[i+16:i+24])
         return du/ts if ts else None
     except Exception: return None
+def clip_transcript(d):
+    """[(banner, line)] from the clip's script (video/script-<d>.json), or [] if none was saved."""
+    f=os.path.join(ROOT,'video',f'script-{d}.json')
+    try: return [(g.get('banner',''),g['line']) for g in json.load(open(f)).get('segments',[]) if g.get('line')]
+    except Exception: return []
 def clip_html(d):
     v=os.path.join(ROOT,'clips',f'max-{d}.mp4')
     if not os.path.exists(v): return ''
@@ -452,6 +457,8 @@ def clip_html(d):
         'thumbnailUrl':[f'{SITE}/video/max-{d}.jpg'],'uploadDate':f'{d}T07:00:00-04:00','contentUrl':f'{SITE}/video/max-{d}.mp4',
         'publisher':{'@type':'Organization','name':'The Daily Five','url':SITE}}
     if iso: vo['duration']=iso
+    tr=clip_transcript(d)
+    if tr: vo['transcript']=' '.join(l for _,l in tr)
     ld='<script type="application/ld+json">'+json.dumps(vo).replace('</','<\\/')+'</script>'
     secs=f'{round(dur)}-second ' if dur else ''
     # muted preview autoplays only while the clip is on screen; one tap turns sound on and restarts it
@@ -461,7 +468,10 @@ def clip_html(d):
     return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><h2 style="font-size:1.05em;margin:0 0 8px">🎙️ Max Edge\'s {secs}rundown: today\'s calls + the Bold Bet</h2>'
             f'<div style="position:relative"><video id="mxv" controls playsinline muted loop preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000;display:block" src="{BASE}/video/max-{d}.mp4"></video>'
             f'<button type="button" id="mxs" style="position:absolute;top:10px;right:10px;border:0;border-radius:999px;padding:6px 12px;font-weight:700;background:rgba(0,0,0,.7);color:#fff;cursor:pointer">🔊 Tap for sound</button></div>'
-            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+. <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption></figure>'+js)
+            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+. <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption>'
+            +(('<details class="mxtr" style="text-align:left;margin-top:8px;font-size:.9em"><summary style="cursor:pointer;font-weight:700">📝 Read the transcript (sound off? no problem)</summary>'
+               +''.join(f'<p style="margin:8px 0"><b style="font-size:.8em;letter-spacing:.04em;opacity:.75">{E(b)}</b><br>{E(l)}</p>' for b,l in tr)+'</details>') if tr else '')
+            +'</figure>'+js)
 def max_edge_hub(eds):
     """/max-edge/: every Max Edge daily clip in one place (latest playable on top, past clips linked to their editions)."""
     P='/max-edge/'; byd={e['date']:e for e in eds}
