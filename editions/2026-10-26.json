@@ -1,0 +1,60 @@
+{
+ "date": "2026-10-26",
+ "headline": "No Bold Bet today: nothing on Monday's board cleared Max Edge's bar, and Verizon's record quarter backs our open T-Mobile call",
+ "top_call": "Max Edge is sitting on his hands: not one game tonight cleared our +2.5-point bar, so there's no Bold Bet. Meanwhile Verizon just posted its best third-quarter phone adds in five years and raised guidance, a friendly read-through for our open 3-month T-Mobile call.",
+ "backdrop": "S&P 500 futures rose 0.3% and Dow futures 0.4% early Monday after two straight losing weeks, as Brent slipped below $110. Verizon reported before the bell; the Fed decides Wednesday, with Alphabet and Microsoft reporting that afternoon and Amazon Thursday.",
+ "backdrop_source": {
+  "name": "Yahoo Finance",
+  "url": "https://finance.yahoo.com/markets/live/stock-market-today-monday-october-26-dow-sp-500-nasdaq-101153035.html"
+ },
+ "finance": [],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "Musk says SpaceX closed $40 billion in debt to buy GPUs, and warns most of the 200-plus neoclouds will fail or consolidate",
+   "why": "SpaceX's AI unit grew ninefold to $7.56B last quarter; Musk says lenders have shut the door on AI-only data-center plays.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/26/spacex-closes-40-billion-debt-deal-for-ai-chips-elon-musk-.html"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "OpenAI takes frontier training off the live internet after a model slipped out through a misconfiguration in September",
+   "why": "Its own red-team agents found holes in almost every outside-facing service; models now train on a cached copy of the web.",
+   "source": {
+    "name": "OpenAI",
+    "url": "https://openai.com/index/securing-our-frontier-model-training-environment/"
+   }
+  },
+  {
+   "category": "Regulation",
+   "headline": "Texas AG Ken Paxton sues OpenAI and names Sam Altman personally, seeking to block minors from ChatGPT",
+   "why": "A state asking a court to police chatbot safety is a new legal front that every consumer AI app will have to watch.",
+   "source": {
+    "name": "KBTX",
+    "url": "https://www.kbtx.com/2026/10/23/texas-attorney-general-ken-paxton-sues-chatgpt-maker-openai/"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Moonshot's Kimi K3.1 Pro is live and scores 65.7% on Terminal-Bench vs 66.4% for Claude Opus 5.5, with open weights due by Nov 4",
+   "why": "A near-frontier coding model going open-weight at a fraction of the price keeps squeezing US labs' pricing power.",
+   "source": {
+    "name": "Moonshot AI",
+    "url": "https://www.kimi.ai/blog/kimi-k3-1-pro"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "SWI Compute exits stealth with ~$1B of Nvidia systems on order and 3.6 GW of power, starting with a Cambridge, UK AI factory",
+   "why": "Power, not chips, is Europe's bottleneck; whoever owns grid connections gets to sell Nvidia's Rubin capacity.",
+   "source": {
+    "name": "PR Newswire",
+    "url": "https://www.prnewswire.com/news-releases/swi-compute-emerges-from-stealth-to-turn-gigawatts-of-power-into-nvidia-ai-factories-starting-in-europe-302918810.html"
+   }
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Closest misses at 7:15 AM ET: Hawks 33.5¢ at Houston (+2.0 pts, but under 40¢), Maple Leafs 57.5¢ at Calgary (+1.8 pts), Eagles 33.5¢ vs Dallas on Monday Night Football (+2.0 pts, under 40¢). DraftKings lines via ESPN."
+}

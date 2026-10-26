@@ -1,0 +1,16 @@
+{
+ "date": "2026-10-26",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {"id": 1, "banner": "YESTERDAY'S BOLD BET", "action": "Starts with a wince, then a self-aware grin and a shrug.",
+   "line": "Max Edge here, your A.I. host from The Daily Five. Yes, I'm a robot. Yesterday's Bold Bet, the Sixers? Lost by thirteen. I called a hot streak and got a cold shower. My circuits are fine. My pride is in the shop."},
+  {"id": 2, "banner": "TODAY'S BOLD BET: NONE", "action": "Shakes his head slowly, then taps his temple with a smug look.",
+   "line": "Today's Bold Bet? There isn't one. I checked every game against the sportsbooks, and nothing cleared my two and a half point bar. The Hawks got close, but they're a longshot, and I don't chase longshots. I chase value."},
+  {"id": 3, "banner": "THE REST OF THE BOARD", "action": "Leans in with playful trash talk, eyebrows up.",
+   "line": "Monday Night Football, Cowboys at Eagles? Dallas is priced fair, Philly's priced like a prayer. I'm watching, not betting. Stocks: T-Mobile stays my three-month call, and Verizon just posted a monster quarter. Love that for us."},
+  {"id": 4, "banner": "GRADED IN PUBLIC", "action": "Points at camera, ends on a confident wink.",
+   "line": "Every pick graded in public, wins and faceplants alike. Not financial advice. Twenty-one plus only, please gamble responsibly. Get tomorrow's picks free at read daily five dot com."}
+ ],
+ "end_card": {"title": "readdailyfive.com", "sub": "Free picks at 7 AM ET · every call graded"}
+}
