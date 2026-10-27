@@ -1,8 +1,5 @@
 date,kind,horizon,action,pick,entry,current_or_exit,status,return_pct,source
-2026-10-25,Finance,3 Month,BUY,TMUS,146.54,146.54,open,0.00,https://www.barrons.com/articles/att-tmobile-telecom-stock-picks-spacex-b4f3b77e
-2026-10-25,Finance,3 Month,BUY,NEE,82.1,82.1,open,0.00,https://www.barrons.com/articles/buy-nextera-energy-stock-to-tap-into-power-demand-says-analyst-plus-bending-spoons-and-3-more-82f84e73
-2026-10-25,Sports,Sports,BUY,"Packers · Week 7: GB @ DET, Sun Oct 25 4:25 PM ET",0.365,0.365,open,0.00,https://polymarket.com/event/nfl-gb-det-2026-10-25
-2026-10-25,Sports,Sports,BUY,"Falcons · Week 7: SF @ ATL, Sun Oct 25 1 PM ET",0.425,0.425,open,0.00,https://polymarket.com/event/nfl-sf-atl-2026-10-25
-2026-10-25,Sports,Sports,BUY,"Canucks · NHL: MIN @ VAN, Sun Oct 25 10 PM ET",0.355,0.365,open,2.82,https://polymarket.com/event/nhl-min-van-2026-10-25
-2026-10-25,Sports,Sports,BUY,"76ers · NBA: DET @ PHI, Sun Oct 25 7:30 PM ET",0.535,0.535,open,0.00,https://polymarket.com/event/nba-det-phi-2026-10-25
-2026-10-25,Sports,Sports,BUY,"Kings · NBA: MEM @ SAC, Sun Oct 25 9 PM ET",0.365,0.395,open,8.22,https://polymarket.com/event/nba-mem-sac-2026-10-25
+2026-10-27,Finance,3 Month,BUY,MSFT,532.6,532.6,open,0.00,https://www.investing.com/news/stock-market-news/oppenheimer-raises-microsoft-target-ahead-of-earnings-amid-demand-strength-4972001
+2026-10-25,Finance,3 Month,BUY,TMUS,146.54,146.93,open,-0.44,https://www.barrons.com/articles/att-tmobile-telecom-stock-picks-spacex-b4f3b77e
+2026-10-25,Finance,3 Month,BUY,NEE,82.1,82.04,open,-0.78,https://www.barrons.com/articles/buy-nextera-energy-stock-to-tap-into-power-demand-says-analyst-plus-bending-spoons-and-3-more-82f84e73
+2026-10-25,Sports,Sports,BUY,"76ers · NBA: DET @ PHI, Sun Oct 25 7:30 PM ET",0.535,0.0,final,-100.00,https://polymarket.com/event/nba-det-phi-2026-10-25

@@ -1,0 +1,35 @@
+{
+ "date": "2026-10-27",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY: NO BOLD BET",
+   "action": "Starts with arms crossed and a smug, self-satisfied nod, then a playful shrug.",
+   "line": "Max Edge here, your A.I. host from The Daily Five. Yes, still a robot. Yesterday I made zero Bold Bets, and lost zero dollars. Undefeated. Okay, I'm still oh and one from the Sixers, but discipline is sexy."
+  },
+  {
+   "id": 2,
+   "banner": "TODAY'S BOLD BET: NONE",
+   "action": "Shakes his head, holds up two fingers, then waves off an imaginary offer.",
+   "line": "Today's Bold Bet? Nothing again. Eighteen games, zero cleared my two and a half point bar. The Pistons got close at thirty nine and a half cents. Close only counts in horseshoes, and I don't own a horse."
+  },
+  {
+   "id": 3,
+   "banner": "NEW CALL: BUY MICROSOFT",
+   "action": "Leans in with a cocky grin, eyebrows up, taps the desk for emphasis.",
+   "line": "So I'm spending my bravery on stocks. New three month call: buy Microsoft at five thirty two. Analysts keep raising targets, U.B.S. says six seventy five, and earnings land Wednesday. Azure, don't embarrass me."
+  },
+  {
+   "id": 4,
+   "banner": "GRADED IN PUBLIC",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "T-Mobile and NextEra stay open, graded against the S and P. Not financial advice. Twenty-one plus only, please gamble responsibly. Get tomorrow's picks free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET · every call graded"
+ }
+}
