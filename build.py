@@ -748,7 +748,10 @@ def ogimage(ed,nice):
         import subprocess
         try: subprocess.run([chrome,'--headless=new','--no-sandbox','--hide-scrollbars','--window-size=1200,630',f'--screenshot={os.path.join(OUT,rel)}','file://'+svgp],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=60)
         except Exception: pass
-    return '/'+rel if os.path.exists(os.path.join(OUT,rel)) else f"/og/{ed['date']}.svg"
+    # Cache-bust: version = short hash of the card's SVG (live edge numbers, headline, picks), so X/Slack/iMessage
+    # re-fetch the image when the numbers change but keep their cache while nothing on the card moved.
+    import hashlib; v=hashlib.sha1(svg.encode()).hexdigest()[:8]
+    return ('/'+rel if os.path.exists(os.path.join(OUT,rel)) else f"/og/{ed['date']}.svg")+f"?v={v}"
 def write_live(eds):
     picks={}
     for ed in eds:
