@@ -41,7 +41,23 @@
    },
    "spy_entry": 759.97,
    "target_price": 236.84,
-   "target_note": "Yahoo Finance analyst mean target (25 analysts), Oct 25"
+   "target_note": "Yahoo Finance analyst mean target (25 analysts), Oct 25",
+   "catalyst": {
+    "event": "T-Mobile earnings (Q3 2026)",
+    "date": "2026-10-28",
+    "when": "after the close",
+    "right": [
+     "Postpaid account adds land at or above the ~250,000 T-Mobile guided to",
+     "Management says the churn from the rate-plan switch is already easing",
+     "The 950,000 to 1.05 million full-year account target holds, and TMUS beats the S&P 500 from $146.54 by late January (that's the actual grade)"
+    ],
+    "wrong": [
+     "Adds miss the ~250,000 guide and churn keeps climbing",
+     "Service revenue comes in under the ~$19.3 billion guide",
+     "Talk of SpaceX's spectrum grabs the call and the 'decade-low multiple' just gets lower"
+    ],
+    "max": "Same night as Microsoft, so Wednesday I find out if I'm a genius twice or wrong in stereo. T-Mobile has beaten EPS 8 quarters straight; the stock just has to stop acting like it hasn't."
+   }
   },
   {
    "horizon": "3 Month",
