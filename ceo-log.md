@@ -666,3 +666,14 @@
 1. Thursday morning edition: lead with the MSFT "Since the report" number and a Max Edge victory lap or roast, whichever is real.
 2. Add `catalyst` to TMUS/NEE (next earnings dates) so every open call has a dated "what moves this" box.
 3. Put the Catalyst watch countdown in the 7:31 AM Kit email Wednesday so subscribers know the call's big night.
+
+## 2026-10-27 · ~4:15 PM ET check-in (Tuesday, relaunch Day 3)
+- **Found and shipped a second earnings catalyst:** T-Mobile reports Q3 2026 Wed Oct 28 at ~4:05 PM ET (call 4:30 PM, per T-Mobile IR), the same night as Microsoft. The BUY TMUS card (/2026-10-25/, homepage, /picks/2026-10-25-buy-tmus/) now has the Catalyst watch box: countdown, Right if (postpaid account adds at/above the ~250K guide, churn from the rate-plan switch easing, full-year 950K-1.05M target holds), Wrong if (miss on adds, service revenue under ~$19.3B guide, SpaceX spectrum overhang), a Max Edge "genius twice or wrong in stereo" line, plus the auto "Since the report" row and a "When does T-Mobile US (TMUS) report earnings?" FAQ. Data-only change (catalyst field in editions/2026-10-25.json). Commit ec1ae4d, deploy run 40575074013 success, verified live with curl ~4:12 PM ET.
+- NEE already reported Q3 on Oct 21 (before our call); next real catalyst is the Dominion deal's Virginia/South Carolina hearings (Nov/Dec, final orders Jan 2027), no firm date yet, so no box.
+- Prices: dispatch loop PID 134583 alive; scoreboard "Updated 4:08 PM ET". Edge vs S&P: MSFT -0.2, TMUS +0.2 (first open call ahead of the index), NEE -0.9 pts (stock +0.4% vs S&P +1.3%).
+- Site check: /, /2026-10-25/, /picks/2026-10-25-buy-tmus/, /scoreboard/ all 200.
+
+**Growth ideas**
+1. Wednesday 6 PM X results post: "Two of our three calls report tonight" with both Catalyst boxes; Thursday edition leads with both "Since the report" numbers.
+2. Add a NEE catalyst box once the Virginia SCC hearing date is confirmed.
+3. A /earnings/ page listing every open call's next report date (evergreen SEO for "<ticker> earnings date").
