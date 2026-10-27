@@ -44,7 +44,23 @@
    },
    "spy_entry": 765.37,
    "target_price": 603.43,
-   "target_note": "Yahoo Finance analyst mean target (53 analysts), Oct 27"
+   "target_note": "Yahoo Finance analyst mean target (53 analysts), Oct 27",
+   "catalyst": {
+    "event": "Microsoft earnings (fiscal Q1 2027)",
+    "date": "2026-10-28",
+    "when": "after the close",
+    "right": [
+     "Azure growth at or above the ~47% the Street is looking for",
+     "Capex guide comes with the revenue to pay for it",
+     "MSFT beats the S&P 500 from $532.60 by late January (that's the actual grade)"
+    ],
+    "wrong": [
+     "Azure lands under ~47% and the AI-demand story wobbles",
+     "A capex shock with no matching revenue",
+     "A drop bigger than the ~4.6% move options are pricing"
+    ],
+    "max": "Wednesday night either makes me look like a genius or gives me a very long Thursday. One print doesn't settle a 3-month call, but it sure sets the mood."
+   }
   }
  ],
  "ai": [

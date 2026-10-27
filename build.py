@@ -324,11 +324,34 @@ def share(p):
     u=f"{SITE}/picks/{p['id']}/"
     href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
     return f'<a class="shr" href="{E(href)}" target="_blank" rel="noopener" data-share-id="{p["id"]}" data-share-what="{E(what)}" data-share-url="{E(u)}" aria-label="Share {E(what)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>Share</a>'
+def catalyst_box(p):
+    """Earnings/catalyst watch on an open stock call: date countdown, what makes the call right or wrong, and once the
+    report is out, the real post-report move vs the S&P 500 (from the report-day close), so results can be posted fast."""
+    c=p.get('catalyst')
+    if not c or p.get('final'): return ''
+    d=datetime.date.fromisoformat(c['date']); n=(d-TODAY).days; day=d.strftime('%a %b %-d'); wh=c.get('when','')
+    sym=p['symbol'].upper(); after='after' in wh
+    post=''
+    if n>0: cd='tomorrow' if n==1 else f'in {n} days'; st=f'{day} {wh} \u00b7 {cd}'
+    elif n==0: st=f'Today {wh}' if not (after and NOW.time()>=datetime.time(16,0)) else f'Out now ({day} {wh}) \u00b7 the reaction trades at tomorrow\'s open'
+    else:
+        st=f'Reported {day} {wh}'
+        base=d if after else d-datetime.timedelta(days=1)
+        pc,_=stock_close_on(sym,base); sc,_=stock_close_on('SPY',base)
+        cur=p.get('cur'); spy=(today_open_stock('SPY') or {}).get('last')
+        if pc and sc and cur and spy:
+            m=(cur-pc)/pc; sm=(spy-sc)/sc; e=m-sm; cls='up' if e>=0 else 'dn'
+            post=(f'<p class="cxpost {cls}"><span class="cxl">Since the report:</span> {sym} ${pc:,.2f} \u2192 ${cur:,.2f} ({m*100:+.1f}%) vs the S&amp;P {sm*100:+.1f}% '
+                  f'= <b>{e*100:+.1f} pts</b>. The 3-month grade is still the one that counts.</p>')
+    li=lambda xs: ''.join(f'<li>{E(x)}</li>' for x in xs)
+    return (f'<section class="cx"><div class="cxh"><span class="cxk">\U0001F4C5 Catalyst watch</span><b>{E(c["event"])}</b><span class="cxd">{E(st)}</span></div>{post}'
+            f'<div class="cxg"><div class="cxr"><h4>\u2705 Right if</h4><ul>{li(c.get("right",[]))}</ul></div><div class="cxw"><h4>\u274C Wrong if</h4><ul>{li(c.get("wrong",[]))}</ul></div></div>'
+            +(f'<p class="cxm"><b>Max Edge:</b> {E(c["max"])}</p>' if c.get('max') else '')+'</section>')
 def fin_card(p,rank):
     a=p['action'].lower()
     return f"""<article class="card fc {a}"><div class="ctop">{f'<span class="rank">#{rank}</span>' if rank else ''}<span class="hz">⏱ {E(p['horizon'])}</span>{badge(p)}</div>
 <div class="crow"><span class="act {a}">{p['action']}</span><a class="tk" href="{BASE}/ticker/{p['tslug']}/">{E(p['label'])}</a>{spark(p.get('pts'),110,32)}</div>{livebox(p)}{breakdown(p)}
-{f'<p class="why"><b>Buy and hold 3 months</b> · entry ${p["entry"]:,.2f} · target ${p["target_price"]:,.2f} · graded vs the S&amp;P 500 at {(datetime.date.fromisoformat(p["id"][:10])+datetime.timedelta(days=91)).strftime("%b %-d")}</p>' if p['horizon']=='3 Month' and p.get("target_price") else ''}<p class="why"><b>Why {p['action']}:</b> {E(p['why'])}</p><p class="risk">⚠ {E(p['risk'])}</p><div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
+{f'<p class="why"><b>Buy and hold 3 months</b> · entry ${p["entry"]:,.2f} · target ${p["target_price"]:,.2f} · graded vs the S&amp;P 500 at {(datetime.date.fromisoformat(p["id"][:10])+datetime.timedelta(days=91)).strftime("%b %-d")}</p>' if p['horizon']=='3 Month' and p.get("target_price") else ''}<p class="why"><b>Why {p['action']}:</b> {E(p['why'])}</p><p class="risk">⚠ {E(p['risk'])}</p>{catalyst_box(p)}<div class="cfoot"><a class="src" href="{E(p['source']['url'])}" rel="nofollow noopener" target="_blank">{E(p['source']['name'])} ↗</a><span class="cfr">{share(p)}<a class="more" href="{BASE}/picks/{p['id']}/">Details →</a></span></div></article>"""
 def sp_card(p,rank):
     m=p.get('m'); bars=''
     if m:
@@ -877,6 +900,11 @@ def move_chart(p,ed,h):
         nmc=cname(sym) or sym
         faq.append((f"Is {nmc} ({sym}) stock a {p['action'].lower()}?",f"The Daily Five's {p['horizon']} call from {dd} is {p['action']} {sym} at {fmt(ent)}. Why: {p['why']} Not financial advice."))
         faq.append((f"How has the {sym} {p['action']} call done?",txt))
+        c=p.get('catalyst')
+        if c and not p.get('final'):
+            cd=datetime.date.fromisoformat(c['date'])
+            faq.append((f"When does {nmc} ({sym}) report earnings?" if 'earnings' in c['event'].lower() else f"What's the next catalyst for {sym}?",
+                        f"{c['event']}: {cd.strftime('%A, %B %-d, %Y')} {c.get('when','')}. The call looks right if: {'; '.join(c.get('right',[]))}. It looks wrong if: {'; '.join(c.get('wrong',[]))}."))
     svg=''
     if len(ys)>=2:
         W,H,L,R,T,B=520,220,6,112,16,28; ts=[t for t,_ in pts]; x0,x1=ts[0],ts[-1]; span=(x1-x0) or 1; rng=(hi-lo) or (abs(hi)*.02 or .01)
