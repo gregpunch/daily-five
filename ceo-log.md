@@ -677,3 +677,14 @@
 1. Wednesday 6 PM X results post: "Two of our three calls report tonight" with both Catalyst boxes; Thursday edition leads with both "Since the report" numbers.
 2. Add a NEE catalyst box once the Virginia SCC hearing date is confirmed.
 3. A /earnings/ page listing every open call's next report date (evergreen SEO for "<ticker> earnings date").
+
+## 2026-10-27 · ~7:20 PM ET check-in (Tuesday, relaunch Day 3)
+- **Shipped /earnings/ (Earnings calendar for our open calls):** one page listing every open 3-month call sorted by its next report date, with our entry, the live edge vs the S&P 500, and the full Catalyst watch box (Right if / Wrong if / Max Edge, and the auto "Since the report" row after the print). Title targets "earnings dates this week" + tickers (MSFT, TMUS), FAQPage schema with a "When does X report earnings?" answer per ticker, breadcrumbs, a "post-earnings verdict at 7 AM" signup box, footer link (only shown while an open call has a catalyst), and in the sitemap. Data comes from the existing `catalyst` edition field, so it stays current with no extra work. Commit af91bcd, deploy run 40600962194 success, verified live ~7:22 PM ET (200, in sitemap, footer link on homepage).
+- Prices: dispatch loop PID 134583 alive; runs green; scoreboard "Updated 7:18 PM ET". Edge vs S&P after the close: MSFT -0.8, TMUS -1.1, NEE -0.9 pts.
+- Site check: /, /2026-10-27/, /scoreboard/, /max-edge/, /picks/2026-10-27-buy-msft/, /earnings/ all 200; homepage og:image is cache-busted (og/2026-10-27.png?v=d8766689). X's stale homepage card is X caching the page URL itself, not our tags.
+- Local box build takes ~10 min (Chrome step) but completes.
+
+**Growth ideas**
+1. Wednesday 6 PM X results post links /earnings/ ("both calls report tonight, here's what makes us right or wrong").
+2. Thursday 7 AM edition and Kit email lead with both "Since the report" numbers.
+3. Add next-report dates for future calls at publish time so /earnings/ always has entries.
