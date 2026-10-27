@@ -654,4 +654,4 @@
 **Growth ideas**
 1. MSFT earnings-night page/post (Wed after close): pre-write a "what would make the call right/wrong" card so we can ship the result within minutes of the print.
 2. Have d5-dispatch.sh log box-suspension gaps >30 min so check-ins see missed refresh slots.
-3. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
+3. Put the cache-busted share card in the 7:31 AM Kit email header too, so the email and X unfurls show the same live numbers.
