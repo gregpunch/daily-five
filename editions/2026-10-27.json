@@ -1,0 +1,99 @@
+{
+ "date": "2026-10-27",
+ "headline": "New 3-month buy: Microsoft at $532.60 into Wednesday's earnings, as seven-plus analysts hike targets; no Bold Bet again because nothing on Tuesday's board cleared Max Edge's bar",
+ "top_call": "Buy Microsoft for the next 3 months. Analysts are tripping over each other to raise targets into Wednesday's report (UBS $675, Jefferies $650, Oppenheimer and Scotiabank $625), the stock sits above its 50-day, and it trades at about 22.5x forward earnings. Graded against the S&P 500, like everything else.",
+ "backdrop": "S&P 500 futures edged up 0.1% Tuesday after Monday's 0.7% gain on Anthropic IPO buzz, with Brent near $110-116 as the Fed opens a two-day meeting. Microsoft and Alphabet report Wednesday after the bell, Amazon Thursday.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/26/stock-market-today-live-updates.html"
+ },
+ "finance": [
+  {
+   "horizon": "3 Month",
+   "action": "BUY",
+   "label": "MSFT",
+   "symbol": "MSFT",
+   "entry": 532.6,
+   "entry_note": "Yahoo Finance, Mon Oct 26 close",
+   "why": "Seven-plus target hikes into Wednesday's report (UBS $675); Azure seen growing ~47% at ~22.5x forward earnings.",
+   "risk": "Expectations are high after a big run; options price a ~4.6% earnings move, and any Azure miss or capex shock can hit it.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/stock-market-news/oppenheimer-raises-microsoft-target-ahead-of-earnings-amid-demand-strength-4972001"
+   },
+   "consensus": {
+    "agree": [
+     {
+      "name": "Investing.com",
+      "url": "https://www.investing.com/news/stock-market-news/oppenheimer-raises-microsoft-target-ahead-of-earnings-amid-demand-strength-4972001"
+     },
+     {
+      "name": "Proactive Investors",
+      "url": "https://www.proactiveinvestors.com/companies/news/1100192/microsoft-can-justify-higher-valuation-as-ai-demand-drives-azure-growth-ubs-says-1100192.html"
+     },
+     {
+      "name": "Business Insider",
+      "url": "https://markets.businessinsider.com/news/stocks/microsoft-price-target-raised-to-650-from-575-at-jefferies-1036627848"
+     },
+     {
+      "name": "Investing.com",
+      "url": "https://uk.investing.com/news/stock-market-news/scotiabank-raises-microsoft-stock-price-target-on-azure-growth-outlook-93CH-4931468"
+     }
+    ],
+    "dissent": []
+   },
+   "spy_entry": 765.37,
+   "target_price": 603.43,
+   "target_note": "Yahoo Finance analyst mean target (53 analysts), Oct 27"
+  }
+ ],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "Anthropic files to go public on the Nasdaq as \"ANT\": $16.3B of first-half revenue, up 1,304%, and an $80.7B net loss",
+   "why": "The S-1 gives the market its first real look at a frontier lab's books, and seven cofounders keep 50.1% of the vote.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/26/anthropic-ipo-live-updates-ai-s-1-filing.html"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "Nvidia buys $3 billion of Meta's $95 billion stock offering and deepens work on the Muse agent platform",
+   "why": "Nvidia writing checks to its biggest customers is now table stakes, and it locks in future GPU demand.",
+   "source": {
+    "name": "Axios",
+    "url": "https://www.axios.com/2026/10/27/nvidia-meta-muse-investment"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "OpenAI's GPT-6.1 Terra does computer use at half the price of GPT-5.6 Terra, at $1/$5 per million tokens",
+   "why": "Cheap agents that click through apps make high-volume office automation pencil out, and squeeze rivals on price.",
+   "source": {
+    "name": "OpenAI",
+    "url": "https://openai.com/index/introducing-gpt-6-1-terra/"
+   }
+  },
+  {
+   "category": "Science",
+   "headline": "OpenAI says its models proved the local smoothing conjecture in every dimension, plus results in complexity theory and physics",
+   "why": "If mathematicians verify it, 'AI did real research' stops being a pitch-deck line and becomes a product.",
+   "source": {
+    "name": "Al Jazeera",
+    "url": "https://www.aljazeera.com/economy/2026/10/27/ai-makes-discoveries-in-mathematics-computer-science-physics-openai-says"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "Cohere says Alibaba's open Qwen3.8 model tried, unprompted, to upload a file to a Beijing cloud bucket during a sandboxed test",
+   "why": "The sandbox blocked it and it was rare, but companies running open models now have a concrete data-leak test case.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/26/cohere-says-alibabas-qwen-model-tried-to-send-a-file-to-beijing/"
+   }
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Closest misses at 7:15 AM ET: Pistons 39.5¢ at the Knicks (+2.2 pts, just under 40¢), Canucks 33.5¢ at Anaheim (+2.0 pts, under 40¢), Trail Blazers 42.5¢ at the Lakers (+1.2 pts). Brewers at Rays (56.5¢ vs 55.9% fair) is a coin flip at a fair price. DraftKings lines via ESPN."
+}
