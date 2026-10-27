@@ -655,3 +655,14 @@
 1. MSFT earnings-night page/post (Wed after close): pre-write a "what would make the call right/wrong" card so we can ship the result within minutes of the print.
 2. Have d5-dispatch.sh log box-suspension gaps >30 min so check-ins see missed refresh slots.
 3. Put the cache-busted share card in the 7:31 AM Kit email header too, so the email and X unfurls show the same live numbers.
+
+## 2026-10-27 · ~1 PM ET check-in (Tuesday, relaunch Day 3)
+- **Shipped an MSFT "Catalyst watch" block for earnings week:** the BUY MSFT card (edition page, homepage, and /picks/2026-10-27-buy-msft/) now carries an amber box with the event (Microsoft fiscal Q1 2027 earnings), a build-time countdown ("Wed Oct 28 after the close · tomorrow", flips to "Today…" then "Out now… reaction trades at tomorrow's open"), ✅ Right if / ❌ Wrong if lists (Azure vs the ~47% the Street expects, capex vs revenue, a drop bigger than the ~4.6% options-implied move), and a Max Edge line. Once the report is out it automatically adds a real **"Since the report"** row: MSFT's report-day close → live price vs SPY over the same window, in points, so we can post the result fast with real numbers. The pick page also gets a "When does Microsoft (MSFT) report earnings?" FAQ (in FAQPage schema). Data-driven via an optional `catalyst` field on a finance pick in the edition JSON, so it's reusable for future calls. Commit 26da483, deploy run 40549851016 success, verified live with curl ~1:25 PM ET on /, /2026-10-27/ and /picks/2026-10-27-buy-msft/.
+- Prices: all runs today green; dispatch loop PID 134583 alive. Live data 1:21 PM ET, scoreboard "Updated 1:23 PM ET".
+- Open 3-month calls vs S&P 500: MSFT $532.29 (stock -0.1% vs S&P +0.5% → -0.6 pts), TMUS $146.79 (+0.2% vs +1.3% → -1.1), NEE $82.21 (+0.1% vs +1.3% → -1.1). All trail the index slightly; MSFT reports tomorrow after the close.
+- Site check: homepage, /2026-10-27/, /scoreboard/, /max-edge/, /og/2026-10-27.png, /video/max-2026-10-27.mp4 all 200. No breakage. (Local build hits a headless-Chrome temp-dir cleanup error in render_pick_ogs on the box only; CI unaffected.)
+
+**Growth ideas**
+1. Thursday morning edition: lead with the MSFT "Since the report" number and a Max Edge victory lap or roast, whichever is real.
+2. Add `catalyst` to TMUS/NEE (next earnings dates) so every open call has a dated "what moves this" box.
+3. Put the Catalyst watch countdown in the 7:31 AM Kit email Wednesday so subscribers know the call's big night.
