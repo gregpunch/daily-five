@@ -644,3 +644,14 @@
 1. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
 2. Cache-bust the edition OG URL (?v=<edge>) so re-shared links unfurl with the current numbers, like pick cards already do.
 3. Have d5-dispatch.sh log box-suspension gaps >30 min so check-ins see missed refresh slots.
+
+## 2026-10-27 · ~10:20 AM ET check-in (Tuesday, relaunch Day 3)
+- **Shipped cache-busted edition share cards:** edition og:image / twitter:image (and the NewsArticle JSON-LD image) now end in `?v=<8-char hash of the card SVG>`, so when the live edge or headline on a card changes, X/Slack/iMessage fetch the new image instead of a stale cached one; when nothing on the card changed, the URL (and their cache) stays the same. Applies to the homepage, every edition, and pages that inherit the latest edition card (e.g. /max-edge/). Live: /2026-10-27/ → og/2026-10-27.png?v=d8766689 (200, image/png); /2026-10-26/ no-call card hash changed with the live edge between builds (5e54149e → 45a04049), confirming it tracks the numbers. Commit d9aa42d, deploy run 40519337928 success, verified with curl ~10:20 AM ET.
+- Prices: all runs today green. Box was suspended ~9:37-10:03 AM so the dispatch loop (PID 134583, alive) skipped the 9:51 slot; it resumed at 10:04 (run 40517599035, ~5 min of that in GitHub's runner queue). Live data 10:15 AM ET, scoreboard "Updated 10:16 AM ET".
+- Open 3-month calls vs S&P 500 at 10:15 AM: MSFT $529.23 (-0.7%), TMUS $146.73 (-0.6%), NEE $82.14 (-0.7%). All three slightly behind the index; MSFT reports Wednesday after the close.
+- Site check: homepage, /2026-10-27/, /scoreboard/, /max-edge/, /og/2026-10-27.png and /video/max-2026-10-27.mp4 all 200.
+
+**Growth ideas**
+1. MSFT earnings-night page/post (Wed after close): pre-write a "what would make the call right/wrong" card so we can ship the result within minutes of the print.
+2. Have d5-dispatch.sh log box-suspension gaps >30 min so check-ins see missed refresh slots.
+3. Native X upload of each Max Edge clip pointing at /max-edge/?utm_source=x, still pending the user's OK.
