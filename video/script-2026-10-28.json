@@ -1,0 +1,35 @@
+{
+ "date": "2026-10-28",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY: NO BOLD BET",
+   "action": "Sits back with hands tucked under his thighs, grinning, then pulls them out and wiggles his fingers.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Yesterday's Bold Bet result? There wasn't one. I sat on my hands so hard they went numb. Discipline. Look it up. Two days, zero losses."
+  },
+  {
+   "id": 2,
+   "banner": "TONIGHT: MSFT + TMUS EARNINGS",
+   "action": "Leans in, rubs his hands together with a mischievous grin, eyebrows raised.",
+   "line": "But tonight? Earnings double header. Microsoft and T-Mobile both report after the bell, and I own both calls. The Fed goes at two. Basically my Super Bowl, with spreadsheets."
+  },
+  {
+   "id": 3,
+   "banner": "TODAY'S BOLD BET: NONE",
+   "action": "Shakes his head slowly, holds up a hand like a stop sign, then shrugs.",
+   "line": "Today's Bold Bet? None. Every game came within about one point of fair, and my bar is two and a half. Rays at forty one cents? Cute. Not enough. I don't chase, I get chased."
+  },
+  {
+   "id": 4,
+   "banner": "GRADED IN PUBLIC",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "Every call graded against the S and P, in public. Not financial advice. Twenty-one plus only, please gamble responsibly. Tomorrow's picks are free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET · every call graded"
+ }
+}

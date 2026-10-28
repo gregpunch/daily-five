@@ -1,0 +1,60 @@
+{
+ "date": "2026-10-28",
+ "headline": "Earnings double-header tonight: our open Microsoft and T-Mobile 3-month calls both report after the bell, the Fed decides at 2 PM, and no Bold Bet because nothing on Wednesday's board cleared Max Edge's bar",
+ "top_call": "Tonight is judgment night. Microsoft and T-Mobile, two of our three open 3-month calls, both report after the close, a few hours after the Fed's 2 PM decision. No new call today: we already made our bets, and we're grading them in public against the S&P 500.",
+ "backdrop": "Nasdaq futures rose about 0.4% and S&P 500 futures 0.1% early Wednesday as SK Hynix's sevenfold profit jump lifted chip stocks, while Dow futures slipped about 0.2%. The Fed is expected to hold at 3.75%-4.00% at 2 PM ET; Microsoft, Alphabet and T-Mobile report after the close.",
+ "backdrop_source": {
+  "name": "Reuters",
+  "url": "https://www.investing.com/news/economy-news/nasdaq-futures-rise-as-sk-hynix-boosts-chips-before-fed-decision-earnings-4978026"
+ },
+ "finance": [],
+ "ai": [
+  {
+   "category": "Chips",
+   "headline": "OpenAI plans to buy Google's TPU chips, moving from renting them to owning them, The Information reports",
+   "why": "Nvidia's biggest customer shopping for a second supplier is the clearest sign yet that TPUs are a real alternative.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.investing.com/news/stock-market-news/openai-plans-to-buy-googles-ai-chips-the-information-reports-4977342"
+   }
+  },
+  {
+   "category": "Money",
+   "headline": "Anthropic gives federal, state and local governments 40% off Claude, with no minimum spend, estimating $1B in savings",
+   "why": "Government is becoming a usage-priced AI customer, and about 500 agencies already run Claude.",
+   "source": {
+    "name": "Anthropic",
+    "url": "https://www.anthropic.com/news/expanding-partnership-gsa"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "The Netherlands plans to cut about 25,000 central-government jobs by 2035, leaning on AI to save €3.5 billion a year",
+   "why": "It's the most aggressive government plan yet to turn AI productivity into actual headcount cuts.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://uk.finance.yahoo.com/news/netherlands-aims-cut-around-20-114655383.html"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Google DeepMind unveils Genie 4, a real-time world model with more realistic physics, people and native audio",
+   "why": "Interactive simulated worlds are the training ground for robots and agents, and a new kind of game engine.",
+   "source": {
+    "name": "Google DeepMind",
+    "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "Cloudflare says a cache bug made its GLM-5.3 Workers AI model answer 155 requests with other customers' data",
+   "why": "Shared inference servers can leak between tenants, so 'who else is on my GPU' is now a real security question.",
+   "source": {
+    "name": "Cloudflare",
+    "url": "https://blog.cloudflare.com/kv-cache-exposure-remediation/"
+   }
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Closest misses at 7:15 AM ET: Rays 41.5¢ vs the Brewers (+1.2 pts), Lakers 63.5¢ vs the Clippers (+1.0 pts), Maple Leafs 51.5¢ at Seattle (+0.7 pts). Every NBA, NHL and MLB game on the board priced within 1.2 points of DraftKings' no-vig line. DraftKings lines via ESPN."
+}
