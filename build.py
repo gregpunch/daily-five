@@ -521,6 +521,38 @@ def max_edge_hub(eds):
          {'@type':'ItemList','name':'Max Edge clips','itemListElement':items}]}
     w('max-edge/index.html',shell(f'Max Edge: Daily AI Stock & Sports Picks Video (60 Seconds) | {BRAND}',desc,P,bodyh,sch))
     return P
+def earnings_og(ops):
+    """Share card for /earnings/ (1200x630): each open call's next report date (TONIGHT / tomorrow / in N days / reported)
+    and live edge vs the S&P 500, so links to the earnings page unfurl as an earnings-night scorecard, not the daily card."""
+    logo=LOGO.replace('class="mark" ','').replace(' width="34" height="34"','').replace('<svg ','<svg width="40" height="40" ')
+    rows=''
+    for i,p in enumerate(ops[:4]):
+        c=p.get('catalyst'); sym=p['symbol'].upper(); r=p.get('ret')
+        if c:
+            d=datetime.date.fromisoformat(c['date']); n=(d-TODAY).days
+            tag=('TONIGHT' if 'after' in c.get('when','') else 'TODAY') if n==0 else 'TOMORROW' if n==1 else f'{d.strftime("%a %b %-d").upper()}' if n>1 else 'REPORTED'
+            tcol='#ffb020' if n in (0,1) else '#c9cede'
+        else: tag,tcol='NO REPORT DUE','#9ba3ba'
+        ecol='#16c784' if (r or 0)>0 else '#ff4d5e' if (r or 0)<0 else '#9ba3ba'
+        et=f'{r*100:+.1f} pts vs S&amp;P' if r is not None else 'edge pending'
+        y=262+i*84
+        rows+=(f'<g transform="translate(70,{y})"><rect width="1060" height="68" rx="18" fill="#11131c" stroke="#232738" stroke-width="2"/>'
+               f'<rect x="14" y="12" width="104" height="44" rx="22" fill="{"#16c784" if p["action"]=="BUY" else "#ff4d5e"}"/><text x="66" y="42" text-anchor="middle" font-size="22" font-weight="800" fill="#06130c">{p["action"]}</text>'
+               f'<text x="140" y="47" font-family="monospace" font-size="38" font-weight="700" fill="#fff">{E(sym)}</text>'
+               f'<text x="330" y="45" font-size="26" font-weight="800" fill="{tcol}" letter-spacing="2">{E(tag)}</text>'
+               f'<text x="1040" y="46" text-anchor="end" font-size="30" font-weight="800" fill="{ecol}">{et}</text></g>')
+    nt=sum(1 for p in ops if p.get('catalyst') and p['catalyst']['date']==TODAY.isoformat())
+    head=(f'{nt} OF OUR CALLS REPORT TODAY' if nt>1 else 'EARNINGS DAY FOR OUR CALL' if nt==1 else 'EARNINGS WATCH')
+    svg=(f'<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs><radialGradient id="a" cx=".12" cy=".1" r=".75"><stop offset="0" stop-color="#ffb020" stop-opacity=".35"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient><radialGradient id="b" cx=".92" cy=".85" r=".7"><stop offset="0" stop-color="#7c5cff" stop-opacity=".5"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient></defs>'
+         f'<rect width="1200" height="630" fill="#07080d"/><rect width="1200" height="630" fill="url(#a)"/><rect width="1200" height="630" fill="url(#b)"/><g font-family="Inter,Helvetica,Arial,sans-serif">'
+         f'<g transform="translate(70,56) scale(1.4)">{logo}</g><text x="146" y="101" font-size="38" font-weight="800" fill="#fff">The Daily Five</text>'
+         f'<text x="1130" y="101" text-anchor="end" font-size="24" font-weight="700" fill="#ffb020" letter-spacing="3">{E(TODAY.strftime("%a %b %-d").upper())}</text>'
+         f'<text x="70" y="180" font-size="54" font-weight="800" fill="#fff">{E(head)}</text>'
+         f'<text x="70" y="226" font-size="26" fill="#c9cede">Open 3-month calls, graded vs the S&amp;P 500 · live edge as of {E(NOW.strftime("%-I:%M %p ET"))}</text>{rows}'
+         f'<text x="70" y="600" font-size="22" fill="#9ba3ba">What makes us right or wrong: readdailyfive.com/earnings</text><text x="1130" y="600" text-anchor="end" font-size="22" fill="#9ba3ba">Not advice</text></g></svg>')
+    rel='og/earnings'; w(rel+'.svg',svg)
+    PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
+    import hashlib; return f"/{rel}.png?v={hashlib.sha1(svg.encode()).hexdigest()[:8]}"
 def earnings_hub():
     """/earnings/: next earnings date (or catalyst) for every open 3-month call, with right-if/wrong-if and the live edge vs the S&P 500."""
     P='/earnings/'; ops=[p for p in open3()]
@@ -556,7 +588,7 @@ def earnings_hub():
     desc=(f"Next earnings dates for every open Daily Five stock call ({syms}), with what would make each call right or wrong and the live edge vs the S&P 500.")[:155]
     sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc,"dateModified":TODAY.isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P},csch,
          {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}
-    w('earnings/index.html',shell(title,desc,P,bodyh,sch))
+    w('earnings/index.html',shell(title,desc,P,bodyh,sch,og=earnings_og(ops)))
     return P
 def latest_clip():
     fs=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))
