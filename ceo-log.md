@@ -715,3 +715,16 @@
 1. 6 PM X post: link /earnings/ and quote the after-hours reaction numbers straight from the site (card will show REPORTED · AH %).
 2. Thursday 7 AM edition and Kit email lead with the pre-market reaction line for MSFT and TMUS.
 3. Still open: propose a labeled "Max's lean" for no-Bold-Bet days (needs the user's OK).
+
+## 2026-10-28 · ~4 PM ET check-in (Wednesday, relaunch Day 4, earnings night)
+- **The prints (real data, sourced):** MSFT beat. Adjusted EPS $4.89 vs $4.73, revenue $92.28B vs $90.69B (+19%), Azure $33.17B, +48% (Street ~$32.32B; June quarter +42%), capex and finance leases $45.2B vs ~$50.7B expected (CNBC, LSEG/StreetAccount). TMUS beat. Diluted EPS $3.22 vs ~$2.86-2.89, revenue $23.58B vs ~$23.2-23.3B, service revenue $19.4B (guide ~$19.3B), 274K postpaid account adds vs ~250K guide, but account churn up to 1.09%; EBITDA and FCF guidance raised at the midpoint (T-Mobile release via BusinessWire, ~4:05 PM ET).
+- **After-hours path checked with real Yahoo data:** live at 4:15 PM ET, MSFT $553.30 (+4.2% vs $531.01 close, S&P -0.1%, so +4.3 pts); TMUS $148.18 (+0.1%, so +0.1 pts). Lines render on /, /earnings/ and both pick pages; nothing needed fixing.
+- **Shipped a post-earnings verdict:** (1) new share card /og/verdict.png ("THE PRINTS ARE IN": BEAT/MISS badge, headline numbers, reaction vs S&P in pts, live 3-month edge, Max Edge quip). It becomes /earnings/'s og:image for 5 days after a print, and switches on its own from after-hours to pre-market to "Since the report". (2) A verdict box at the top of /earnings/. (3) A sourced "📊 The print" line in every Catalyst watch box. The numbers come from a new `catalyst.result` field (documented in FORMAT.md, only cited numbers). Commit 35efd4d, deploy run 40761443953 success, verified live ~4:18 PM ET (all pages 200, /og/verdict.png 200 image/png, card checked visually).
+- Prices: dispatch loop PID 134583 alive; runs 40760651242 and 40761443953 green; scoreboard "Updated 4:15 PM ET"; data/live.json 4:14 PM ET. Edge vs S&P at the close: MSFT -1.2 ($531.01), TMUS -0.6 ($148.08), NEE -2.9 pts ($81.06). After hours alone would put MSFT at about +3.1.
+- **Caveat:** the dispatch loop only fires while the box is awake (log shows gaps from 10:21 AM to 12:55 PM and from 1:10 PM to 4:08 PM), and GitHub cron runs only every ~4-6 h. So the "every 30 min tonight" refresh is not guaranteed. The 7 AM edition push rebuilds with pre-market data either way.
+- Site check: /, /2026-10-28/, /scoreboard/, /earnings/, /max-edge/, /picks/2026-10-27-buy-msft/ all 200.
+
+**Growth ideas**
+1. Thursday 7 AM: lead the edition, Kit email and X thread with /og/verdict.png ("MSFT showed up with receipts") and link /earnings/ so the card unfurls.
+2. Tonight's 6 PM X results post: quote MSFT +4% after hours and Azure +48% with the /earnings/ link (the box will be awake for that run, so the card will be fresh).
+3. Make refreshes not depend on the box: add more off-minute GitHub cron entries for 4:30-8 PM ET on report days, or a lightweight external cron (needs the user's OK if it means a new service).
