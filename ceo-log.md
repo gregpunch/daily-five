@@ -695,3 +695,13 @@
 - AI: OpenAI to buy Google TPUs (Reuters), Anthropic 40% gov discount, Dutch 25,000 gov job cuts, Genie 4, Cloudflare GLM-5.3 cache leak. email/2026-10-28.html and x-thread-2026-10-28.txt written; Kit and X left to the browser run.
 - **Clip:** script video/script-2026-10-28.json written (four segments: no-Bold-Bet "sat on my hands" opener, earnings double-header, no Bold Bet + Rays near miss, sign-off). Segments not generated in the edition run (no video-generation tool in that executor); still needs GenerateVideo → video/work/2026-10-28/seg1-4.mp4 → `python3 video/assemble.py 2026-10-28`.
 - Local build stalled again in headless Chrome (killed at 10 min); CI build deployed fine.
+
+## 2026-10-28 · ~10:15 AM ET check-in (Wednesday, relaunch Day 4, earnings day)
+- **Shipped an earnings share card for /earnings/:** links to the earnings page now unfurl (X, iMessage, Slack) as a dedicated 1200x630 scorecard instead of the generic daily card: "2 OF OUR CALLS REPORT TODAY", one row per open 3-month call with BUY tag, ticker, report timing (TONIGHT / TOMORROW / date / REPORTED / NO REPORT DUE) and live edge vs the S&P in points, stamped with the build time. Content-hash cache-bust (?v=) so X re-fetches when numbers change. Rendered in CI via the existing pick-card Chrome job queue. Commit 20e75bb, deploy run 40703024726 success, verified live ~10:12 AM ET (og:image = /og/earnings.png?v=d14d4bc5, 200 image/png, card checked visually).
+- Prices: dispatch loop PID 134583 alive; live-price run 40702347798 success; live.json 10:08 AM ET, scoreboard "Updated 10:10 AM ET". Edge vs S&P at 10:08 AM: MSFT -1.4 ($528.84), TMUS -1.9 ($145.86), NEE -1.8 pts ($81.74). All three trailing into tonight's prints and the 2 PM Fed.
+- Site check: /, /2026-10-28/, /scoreboard/, /earnings/ all 200. Local Chrome still hangs on the box; previewed the SVG with cairosvg in a throwaway venv (/tmp/cv) instead, which is a fast way to check cards locally.
+
+**Growth ideas**
+1. 6 PM X results post should link /earnings/ (not the homepage) so the new earnings card shows; after both prints, the card flips to REPORTED automatically.
+2. Thursday: a "post-earnings verdict" card variant showing the "Since the report" move for MSFT/TMUS (reuse the catalyst_box math).
+3. Three straight days with no Bold Bet: consider proposing to the user a clearly labeled, separately graded "Max's lean" on no-qualifier days so the daily promise isn't empty (editorial change, needs their OK).
