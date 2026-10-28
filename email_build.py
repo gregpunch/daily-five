@@ -186,6 +186,15 @@ def render(ed,prev=None,rec=None,open3=None):
     rows.append(sec('🏆','Sports','Prediction markets · Polymarket & Kalshi'))
     rows+= [sp(p,i) for i,p in enumerate(sorted([p for p in ed['sports'] if keep(p)],key=lambda p:-(p.get('score') or 0))[:5],1)]
     if not ed['sports']: rows.append(f'<tr><td style="padding:8px 24px;{F}font-size:14px;line-height:20px;color:{TXT};"><b>🚫 No bets today: nothing cleared our bar.</b> A pick needs a real sportsbook line, a 40¢–70¢ price and +2.5 points of edge. No Bold Bet of the Day. '+E(ed.get('no_bets_note') or '')+'</td></tr>')
+    ln=ed.get('lean') if not ed['sports'] else None
+    if ln:
+        import build as _b
+        rows.append(f'<tr><td style="padding:6px 24px;"><div style="border:1px dashed {VIO};border-radius:14px;padding:14px 16px;background:#151233;{F}color:{TXT};">'
+          f'<div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#c4b5fd;">🤏 Max\'s lean · not a Bold Bet · not a pick</div>'
+          f'<div style="font-size:20px;font-weight:800;padding-top:6px;">{E(ln["label"])} <span style="{M}font-size:14px;color:{MUT};font-weight:500;">at {ln["entry"]*100:.1f}¢'+(f' · {ln["edge"]:+.1f} pts vs the books' if ln.get('edge') is not None else '')+'</span></div>'
+          f'<div style="font-size:13px;color:{MUT};padding-top:2px;">{E(ln["market"])}</div>'
+          f'<div style="font-size:14px;line-height:20px;padding-top:8px;">🤖 <b>Max Edge (AI host):</b> {E(ln["why"])}</div>'
+          f'<div style="font-size:12px;line-height:18px;color:{MUT};padding-top:8px;">Graded on a separate Leans record, never mixed into the sports or Bold Bet record. {E(_b.lean_rec_txt())} <a href="{SITE}/scoreboard/#leans" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Leans record →</a></div></div></td></tr>')
     rows.append(f'<tr><td style="padding:30px 24px;" align="center"><div style="{F}font-size:15px;color:{MUT};padding-bottom:14px;">Prices move all day. Track every pick live and on the Scoreboard.</div>{btn}</td></tr>')
     rows.append('<tr><td style="padding:4px 0 0;"></td></tr>'); rows.append(refer(rec,ed['date'])); rows.append('<tr><td style="padding:14px 0 0;"></td></tr>')
     rows.append(f'<tr><td style="padding:22px 24px 30px;border-top:1px solid {LINE};{F}font-size:12px;line-height:18px;color:{MUT};">'

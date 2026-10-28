@@ -190,7 +190,52 @@ def enrich(ed):
         p['id']=p.get('pid') or f"{ed['date']}-{slugify(p['label']+'-'+p['market'])[:60].strip('-')}"; p['tslug']=p['slug'][:70]; p['tname']=p['market'].split(',')[0]; p['kind']='Sports'
     for p in ed['finance']+ed['sports']:
         p['so']=None if (p.get('open') in (None,0) or p.get('cur') is None) else (p['cur']-p['open'])/p['open']
+    enrich_lean(ed,exits)
     json.dump(exits,open(EX,'w'),indent=1)
+def enrich_lean(ed,exits):
+    """Max's lean (FORMAT.md): on a no-Bold-Bet day, the closest-to-qualifying edge play. Priced and settled exactly like a
+    sports pick (Polymarket resolution, or the final score while UMA catches up), but kept OUT of ed['sports'] so it never
+    touches the sports / Bold Bet record. Graded only on the separate Leans record (exits key '<date>/lean')."""
+    p=ed.get('lean')
+    if not p or ed['sports']: ed['lean']=None if ed['sports'] else p; return
+    key=f"{ed['date']}/lean"; m=pmarket(p['slug']); p['m']=m; p['kind']='Sports'; p.setdefault('action','BUY')
+    if key in exits: p['cur'],p['final'],p['note']=exits[key]['price'],True,'resolved'
+    else:
+        p['cur']=m['prices'][p['outcome']] if m else None
+        p['final']=bool(m and m['closed'] and p['cur'] is not None and (p['cur']>=0.99 or p['cur']<=0.01)); p['note']='resolved' if p['final'] else 'live'
+        if p['final']: exits[key]={'price':p['cur'],'note':'resolved'}
+        elif m and GAME_RE.match(p.get('slug') or ''):
+            d=final_margin(p,pgame(p['slug']),m)
+            if d: p['cur'],p['final'],p['note']=(1.0 if d>0 else 0.0),True,'final score, awaiting resolution'
+    p['ret']=None if p['cur'] is None else (p['cur']-p['entry'])/p['entry']; p['so']=None; p['open']=None
+    p['id']=f"{ed['date']}-lean-{slugify(p['label'])}"
+def leans(eds=None):
+    """Every Max's lean, newest first, as (edition, lean)."""
+    return [(e,e['lean']) for e in (eds if eds is not None else ALLEDS) if e.get('lean') and e['date']>=LAUNCH]
+def lean_rec(eds=None):
+    st=[p for _,p in leans(eds) if p.get('final') and p.get('ret') is not None]
+    w_=sum(p['ret']>0 for p in st); avg=sum(p['ret'] for p in st)/len(st) if st else None
+    return w_,len(st)-w_,avg,len(leans(eds))-len(st)
+def lean_rec_txt(eds=None):
+    w_,l_,avg,op=lean_rec(eds)
+    if not w_+l_: return "Leans record: no settled leans yet."
+    return f"Leans record: {w_}-{l_}, {avg*100:+.0f}% avg per $1" + (f", {op} open" if op else '') + ". Separate from the Bold Bet and sports record."
+def lean_box(ed):
+    """'Max's lean' card on a no-Bold-Bet day. Clearly NOT a Bold Bet, and graded on its own Leans record."""
+    p=ed.get('lean')
+    if not p or ed['sports'] or ed['date']<LAUNCH: return ''
+    res=''
+    if p.get('final') and p.get('ret') is not None:
+        fl=final_line(p); res=f'<p class="lean-res"><b>{"✅ Lean cashed" if p["ret"]>0 else "❌ Lean missed"}</b>{(" · "+fl[0]) if fl else ""} · {p["ret"]*100:+.0f}% per $1 at {p["entry"]*100:.1f}¢{" (final score, awaiting resolution)" if "awaiting" in (p.get("note") or "") else ""}</p>'
+    bk=p.get('book') or {}
+    bl=(f'📒 {E(bk.get("name","Sportsbook"))} no-vig line put this side about <b>{p["edge"]:+.1f} pts</b> above the Polymarket price'+(f' ({E(p["edge_at"])})' if p.get('edge_at') else '')+(f' · <a href="{E(bk["url"])}" rel="nofollow noopener" target="_blank">line ↗</a>' if bk.get('url') else '')+'. Our bar for a real pick is +2.5.') if p.get('edge') is not None else ''
+    bf=f'<p class="lean-fine">🗂 {E(p["backfill"])}</p>' if p.get('backfill') else ''
+    return (f'<div class="lean" id="lean"><span class="lean-tag">🤏 Max\'s lean · not a Bold Bet · not a pick</span>'
+            f'<h3><span class="mini buy">LEAN</span> {E(p["label"])} <small>at {p["entry"]*100:.1f}¢</small></h3><p class="lean-mkt">{E(p["market"])}</p>'
+            f'<p class="lean-why">🤖 <b>Max Edge (AI host):</b> {E(p["why"])}</p>'
+            f'<p class="lean-book">{bl}</p>{livebox(p)}{gd(p)}{res}'
+            f'<p class="lean-fine">Leans are the closest miss on a day nothing clears our bar. They are graded in public on a separate <a href="{BASE}/scoreboard/#leans">Leans record</a> and never count toward the Bold Bet or sports record. {E(lean_rec_txt())} Not betting advice.</p>{bf}'
+            f'<a class="lean-src" href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])} ↗</a></div>')
 def pct(x): return '—' if x is None else f"{x*100:+.2f}%"
 def chip(r,final=False):
     if r is None: return '<span class="chip pend">⏳ pending</span>'
@@ -746,7 +791,7 @@ def body(ed,prev=None,home=False):
 def nobets(ed):
     if ed['sports'] or ed['date']<LAUNCH: return ''
     note=ed.get('no_bets_note') or ''
-    return f'<p class="sub" style="font-size:1.05em;margin:10px 0"><b>🚫 No bets today: nothing cleared our bar.</b> A pick needs a real sportsbook line, Polymarket between 40¢ and 70¢, and at least +2.5 points of edge. No Bold Bet of the Day, either. {E(note)}</p>'
+    return f'<p class="sub" style="font-size:1.05em;margin:10px 0"><b>🚫 No bets today: nothing cleared our bar.</b> A pick needs a real sportsbook line, Polymarket between 40¢ and 70¢, and at least +2.5 points of edge. No Bold Bet of the Day, either. {E(note)}</p>'+lean_box(ed)
 def bar_chart(rows):
     rs=[r for r in rows if r['ret'] is not None]
     if not rs: return ''
@@ -1962,6 +2007,17 @@ def beta_page(BETA,brows):
     w('beta-archive/index.html',shell(f"Beta archive (Oct 2026) | {BRAND}","Every Daily Five beta pick from Oct 15-24, 2026, graded honestly.",'/beta-archive/',bodyh))
 _ALL=[]
 def ALLEDS_ALL(): return _ALL
+def leans_section(eds):
+    """Scoreboard: Max's Leans, a separate record (never mixed into the tiles, sports or Bold Bet record above)."""
+    ls=leans(eds)
+    if not ls: return ''
+    ef=lambda p: f"{p['edge']:+.1f} pts" if p.get('edge') is not None else '—'
+    w_,l_,avg,op=lean_rec(eds)
+    tr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini buy">LEAN</span> <b>{E(p["label"])}</b> <small>{E(p["market"])}</small></td><td class="mono">{p["entry"]*100:.1f}¢</td><td class="mono">{ef(p)}</td><td class="mono">{money("Sports",p.get("cur"))} <small>{E(p.get("note") or "")}</small></td><td>{chip(p.get("ret"),p.get("final"))}</td><td>{("Win" if p["ret"]>0 else "Loss") if p.get("final") and p.get("ret") is not None else "Pending"}</td><td><a href="{BASE}/{e["date"]}/#lean">edition ↗</a></td></tr>' for e,p in ls)
+    hd=f"{w_}-{l_}" if w_+l_ else "0-0"
+    return (f'<section class="sec leans" id="leans"><div class="sh"><span class="si">🤏</span><div><h2>Max\'s Leans · separate record</h2><p class="sub">On days when no game clears our bar (no Bold Bet), Max Edge, our AI host, names his closest miss as a <b>lean</b>. Leans are graded here in public, one 1-unit buy at the published Polymarket price, and are <b>never</b> counted in the sports or Bold Bet record. Think of it as the bench: it plays, but it doesn\'t get a jersey.</p></div></div>'
+            f'<div class="tiles"><div class="tile"><span class="h">Leans</span><b class="{"up" if (avg or 0)>=0 else "dn"}">{hd}</b><span class="s">{(pct(avg)+" avg per $1") if avg is not None else "no settled leans yet"} · {op} open</span></div></div>'
+            f'<div class="tbl"><table><thead><tr><th>Date</th><th>Lean</th><th>Entry</th><th>Edge vs books</th><th>Now / exit</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div></section>')
 def main():
     shutil.rmtree(OUT,ignore_errors=True); os.makedirs(OUT)
     w('style.css',open(os.path.join(ROOT,'style.css')).read()); w('.nojekyll','')
@@ -2019,7 +2075,7 @@ def main():
     upd=datetime.datetime.now().strftime('%b %-d, %Y · %-I:%M %p ET')
     sbstrip=today_strip([p for e in eds for p in e['finance']+e['sports']],'sb',max(eds,key=lambda e:e['date'])['finance']+max(eds,key=lambda e:e['date'])['sports'])
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
-<div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>'''
+<div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>{leans_section(eds)}'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
     hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); erh=earnings_hub(); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]

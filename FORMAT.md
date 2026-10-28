@@ -31,6 +31,16 @@ Data behind them (beta, Oct 15–24, 42 settled sports picks, 16 settled 1-day s
 4. No futures.
 Publish **0–5** sports picks: only the ones that qualify. Fewer than 5 is fine; zero is fine ("No bets today: nothing cleared our bar" is a valid section). Never pad with coin flips.
 **Bold Bet of the Day:** set `"bold": true` on exactly one qualifying sports pick, the one with the highest edge (tie → closer to 50¢). Max Edge's daily video leads with it. If nothing qualifies, no Bold Bet that day (Max says so).
+**Max's lean (no-Bold-Bet days only; user-approved Oct 28, 2026).** When `sports` is `[]`, add a top-level `"lean"`: the closest-to-qualifying play from the same board, i.e. the game side with the **highest positive edge** (no-vig book chance − Polymarket price, in pts) among real games with a real published line, Polymarket **40¢–70¢**, no futures (tie → closer to 50¢). If no game has a positive edge in that price band, no lean (omit the field). It is NOT a Bold Bet and NOT a pick: never set `bold`, never put it in `sports`, and the copy must call it a lean. Schema (same pricing fields as a sports pick):
+```json
+"lean": {"action":"BUY","label":"Rays","market":"MLB: World Series Game 5, MIL @ TB, Wed Oct 28 8:00 PM ET",
+  "slug":"mlb-mil-tb-2026-10-28","outcome":1,"entry":0.415,"event_date":"2026-10-28",
+  "edge":1.2,"edge_at":"7:15 AM ET",
+  "book":{"name":"DraftKings via ESPN","url":"https://www.espn.com/mlb/game/_/gameId/...","odds":[124,-139]},
+  "why":"Max Edge's one-liner, bold and funny, saying plainly it's a lean (e.g. '+1.2 is a rounding error with a cap on').",
+  "source":{"name":"Polymarket","url":"https://polymarket.com/event/<slug>"}}
+```
+`entry` = the real Polymarket price at publish; `edge` = the real computed edge at `edge_at`; `book.odds` = [our side, other side] American odds when you have them (optional). `backfill` (optional text) marks a lean added after publish. build.py (`enrich_lean`) prices and settles it like a sports pick (Polymarket resolution, or the final score while resolution is pending; frozen in `data/exits.json` under `<date>/lean`) and renders a "🤏 Max's lean · not a Bold Bet · not a pick" box under the No-bets note on the home/edition page and in the email, plus a separate **Max's Leans** record on `/scoreboard/#leans`. Leans never enter `scoreboard.csv`, the tiles, the sports record or any results page. Max's clip and the X thread may mention the lean only as "my lean, not a Bold Bet", and Max stays labeled as an AI host.
 
 **Stocks: single 3-month horizon.** `horizon` must be `"3 Month"`. No 1 Day / 1 Month / 1 Year calls.
 - Make **1–2 new calls per week** (not daily). On other days `finance` is `[]`; the site and email automatically show the open 3-month calls with live performance.
