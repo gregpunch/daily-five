@@ -340,6 +340,35 @@ def ext_quote(sym):
         if not base: return None
         return {'kind':kind,'px':c,'base':base,'t':t,'chg':(c-base)/base}
     return memo(('yx',sym),f)
+def reaction(p):
+    """Post-earnings reaction for an open call: the after-hours / next-morning pre-market move right after the print
+    (Yahoo extended hours), else the move since the report-day close once regular trading resumes. Same math as the
+    Catalyst watch box. Returns {'kind','px','base','chg','schg','edge','t'} or None (no report yet / no data)."""
+    c=p.get('catalyst')
+    if not c or p.get('final'): return None
+    d=datetime.date.fromisoformat(c['date']); n=(d-TODAY).days; after='after' in c.get('when',''); sym=p['symbol'].upper()
+    pre=NOW.time()<datetime.time(9,30)
+    if (n==0 and ((after and NOW.time()>=datetime.time(16,0)) or (not after and pre))) or (n==-1 and after and pre and NOW.weekday()<5):
+        x=ext_quote(sym); xs=ext_quote('SPY')
+        if x and abs(x['chg'])>0.0001:
+            sc=(xs or {}).get('chg') or 0
+            return {'kind':x['kind'],'px':x['px'],'base':x['base'],'chg':x['chg'],'schg':sc,'edge':x['chg']-sc,'t':x['t']}
+    if n<0:
+        base=d if after else d-datetime.timedelta(days=1)
+        pc,_=stock_close_on(sym,base); sc,_=stock_close_on('SPY',base)
+        cur=p.get('cur'); spy=(today_open_stock('SPY') or {}).get('last')
+        if pc and sc and cur and spy:
+            m=(cur-pc)/pc; sm=(spy-sc)/sc
+            return {'kind':'Since the report','px':cur,'base':pc,'chg':m,'schg':sm,'edge':m-sm,'t':None}
+    return None
+def print_line(c):
+    """'The print' line: headline results typed in from a cited source (catalyst.result), never computed."""
+    r=(c or {}).get('result')
+    if not r: return ''
+    v=r.get('verdict','').upper(); vc={'BEAT':'up','MISS':'dn'}.get(v,'')
+    src=r.get('source') or {}
+    return (f'<p class="cxpost cxprint {vc}"><span class="cxl">\U0001F4CA The print{f" · {E(v)}" if v else ""}:</span> {E(r["line"])}'
+            +(f' <a href="{E(src["url"])}" rel="nofollow noopener" target="_blank">{E(src.get("name","Source"))} ↗</a>' if src.get('url') else '')+'</p>')
 def catalyst_box(p):
     """Earnings/catalyst watch on an open stock call: date countdown, what makes the call right or wrong, and once the
     report is out, the real post-report move vs the S&P 500 (from the report-day close), so results can be posted fast."""
@@ -347,7 +376,7 @@ def catalyst_box(p):
     if not c or p.get('final'): return ''
     d=datetime.date.fromisoformat(c['date']); n=(d-TODAY).days; day=d.strftime('%a %b %-d'); wh=c.get('when','')
     sym=p['symbol'].upper(); after='after' in wh
-    post=''
+    post=print_line(c) if n<=0 else ''
     if n>0: cd='tomorrow' if n==1 else f'in {n} days'; st=f'{day} {wh} \u00b7 {cd}'
     elif n==0: st=f'Today {wh}' if not (after and NOW.time()>=datetime.time(16,0)) else f'Out now ({day} {wh}) \u00b7 the reaction trades at tomorrow\'s open'
     else:
@@ -549,6 +578,72 @@ def max_edge_hub(eds):
          {'@type':'ItemList','name':'Max Edge clips','itemListElement':items}]}
     w('max-edge/index.html',shell(f'Max Edge: Daily AI Stock & Sports Picks Video (60 Seconds) | {BRAND}',desc,P,bodyh,sch))
     return P
+def verdict_svg(ops,rep):
+    """Post-earnings verdict card (1200x630): per reported call, the headline result (BEAT/MISS from catalyst.result)
+    and the reaction vs the S&P 500 (after hours / pre-market / since the report), then the live 3-month edge."""
+    logo=LOGO.replace('class="mark" ','').replace(' width="34" height="34"','').replace('<svg ','<svg width="40" height="40" ')
+    rows=''; y=236; best=None
+    for p in ops[:3]:
+        sym=p['symbol'].upper(); c=p.get('catalyst') or {}; x=rep.get(sym); res=c.get('result') or {}; r=p.get('ret')
+        h=104 if x else 64
+        rows+=f'<g transform="translate(70,{y})"><rect width="1060" height="{h-12}" rx="18" fill="#11131c" stroke="#232738" stroke-width="2"/>'
+        rows+=f'<text x="24" y="{50 if x else 38}" font-family="monospace" font-size="38" font-weight="700" fill="#fff">{E(sym)}</text>'
+        if x:
+            v=(res.get('verdict') or '').upper(); vcol={'BEAT':'#16c784','MISS':'#ff4d5e'}.get(v,'#ffb020')
+            if v: rows+=f'<rect x="150" y="18" width="{24+15*len(v)}" height="36" rx="18" fill="{vcol}"/><text x="{162+7.5*len(v)}" y="44" text-anchor="middle" font-size="20" font-weight="800" fill="#06130c">{E(v)}</text>'
+            sh=res.get('short') or c.get('event','')
+            rows+=f'<text x="{150+(40+15*len(v) if v else 0)}" y="44" font-size="24" font-weight="700" fill="#e6e9f2">{E(sh[:44])}</text>'
+            ecol='#16c784' if x['edge']>=0 else '#ff4d5e'
+            lab={'After hours':'After hours','Pre-market':'Pre-market','Since the report':'Since the report'}[x['kind']]
+            rows+=(f'<text x="24" y="80" font-size="21" fill="#9ba3ba">{lab}: {sym} {x["chg"]*100:+.1f}% vs S&amp;P {x["schg"]*100:+.1f}%'
+                   +(f' · 3-month edge {r*100:+.1f} pts' if r is not None else '')+'</text>')
+            rows+=f'<text x="1036" y="62" text-anchor="end" font-size="40" font-weight="800" fill="{ecol}">{x["edge"]*100:+.1f} pts</text>'
+            if best is None or x['edge']>best[1]: best=(sym,x['edge'])
+        else:
+            ecol='#16c784' if (r or 0)>0 else '#ff4d5e' if (r or 0)<0 else '#9ba3ba'
+            rows+=f'<text x="150" y="38" font-size="22" font-weight="800" fill="#9ba3ba" letter-spacing="2">NO REPORT DUE</text><text x="1036" y="40" text-anchor="end" font-size="28" font-weight="800" fill="{ecol}">{(f"{r*100:+.1f} pts vs S&amp;P") if r is not None else "edge pending"}</text>'
+        rows+='</g>'; y+=h
+    nrep=len(rep); kinds={x['kind'] for x in rep.values()}
+    es=[x['edge'] for x in rep.values()]
+    quip=(f'"{best[0]} showed up with receipts. Victory lap pending (3 months to go)."' if best and best[1]>=0.02 else
+          '"Well, that was educational. Good thing the grade is 3 months, not 3 hours."' if max(es)<=-0.02 else
+          '"The market heard the numbers and shrugged. Rude, honestly."')
+    head=('THE PRINTS ARE IN' if nrep>1 else 'THE PRINT IS IN')
+    sub=('Reaction vs the S&amp;P 500 in after-hours trading' if kinds=={'After hours'} else 'Reaction vs the S&amp;P 500 in pre-market trading' if kinds=={'Pre-market'} else 'Move vs the S&amp;P 500 since the report')+f' · as of {E(NOW.strftime("%-I:%M %p ET"))}'
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs><radialGradient id="a" cx=".12" cy=".1" r=".75"><stop offset="0" stop-color="#16c784" stop-opacity=".28"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient><radialGradient id="b" cx=".92" cy=".85" r=".7"><stop offset="0" stop-color="#7c5cff" stop-opacity=".5"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient></defs>'
+         f'<rect width="1200" height="630" fill="#07080d"/><rect width="1200" height="630" fill="url(#a)"/><rect width="1200" height="630" fill="url(#b)"/><g font-family="Inter,Helvetica,Arial,sans-serif">'
+         f'<g transform="translate(70,48) scale(1.4)">{logo}</g><text x="146" y="93" font-size="38" font-weight="800" fill="#fff">The Daily Five</text>'
+         f'<text x="1130" y="93" text-anchor="end" font-size="24" font-weight="700" fill="#ffb020" letter-spacing="3">POST-EARNINGS VERDICT</text>'
+         f'<text x="70" y="166" font-size="54" font-weight="800" fill="#fff">{E(head)}</text>'
+         f'<text x="70" y="208" font-size="24" fill="#c9cede">{sub}</text>{rows}'
+         +(f'<text x="70" y="{y+34}" font-size="24" font-style="italic" fill="#e6e9f2"><tspan font-weight="800" fill="#ffb020">Max Edge: </tspan>{E(quip)}</text>' if y+34<570 else '')+
+         f'<text x="70" y="606" font-size="22" fill="#9ba3ba">One print doesn\'t settle a 3-month call · readdailyfive.com/earnings</text><text x="1130" y="606" text-anchor="end" font-size="22" fill="#9ba3ba">Not advice</text></g></svg>')
+def reported(ops):
+    """{SYM: reaction} for open calls whose report is out (report day after the print, or up to 5 days after)."""
+    out={}
+    for p in ops:
+        c=p.get('catalyst')
+        if not c: continue
+        n=(datetime.date.fromisoformat(c['date'])-TODAY).days
+        if -5<=n<=0:
+            x=reaction(p)
+            if x: out[p['symbol'].upper()]=x
+    return out
+def verdict_box(ops):
+    """/earnings/ top box once a print is out: headline result + reaction vs the S&P per reported call."""
+    rep=reported(ops)
+    if not rep: return ''
+    li=''
+    for p in ops:
+        sym=p['symbol'].upper(); x=rep.get(sym)
+        if not x: continue
+        res=(p.get('catalyst') or {}).get('result') or {}; cls='up' if x['edge']>=0 else 'dn'
+        li+=(f'<li><b>{E(sym)}</b>'+(f' · {E(res.get("verdict","").upper())}: {E(res.get("short",""))}' if res else '')
+             +f' · {x["kind"].lower()}: <span class="{cls}"><b>{x["edge"]*100:+.1f} pts</b></span> vs the S&amp;P ({x["chg"]*100:+.1f}% vs {x["schg"]*100:+.1f}%)</li>')
+    return (f'<section class="cx vdbox"><div class="cxh"><span class="cxk">\U0001F9FE Post-earnings verdict</span><b>{"The prints are in" if len(rep)>1 else "The print is in"}</b>'
+            f'<span class="cxd">as of {E(NOW.strftime("%-I:%M %p ET"))}</span></div><ul>{li}</ul>'
+            f'<p class="cxm"><b>Max Edge:</b> One night of trading doesn\'t grade a 3-month call. It does decide whether I get to be insufferable at breakfast.</p>'
+            f'<p class="why"><a href="{BASE}/og/verdict.png">Share the verdict card →</a></p></section>')
 def earnings_og(ops):
     """Share card for /earnings/ (1200x630): each open call's next report date (TONIGHT / tomorrow / in N days / reported)
     and live edge vs the S&P 500, so links to the earnings page unfurl as an earnings-night scorecard, not the daily card."""
@@ -580,6 +675,10 @@ def earnings_og(ops):
          f'<text x="70" y="180" font-size="54" font-weight="800" fill="#fff">{E(head)}</text>'
          f'<text x="70" y="226" font-size="26" fill="#c9cede">Open 3-month calls, graded vs the S&amp;P 500 · live edge as of {E(NOW.strftime("%-I:%M %p ET"))}</text>{rows}'
          f'<text x="70" y="600" font-size="22" fill="#9ba3ba">What makes us right or wrong: readdailyfive.com/earnings</text><text x="1130" y="600" text-anchor="end" font-size="22" fill="#9ba3ba">Not advice</text></g></svg>')
+    rep=reported(ops)
+    if rep:
+        svg=verdict_svg(sorted(ops,key=lambda p:(p['symbol'].upper() not in rep,p['symbol'])),rep)
+        w('og/verdict.svg',svg); PICK_OG_JOBS.append((os.path.join(OUT,'og/verdict.svg'),os.path.join(OUT,'og/verdict.png')))
     rel='og/earnings'; w(rel+'.svg',svg)
     PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
     import hashlib; return f"/{rel}.png?v={hashlib.sha1(svg.encode()).hexdigest()[:8]}"
@@ -612,7 +711,7 @@ def earnings_hub():
     h1='Earnings Calendar for Our Open Stock Calls'
     bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">📅 Earnings watch · updated {TODAY.strftime("%b %-d, %Y")}</span><h1 class="pt">{h1}</h1><p class="sub wksum">{E(lead)}</p>'
            f'<div class="hubcta"><a class="pill" href="{BASE}/best-stocks-to-buy-today/">Today\'s stock picks →</a><a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard →</a><a class="pill ghost" href="{BASE}/max-edge/">Max Edge videos →</a></div></section>'
-           +''.join(card(p) for p in ops)+f'<section class="signup wksign"><div><span class="kicker">📬 The morning after</span><h2>Get the post-earnings verdict at 7 AM ET.</h2><p>The free email grades our calls the morning after each report, wins and losses. No spam, unsubscribe anytime.</p></div>{sform("wk")}</section>'
+           +verdict_box(ops)+''.join(card(p) for p in ops)+f'<section class="signup wksign"><div><span class="kicker">📬 The morning after</span><h2>Get the post-earnings verdict at 7 AM ET.</h2><p>The free email grades our calls the morning after each report, wins and losses. No spam, unsubscribe anytime.</p></div>{sform("wk")}</section>'
            f'{faqh}<p class="disc-bar">⚠️ <b>Not financial advice.</b> Earnings dates come from company investor-relations pages and can change. Past results don\'t guarantee future returns.</p>')
     title=f"Earnings Dates This Week: {syms} | What Would Make Our Calls Right or Wrong | {BRAND}"
     desc=(f"Next earnings dates for every open Daily Five stock call ({syms}), with what would make each call right or wrong and the live edge vs the S&P 500.")[:155]

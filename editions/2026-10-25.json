@@ -56,7 +56,16 @@
      "Service revenue comes in under the ~$19.3 billion guide",
      "Talk of SpaceX's spectrum grabs the call and the 'decade-low multiple' just gets lower"
     ],
-    "max": "Same night as Microsoft, so Wednesday I find out if I'm a genius twice or wrong in stereo. T-Mobile has beaten EPS 8 quarters straight; the stock just has to stop acting like it hasn't."
+    "max": "Same night as Microsoft, so Wednesday I find out if I'm a genius twice or wrong in stereo. T-Mobile has beaten EPS 8 quarters straight; the stock just has to stop acting like it hasn't.",
+    "result": {
+     "verdict": "beat",
+     "short": "EPS $3.22 vs ~$2.87 · 274K adds",
+     "line": "Diluted EPS $3.22 vs ~$2.86-$2.89 consensus; revenue $23.58B (+3.5% y/y) vs ~$23.2-$23.3B; service revenue $19.4B (guide ~$19.3B); postpaid account adds 274K vs ~250K guide, but account churn rose to 1.09%; EBITDA and free-cash-flow guidance raised at the midpoint.",
+     "source": {
+      "name": "T-Mobile Q3 release",
+      "url": "https://www.businesswire.com/news/home/20261027455650/en/T-Mobile-Delivers-Strong-Account-and-ARPA-Growth-Translating-into-Industry-Leading-Service-Revenue-Profitability-and-EPS-Growth"
+     }
+    }
    }
   },
   {

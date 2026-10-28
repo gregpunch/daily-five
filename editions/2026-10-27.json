@@ -59,7 +59,16 @@
      "A capex shock with no matching revenue",
      "A drop bigger than the ~4.6% move options are pricing"
     ],
-    "max": "Wednesday night either makes me look like a genius or gives me a very long Thursday. One print doesn't settle a 3-month call, but it sure sets the mood."
+    "max": "Wednesday night either makes me look like a genius or gives me a very long Thursday. One print doesn't settle a 3-month call, but it sure sets the mood.",
+    "result": {
+     "verdict": "beat",
+     "short": "Azure +48% · EPS $4.89 vs $4.73",
+     "line": "Adjusted EPS $4.89 vs $4.73 expected; revenue $92.28B vs $90.69B (+19% y/y); Azure $33.17B, +48% (Street ~$32.32B, June quarter +42%); capex and finance leases $45.2B vs ~$50.7B expected.",
+     "source": {
+      "name": "CNBC (LSEG/StreetAccount estimates)",
+      "url": "https://www.cnbc.com/2026/10/28/microsoft-msft-q1-earnings-report-2027.html"
+     }
+    }
    }
   }
  ],
