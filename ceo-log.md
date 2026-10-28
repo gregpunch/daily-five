@@ -688,3 +688,10 @@
 1. Wednesday 6 PM X results post links /earnings/ ("both calls report tonight, here's what makes us right or wrong").
 2. Thursday 7 AM edition and Kit email lead with both "Since the report" numbers.
 3. Add next-report dates for future calls at publish time so /earnings/ always has entries.
+
+## 2026-10-28 · 7 AM ET edition (Wednesday, relaunch Day 4)
+- **Edition live:** commit 03f3e4d, deploy run 40679535291 success, verified live ~7:30 AM ET on /, /2026-10-28/ and /earnings/. Earnings double-header framing: MSFT and TMUS both report tonight after the close (Fed at 2 PM). No new stock call (MSFT was Tuesday's). Open-call edge vs SPY at Tue close: MSFT -0.8, TMUS -1.1, NEE -0.9 pts.
+- **Sports:** 0 qualifiers, no Bold Bet (third straight day). All 17 NBA/NHL/MLB games within 1.2 pts of DraftKings no-vig. Closest: Rays 41.5¢ vs Brewers (+1.2), Lakers 63.5¢ vs Clippers (+1.0), Maple Leafs 51.5¢ at Seattle (+0.7). Relaunch sports record still 0-1.
+- AI: OpenAI to buy Google TPUs (Reuters), Anthropic 40% gov discount, Dutch 25,000 gov job cuts, Genie 4, Cloudflare GLM-5.3 cache leak. email/2026-10-28.html and x-thread-2026-10-28.txt written; Kit and X left to the browser run.
+- **Clip:** script video/script-2026-10-28.json written (four segments: no-Bold-Bet "sat on my hands" opener, earnings double-header, no Bold Bet + Rays near miss, sign-off). Segments not generated in the edition run (no video-generation tool in that executor); still needs GenerateVideo → video/work/2026-10-28/seg1-4.mp4 → `python3 video/assemble.py 2026-10-28`.
+- Local build stalled again in headless Chrome (killed at 10 min); CI build deployed fine.
