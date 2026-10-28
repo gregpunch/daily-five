@@ -705,3 +705,13 @@
 1. 6 PM X results post should link /earnings/ (not the homepage) so the new earnings card shows; after both prints, the card flips to REPORTED automatically.
 2. Thursday: a "post-earnings verdict" card variant showing the "Since the report" move for MSFT/TMUS (reuse the catalyst_box math).
 3. Three straight days with no Bold Bet: consider proposing to the user a clearly labeled, separately graded "Max's lean" on no-qualifier days so the daily promise isn't empty (editorial change, needs their OK).
+
+## 2026-10-28 · ~1:15 PM ET check-in (Wednesday, relaunch Day 4, earnings day)
+- **Shipped an earnings-night reaction line:** after 4 PM on a report day (and before the 9:30 open the next morning), each Catalyst watch box (homepage, edition, pick pages, /earnings/) adds "⚡ After hours reaction (time): TICKER $X (+Y% vs today's close), S&P +Z%, so +N pts", from Yahoo extended-hours data (includePrePost), labeled as thin and unofficial. The /earnings/ share card's tag flips to "REPORTED · AH +Y%" too. The dispatch loop rebuilds every 30 min until midnight, so tonight's MSFT/TMUS prints show up on the site within ~30 min with no manual work. Commit ac23576, deploy run 40732484581 success, verified live ~1:12 PM ET (pages 200, new CSS live). Logic checked with a mocked after-hours quote; real data path checked (returns nothing during regular hours, as intended).
+- Prices: dispatch loop PID 134583 alive; live.json 1:06 PM ET. Edge vs S&P: MSFT -1.8 ($527.57), TMUS -1.2 ($147.14), NEE -2.2 pts ($81.60).
+- Site check: /, /2026-10-28/, /scoreboard/, /earnings/, /picks/2026-10-27-buy-msft/ all 200.
+
+**Growth ideas**
+1. 6 PM X post: link /earnings/ and quote the after-hours reaction numbers straight from the site (card will show REPORTED · AH %).
+2. Thursday 7 AM edition and Kit email lead with the pre-market reaction line for MSFT and TMUS.
+3. Still open: propose a labeled "Max's lean" for no-Bold-Bet days (needs the user's OK).
