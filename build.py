@@ -324,6 +324,22 @@ def share(p):
     u=f"{SITE}/picks/{p['id']}/"
     href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
     return f'<a class="shr" href="{E(href)}" target="_blank" rel="noopener" data-share-id="{p["id"]}" data-share-what="{E(what)}" data-share-url="{E(u)}" aria-label="Share {E(what)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>Share</a>'
+def ext_quote(sym):
+    """Latest pre-market or after-hours trade vs the last regular-session close (Yahoo includePrePost), or None
+    during regular hours / when nothing has traded outside the session yet. Used for earnings-night reaction lines."""
+    def f():
+        r=get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=5m&range=1d&includePrePost=true")['chart']['result'][0]
+        m=r['meta']; tp=m.get('currentTradingPeriod') or {}; reg=tp.get('regular') or {}
+        pts=[(t,c) for t,c in zip(r.get('timestamp',[]),r['indicators']['quote'][0]['close']) if c is not None]
+        if not pts or not reg: return None
+        t,c=pts[-1]
+        if t>=reg['end']: kind='After hours'
+        elif t<reg['start']: kind='Pre-market'
+        else: return None
+        base=m.get('regularMarketPrice') if kind=='After hours' else (m.get('chartPreviousClose') or m.get('previousClose'))
+        if not base: return None
+        return {'kind':kind,'px':c,'base':base,'t':t,'chg':(c-base)/base}
+    return memo(('yx',sym),f)
 def catalyst_box(p):
     """Earnings/catalyst watch on an open stock call: date countdown, what makes the call right or wrong, and once the
     report is out, the real post-report move vs the S&P 500 (from the report-day close), so results can be posted fast."""
@@ -343,6 +359,18 @@ def catalyst_box(p):
             m=(cur-pc)/pc; sm=(spy-sc)/sc; e=m-sm; cls='up' if e>=0 else 'dn'
             post=(f'<p class="cxpost {cls}"><span class="cxl">Since the report:</span> {sym} ${pc:,.2f} \u2192 ${cur:,.2f} ({m*100:+.1f}%) vs the S&amp;P {sm*100:+.1f}% '
                   f'= <b>{e*100:+.1f} pts</b>. The 3-month grade is still the one that counts.</p>')
+    # Earnings-night reaction: the after-hours (or next-morning pre-market) move right after the print, vs SPY's own
+    # extended-hours move. Unofficial; the 3-month grade is untouched.
+    pre=NOW.time()<datetime.time(9,30)
+    if (n==0 and ((after and NOW.time()>=datetime.time(16,0)) or (not after and pre))) or (n==-1 and after and pre and NOW.weekday()<5):
+        x=ext_quote(sym); xs=ext_quote('SPY')
+        if x and abs(x['chg'])>0.0001:
+            e=x['chg']-((xs or {}).get('chg') or 0); cls='up' if e>=0 else 'dn'
+            ref="today's" if x['kind']=='After hours' else "the last"
+            post+=(f'<p class="cxpost cxah {cls}"><span class="cxl">\u26A1 {x["kind"]} reaction</span> ({datetime.datetime.fromtimestamp(x["t"]).strftime("%-I:%M %p ET")}): '
+                   f'{sym} ${x["px"]:,.2f} ({x["chg"]*100:+.1f}% vs {ref} ${x["base"]:,.2f} close)'
+                   +(f', S&amp;P {xs["chg"]*100:+.1f}%, so <b>{e*100:+.1f} pts</b>' if xs else f' <b>{x["chg"]*100:+.1f}%</b>')
+                   +'. Thin extended-hours trading, so this can swing a lot by the open; updates every 30 minutes.</p>')
     li=lambda xs: ''.join(f'<li>{E(x)}</li>' for x in xs)
     return (f'<section class="cx"><div class="cxh"><span class="cxk">\U0001F4C5 Catalyst watch</span><b>{E(c["event"])}</b><span class="cxd">{E(st)}</span></div>{post}'
             f'<div class="cxg"><div class="cxr"><h4>\u2705 Right if</h4><ul>{li(c.get("right",[]))}</ul></div><div class="cxw"><h4>\u274C Wrong if</h4><ul>{li(c.get("wrong",[]))}</ul></div></div>'
@@ -532,6 +560,8 @@ def earnings_og(ops):
             d=datetime.date.fromisoformat(c['date']); n=(d-TODAY).days
             tag=('TONIGHT' if 'after' in c.get('when','') else 'TODAY') if n==0 else 'TOMORROW' if n==1 else f'{d.strftime("%a %b %-d").upper()}' if n>1 else 'REPORTED'
             tcol='#ffb020' if n in (0,1) else '#c9cede'
+            x=ext_quote(sym) if (n==0 and NOW.time()>=datetime.time(16,0)) or (n==-1 and NOW.time()<datetime.time(9,30)) else None
+            if x and abs(x['chg'])>0.0001: tag=f'REPORTED · {"AH" if x["kind"]=="After hours" else "PRE"} {x["chg"]*100:+.1f}%'
         else: tag,tcol='NO REPORT DUE','#9ba3ba'
         ecol='#16c784' if (r or 0)>0 else '#ff4d5e' if (r or 0)<0 else '#9ba3ba'
         et=f'{r*100:+.1f} pts vs S&amp;P' if r is not None else 'edge pending'
