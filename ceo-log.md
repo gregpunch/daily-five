@@ -738,3 +738,13 @@
 1. Thursday 7 AM: if the Rays win, the X thread and Kit email get a self-aware "the lean cashed, it's still not a Bold Bet" line (humor plus honesty about the separate record). If they lose, Max owns it in the clip.
 2. Add the lean to Max's daily clip script as a 5-second "and my lean, which is legally not a bet" beat, so no-qualifier days still have a payoff.
 3. After about 10 leans, publish a "Leans vs Bold Bets" comparison on /sports-results/. If leans hold up, that's data for revisiting the +2.5 bar.
+
+## 2026-10-29 · ~10:10 AM ET check-in (Thursday, relaunch Day 5, morning after the prints)
+- **Shipped Max Edge watch pages:** every clip now has its own page at /max-edge/<date>/ with the video as the main content (Google prefers this for video results), breadcrumbs, older/newer clip links, a "Read the full edition" button and the scoreboard link. Clip titles and descriptions now name that day's story plus the Bold Bet or Max's lean (e.g. "Max Edge, Thu Oct 29: Microsoft beat and our 3-month call flipped green before the bell"), instead of the generic "picks for 2026-10-29". Those titles flow into every VideoObject (edition pages, hub, watch pages) and the video sitemap, whose <loc> now points to the watch pages; /sitemap.xml lists them too. The edition-page clip caption gets a "Share this clip" link. Commit e890b32, deploy run 40888350412 success, verified live ~10:12 AM ET (/max-edge/, /max-edge/2026-10-25/ to /2026-10-29/ all 200, new titles live, video sitemap updated).
+- Prices: the box had been asleep (dispatch loop PID 134583 alive, but its last dispatch was 7:10 PM Wed; live.json was stuck at 7:32 AM). I dispatched a refresh by hand at 10:04 AM (run 40887841762 success). live.json 10:07 AM ET. Edge vs S&P: MSFT **-1.8** ($525.90, faded from ~$540 at the open and ~$543 premarket, so the post-beat pop is gone), TMUS **+1.0** ($149.81), NEE **-1.4** pts ($81.97).
+- Site check: all 242 sitemap URLs and every homepage link return 200. (The local site/ folder is stale and shows dead hub links; the CI build is the source of truth and is clean.)
+
+**Growth ideas**
+1. MSFT "beat and fade" is a good honest story for the 6 PM X results post: "Microsoft beat, Azure +48%, stock gave it all back by 10 AM. 3-month call, not a 1-day call. Max is unbothered." Link /max-edge/2026-10-29/ so the clip page unfurls.
+2. Next: a per-clip share card (og image with the clip thumbnail and play badge) for /max-edge/<date>/ pages; right now they use the default card.
+3. Off-box refresh is still the weak spot: GitHub cron is dense already but gets dropped, so morning prices stall whenever the box sleeps. A free external pinger could dispatch the workflow (needs the user's OK since it's a new account/service).
