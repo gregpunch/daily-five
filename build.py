@@ -651,12 +651,12 @@ def clip_now(d):
     ed=CLIP_EDS.get(d) or {}; rows=''
     for p in open3(d):
         rows+=(f'<div class="cnow"><div class="cnh"><span class="mini {p["action"].lower()}">{p["action"]}</span> <a href="{BASE}/picks/{p["id"]}/"><b>{E(p["label"])}</b></a>'
-               f' <small>3-month call from {datetime.date.fromisoformat(p["id"][:10]).strftime("%b %-d")} · vs S&amp;P 500</small></div>{livebox(p)}</div>')
+               f' <small>3-month call from {datetime.date.fromisoformat(p["id"][:10]).strftime("%b %-d")} · graded vs the S&amp;P 500</small></div>{livebox(p)}</div>')
     bb=next((p for p in ed.get('sports',[]) if p.get('bold')),None); ln=None if ed.get('sports') else ed.get('lean'); sp=bb or ln
     if sp:
         tag='BOLD BET' if bb else "MAX'S LEAN · not a bet"; href=f'{BASE}/picks/{sp["id"]}/' if bb and sp.get('id') else f'{BASE}/scoreboard/#leans'
         if sp.get('final') and sp.get('ret') is not None:
-            fl=final_line(sp); res=f'<p class="cnres">{"✅ Cashed" if sp["ret"]>0 else "❌ Missed"}{(" · "+E(fl[0])) if fl else ""} · {sp["ret"]*100:+.0f}% per $1 at {sp["entry"]*100:.1f}¢</p>'
+            fl=final_line(sp); res=f'<p class="cnres">{"✅ Cashed" if sp["ret"]>0 else "❌ Missed"}{(" · "+fl[0]) if fl else ""} · {sp["ret"]*100:+.0f}% per $1 at {sp["entry"]*100:.1f}¢</p>'
         else: res=livebox(sp) if sp.get('id') else ''
         rows+=(f'<div class="cnow"><div class="cnh"><span class="mini buy">{tag}</span> <a href="{href}"><b>{E(sp.get("label",""))}</b></a> <small>at {sp["entry"]*100:.1f}¢</small></div>{res}</div>')
     if not rows: return ''
