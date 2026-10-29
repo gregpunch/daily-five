@@ -233,3 +233,6 @@ a.cbt:hover{border-color:#ffb020}.cbt span{font-size:12px;text-transform:upperca
 .lean h3{font-size:22px}.lean h3 small{font-family:var(--mono);font-size:15px;color:var(--mut);font-weight:500}.lean p{margin:0}.lean-mkt{color:var(--mut);font-size:14px}
 .lean-why{color:#e6e9f3}.lean-book{font-size:14px;color:#cdd2e1}.lean-fine{font-size:12.5px;color:var(--mut)}.lean-res{font-weight:700}.lean-src{font-size:13px;font-weight:700;text-decoration:none}
 .leans .tiles{margin-bottom:12px}
+.clipnow{max-width:640px;margin:18px auto;padding:16px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(124,92,255,.06)}
+.clipnow h2{font-size:1.1em;margin:0 0 6px}.clipnow .sub{font-size:.85em}
+.cnow{margin:12px 0}.cnh{margin-bottom:6px;font-size:.95em}.cnh small{opacity:.7}.cnres{margin:4px 0;font-weight:700}

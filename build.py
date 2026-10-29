@@ -645,6 +645,24 @@ def clip_og(d):
     rel=f'og/max-edge/{d}'; w(rel+'.svg',svg)
     PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
     return f"/{rel}.png?v={hashlib.sha1(svg.encode()).hexdigest()[:8]}"
+def clip_now(d):
+    """'Where Max's calls stand now' on a clip watch page: live boxes for the 3-month calls open as of that clip, plus that day's Bold Bet or lean.
+    Keeps an old clip honest when its morning story goes stale (live.js repaints every .lv each minute)."""
+    ed=CLIP_EDS.get(d) or {}; rows=''
+    for p in open3(d):
+        rows+=(f'<div class="cnow"><div class="cnh"><span class="mini {p["action"].lower()}">{p["action"]}</span> <a href="{BASE}/picks/{p["id"]}/"><b>{E(p["label"])}</b></a>'
+               f' <small>3-month call from {datetime.date.fromisoformat(p["id"][:10]).strftime("%b %-d")} · vs S&amp;P 500</small></div>{livebox(p)}</div>')
+    bb=next((p for p in ed.get('sports',[]) if p.get('bold')),None); ln=None if ed.get('sports') else ed.get('lean'); sp=bb or ln
+    if sp:
+        tag='BOLD BET' if bb else "MAX'S LEAN · not a bet"; href=f'{BASE}/picks/{sp["id"]}/' if bb and sp.get('id') else f'{BASE}/scoreboard/#leans'
+        if sp.get('final') and sp.get('ret') is not None:
+            fl=final_line(sp); res=f'<p class="cnres">{"✅ Cashed" if sp["ret"]>0 else "❌ Missed"}{(" · "+E(fl[0])) if fl else ""} · {sp["ret"]*100:+.0f}% per $1 at {sp["entry"]*100:.1f}¢</p>'
+        else: res=livebox(sp) if sp.get('id') else ''
+        rows+=(f'<div class="cnow"><div class="cnh"><span class="mini buy">{tag}</span> <a href="{href}"><b>{E(sp.get("label",""))}</b></a> <small>at {sp["entry"]*100:.1f}¢</small></div>{res}</div>')
+    if not rows: return ''
+    return (f'<section class="clipnow" id="now"><h2>📡 Where Max\'s calls stand now</h2><p class="sub">This clip was recorded the morning of {datetime.date.fromisoformat(d).strftime("%b %-d")}. Markets moved since. '
+            f'Live prices, last updated <b id="upd">{NOW.strftime('%-I:%M %p ET')}</b> (stocks via Yahoo Finance, may lag ~15 min; sports via Polymarket).</p>{rows}'
+            f'<p class="sub"><a href="{BASE}/scoreboard/">Full scoreboard →</a></p></section>')
 def max_edge_watch_pages(ds):
     """/max-edge/<date>/: one watch page per clip, the video as the main content (better for Google video results)."""
     for i,d in enumerate(ds):
@@ -656,7 +674,7 @@ def max_edge_watch_pages(ds):
              +(f'<a class="pill ghost" href="{BASE}/max-edge/{newer}/">Newer clip \u2192</a>' if newer else '')
              +f'<a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard</a></div>')
         bodyh=(cnav+f'<section class="sbhero hubhero"><span class="kicker">\U0001F399\ufe0f Max Edge \u00b7 {nice}</span><h1 class="pt">{E(vt.split(": ",1)[-1])}</h1>'
-               f'<p class="sub">{E(ed.get("top_call") or vdsc)}</p></section>'+clip_html(d)+nav
+               f'<p class="sub">{E(ed.get("top_call") or vdsc)}</p></section>'+clip_html(d)+clip_now(d)+nav
                +'<p class="disc-bar">\u26a0\ufe0f <b>Not financial or betting advice.</b> Max Edge is AI-generated. 21+.</p>')
         sch={'@context':'https://schema.org','@graph':[{'@type':'WebPage','name':vt,'url':SITE+vp,'isPartOf':{'@type':'WebSite','name':BRAND,'url':SITE+'/'}},csch]}
         og=clip_og(d) or (f'/og/{d}.png' if os.path.exists(os.path.join(OUT,'og',f'{d}.png')) else None)
