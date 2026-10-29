@@ -266,5 +266,25 @@
  "2026-10-23/f1": {
   "price": 198.85,
   "note": "closed 2026-10-26"
+ },
+ "2026-10-28/lean": {
+  "price": 0.0,
+  "note": "resolved"
+ },
+ "2026-10-21/s3": {
+  "price": 0.0,
+  "note": "resolved"
+ },
+ "2026-10-20/s0": {
+  "price": 0.0,
+  "note": "resolved"
+ },
+ "2026-10-16/s2": {
+  "price": 1.0,
+  "note": "resolved"
+ },
+ "2026-10-15/s4": {
+  "price": 0.0,
+  "note": "resolved"
  }
 }
