@@ -1,0 +1,84 @@
+{
+ "date": "2026-10-29",
+ "headline": "Microsoft beat and our 3-month call flipped green before the bell, Alphabet got hit for 10%, T-Mobile is up too, and no Bold Bet again because nothing on Thursday's board cleared Max Edge's bar",
+ "top_call": "Microsoft beat, and our 3-month call flipped to the right side of the S&P 500 before the bell. Azure grew 48%, earnings came in at $4.89 a share vs $4.73 expected, and the stock traded near $543 premarket, about 1.2 points ahead of the S&P after closing Wednesday 1.2 points behind. Alphabet dropped 10% on the same AI spending story. Very different report cards.",
+ "backdrop": "Nasdaq futures fell about 1% early Thursday after Alphabet's negative free cash flow revived worries about AI spending, with Alphabet down 10.2% premarket and Microsoft up 3.6% on a cloud-driven beat. The Fed held rates on Wednesday; Amazon and Intel report after Thursday's close.",
+ "backdrop_source": {
+  "name": "Reuters",
+  "url": "https://www.investing.com/news/economy-news/nasdaq-futures-slide-as-mixed-big-tech-results-test-ai-trade-4981842"
+ },
+ "finance": [],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "Alphabet slides 10% premarket after negative free cash flow of $9.07 billion, while Microsoft rises on capex below forecasts",
+   "why": "Wall Street just stopped grading AI spending on a curve: spend big, fine, but show the cash.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/29/alphabet-google-microsoft-msft-shares-today-earnings.html"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Google DeepMind announces Gemini 4 Carbon, ranked first on Artificial Analysis's index, but only select cyber defenders can use it for now",
+   "why": "The best model on the leaderboard is behind a velvet rope, and that's the new normal for cyber-capable AI.",
+   "source": {
+    "name": "Google",
+    "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/"
+   }
+  },
+  {
+   "category": "Regulation",
+   "headline": "The US Justice Department is asking how Nvidia's $12.93 billion Hugging Face deal would affect competition in AI",
+   "why": "Owning the chips and the place everyone downloads models from is the kind of combo antitrust lawyers circle in red.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.investing.com/news/stock-market-news/exclusiveus-doj-is-inquiring-about-nvidias-purchase-of-hugging-face-sources-say-4980450"
+   }
+  },
+  {
+   "category": "Money",
+   "headline": "Microsoft booked $10 billion of revenue from OpenAI deals in one quarter, nearly 11% of its $92.3 billion total",
+   "why": "OpenAI is now a bigger business line for Microsoft than Bing or Xbox, which is a sentence nobody predicted in 2019.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/28/microsoft-recorded-10-billion-in-revenue-from-openai/"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "Axiom says swarms of AI agents helped formalize math's longest proof, the classification of finite simple groups, in Lean in 24 days",
+   "why": "About 15,000 pages of human proof, machine-checked line by line, and it even turned up 34 notable deviations along the way.",
+   "source": {
+    "name": "Axiom",
+    "url": "https://axiommath.ai/research/the-enormous-theorem-formalized/"
+   }
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Closest misses at 7:05 AM ET: Ducks 43.5¢ vs the Sabres (+2.2 pts), Blue Jackets 30.5¢ at Carolina (+2.6 pts, but under our 40¢ floor), Panthers 35.5¢ at Green Bay on Thursday Night Football (+1.4 pts, also under 40¢). Every other NBA and NHL game on the board priced within 1.4 points of DraftKings' no-vig line. DraftKings lines via ESPN.",
+ "lean": {
+  "action": "BUY",
+  "label": "Ducks",
+  "market": "NHL: BUF @ ANA, Thu Oct 29 10:00 PM ET",
+  "slug": "nhl-buf-ana-2026-10-29",
+  "outcome": 1,
+  "entry": 0.435,
+  "event_date": "2026-10-29",
+  "edge": 2.2,
+  "edge_at": "7:05 AM ET",
+  "book": {
+   "name": "DraftKings via ESPN",
+   "url": "https://www.espn.com/nhl/game/_/gameId/401892608",
+   "odds": [
+    110,
+    -130
+   ]
+  },
+  "why": "Not a bet, a lean. DraftKings makes Anaheim a 45.7% shot at home and Polymarket sells it for 43.5¢. That's +2.2 points, three tenths short of our 2.5 bar. So close I can smell the Zamboni, but rules are rules.",
+  "source": {
+   "name": "Polymarket",
+   "url": "https://polymarket.com/event/nhl-buf-ana-2026-10-29"
+  }
+ }
+}

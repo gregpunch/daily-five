@@ -484,7 +484,9 @@ def recap(prev):
     if not prev: return '<div class="recap"><div><span class="kicker">📬 Yesterday\'s results</span><p>Day 1 of Max Edge, our AI handicapper. Every pick is graded in public from today; results start tomorrow. Every pick is tracked on the <a href="'+BASE+'/track-record/">Track record</a>.</p></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
     ps=prev['finance']+prev['sports']; rs=[p['ret'] for p in ps if p.get('ret') is not None]
     items=''.join(f'<a href="{BASE}/picks/{p["id"]}/" class="rc"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} {chip(p.get("ret"),p.get("final"))}</a>' for p in ps)
-    summ=f'{sum(r>0 for r in rs)}/{len(rs)} winning · avg {pct(sum(rs)/len(rs)) if rs else "—"}'
+    summ=f'{sum(r>0 for r in rs)}/{len(rs)} winning · avg {pct(sum(rs)/len(rs)) if rs else "—"}' if ps else 'No picks (nothing cleared our bar)'
+    ln=prev.get('lean') if not prev['sports'] else None
+    if ln: items+=f'<a href="{BASE}/scoreboard/#leans" class="rc"><b class="buy">LEAN</b> Max\'s lean (not a pick): {E(ln["label"])} {chip(ln.get("ret"),ln.get("final"))}</a>'
     return f'<div class="recap"><div><span class="kicker">📬 Yesterday\'s results ({prev["date"]})</span><p><b>{summ}</b></p><div class="rcs">{items}</div></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
 def today_strip(ps,where='home',settled=None):
     """'Today so far' running P/L strip for open picks. live.js recomputes it every minute."""

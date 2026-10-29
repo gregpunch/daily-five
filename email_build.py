@@ -69,9 +69,11 @@ def recap(prev):
     # Yesterday's picks with real results (same numbers as the site's recap block)
     if not prev: return ''
     ps=prev['finance']+prev['sports']; rs=[p['ret'] for p in ps if p.get('ret') is not None]
-    if not rs: return ''
+    ln=prev.get('lean') if not prev['sports'] else None
+    if ln and ln.get('ret') is None: ln=None
+    if not rs and not ln: return ''
     d=datetime.date.fromisoformat(prev['date'])
-    summ=f"{sum(r>0 for r in rs)}/{len(rs)} winning · avg {sum(rs)/len(rs)*100:+.2f}%"
+    summ=f"{sum(r>0 for r in rs)}/{len(rs)} winning · avg {sum(rs)/len(rs)*100:+.2f}%" if rs else "No picks yesterday: nothing cleared our bar"
     fin_=[p['ret'] for p in ps if p.get('final') and p.get('ret') is not None]; op_=len(rs)-len(fin_)
     if fin_ and op_: summ=f"Settled {sum(r>0 for r in fin_)}-{sum(r<=0 for r in fin_)} · avg {sum(fin_)/len(fin_)*100:+.1f}% · {op_} still open"
     def chip(p):
@@ -81,6 +83,7 @@ def recap(prev):
         return f'<span style="{M}font-size:12px;font-weight:700;color:{c};">{r*100:+.1f}%{" final" if p.get("final") else ""}</span>'
     order=sorted(ps,key=lambda p:(not p.get('final'),-(p.get('ret') or 0)))
     items=' &nbsp;·&nbsp; '.join(f'<span style="{F}font-size:13px;color:#e6e9f3;white-space:nowrap;"><b>{E(p["action"])} {E(p["label"])}</b> {chip(p)}</span>' for p in order if p.get('ret') is not None)
+    if ln: items=(items+' &nbsp;·&nbsp; ' if items else '')+f'<span style="{F}font-size:13px;color:#c4b5fd;white-space:nowrap;"><b>🤏 Max\'s lean (not a pick): {E(ln["label"])}</b> {chip(ln)}</span>'
     inner=(f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;padding-bottom:4px;">📬 Yesterday\'s results · {E(d.strftime("%a %b ")+str(d.day))}</div>'
       f'<div style="{F}font-size:17px;font-weight:800;color:{TXT};padding-bottom:6px;">{E(summ)}</div>'
       f'<div style="line-height:22px;">{items}</div>'
@@ -188,7 +191,7 @@ def render(ed,prev=None,rec=None,open3=None):
     if not ed['sports']: rows.append(f'<tr><td style="padding:8px 24px;{F}font-size:14px;line-height:20px;color:{TXT};"><b>🚫 No bets today: nothing cleared our bar.</b> A pick needs a real sportsbook line, a 40¢–70¢ price and +2.5 points of edge. No Bold Bet of the Day. '+E(ed.get('no_bets_note') or '')+'</td></tr>')
     ln=ed.get('lean') if not ed['sports'] else None
     if ln:
-        import build as _b
+        _b=sys.modules['__main__'] if hasattr(sys.modules.get('__main__'),'lean_rec_txt') else __import__('build')
         rows.append(f'<tr><td style="padding:6px 24px;"><div style="border:1px dashed {VIO};border-radius:14px;padding:14px 16px;background:#151233;{F}color:{TXT};">'
           f'<div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#c4b5fd;">🤏 Max\'s lean · not a Bold Bet · not a pick</div>'
           f'<div style="font-size:20px;font-weight:800;padding-top:6px;">{E(ln["label"])} <span style="{M}font-size:14px;color:{MUT};font-weight:500;">at {ln["entry"]*100:.1f}¢'+(f' · {ln["edge"]:+.1f} pts vs the books' if ln.get('edge') is not None else '')+'</span></div>'

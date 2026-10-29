@@ -1,0 +1,35 @@
+{
+ "date": "2026-10-29",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY'S LEAN: RAYS LOST 4-1",
+   "action": "Winces theatrically, clutches his chest, then laughs it off with a shrug and a smirk.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Yesterday's lean, the Rays? Lost four to one. Good thing it was a lean and not a bet. I leaned so hard I fell over. Leans record: zero and one. Fully itemized."
+  },
+  {
+   "id": 2,
+   "banner": "MAX'S LEAN: DIDN'T CLEAR OUR BAR",
+   "action": "Leans toward camera, pinches his thumb and finger almost together, eyebrows raised, then shakes his head with a grin.",
+   "line": "Today's Bold Bet? None again. My lean is the Ducks at home against Buffalo, forty three and a half cents. The books say forty six. That's two point two of edge. Didn't clear my bar. So close I can smell the Zamboni."
+  },
+  {
+   "id": 3,
+   "banner": "MSFT BEAT \u00b7 OUR CALL GREEN",
+   "action": "Throws both arms up in celebration, then points at himself proudly and dusts off his shoulder.",
+   "line": "Now the fun part. Microsoft beat! Azure grew forty eight percent, and our call flipped green before the bell, while Alphabet got smacked ten percent. Same A.I. spending, different report card. I'd like to thank my spreadsheet."
+  },
+  {
+   "id": 4,
+   "banner": "GRADED IN PUBLIC",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "Every call graded against the S and P, in public. Not financial advice. Twenty-one plus only, please gamble responsibly. Tomorrow's picks are free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET \u00b7 every call graded"
+ }
+}
