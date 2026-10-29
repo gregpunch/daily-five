@@ -571,6 +571,19 @@ def clip_transcript(d):
     f=os.path.join(ROOT,'video',f'script-{d}.json')
     try: return [(g.get('banner',''),g['line']) for g in json.load(open(f)).get('segments',[]) if g.get('line')]
     except Exception: return []
+CLIP_EDS={}  # date -> edition, filled by max_edge_hub so clip titles can name the day's story
+def clip_meta(d):
+    """(video title, description, watch-page path) for a Max Edge clip, specific to that day's edition when known."""
+    ed=CLIP_EDS.get(d) or {}; nice=datetime.date.fromisoformat(d).strftime('%a %b %-d')
+    hl=(ed.get('headline') or '').strip(); story=re.split(r',\s| and no Bold Bet| \| ',hl)[0].strip() if hl else ''
+    if len(story)>110: story=story[:107].rsplit(' ',1)[0].rstrip(':,;')+'…'
+    bb=next((p for p in ed.get('sports',[]) if p.get('bold')),None); ln=ed.get('lean')
+    extra=(f" Bold Bet: {bb.get('label') or bb.get('outcome') or ''} at {money('Sports',bb.get('entry'))}." if bb
+           else (f" No Bold Bet; Max's lean (not a bet): {ln.get('label','')} at {money('Sports',ln.get('entry'))}." if ln else ''))
+    title=f"Max Edge, {nice}: {story}" if story else f"Max Edge: The Daily Five picks for {nice}"
+    desc=(f"Max Edge, The Daily Five's AI-generated host, in under a minute. {(story.rstrip('.')+'.') if story else 'Today\'s calls.'}{extra} "
+          f"3-month stock calls graded vs the S&P 500. Not financial advice. 21+.")
+    return title,desc,f'/max-edge/{d}/'
 def clip_html(d):
     v=os.path.join(ROOT,'clips',f'max-{d}.mp4')
     if not os.path.exists(v): return ''
@@ -579,8 +592,8 @@ def clip_html(d):
         f=os.path.join(ROOT,'clips',f'max-{d}.{x}')
         if os.path.exists(f): shutil.copy(f,os.path.join(OUT,'video',f'max-{d}.{x}'))
     dur=mp4_secs(v); iso=f'PT{round(dur)//60}M{round(dur)%60}S' if dur else None
-    vo={'@context':'https://schema.org','@type':'VideoObject','name':f'Max Edge: The Daily Five picks for {d}',
-        'description':f"Max Edge, The Daily Five's AI-generated host, runs through the {d} stock calls, sports-market plays and Bold Bet of the Day. Not financial advice.",
+    vt,vdsc,vp=clip_meta(d)
+    vo={'@context':'https://schema.org','@type':'VideoObject','name':vt,'description':vdsc,'url':SITE+vp,
         'thumbnailUrl':[f'{SITE}/video/max-{d}.jpg'],'uploadDate':f'{d}T07:00:00-04:00','contentUrl':f'{SITE}/video/max-{d}.mp4',
         'publisher':{'@type':'Organization','name':'The Daily Five','url':SITE}}
     if iso: vo['duration']=iso
@@ -595,25 +608,43 @@ def clip_html(d):
     return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><h2 style="font-size:1.05em;margin:0 0 8px">🎙️ Max Edge\'s {secs}rundown: today\'s calls + the Bold Bet</h2>'
             f'<div style="position:relative"><video id="mxv" controls playsinline muted loop preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000;display:block" src="{BASE}/video/max-{d}.mp4"></video>'
             f'<button type="button" id="mxs" style="position:absolute;top:10px;right:10px;border:0;border-radius:999px;padding:6px 12px;font-weight:700;background:rgba(0,0,0,.7);color:#fff;cursor:pointer">🔊 Tap for sound</button></div>'
-            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+. <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption>'
+            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+. <a href="{BASE}{vp}">Share this clip</a> \u00b7 <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption>'
             +(('<details class="mxtr" style="text-align:left;margin-top:8px;font-size:.9em"><summary style="cursor:pointer;font-weight:700">📝 Read the transcript (sound off? no problem)</summary>'
                +''.join(f'<p style="margin:8px 0"><b style="font-size:.8em;letter-spacing:.04em;opacity:.75">{E(b)}</b><br>{E(l)}</p>' for b,l in tr)+'</details>') if tr else '')
             +'</figure>'+js)
+def max_edge_watch_pages(ds):
+    """/max-edge/<date>/: one watch page per clip, the video as the main content (better for Google video results)."""
+    for i,d in enumerate(ds):
+        ed=CLIP_EDS.get(d) or {}; vt,vdsc,vp=clip_meta(d); nice=datetime.date.fromisoformat(d).strftime('%A, %B %-d, %Y')
+        newer=ds[i-1] if i>0 else None; older=ds[i+1] if i+1<len(ds) else None
+        cnav,csch=crumbs([('Home','/'),('Max Edge videos','/max-edge/'),(datetime.date.fromisoformat(d).strftime('%b %-d, %Y'),vp)])
+        nav=('<div class="hubcta">'+(f'<a class="pill ghost" href="{BASE}/max-edge/{older}/">\u2190 Older clip</a>' if older else '')
+             +f'<a class="pill" href="{BASE}/{d}/">Read the full {datetime.date.fromisoformat(d).strftime("%b %-d")} edition \u2192</a>'
+             +(f'<a class="pill ghost" href="{BASE}/max-edge/{newer}/">Newer clip \u2192</a>' if newer else '')
+             +f'<a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard</a></div>')
+        bodyh=(cnav+f'<section class="sbhero hubhero"><span class="kicker">\U0001F399\ufe0f Max Edge \u00b7 {nice}</span><h1 class="pt">{E(vt.split(": ",1)[-1])}</h1>'
+               f'<p class="sub">{E(ed.get("top_call") or vdsc)}</p></section>'+clip_html(d)+nav
+               +'<p class="disc-bar">\u26a0\ufe0f <b>Not financial or betting advice.</b> Max Edge is AI-generated. 21+.</p>')
+        sch={'@context':'https://schema.org','@graph':[{'@type':'WebPage','name':vt,'url':SITE+vp,'isPartOf':{'@type':'WebSite','name':BRAND,'url':SITE+'/'}},csch]}
+        og=f'/og/{d}.png' if os.path.exists(os.path.join(OUT,'og',f'{d}.png')) else None
+        w(f'max-edge/{d}/index.html',shell(vt if len(vt)>62 else f'{vt} (60-sec video) | {BRAND}',vdsc[:160],vp,bodyh,sch,og=og))
 def max_edge_hub(eds):
     """/max-edge/: every Max Edge daily clip in one place (latest playable on top, past clips linked to their editions)."""
-    P='/max-edge/'; byd={e['date']:e for e in eds}
+    P='/max-edge/'; byd={e['date']:e for e in eds}; CLIP_EDS.update(byd)
     ds=sorted((os.path.basename(f)[4:14] for f in glob.glob(os.path.join(ROOT,'clips','max-*.mp4'))),reverse=True)
     if not ds: return None
+    max_edge_watch_pages(ds)
     rows=''; items=[]
     for i,d in enumerate(ds):
         ed=byd.get(d) or {}; dur=mp4_secs(os.path.join(ROOT,'clips',f'max-{d}.mp4'))
         bb=next((p for p in ed.get('sports',[]) if p.get('bold')),None)
         nice=datetime.date.fromisoformat(d).strftime('%a, %b %-d, %Y')
         bbh=f'<span class="sub"> · Bold Bet: {E(bb.get("outcome") or "")} ({E(bb["market"])}) at {money("Sports",bb.get("entry"))}</span>' if bb else ''
-        rows+=(f'<li style="display:flex;gap:12px;align-items:center;margin:10px 0"><a href="{BASE}/{d}/"><img src="{BASE}/video/max-{d}.jpg" alt="Max Edge clip thumbnail, {nice}" width="72" height="128" loading="lazy" style="border-radius:8px;object-fit:cover;background:#000"></a>'
-               f'<div><a href="{BASE}/{d}/"><b>{nice}</b></a>{f" · {round(dur)} s" if dur else ""}<br>{E(ed.get("headline",""))}{bbh}</div></li>')
-        vo={'@type':'VideoObject','name':f'Max Edge: The Daily Five picks for {d}','description':f"Max Edge, The Daily Five's AI-generated host, runs through the {d} stock calls, sports-market plays and Bold Bet of the Day. Not financial advice.",
-            'thumbnailUrl':[f'{SITE}/video/max-{d}.jpg'],'uploadDate':f'{d}T07:00:00-04:00','contentUrl':f'{SITE}/video/max-{d}.mp4','url':f'{SITE}/{d}/'}
+        rows+=(f'<li style="display:flex;gap:12px;align-items:center;margin:10px 0"><a href="{BASE}/max-edge/{d}/"><img src="{BASE}/video/max-{d}.jpg" alt="Max Edge clip thumbnail, {nice}" width="72" height="128" loading="lazy" style="border-radius:8px;object-fit:cover;background:#000"></a>'
+               f'<div><a href="{BASE}/max-edge/{d}/"><b>{nice}</b></a>{f" · {round(dur)} s" if dur else ""} · <a href="{BASE}/{d}/">edition</a><br>{E(ed.get("headline",""))}{bbh}</div></li>')
+        vt,vdsc,vp=clip_meta(d)
+        vo={'@type':'VideoObject','name':vt,'description':vdsc,
+            'thumbnailUrl':[f'{SITE}/video/max-{d}.jpg'],'uploadDate':f'{d}T07:00:00-04:00','contentUrl':f'{SITE}/video/max-{d}.mp4','url':SITE+vp}
         if dur: vo['duration']=f'PT{round(dur)//60}M{round(dur)%60}S'
         items.append({'@type':'ListItem','position':i+1,'item':vo})
     desc=f'Watch Max Edge, The Daily Five\'s AI-generated host, call a 3-month stock pick and the Bold Bet of the Day in under a minute. New clip every morning; {len(ds)} so far, every call graded in public.'[:155]
@@ -2027,6 +2058,7 @@ def main():
     host=urlparse(SITE).hostname
     if host and not host.endswith('github.io'): w('CNAME',host+'\n')
     eds_all=[json.load(open(f)) for f in sorted(glob.glob(os.path.join(ROOT,'editions','*.json')),reverse=True)]
+    CLIP_EDS.update({e['date']:e for e in eds_all})
     for ed in eds_all: enrich(ed)
     _ALL[:]=eds_all
     ALLEDS[:]=eds_all
@@ -2088,7 +2120,7 @@ def main():
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
     # lastmod: hubs today; an edition page changes until all its picks settle; pick/ticker pages from lastmod()
     edlm=lambda e: max([lastmod(p,e) for p in e['finance']+e['sports']]+[e['date']])
-    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+nfr+extra
+    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+[(f'/max-edge/{os.path.basename(f)[4:14]}/',os.path.basename(f)[4:14]) for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))]+nfr+extra
     seen={u for u,_ in urls}; urls+=[x for x in beta_extra if x[0] not in seen]
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
@@ -2096,10 +2128,10 @@ def main():
     # video sitemap: one <url> per Max Edge clip, landing on that day's edition page (Google video results)
     vids=''
     for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4'))):
-        d=os.path.basename(f)[4:14]; dur=mp4_secs(f)
-        vids+=(f"<url><loc>{SITE}/{d}/</loc><video:video><video:thumbnail_loc>{SITE}/video/max-{d}.jpg</video:thumbnail_loc>"
-               f"<video:title>{E(f'Max Edge: The Daily Five picks for {d}')}</video:title>"
-               f"<video:description>{E(f'Max Edge, the AI-generated host of The Daily Five, runs through the {d} stock calls, sports-market plays and Bold Bet of the Day. Not financial advice.')}</video:description>"
+        d=os.path.basename(f)[4:14]; dur=mp4_secs(f); vt,vdsc,vp=clip_meta(d)
+        vids+=(f"<url><loc>{SITE}{vp}</loc><video:video><video:thumbnail_loc>{SITE}/video/max-{d}.jpg</video:thumbnail_loc>"
+               f"<video:title>{E(vt[:100])}</video:title>"
+               f"<video:description>{E(vdsc)}</video:description>"
                f"<video:content_loc>{SITE}/video/max-{d}.mp4</video:content_loc>"+(f"<video:duration>{round(dur)}</video:duration>" if dur else '')+
                f"<video:publication_date>{d}T07:00:00-04:00</video:publication_date><video:family_friendly>yes</video:family_friendly></video:video></url>")
     w('video-sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">'+vids+'</urlset>')
