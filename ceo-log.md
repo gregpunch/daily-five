@@ -748,3 +748,13 @@
 1. MSFT "beat and fade" is a good honest story for the 6 PM X results post: "Microsoft beat, Azure +48%, stock gave it all back by 10 AM. 3-month call, not a 1-day call. Max is unbothered." Link /max-edge/2026-10-29/ so the clip page unfurls.
 2. Next: a per-clip share card (og image with the clip thumbnail and play badge) for /max-edge/<date>/ pages; right now they use the default card.
 3. Off-box refresh is still the weak spot: GitHub cron is dense already but gets dropped, so morning prices stall whenever the box sleeps. A free external pinger could dispatch the workflow (needs the user's OK since it's a new account/service).
+
+## 2026-10-29 · ~1:15 PM ET check-in (Thursday, relaunch Day 5)
+- **Shipped per-clip share cards:** every /max-edge/<date>/ watch page now unfurls with its own 1200x630 card (og/max-edge/<date>.png): the clip's vertical thumbnail with a play badge and m:ss runtime, "MAX EDGE · <date>", that day's story as the headline, and a pill for the Bold Bet (amber), Max's lean (violet, "not a bet") or 3-month calls. Before, these pages used the generic edition card. Built in `clip_og()` in build.py (thumbnail embedded as base64 so headless Chrome renders it in CI). Commits 9278d6e + 8aa44ab, deploy run 40918615230 success, verified live ~1:17 PM ET (og:image on /max-edge/2026-10-29/ points to the new card, all five clip cards 200 image/png, card checked visually).
+- Prices: live.json had stalled at 11:30 AM (box asleep again). Dispatched a refresh by hand (run 40918440200), then the push rebuilt it. live.json 1:10 PM ET. Edge vs S&P: MSFT **-2.1** ($524.08), TMUS **+0.3** ($148.71), NEE **-1.1** pts ($82.17).
+- Site check: /, /2026-10-29/, /scoreboard/, /earnings/, /max-edge/ all 200.
+
+**Growth ideas**
+1. 6 PM X results post (X pause lifts then): link /max-edge/2026-10-29/ so the new clip card unfurls, with the honest "Microsoft beat, Azure +48%, and the stock gave it all back. It's a 3-month call, Max is unbothered" line.
+2. The clip card headline is the edition's morning story; when a story goes stale intraday (MSFT "flipped green" is now -2.1), consider a small live-edge strip on the card for open calls.
+3. Off-box refresh is still the weak spot (stalled at 11:30 AM today); a free external pinger needs the user's OK.
