@@ -612,6 +612,39 @@ def clip_html(d):
             +(('<details class="mxtr" style="text-align:left;margin-top:8px;font-size:.9em"><summary style="cursor:pointer;font-weight:700">📝 Read the transcript (sound off? no problem)</summary>'
                +''.join(f'<p style="margin:8px 0"><b style="font-size:.8em;letter-spacing:.04em;opacity:.75">{E(b)}</b><br>{E(l)}</p>' for b,l in tr)+'</details>') if tr else '')
             +'</figure>'+js)
+def clip_og(d):
+    """Per-clip share card (1200x630) for /max-edge/<date>/: the clip's thumbnail with a play badge, the day's story and the Bold Bet or lean."""
+    thumb=os.path.join(ROOT,'clips',f'max-{d}.jpg')
+    if not os.path.exists(thumb): return None
+    import base64, textwrap, hashlib
+    b64=base64.b64encode(open(thumb,'rb').read()).decode()
+    ed=CLIP_EDS.get(d) or {}; vt,_,_=clip_meta(d); story=vt.split(': ',1)[-1]
+    dur=mp4_secs(os.path.join(ROOT,'clips',f'max-{d}.mp4'))
+    lines=textwrap.wrap(story,30)
+    if len(lines)>4: lines=lines[:4]; lines[3]=lines[3].rstrip('.,;: ')+'…'
+    fs=46 if len(lines)<=3 else 40
+    bb=next((p for p in ed.get('sports',[]) if p.get('bold')),None); ln=ed.get('lean')
+    if bb: tag,tc,tx=('BOLD BET','#ffb020',f"{bb.get('label') or bb.get('outcome') or ''} at {money('Sports',bb.get('entry'))}")
+    elif ln: tag,tc,tx=("MAX'S LEAN",'#a48bff',f"{ln.get('label','')} at {money('Sports',ln.get('entry'))} (not a bet)")
+    else: tag,tc,tx=('3-MONTH CALLS','#16c784','graded vs the S&P 500')
+    logo=LOGO.replace('class="mark" ','').replace(' width="34" height="34"','').replace('<svg ','<svg width="40" height="40" ')
+    tw=298; th=530; x0=70; y0=50
+    svg=(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630"><defs><radialGradient id="a" cx=".12" cy=".1" r=".75"><stop offset="0" stop-color="#7c5cff" stop-opacity=".45"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient><radialGradient id="b" cx=".92" cy=".85" r=".7"><stop offset="0" stop-color="#ffb020" stop-opacity=".3"/><stop offset="1" stop-color="#07080d" stop-opacity="0"/></radialGradient>'
+         f'<clipPath id="c"><rect x="{x0}" y="{y0}" width="{tw}" height="{th}" rx="22"/></clipPath></defs>'
+         f'<rect width="1200" height="630" fill="#07080d"/><rect width="1200" height="630" fill="url(#a)"/><rect width="1200" height="630" fill="url(#b)"/>'
+         f'<image href="data:image/jpeg;base64,{b64}" xlink:href="data:image/jpeg;base64,{b64}" x="{x0}" y="{y0}" width="{tw}" height="{th}" preserveAspectRatio="xMidYMid slice" clip-path="url(#c)"/>'
+         f'<rect x="{x0}" y="{y0}" width="{tw}" height="{th}" rx="22" fill="none" stroke="#2b3046" stroke-width="3"/>'
+         f'<circle cx="{x0+tw/2}" cy="{y0+th/2}" r="52" fill="rgba(0,0,0,.6)" stroke="#fff" stroke-width="4"/><path d="M{x0+tw/2-16},{y0+th/2-28} L{x0+tw/2+30},{y0+th/2} L{x0+tw/2-16},{y0+th/2+28} Z" fill="#fff"/>'
+         +(f'<rect x="{x0+tw-96}" y="{y0+th-50}" width="82" height="36" rx="10" fill="rgba(0,0,0,.75)"/><text x="{x0+tw-55}" y="{y0+th-25}" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="20" font-weight="700" fill="#fff">0:{round(dur):02d}</text>' if dur and dur<100 else '')+
+         f'<g font-family="Inter,Helvetica,Arial,sans-serif"><g transform="translate(420,56) scale(1.4)">{logo}</g><text x="496" y="101" font-size="36" font-weight="800" fill="#fff">The Daily Five</text>'
+         f'<text x="420" y="170" font-size="24" font-weight="700" fill="#ffb020" letter-spacing="3">MAX EDGE \u00b7 {E(datetime.date.fromisoformat(d).strftime("%a %b %-d").upper())}</text>'
+         +''.join(f'<text x="420" y="{232+i*(fs+12)}" font-size="{fs}" font-weight="800" fill="#fff">{E(l)}</text>' for i,l in enumerate(lines))+
+         f'<rect x="420" y="468" width="{18*len(tag)+40}" height="44" rx="22" fill="{tc}"/><text x="{440+9*len(tag)}" y="498" text-anchor="middle" font-size="22" font-weight="800" fill="#07080d" letter-spacing="1">{E(tag)}</text>'
+         f'<text x="{450+18*len(tag)+20}" y="499" font-size="26" font-weight="700" fill="#e7e9f2">{E(tx[:46])}</text>'
+         f'<text x="420" y="590" font-size="22" fill="#9ba3ba">60-second clip \u00b7 AI-generated host \u00b7 Not advice</text><text x="1130" y="590" text-anchor="end" font-size="22" fill="#9ba3ba">readdailyfive.com</text></g></svg>')
+    rel=f'og/max-edge/{d}'; w(rel+'.svg',svg)
+    PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
+    return f"/{rel}.png?v={hashlib.sha1(svg.encode()).hexdigest()[:8]}"
 def max_edge_watch_pages(ds):
     """/max-edge/<date>/: one watch page per clip, the video as the main content (better for Google video results)."""
     for i,d in enumerate(ds):
@@ -626,7 +659,7 @@ def max_edge_watch_pages(ds):
                f'<p class="sub">{E(ed.get("top_call") or vdsc)}</p></section>'+clip_html(d)+nav
                +'<p class="disc-bar">\u26a0\ufe0f <b>Not financial or betting advice.</b> Max Edge is AI-generated. 21+.</p>')
         sch={'@context':'https://schema.org','@graph':[{'@type':'WebPage','name':vt,'url':SITE+vp,'isPartOf':{'@type':'WebSite','name':BRAND,'url':SITE+'/'}},csch]}
-        og=f'/og/{d}.png' if os.path.exists(os.path.join(OUT,'og',f'{d}.png')) else None
+        og=clip_og(d) or (f'/og/{d}.png' if os.path.exists(os.path.join(OUT,'og',f'{d}.png')) else None)
         w(f'max-edge/{d}/index.html',shell(vt if len(vt)>62 else f'{vt} (60-sec video) | {BRAND}',vdsc[:160],vp,bodyh,sch,og=og))
 def max_edge_hub(eds):
     """/max-edge/: every Max Edge daily clip in one place (latest playable on top, past clips linked to their editions)."""
