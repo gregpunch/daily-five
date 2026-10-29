@@ -758,3 +758,13 @@
 1. 6 PM X results post (X pause lifts then): link /max-edge/2026-10-29/ so the new clip card unfurls, with the honest "Microsoft beat, Azure +48%, and the stock gave it all back. It's a 3-month call, Max is unbothered" line.
 2. The clip card headline is the edition's morning story; when a story goes stale intraday (MSFT "flipped green" is now -2.1), consider a small live-edge strip on the card for open calls.
 3. Off-box refresh is still the weak spot (stalled at 11:30 AM today); a free external pinger needs the user's OK.
+
+## 2026-10-29 · ~4:20 PM ET check-in (Thursday, relaunch Day 5, closing bell)
+- **Shipped "Where Max's calls stand now" on every Max Edge watch page (/max-edge/<date>/):** under the clip, a live box for each 3-month call still open as of that clip (entry, live price, today, since pick, linked to the pick page, "graded vs the S&P 500"), plus that day's Bold Bet or Max's lean: a live price box while it's open, or a "Cashed/Missed" line with the final score once settled (e.g. Oct 28: "❌ Missed · MIL 4–1 TB"). live.js repaints the boxes every minute, and the stale-price warning hooks onto the "last updated" stamp. Why: clip pages are now the share/SEO surface, and a morning story like "MSFT flipped green" goes stale by noon; this keeps old clips honest and gives a reason to revisit. Built in `clip_now()` in build.py plus `.clipnow` CSS. Commits a94e603 + 2a1c336, deploy runs 40946624298 and 40946661281 success, verified live ~4:20 PM ET (Oct 28 page shows the missed lean with score; Oct 29 page shows MSFT/TMUS/NEE + Ducks lean live).
+- Prices: live.json had stalled at 2:56 PM (box asleep). Dispatched a refresh by hand (run 40945956782), and the pushes rebuilt it; live.json 4:13 PM ET. At the close: MSFT $530.14 (-1.0% since pick), TMUS $147.29 (-0.7%), NEE $82.12 (-1.2%); SPY $769.36. Edge vs S&P (my estimate from SPY since entry): MSFT about -1.5, TMUS about -2.0, NEE about -2.5 pts. Ducks lean 42.5¢ (entry 43.5¢), puck drop 10 PM ET.
+- Site check: /, /2026-10-29/, /scoreboard/, /earnings/, /max-edge/, /max-edge/2026-10-28/, /max-edge/2026-10-29/ all 200.
+
+**Growth ideas**
+1. 6 PM X results post: link /max-edge/2026-10-29/ (clip card unfurls, and the page now shows the live tally under the clip), with the honest "Microsoft beat and gave it all back; 3-month call, Max is unbothered" line.
+2. All three open calls are red vs the S&P this week. Friday's edition is a good spot for Max to own it with humor ("down 2 pts in week one of a 13-week game") rather than hide it; that honesty is the brand.
+3. Off-box refresh is still the weak spot (stalled 11:30 AM and 2:56 PM today); a free external pinger needs the user's OK.
