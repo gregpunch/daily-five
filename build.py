@@ -635,13 +635,13 @@ def clip_og(d):
          f'<image href="data:image/jpeg;base64,{b64}" xlink:href="data:image/jpeg;base64,{b64}" x="{x0}" y="{y0}" width="{tw}" height="{th}" preserveAspectRatio="xMidYMid slice" clip-path="url(#c)"/>'
          f'<rect x="{x0}" y="{y0}" width="{tw}" height="{th}" rx="22" fill="none" stroke="#2b3046" stroke-width="3"/>'
          f'<circle cx="{x0+tw/2}" cy="{y0+th/2}" r="52" fill="rgba(0,0,0,.6)" stroke="#fff" stroke-width="4"/><path d="M{x0+tw/2-16},{y0+th/2-28} L{x0+tw/2+30},{y0+th/2} L{x0+tw/2-16},{y0+th/2+28} Z" fill="#fff"/>'
-         +(f'<rect x="{x0+tw-96}" y="{y0+th-50}" width="82" height="36" rx="10" fill="rgba(0,0,0,.75)"/><text x="{x0+tw-55}" y="{y0+th-25}" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="20" font-weight="700" fill="#fff">0:{round(dur):02d}</text>' if dur and dur<100 else '')+
+         +(f'<rect x="{x0+tw-96}" y="{y0+th-50}" width="82" height="36" rx="10" fill="rgba(0,0,0,.75)"/><text x="{x0+tw-55}" y="{y0+th-25}" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="20" font-weight="700" fill="#fff">{round(dur)//60}:{round(dur)%60:02d}</text>' if dur and dur<600 else '')+
          f'<g font-family="Inter,Helvetica,Arial,sans-serif"><g transform="translate(420,56) scale(1.4)">{logo}</g><text x="496" y="101" font-size="36" font-weight="800" fill="#fff">The Daily Five</text>'
          f'<text x="420" y="170" font-size="24" font-weight="700" fill="#ffb020" letter-spacing="3">MAX EDGE \u00b7 {E(datetime.date.fromisoformat(d).strftime("%a %b %-d").upper())}</text>'
          +''.join(f'<text x="420" y="{232+i*(fs+12)}" font-size="{fs}" font-weight="800" fill="#fff">{E(l)}</text>' for i,l in enumerate(lines))+
          f'<rect x="420" y="468" width="{18*len(tag)+40}" height="44" rx="22" fill="{tc}"/><text x="{440+9*len(tag)}" y="498" text-anchor="middle" font-size="22" font-weight="800" fill="#07080d" letter-spacing="1">{E(tag)}</text>'
          f'<text x="{450+18*len(tag)+20}" y="499" font-size="26" font-weight="700" fill="#e7e9f2">{E(tx[:46])}</text>'
-         f'<text x="420" y="590" font-size="22" fill="#9ba3ba">60-second clip \u00b7 AI-generated host \u00b7 Not advice</text><text x="1130" y="590" text-anchor="end" font-size="22" fill="#9ba3ba">readdailyfive.com</text></g></svg>')
+         f'<text x="420" y="590" font-size="22" fill="#9ba3ba">AI-generated host \u00b7 Not advice</text><text x="1130" y="590" text-anchor="end" font-size="22" fill="#9ba3ba">readdailyfive.com</text></g></svg>')
     rel=f'og/max-edge/{d}'; w(rel+'.svg',svg)
     PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
     return f"/{rel}.png?v={hashlib.sha1(svg.encode()).hexdigest()[:8]}"
