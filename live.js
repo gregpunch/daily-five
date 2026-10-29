@@ -47,7 +47,7 @@ const c=a.closest('.card'),r=c&&c.querySelector('[data-k=ret] .chip'),m=r&&r.tex
 const what=a.dataset.shareWhat,url=a.dataset.shareUrl;
 const text=a.dataset.shareText||(m?`${what}: ${m[0]} since The Daily Five called it${/final/.test(r.textContent)?' (final)':''}`:`${what}, a call from The Daily Five`);
 if(navigator.share&&matchMedia('(pointer:coarse)').matches){e.preventDefault();navigator.share({title:'The Daily Five',text,url}).catch(()=>{});return;}
-a.href='https://x.com/intent/post?'+new URLSearchParams({text,url,via:'ReadDailyFive'}).toString();});})();
+a.href='https://x.com/intent/post?'+new URLSearchParams({text,url}).toString();});})();
 (()=>{const G=[...document.querySelectorAll('.gd[data-ev]')];if(!G.length)return;const st={};
 for(const el of G){const d=el.dataset;if(!st[d.ev])st[d.ev]={score:d.sc,period:d.pe,elapsed:d.el,live:d.lv==='1',ended:d.en==='1'};}
 const left=s=>{const m=Math.max(0,Math.round(s/60)),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;return d>=2?`${d}d ${h}h`:m>=60?`${h+24*d}h ${mm}m`:`${mm}m`;};
@@ -91,3 +91,5 @@ var u=new URLSearchParams(location.search).get('utm_source');if(u)hit('src-'+u);
 document.addEventListener('submit',function(e){var f=e.target;if(f&&f.classList&&f.classList.contains('kform')){var c=(f.className.replace('kform','').trim()||'x');hit('ev-signup-'+c);hit('ev-signup-all');}},true);
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.shr,.rb');if(!a)return;var t=a.classList.contains('shr')?'pick':(a.classList.contains('rx')?'refer-x':(a.dataset.copy?'refer-copy':'refer-sms'));hit('ev-share-'+t);hit('ev-share-all');},true);
 })();
+
+(()=>{document.addEventListener('click',e=>{const a=e.target.closest('a[data-sub]');if(!a)return;const s=document.getElementById('subscribe');if(!s)return;e.preventDefault();s.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'center'});s.classList.remove('flash');void s.offsetWidth;s.classList.add('flash');const i=s.querySelector('input[type=email]');if(i)setTimeout(()=>i.focus({preventScroll:true}),450);history.replaceState(null,'','#subscribe');});})();

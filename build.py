@@ -291,11 +291,11 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 <meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{url}"><meta property="og:type" content="website"><meta property="og:site_name" content="{BRAND}"><meta name="twitter:card" content="summary_large_image">{ogm}
 <link rel="icon" href="{BASE}/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="{BRAND}" href="{BASE}/feed.xml">{FONTS}<link rel="stylesheet" href="{BASE}/style.css">{s}</head><body>
 <header class="top"><div class="wrap nav"><a class="logo" href="{BASE}/" aria-label="{BRAND} home">{LOGO}<span class="word"><span class="the">The</span> Daily Five</span></a>
-<nav><a href="{BASE}/#finance">Money</a><a href="{BASE}/track-record/">Track record</a><a href="{BASE}/#ai">AI</a><a href="{BASE}/#sports">Sports</a><a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg><span class="sr">X</span></a><a href="{BASE}/scoreboard/" class="pill-nav">Scoreboard</a></nav></div></header>
+<nav><a href="{BASE}/#finance">Money</a><a href="{BASE}/track-record/">Track record</a><a href="{BASE}/#ai">AI</a><a href="{BASE}/#sports">Sports</a><a class="ncta" href="#subscribe" data-sub="nav" aria-label="Get The Daily Five free by email"><span class="nd">Free 7 AM email</span><span class="nm">Get it free</span></a><a href="{BASE}/scoreboard/" class="pill-nav">Scoreboard</a></nav></div></header>
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>{E(hook_copy()[0])}</h2><p>{E(hook_copy()[1])}</p></div>
 {sform('cta')}{refer_bar()}</section>
-</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/max-edge/">Max Edge videos</a> · {f'<a href="{BASE}/earnings/">Earnings calendar</a> · ' if any(p.get("catalyst") for p in open3()) else ''}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a href="{BASE}/beta-archive/">Beta archive (Oct 2026)</a> · <a class="xl" href="https://x.com/ReadDailyFive" rel="me noopener" target="_blank" aria-label="The Daily Five on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>@ReadDailyFive</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer>{stickybar()}<script src="{BASE}/live.js" defer></script></body></html>"""
+</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/max-edge/">Max Edge videos</a> · {f'<a href="{BASE}/earnings/">Earnings calendar</a> · ' if any(p.get("catalyst") for p in open3()) else ''}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a href="{BASE}/beta-archive/">Beta archive (Oct 2026)</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer>{stickybar()}<script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def money(kind,v): return '—' if v is None else (f"{v*100:.1f}¢" if kind=='Sports' else f"${v:,.2f}")
@@ -367,7 +367,7 @@ def share(p):
     k=p['kind']; what=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" ({p['horizon']})")
     txt=f"{what} at {money(k,p['entry'])}, a call from The Daily Five"
     u=f"{SITE}/picks/{p['id']}/"
-    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
+    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u})
     return f'<a class="shr" href="{E(href)}" target="_blank" rel="noopener" data-share-id="{p["id"]}" data-share-what="{E(what)}" data-share-url="{E(u)}" aria-label="Share {E(what)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>Share</a>'
 def ext_quote(sym):
     """Latest pre-market or after-hours trade vs the last regular-session close (Yahoo includePrePost), or None
@@ -1909,7 +1909,7 @@ def final_line(p):
 def win_share(p,txt):
     """Share-the-win button: static X intent with the settled result baked in (live.js uses data-share-text as-is)."""
     u=f"{SITE}/picks/{p['id']}/?utm_source=win_share&utm_medium=x&utm_campaign=wins"
-    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
+    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u})
     return f'<a class="shr" href="{E(href)}" target="_blank" rel="noopener" data-share-text="{E(txt)}" data-share-what="{E(p["label"])}" data-share-url="{E(u)}" aria-label="Share this win"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8zm-1.1 18h1.7L6.3 3.9H4.5z"/></svg>Share the win</a>'
 def wins_wall(n=6,days=None,where='hub'):
     """'Biggest wins' wall: top real settled winners (sports + stocks) by return, each with a share-the-win button."""
@@ -2140,7 +2140,7 @@ def main():
         hr=hero(ed,nice); w(f'{d}/index.html',shell(title,desc,f'/{d}/',body(ed,prev),sch,hr,og)); items.append((d,nice,title,desc,ed,hr))
     if items:
         d,nice,title,desc,ed,hr=items[0]
-        w('index.html',shell(f"The Daily Five: Today's Best Stock Picks, AI News & Sports Market Plays",f"{TAG} Today: {desc}",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG,"sameAs":["https://x.com/ReadDailyFive"]},hr))
+        w('index.html',shell(f"The Daily Five: Today's Best Stock Picks, AI News & Sports Market Plays",f"{TAG} Today: {desc}",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG},hr))
     items=[x for x in items]  # archive lists every edition, beta included
     w('archive/index.html',shell(f"Archive | {BRAND}","Every past edition of The Daily Five.",'/archive/','<h1 class="pt">Archive</h1><div class="arch">'+''.join(f'<a href="{BASE}/{d}/"><span class="ad">{n}</span><b>{E(e["headline"])}</b></a>' for d,n,_,_,e,_ in items)+'</div>'))
     rows=[]

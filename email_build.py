@@ -104,7 +104,7 @@ def bigwin(prev,ps):
     d=datetime.date.fromisoformat(prev['date'])
     txt=f"Called it: {p['action']} {p['label']} at {ent} on {d.strftime('%b ')}{d.day}, settled {p['ret']*100:+.2f}%. Every Daily Five pick is graded in public, wins and losses."
     u=f"{SITE}/picks/{p['id']}/?utm_source=win_share&utm_medium=x&utm_campaign=email_{prev['date']}"
-    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u,'via':'ReadDailyFive'})
+    href='https://x.com/intent/post?'+urllib.parse.urlencode({'text':txt,'url':u})
     return (f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px;background:#0f2a22;border:1px solid {UP};border-radius:12px;"><tr><td style="padding:12px 14px;">'
       f'<div style="{F}font-size:11px;font-weight:800;color:{UP};letter-spacing:1px;text-transform:uppercase;">🔥 Biggest win</div>'
       f'<div style="{F}font-size:18px;font-weight:900;color:{TXT};padding-top:2px;"><a href="{SITE}/picks/{p["id"]}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={prev["date"]}" style="color:{TXT};text-decoration:none;">{E(p["action"])} {E(p["label"])} at {E(ent)}</a> <span style="{M}color:{UP};">{p["ret"]*100:+.1f}%</span></div>'
@@ -201,7 +201,7 @@ def render(ed,prev=None,rec=None,open3=None):
     rows.append(f'<tr><td style="padding:30px 24px;" align="center"><div style="{F}font-size:15px;color:{MUT};padding-bottom:14px;">Prices move all day. Track every pick live and on the Scoreboard.</div>{btn}</td></tr>')
     rows.append('<tr><td style="padding:4px 0 0;"></td></tr>'); rows.append(refer(rec,ed['date'])); rows.append('<tr><td style="padding:14px 0 0;"></td></tr>')
     rows.append(f'<tr><td style="padding:22px 24px 30px;border-top:1px solid {LINE};{F}font-size:12px;line-height:18px;color:{MUT};">'
-      f'<b style="color:{TXT};font-size:14px;">The Daily Five</b> · <a href="https://x.com/ReadDailyFive" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Follow @ReadDailyFive on X</a> · <a href="{SITE}/scoreboard/" style="color:#a5b4fc;text-decoration:none;">Scoreboard</a><br><br>'
+      f'<b style="color:{TXT};font-size:14px;">The Daily Five</b> · <a href="{SITE}/?utm_source=email&utm_medium=footer&utm_campaign=forward#subscribe" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Got this forwarded? Get your own (free)</a> · <a href="{SITE}/scoreboard/" style="color:#a5b4fc;text-decoration:none;">Scoreboard</a><br><br>'
       f'<b>Not financial advice.</b> Not financial, investment, or betting advice. The Daily Five aggregates public ideas and market prices for information and entertainment only. Past results don\'t guarantee future returns. You can lose money. D5 Score = 0–100 from source credibility, consensus, edge and risk/reward.</td></tr>')
     pre=E(preheader(ed,prev,rec))
     return ('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
