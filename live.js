@@ -1,4 +1,4 @@
-(()=>{const $=s=>document.querySelectorAll(s);const T=document.getElementById('tsf');if(!$('.lv').length&&!T)return;
+(()=>{const $=s=>document.querySelectorAll(s);const T=document.getElementById('tsf');if(!$('.lv').length&&!T&&!$('[data-edge]').length)return;
 const pct=x=>(x>0?'+':'')+(x*100).toFixed(2)+'%';
 const chip=(x,fin)=>x==null?'<span class="chip pend">—</span>':`<span class="chip ${x>0?'up':x<0?'dn':'flat'}">${x>0?'▲':x<0?'▼':'■'} ${pct(x)}${fin?' final':''}</span>`;
 const money=(k,v)=>v==null?'—':k==='Sports'?(v*100).toFixed(1)+'¢':'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -22,6 +22,7 @@ function stale(ts){const u=document.getElementById('upd');if(!u||!ts)return;let 
   n.textContent='⚠ stock prices from '+et(new Date(ts*1000))+' · stale, refreshing soon';}else if(n)n.remove();}
 async function tick(){let stamp=null;
  try{const j=await (await fetch((document.querySelector('link[rel=stylesheet][href$="style.css"]').getAttribute('href').replace('style.css',''))+'data/live.json?t='+Date.now(),{cache:'no-store'})).json();
+  for(const b of $('[data-edge]')){const x=j.picks[b.dataset.edge];if(x&&x.ret!=null){b.textContent=(x.ret>=0?'+':'')+(x.ret*100).toFixed(1)+' pts';b.className=x.ret>=0?'up':'dn';}}
   for(const id in j.picks){if(state[id]&&state[id].lf&&!j.picks[id].final)continue;state[id]=Object.assign(state[id]||{},j.picks[id]);}
   for(const el of $('.lv')){const d=state[el.dataset.id];if(d)paint(el,d);}stamp=j.updated_et;stale(j.ts);}catch(e){}
  const sp=[...$('.lv[data-slug]')];

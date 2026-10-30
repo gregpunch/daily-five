@@ -863,6 +863,7 @@ def body(ed,prev=None,home=False):
         new={id(p) for p in ed['finance']}; oc=[p for p in open3(ed['date']) if id(p) not in new]
         if oc: fin+='<div class="hzblock"><h3 class="hzh">📂 Open 3-month calls, marked live vs the S&amp;P 500</h3><div class="grid">'+''.join(fin_card(p,0) for p in oc)+'</div></div>'
         elif not ed['finance']: fin+='<p class="sub">No new stock call today. We make 1–2 buy-and-hold 3-month calls a week.</p>'
+        fin+=three_strip()
     ai=''.join(f'<a class="news {"lead" if i==0 else ""}" href="{E(n["source"]["url"])}" rel="nofollow noopener" target="_blank"><span class="cat">{E(n.get("category","AI"))}</span><h3>{E(n["headline"])}</h3><p>{E(n["why"])}</p><span class="via">{E(n["source"]["name"])} ↗</span></a>' for i,n in enumerate(ed['ai']))
     sp=''.join(sp_card(p,i+1) for i,p in enumerate(ed['sports']))
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
@@ -1292,6 +1293,19 @@ def related(p,ed,allp):
         mk=(dot+E((q['market'].split(':',1)[1] if ':' in q['market'] else q['market']).split(',')[0].strip())) if q['kind']=='Sports' else ''
         return f'<a class="rc" href="{BASE}/picks/{q["id"]}/"><b class="{q["action"].lower()}">{q["action"]}</b> {E(q["label"])}{mk}{dot}{e["date"]} {chip(q.get("ret"),q.get("final"))}</a>'
     return f'<section class="relbox"><h2 class="h2s">{E(head)}</h2><div class="rcs col">{"".join(row(q,e) for q,e in out)}</div><p class="relmore"><a href="{BASE}/picks/">All picks by day \u2192</a></p></section>'
+def three_strip(cur=None):
+    """Internal-link strip to /3-month-stock-picks/ with the live edge vs the S&P 500 for every open 3-month call (live.js repaints [data-edge])."""
+    oc=[p for p in open3() if p.get('ret') is not None]
+    if not oc: return ''
+    oc=sorted(oc,key=lambda p:-p['ret']); ah=sum(p['ret']>0 for p in oc)
+    def it(p):
+        c='up' if p['ret']>=0 else 'dn'; me=' me' if cur and p.get('id')==cur else ''
+        return f'<a class="tsi{me}" href="{BASE}/picks/{p["id"]}/">{E(p["label"])} <b class="{c}" data-edge="{p["id"]}">{p["ret"]*100:+.1f} pts</b></a>'
+    quip=('Max is winning and will not shut up about it.' if ah*2>len(oc) else 'Max is behind and pretending it\'s a long game. (It is: 91 days.)')
+    return (f'<aside class="tmstrip"><div class="tsh"><span class="tsk">📈 Every open 3-month call vs the S&amp;P 500</span>'
+            f'<span class="tss">{ah} of {len(oc)} ahead right now · {quip}</span></div>'
+            f'<div class="tsl">{"".join(it(p) for p in oc)}</div>'
+            f'<a class="tsa" href="{BASE}/3-month-stock-picks/">See all open 3-month calls vs the S&amp;P →</a></aside>')
 def pick_page(p,ed,allp=()):
     k=p['kind']; t=f"{p['action']} {p['label']}"+(f" ({p['market']})" if k=='Sports' else f" \u00b7 {p['horizon']} pick")
     h,suf,desc,about=pick_seo(p,ed)
@@ -1304,7 +1318,7 @@ def pick_page(p,ed,allp=()):
     det=(f'{cnav}<section class="sbhero"><span class="kicker">{kick} \u00b7 {ed["date"]}</span><h1 class="pt">{E(h)}</h1><p class="sub">{E(t)}{"" if k=="Sports" else " \u00b7 "+E(suf)}</p></section><div class="pickwrap">{card}<div class="pinfo">'
          f'<h2>Pick details</h2><dl><dt>Published</dt><dd>{ed["date"]} in <a href="{BASE}/{ed["date"]}/">that day\'s edition</a></dd><dt>Entry</dt><dd>{money(k,p["entry"])}{note}</dd>'
          f'<dt>Status</dt><dd>{"Final" if p.get("final") else "Open"} \u00b7 {E(p.get("note",""))}</dd>{verdict(p,True)}{book_line(p,True)}<dt>Source</dt><dd><a href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])}</a></dd></dl>'
-         f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh+related(p,ed,allp))
+         f'<p><a href="{BASE}/ticker/{p["tslug"]}/">All picks on {E(p["tname"])} \u2192</a><br><a href="{BASE}/track-record/">Full track record \u2192</a></p></div></div>'+mvh+related(p,ed,allp)+(three_strip(p['id']) if k=='Finance' and p.get('horizon')=='3 Month' else ''))
     sch={"@context":"https://schema.org","@type":"Article","headline":h[:110],"datePublished":ed['date'],"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":f"{SITE}/picks/{p['id']}/","about":about}
     og=pick_og(p,ed)
     if og: sch['image']=SITE+og.split('?')[0]
