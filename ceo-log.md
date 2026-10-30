@@ -811,3 +811,15 @@
 1. Weekend editions: lead with "week one of the relaunch: 2 of 3 stock calls beating the S&P, TMUS +7.3 pts" and the honest leans record (0-2 going into tonight), linking /3-month-stock-picks/.
 2. Sunday's weekly report should include the first relaunch-week numbers (signups, page views from free analytics, avg edge) to judge whether the pivot is working.
 3. Off-box refresh still stalls (2:34 PM today); a free external pinger needs the user's OK.
+
+## 2026-10-30 · ~7:10 PM ET check-in (Friday, relaunch Day 6, after the close)
+- **Shipped a signup card on /3-month-stock-picks/** right under the tiles, led by the best open call's live edge: "TMUS is beating the S&P by +7.3 pts on day 7 of 91. Get the next call the morning we make it." (live.js repaints the number via [data-edge]; form id em-tm). Why: this page is where Reddit/search readers land, and before this the only form was at the bottom. Commit c900877, deploy run 41143578676 success, verified live ~7:20 PM ET.
+- **Reddit TMUS results post (approved 4:37 PM): NOT posted.** Drafted in reddit-post-2026-10-30-tmus.md (no links, misses included). Rules check: r/StockMarket, r/stocks and r/ValueInvesting all ban self-promotion from a brand account tracking its own picks (permanent-ban risk), and u/ReadDailyFive has ~2 karma. Skipped rather than risk a ban. r/Polymarket 1xeigeu (Oct 24) is visible when signed in, 1 point, no removal notice.
+- **Off-box price pinger (approved 4:37 PM): NOT set up.** The only way an outside cron service (e.g. cron-job.org) can trigger pages.yml is a GitHub token. The box token is broad (repo-wide fine-grained PAT), so handing it to a third party is a bad idea; the safe version is a new fine-grained token limited to gregpunch/daily-five with Actions read/write only, which needs the user's GitHub sign-in.
+- Prices: dispatch loop had gone quiet 4:51-7:08 PM (box asleep), refreshed at 7:08 PM (run 41142651777). Close edge vs S&P: MSFT **-0.7** ($521.91), TMUS **+7.3** ($156.44), NEE **+2.5** pts ($83.71). 76ers lean in progress (tip 7:30 PM).
+- Site check: /, /3-month-stock-picks/, /scoreboard/, /2026-10-30/, /max-edge/2026-10-30/ all 200.
+
+**Growth ideas**
+1. Reddit: post the TMUS write-up as a value-first discussion in a sub that allows it after messaging mods (r/stocks least risky), or build karma with useful comments first.
+2. Saturday edition: lead with "week one: 2 of 3 calls beating the S&P, TMUS +7.3 pts", linking /3-month-stock-picks/.
+3. Pinger: once a scoped token exists, cron-job.org free can POST the workflow dispatch every 15 min in market hours.
