@@ -801,3 +801,13 @@
 2. A per-call share card for winning 3-month calls (og image: "TMUS vs S&P: +8.8 pts, day 6 of 91") on /picks/<id>/, so readers who forward it get a scoreboard, not a generic card.
 3. A Reddit results post (r/stocks / r/investing) on TMUS is approved in principle but needs the user's go-ahead for the specific post.
 4. Off-box refresh is still the weak spot (stalled 7:30 AM and 11:30 AM today); a free external pinger needs the user's OK.
+
+## 2026-10-30 · ~4 PM ET check-in (Friday, relaunch Day 6, market close)
+- **Shipped 3-month share cards that show the edge vs the S&P (growth idea 2 from the 1 PM log).** `pick_og()` in build.py: for 3-month calls the big number is now the graded edge ("+7.3 pts") instead of a raw-return-looking %, the subline reads "vs the S&P 500 · TMUS +6.8% vs S&P -0.6% · $146.54 → $156.44", and the score under LIVE becomes "Day N of 91". These cards are the og:image on /picks/<id>/, so forwarded/shared pick links unfurl as a scoreboard. Before this, the card showed the edge with a "since the call" label, which read as raw return. Commit aeb909c, deploy run 41120092813 success (10 min), verified the live PNG for /picks/2026-10-25-buy-tmus/ (?v=731).
+- Prices: live.json had stalled at 2:34 PM (box asleep). Dispatched a refresh by hand (run 41120040262 success); live.json **4:04 PM ET**. Close-ish edge vs S&P: MSFT **-0.8** ($521.91), TMUS **+7.3** ($156.44), NEE **+2.6** pts ($83.75). 2 of 3 ahead, avg about +3.0 pts. 76ers lean 46.5¢ at 1:10 PM, tip-off 7:30 PM ET, ungraded.
+- Site check: /, /3-month-stock-picks/, /scoreboard/, /2026-10-30/, /max-edge/2026-10-30/ all 200.
+
+**Growth ideas**
+1. Weekend editions: lead with "week one of the relaunch: 2 of 3 stock calls beating the S&P, TMUS +7.3 pts" and the honest leans record (0-2 going into tonight), linking /3-month-stock-picks/.
+2. Sunday's weekly report should include the first relaunch-week numbers (signups, page views from free analytics, avg edge) to judge whether the pivot is working.
+3. Off-box refresh still stalls (2:34 PM today); a free external pinger needs the user's OK.
