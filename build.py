@@ -1356,6 +1356,14 @@ def three_month_hub(eds):
                 +catalyst_box(p)+'</article>')
     clip=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))
     clipl=f' Or watch <a href="{BASE}/max-edge/{os.path.basename(clip[-1])[4:14]}/">Max Edge explain today\'s calls in under a minute</a>.' if clip else ''
+    best=max([(p,ed) for p,ed in op if p.get('ret') is not None],key=lambda x:x[0]['ret'],default=None)
+    if best and best[0]['ret']>0:
+        bp,bed=best; bd=(TODAY-d(bed['date'])).days+1
+        h2=(f'{E(bp["label"])} is beating the S&amp;P by <b class="up" data-edge="{bp["id"]}">{bp["ret"]*100:+.1f} pts</b> on day {bd} of 91. Get the next call the morning we make it.')
+    else:
+        h2='Get the next 3-month call the morning we make it.'
+    tm_ask=(f'<section class="signup wksign"><div><span class="kicker">\U0001F4EC Next 3-month call</span><h2>{h2}</h2>'
+            f'<p>One or two new stock calls a week in the free 7 AM email, each graded against the S&amp;P 500 in public, misses included. Unsubscribe anytime.</p></div>{sform("tm")}</section>')
     faqs=[('How long is each stock pick held?','Every stock call is a 3-month call: 91 days from the morning it is published. It closes at the market close on day 91, no matter what happens in between.'),
           ('How are the picks graded?','Against the S&P 500 (SPY) over the exact same window. Edge = the stock\'s return minus SPY\'s return since our entry price. A call wins if the edge is positive at the exit close, and loses otherwise. A stock that rises 5% while the S&P rises 7% is a loss.'),
           ('What price do you use as the entry?','The real pre-market price from Yahoo Finance at publish time, shown on each pick page, so the record reflects what a reader could actually have done that morning.'),
@@ -1365,7 +1373,7 @@ def three_month_hub(eds):
     body=(f'<section class="sbhero"><span class="kicker">📈 3-month stock picks</span><h1 class="pt">3-month stock picks vs the S&amp;P 500</h1>'
           f'<p class="sub">Our only stock call format: pick a stock that beats the market over the next 3 months, say why, and grade it in public. '
           f'Every call below is marked to real prices (Yahoo Finance, may lag ~15 min), last updated <b id="upd">{NOW.strftime("%b %-d, %-I:%M %p ET")}</b>.{clipl}</p></section>'
-          f'<div class="tiles">{tiles}</div>'
+          f'<div class="tiles">{tiles}</div>'+tm_ask
           +(f'<h2 class="hzh">Open calls</h2>'+''.join(card(p,ed) for p,ed in op) if op else '')
           +(f'<h2 class="hzh">Closed calls</h2>'+''.join(card(p,ed) for p,ed in cl) if cl else '')
           +f'<h2 class="hzh">How the 3-month calls work</h2>{faqh}'
