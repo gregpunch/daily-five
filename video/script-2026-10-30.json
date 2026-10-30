@@ -1,0 +1,35 @@
+{
+ "date": "2026-10-30",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY'S LEAN: DUCKS LOST 7-6",
+   "action": "Covers his face with one hand, peeks through his fingers, then throws his hands up and laughs at himself.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Yesterday's lean, the Ducks? Lost seven to six. Thirteen goals and I still found the wrong side. Leans record: zero and two. My leans need a chiropractor."
+  },
+  {
+   "id": 2,
+   "banner": "MAX'S LEAN: DIDN'T CLEAR OUR BAR",
+   "action": "Shrugs with a smirk, holds up a tiny gap between thumb and finger, then wags a finger at the camera.",
+   "line": "Bold Bet today? Nope. Nothing cleared the bar. My lean is the Sixers at home against the Knicks, forty six and a half cents. That's under one point of edge. Not a bet. A stool is not a ladder."
+  },
+  {
+   "id": 3,
+   "banner": "NASDAQ -2% \u00b7 OUR CALLS HOLDING",
+   "action": "Leans back, dusts off his shoulder, then points proudly at himself with both thumbs.",
+   "line": "Meanwhile Amazon and Intel dragged Nasdaq futures down two percent. My boring calls? T-Mobile and NextEra are beating the S and P before the bell, Microsoft's about even. Phone bills don't burn cash on chips."
+  },
+  {
+   "id": 4,
+   "banner": "GRADED IN PUBLIC",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "Every call graded against the S and P, in public. Not financial advice. Twenty-one plus only, please gamble responsibly. Tomorrow's picks are free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET \u00b7 every call graded"
+ }
+}

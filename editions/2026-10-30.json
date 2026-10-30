@@ -1,0 +1,84 @@
+{
+ "date": "2026-10-30",
+ "headline": "Amazon and Intel sink Nasdaq futures 2%, while our boring 3-month calls hold up: T-Mobile and NextEra beat the S&P 500 premarket; no Bold Bet again, Max leans 76ers",
+ "top_call": "Nasdaq futures are down 2% after Amazon and Intel, and our boring 3-month calls are holding up. T-Mobile is about +1.6 points ahead of the S&P 500 before the bell, NextEra about +0.4, and Microsoft about even (-0.3) at 7 AM ET. Phone bills and power plants don't burn $42 billion on GPUs.",
+ "backdrop": "Nasdaq-100 futures fell about 2% and S&P 500 futures about 1% early Friday after Amazon (down about 7% premarket) posted negative free cash flow and kept its $220 billion capex plan, and Intel slid about 25% on a weak outlook. Friday is October's last trading day; Exxon and Chevron report before the open.",
+ "backdrop_source": {
+  "name": "Reuters",
+  "url": "https://www.investing.com/news/stock-market-news/nasdaq-futures-tumble-as-amazon-intel-results-deepen-ai-spending-woes-4986163"
+ },
+ "finance": [],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "Amazon falls about 7% premarket after missing estimates, with free cash flow of -$42.4 billion over 12 months and its $220 billion 2026 capex plan intact",
+   "why": "AWS grew 39% and nobody cared. The market is now grading AI on cash, and Amazon handed in a red-ink essay.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/29/stock-market-today-live-updates.html"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "Intel sinks about 25% premarket, heading for its worst day ever, after guiding Q4 revenue to $15-16 billion vs $17.1 billion expected",
+   "why": "The AI boom lifts chip boats, unless your boat is mostly PCs. AMD and Broadcom slid too, so the whole chip aisle felt it.",
+   "source": {
+    "name": "Quartz",
+    "url": "https://qz.com/ai-selloff-intel-amazon-nasdaq-futures-103026"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Mistral releases the weights for Mistral Large 4, its 1-trillion-parameter 'Le Chonk' model, pitched at cyber defense",
+   "why": "A frontier-class model anyone can download and run on their own servers. Great for defenders, and Mistral itself admits attackers get a look too.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/29/mistral-releases-weights-for-its-trillion-parameter-ai-model-targeting-cybersecurity/"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "GitHub says AI agents started more than 40% of pull requests in September, up from 17% in March, and launches Copilot Fusion model routing",
+   "why": "110 million agent-drafted code changes in one month. The robots aren't coming for coding, they're already in the pull request queue.",
+   "source": {
+    "name": "GitHub",
+    "url": "https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "OpenAI stands up an Election Operations Center with hundreds of staff to watch for ChatGPT misuse through the Nov 3 midterms",
+   "why": "The first big AI lab with an election war room. Next Tuesday is the live test of whether chatbots can stay out of the headlines.",
+   "source": {
+    "name": "Politico",
+    "url": "https://www.politico.com/news/2026/10/28/openai-election-war-room-interference-01137690"
+   }
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Nothing cleared our bar at 7:10 AM ET. Closest misses: 76ers 46.5¢ vs the Knicks (+0.9 pts) and Hornets 46.5¢ at Washington (+0.9 pts, an exact tie on price and edge), Bulls 11.5¢ at Boston (+2.2 pts, but way under our 40¢ floor), Nets 26.5¢ vs Detroit (+1.7, also under 40¢). Every other NBA and NHL game on Friday's board priced within 1.3 points of DraftKings' no-vig line. No MLB or NFL games today. DraftKings lines via ESPN.",
+ "lean": {
+  "action": "BUY",
+  "label": "76ers",
+  "market": "NBA: NYK @ PHI, Fri Oct 30 7:30 PM ET",
+  "slug": "nba-nyk-phi-2026-10-30",
+  "outcome": 1,
+  "entry": 0.465,
+  "event_date": "2026-10-30",
+  "edge": 0.9,
+  "edge_at": "7:10 AM ET",
+  "book": {
+   "name": "DraftKings via ESPN",
+   "url": "https://www.espn.com/nba/game/_/gameId/401909280",
+   "odds": [
+    102,
+    -122
+   ]
+  },
+  "why": "Not a bet, a lean. DraftKings has Philly at +102 at home, a 47.4% shot without the vig, and Polymarket sells it for 46.5¢. That's +0.9 points, less than half our 2.5 bar. It's a lean the way a stool is a ladder.",
+  "source": {
+   "name": "Polymarket",
+   "url": "https://polymarket.com/event/nba-nyk-phi-2026-10-30"
+  }
+ }
+}
