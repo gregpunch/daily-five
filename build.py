@@ -1126,6 +1126,8 @@ def pick_og(p,ed):
     k=p['kind']; r=p.get('ret'); fin=p.get('final')
     col='#16c784' if (r or 0)>0 else '#ff4d5e' if (r or 0)<0 else '#9ba3ba'
     big=pct(r) if r is not None else 'Pending'
+    tm=k=='Finance' and p.get('horizon')=='3 Month' and p.get('spy_ret') is not None
+    if tm: big=f"{r*100:+.1f} pts"  # 3-month calls are graded vs the S&P 500: show the edge, not the raw return
     act=p['action']; acol='#16c784' if act=='BUY' else '#ff4d5e'
     import textwrap
     lab=p['label'] if k=='Finance' else p['label']
@@ -1144,9 +1146,11 @@ def pick_og(p,ed):
          f'<text x="244" y="{205 if lsz>=64 else 202}" font-family="monospace" font-size="{lsz}" font-weight="700" fill="#fff">{E(lab)}</text>'
          +''.join(f'<text x="70" y="{268+i*36}" font-size="28" fill="#c9cede">{E(l)}</text>' for i,l in enumerate(subl))+
          f'<text x="70" y="{455}" font-size="150" font-weight="800" fill="{col}" font-family="Space Grotesk,Inter,Helvetica,Arial,sans-serif">{E(big)}</text>'
-         f'<text x="70" y="510" font-size="28" fill="#9ba3ba">since the call · entry {E(money(k,p["entry"]))} → {"exit" if fin else "now"} {E(money(k,p.get("cur")))}</text>'
+         +(f'<text x="70" y="510" font-size="28" fill="#c9cede">vs the S&amp;P 500 · {E(p["label"])} {p["abs_ret"]*100:+.1f}% vs S&amp;P {p["spy_ret"]*100:+.1f}% · {E(money(k,p["entry"]))} → {E(money(k,p.get("cur")))}</text>' if tm else
+           f'<text x="70" y="510" font-size="28" fill="#9ba3ba">since the call · entry {E(money(k,p["entry"]))} → {"exit" if fin else "now"} {E(money(k,p.get("cur")))}</text>')+
          f'<rect x="900" y="340" width="230" height="64" rx="16" fill="#11131c" stroke="{col}" stroke-width="3"/><text x="1015" y="383" text-anchor="middle" font-size="28" font-weight="800" fill="{col}" letter-spacing="4">{stat}</text>'
-         f'<text x="1015" y="440" text-anchor="middle" font-size="22" fill="#9ba3ba">Score {int(round(p.get("score") or 0))}/100</text>'
+         +(f'<text x="1015" y="440" text-anchor="middle" font-size="22" fill="#9ba3ba">{"Day 91 of 91" if fin else "Day "+str(min(91,(TODAY-datetime.date.fromisoformat(ed["date"])).days+1))+" of 91"}</text>' if tm else
+           f'<text x="1015" y="440" text-anchor="middle" font-size="22" fill="#9ba3ba">Score {int(round(p.get("score") or 0))}/100</text>')+
          f'<text x="70" y="590" font-size="22" fill="#9ba3ba">{E(status_txt)}</text><text x="1130" y="590" text-anchor="end" font-size="22" fill="#9ba3ba">readdailyfive.com · Not advice</text></g></svg>')
     rel=f"og/picks/{p['id']}"; w(rel+'.svg',svg)
     PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
