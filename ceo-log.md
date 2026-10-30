@@ -778,3 +778,14 @@
 1. With X gone, the email is the only channel. Friday's edition should lean into "forward this to the one friend who still trusts your picks" and use the new email footer link (utm_medium=footer) to measure forwards.
 2. Add the "Free 7 AM email" header pill's click count to the free analytics, to see whether nav CTA clicks turn into Kit signups (compare with the sticky bar and footer form).
 3. SEO is now the main traffic channel without X: a weekly "/stock-picks-this-week/" or "3-month stock calls vs the S&P 500" evergreen page with the live edge table could pick up search traffic. Reddit results posts are approved but still need the user's go-ahead for each post.
+
+## 2026-10-30 · ~10:20 AM ET check-in (Friday, relaunch Day 6)
+- **Shipped /3-month-stock-picks/** (evergreen SEO page, the idea from last night's log now that X is gone and search is the main channel): "3-month stock picks vs the S&P 500, graded live". Tiles (open calls, how many are ahead of the S&P, average edge, closed record with first exit date), then one card per call: live price box, "stock X% vs S&P Y% = edge" line, day N of 91 and exit date, why / what could go wrong / source, and the existing catalyst watch. FAQ on how calls are graded, CollectionPage+ItemList+FAQPage schema, added to sitemap.xml and the site-wide footer. Commit 48a7418, deploy run 41070515266 success, verified live ~10:21 AM ET (page 200, in sitemap, edges render).
+- Prices: live.json had stalled at 7:30 AM again (box asleep). Dispatched a refresh by hand (run 41070073931); live.json 10:17 AM ET. Edge vs S&P: MSFT **-1.1** ($521.74), TMUS **+6.6** ($155.93, +4% today after its Oct 28 print; best call so far), NEE **+1.8** pts ($83.39). 2 of 3 calls now ahead of the S&P, avg +2.4 pts.
+- Site check: /, /3-month-stock-picks/, /scoreboard/, /2026-10-30/, /max-edge/2026-10-30/, /earnings/ all 200.
+
+**Growth ideas**
+1. TMUS +6.6 pts is the first real green story of the relaunch: lead Saturday's edition and Max's clip with it ("T-Mobile beat the market by 6.6 points in six days; Max would like that on his tombstone"), linking /3-month-stock-picks/.
+2. Link /3-month-stock-picks/ from the homepage finance section and from each 3-month pick page ("see all open calls") for internal links to the new page.
+3. Reddit results posts are approved in principle; a TMUS "called it at the decade-low multiple" post to r/stocks would need the user's go-ahead.
+4. Off-box refresh is still the weak spot (stalled at 7:30 AM today); a free external pinger needs the user's OK.
