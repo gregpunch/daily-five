@@ -295,7 +295,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>{E(hook_copy()[0])}</h2><p>{E(hook_copy()[1])}</p></div>
 {sform('cta')}{refer_bar()}</section>
-</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/max-edge/">Max Edge videos</a> · {f'<a href="{BASE}/earnings/">Earnings calendar</a> · ' if any(p.get("catalyst") for p in open3()) else ''}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a href="{BASE}/beta-archive/">Beta archive (Oct 2026)</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer>{stickybar()}<script src="{BASE}/live.js" defer></script></body></html>"""
+</main><footer><div class="wrap"><div class="fbrand">{LOGO}<b>The Daily Five</b></div><div class="fsub"><b>Get it daily</b>{sform('foot')}</div><p class="disc"><strong>Disclaimer:</strong> {DISC}</p><p class="fl"><a href="{BASE}/track-record/">Track record</a> · <a href="{BASE}/best-stocks-to-buy-today/">Best stocks</a> · <a href="{BASE}/3-month-stock-picks/">3-month stock picks</a> · <a href="{BASE}/polymarket-picks-today/">Polymarket picks</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks</a> · {f'<a href="{BASE}/nfl-results/">NFL results</a> · ' if NFLWK else ''}{f'<a href="{BASE}/stock-results/">Stock results</a> · ' if STK else ''}{f'<a href="{BASE}/sports-results/">Sports results</a> · ' if SPR else ''}{''.join(f'<a href="{BASE}{u}">{n.split(" picks")[0]} picks</a> · ' for n,u in LGHUBS.values())}<a href="{BASE}/max-edge/">Max Edge videos</a> · {f'<a href="{BASE}/earnings/">Earnings calendar</a> · ' if any(p.get("catalyst") for p in open3()) else ''}<a href="{BASE}/how-we-rank/">How we rank</a> · <a href="{BASE}/scoreboard/">Scoreboard</a> · <a href="{BASE}/archive/">Archive</a> · <a href="{BASE}/beta-archive/">Beta archive (Oct 2026)</a> · <a href="{BASE}/feed.xml">RSS</a> · © {TODAY.year} {BRAND}</p></div></footer>{stickybar()}<script src="{BASE}/live.js" defer></script></body></html>"""
 def w(rel,txt):
     p=os.path.join(OUT,rel); os.makedirs(os.path.dirname(p),exist_ok=True); open(p,'w').write(txt)
 def money(kind,v): return '—' if v is None else (f"{v*100:.1f}¢" if kind=='Sports' else f"${v:,.2f}")
@@ -1312,6 +1312,54 @@ def pick_page(p,ed,allp=()):
     if faq:
         sch['@graph'].append({"@type":"FAQPage","url":f"{SITE}/picks/{p['id']}/","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]})
     w(f"picks/{p['id']}/index.html",shell(title,desc,f"/picks/{p['id']}/",det,sch,og=og))
+def three_month_hub(eds):
+    """Evergreen SEO page /3-month-stock-picks/: every 3-month stock call since the relaunch, open ones marked live vs the S&P 500,
+    with the thesis, risk, source, days left and the grading rule. Targets 'stock picks for the next 3 months' style searches."""
+    calls=[(p,ed) for ed in eds for p in ed['finance'] if p['horizon']=='3 Month']
+    if not calls: return None
+    P='/3-month-stock-picks/'; d=datetime.date.fromisoformat
+    op=[(p,ed) for p,ed in calls if not p.get('final')]; cl=[(p,ed) for p,ed in calls if p.get('final') and p.get('ret') is not None]
+    gr=[p for p,_ in calls if p.get('ret') is not None]; ahead=sum(p['ret']>0 for p in gr); avg=sum(p['ret'] for p in gr)/len(gr) if gr else None
+    wins=sum(p['ret']>0 for p,_ in cl)
+    def t(h,v,s,c=''): return f'<div class="tile"><span class="h">{h}</span><b class="{c}">{v}</b><span class="s">{s}</span></div>'
+    tiles=(t('Open calls',str(len(op)),'marked to live prices')+
+           t('Ahead of the S&P',f'{ahead}/{len(gr)}','right now, all calls')+
+           t('Avg edge vs S&P',(f'{avg*100:+.1f} pts' if avg is not None else '—'),'stock return minus SPY','up' if (avg or 0)>=0 else 'dn')+
+           t('Closed record',f'{wins}-{len(cl)-wins}' if cl else '0-0',f'first exits {(d(calls[-1][1]["date"])+datetime.timedelta(days=91)).strftime("%b %-d")}' if not cl else 'beat the S&P = win'))
+    def card(p,ed):
+        end=d(ed['date'])+datetime.timedelta(days=91); left=(end-TODAY).days; src=p.get('source') or {}
+        vs=(f'<p class="tm-vs">Stock <b>{p["abs_ret"]*100:+.1f}%</b> vs S&amp;P 500 <b>{p["spy_ret"]*100:+.1f}%</b> since the pick, an edge of <b class="{"up" if p["ret"]>=0 else "dn"}">{p["ret"]*100:+.1f} pts</b>.</p>' if p.get('abs_ret') is not None and p.get('spy_ret') is not None else '')
+        st=(f'Closed {end.strftime("%b %-d, %Y")}: <b>{"WIN" if p["ret"]>0 else "LOSS"}</b>' if p.get('final') else f'Day {(TODAY-d(ed["date"])).days+1} of 91 · exits at the {end.strftime("%b %-d, %Y")} close ({left} days left)')
+        return (f'<article class="tmc"><div class="cnh"><span class="mini {p["action"].lower()}">{p["action"]}</span> <a href="{BASE}/picks/{p["id"]}/"><b>{E(p["label"])}</b></a>'
+                f' <small>called {d(ed["date"]).strftime("%a %b %-d")} in <a href="{BASE}/{ed["date"]}/">that morning\'s edition</a> · {st}</small></div>'
+                f'{livebox(p) if not p.get("final") else ""}{vs}'
+                f'<p><b>Why:</b> {E(p.get("why",""))}</p><p><b>What could go wrong:</b> {E(p.get("risk",""))}</p>'
+                +(f'<p class="sub">Source: <a href="{E(src["url"])}" rel="nofollow noopener" target="_blank">{E(src.get("name","link"))}</a></p>' if src.get('url') else '')
+                +catalyst_box(p)+'</article>')
+    clip=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))
+    clipl=f' Or watch <a href="{BASE}/max-edge/{os.path.basename(clip[-1])[4:14]}/">Max Edge explain today\'s calls in under a minute</a>.' if clip else ''
+    faqs=[('How long is each stock pick held?','Every stock call is a 3-month call: 91 days from the morning it is published. It closes at the market close on day 91, no matter what happens in between.'),
+          ('How are the picks graded?','Against the S&P 500 (SPY) over the exact same window. Edge = the stock\'s return minus SPY\'s return since our entry price. A call wins if the edge is positive at the exit close, and loses otherwise. A stock that rises 5% while the S&P rises 7% is a loss.'),
+          ('What price do you use as the entry?','The real pre-market price from Yahoo Finance at publish time, shown on each pick page, so the record reflects what a reader could actually have done that morning.'),
+          ('How many new calls do you make?','One or two a week, only when the evidence is strong. Days with no new call just mark the open ones to market.'),
+          ('Is this financial advice?','No. These are published, graded opinions for entertainment and education. Do your own research; past results do not predict future ones.')]
+    faqh='<div class="faq">'+''.join(f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
+    body=(f'<section class="sbhero"><span class="kicker">📈 3-month stock picks</span><h1 class="pt">3-month stock picks vs the S&amp;P 500</h1>'
+          f'<p class="sub">Our only stock call format: pick a stock that beats the market over the next 3 months, say why, and grade it in public. '
+          f'Every call below is marked to real prices (Yahoo Finance, may lag ~15 min), last updated <b id="upd">{NOW.strftime("%b %-d, %-I:%M %p ET")}</b>.{clipl}</p></section>'
+          f'<div class="tiles">{tiles}</div>'
+          +(f'<h2 class="hzh">Open calls</h2>'+''.join(card(p,ed) for p,ed in op) if op else '')
+          +(f'<h2 class="hzh">Closed calls</h2>'+''.join(card(p,ed) for p,ed in cl) if cl else '')
+          +f'<h2 class="hzh">How the 3-month calls work</h2>{faqh}'
+          f'<p class="sub"><a href="{BASE}/scoreboard/">Full scoreboard →</a> · <a href="{BASE}/stock-results/">Stock results →</a> · <a href="{BASE}/earnings/">Earnings calendar for open calls →</a></p>')
+    names=', '.join(p['label'] for p,_ in op[:4])
+    desc=(f'Our 3-month stock picks graded live against the S&P 500: {len(op)} open call{"s" if len(op)!=1 else ""}'+(f' ({names})' if names else '')+', with entry price, edge vs SPY, thesis and exit date.')[:155]
+    sch={"@context":"https://schema.org","@graph":[
+        {"@type":"CollectionPage","name":"3-Month Stock Picks vs the S&P 500","url":SITE+P,"description":desc,"dateModified":TODAY.isoformat(),
+         "mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"ListItem","position":i+1,"url":f"{SITE}/picks/{p['id']}/","name":f"{p['action']} {p['label']} (3-month call, {ed['date']})"} for i,(p,ed) in enumerate(calls)]}},
+        {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}
+    w('3-month-stock-picks/index.html',shell(f'3-Month Stock Picks vs the S&P 500, Graded Live | {BRAND}',desc,P,body,sch))
+    return P
 def best_stocks_hub(eds):
     """Evergreen SEO hub: /best-stocks-to-buy-today/ from real BUY finance picks only."""
     buys=[]
@@ -2162,7 +2210,7 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>{leans_section(eds)}'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); erh=earnings_hub(); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); erh=earnings_hub(); tmh=three_month_hub(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
@@ -2171,7 +2219,7 @@ def main():
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
     # lastmod: hubs today; an edition page changes until all its picks settle; pick/ticker pages from lastmod()
     edlm=lambda e: max([lastmod(p,e) for p in e['finance']+e['sports']]+[e['date']])
-    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+[(f'/max-edge/{os.path.basename(f)[4:14]}/',os.path.basename(f)[4:14]) for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))]+nfr+extra
+    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+([tmh] if tmh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+[(f'/max-edge/{os.path.basename(f)[4:14]}/',os.path.basename(f)[4:14]) for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))]+nfr+extra
     seen={u for u,_ in urls}; urls+=[x for x in beta_extra if x[0] not in seen]
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
