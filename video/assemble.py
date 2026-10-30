@@ -77,14 +77,37 @@ TOTAL_TALK=off
 open(os.path.join(OUT,'caps.ass'),'w').write('\n'.join(ass)+'\n')
 # ---------- 3. per-segment video: trim, alternating zoom, teal banner ----------
 def esc(t): return t.replace('\\','\\\\').replace(':','\\:').replace("'","\u2019")
+from PIL import ImageFont
+MARGIN=28
+def tw(t,size): return ImageFont.truetype(FONT,size).getlength(t.replace("'","\u2019"))
+def fit(t,size,minsize=24,maxw=W-2*MARGIN):
+    """Largest font size <= size (>= minsize) at which t fits within maxw; else wrap into 2 lines."""
+    for z in range(size,minsize-1,-1):
+        if tw(t,z)<=maxw: return z,[t]
+    ws=t.split(); best=None
+    for k in range(1,len(ws)):
+        a,b=' '.join(ws[:k]),' '.join(ws[k:]); m=max(tw(a,1),tw(b,1))
+        if best is None or m<best[0]: best=(m,[a,b])
+    lines=best[1] if best else [t]
+    for z in range(size,minsize-1,-1):
+        if max(tw(l,z) for l in lines)<=maxw: return z,lines
+    return minsize,lines
+def banner(t):
+    """drawbox+drawtext filters for the teal banner; auto-shrinks/wraps so text stays inside the frame."""
+    z,lines=fit(t,40); lh=int(z*1.2); bh=max(78,lh*len(lines)+30)
+    f=[f"drawbox=x=0:y=70:w='if(lt(t,1.8),{W}*min(1,t/0.25),0)':h={bh}:color={TEAL}@0.92:t=fill:enable='lt(t,1.8)'"]
+    y0=70+(bh-lh*len(lines))//2+int((lh-z)/2)
+    for k,l in enumerate(lines):
+        f.append(f"drawtext=fontfile={FONT}:expansion=none:text='{esc(l)}':fontcolor=0x07080d:fontsize={z}:x={MARGIN}:y={y0+k*lh}:enable='between(t,0.2,1.8)'")
+    print(f"banner '{t}': size {z}, lines {len(lines)}, width {max(tw(l,z) for l in lines):.0f}/{W-2*MARGIN}")
+    return ','.join(f)
 vids=[]
 for i,(s,f,t0,t1,o) in enumerate(parts):
     d=t1-t0; n=int(d*FPS)+1
     z=f"1+0.07*on/{n}" if i%2==0 else f"1.07-0.07*on/{n}"
     vf=(f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},"
         f"zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s={W}x{H}:fps={FPS},"
-        f"drawbox=x=0:y=70:w='if(lt(t,1.8),{W}*min(1,t/0.25),0)':h=78:color={TEAL}@0.92:t=fill:enable='lt(t,1.8)',"
-        f"drawtext=fontfile={FONT}:text='{esc(s['banner'])}':fontcolor=0x07080d:fontsize=40:x=28:y=91:enable='between(t,0.2,1.8)'")
+        +banner(s['banner']))
     out=os.path.join(OUT,f'v{i+1}.mp4')
     run(['ffmpeg','-v','error','-y','-ss',f'{t0:.3f}','-t',f'{d:.3f}','-i',f,'-vf',vf,'-af','aresample=48000,loudnorm=I=-16:TP=-1.5:LRA=11','-ac','2',
          '-c:v','libx264','-preset','medium','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k',out])
@@ -94,9 +117,9 @@ host=os.path.join(HERE,'host-max-edge.jpg'); ec=os.path.join(OUT,'end.mp4'); EC=
 run(['ffmpeg','-v','error','-y','-loop','1','-t',str(EC),'-i',host,'-f','lavfi','-t',str(EC),'-i','anullsrc=r=48000:cl=stereo','-vf',
      f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=8:2,eq=brightness=-0.25,"
      f"drawbox=x=0:y=560:w={W}:h=190:color={TEAL}@0.95:t=fill,"
-     f"drawtext=fontfile={FONT}:text='{esc(S['end_card']['title'])}':fontcolor=0x07080d:fontsize=64:x=(w-tw)/2:y=600,"
-     f"drawtext=fontfile={FONT}:text='{esc(S['end_card']['sub'])}':fontcolor=0x07080d:fontsize=28:x=(w-tw)/2:y=690,"
-     f"drawtext=fontfile={FONT}:text='Max Edge is an AI host · Not financial advice · 21+':fontcolor=white:fontsize=24:x=(w-tw)/2:y=820,fps={FPS}",
+     f"drawtext=fontfile={FONT}:expansion=none:text='{esc(S['end_card']['title'])}':fontcolor=0x07080d:fontsize={fit(S['end_card']['title'],64)[0]}:x=(w-tw)/2:y=600,"
+     f"drawtext=fontfile={FONT}:expansion=none:text='{esc(S['end_card']['sub'])}':fontcolor=0x07080d:fontsize={fit(S['end_card']['sub'],28,16)[0]}:x=(w-tw)/2:y=690,"
+     f"drawtext=fontfile={FONT}:expansion=none:text='Max Edge is an AI host · Not financial advice · 21+':fontcolor=white:fontsize=24:x=(w-tw)/2:y=820,fps={FPS}",
      '-c:v','libx264','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-shortest',ec])
 vids.append(ec)
 # ---------- 5. concat + captions + whoosh + music ----------
