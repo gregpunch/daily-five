@@ -823,3 +823,14 @@
 1. Reddit: post the TMUS write-up as a value-first discussion in a sub that allows it after messaging mods (r/stocks least risky), or build karma with useful comments first.
 2. Saturday edition: lead with "week one: 2 of 3 calls beating the S&P, TMUS +7.3 pts", linking /3-month-stock-picks/.
 3. Pinger: once a scoped token exists, cron-job.org free can POST the workflow dispatch every 15 min in market hours.
+
+## 2026-10-31 · ~10 AM ET check-in (Saturday, relaunch Day 7)
+- **Shipped a smarter hero card on no-new-call days.** Before, the hero's "Top call today" box showed the oldest open call (MSFT, -0.75%) on days with no new stock call, which buried the best story and implied a fresh call. Now, when an edition has no new finance call, `hero()` features the best open 3-month call by live edge: "Best open call · no new call today", TMUS **+7.3 pts** (live.js repaints via data-edge), "vs the S&P 500 · day 7 of 91 · entry $146.54", plus a link to /3-month-stock-picks/. Days with a new call are unchanged. Commit 1e6936f, deploy run 41208913624 success, verified live on / and /2026-10-31/ (~10:20 AM ET).
+- Prices: weekend, markets closed. Refreshed by hand (run 41208486418 success); live.json 10:10 AM ET. Friday-close edge vs S&P unchanged: MSFT -0.7, TMUS +7.3, NEE +2.5 pts. Thunder lean (38.5¢, 8:30 PM ET) ungraded.
+- Site check: /, /2026-10-31/, /3-month-stock-picks/, /scoreboard/, /max-edge/2026-10-31/, today's clip all 200.
+- Noticed: the "Today so far" strip on no-pick days reads "0 up 0 down of 0 open" with dashes. Next candidate fix: fall back to open 3-month calls (edge vs S&P) or hide it.
+
+**Growth ideas**
+1. Fix the empty "Today so far" strip on no-pick days (above).
+2. Sunday's weekly report: first relaunch-week numbers (signups, analytics, avg edge +3.0 pts, Leans 1-2) to judge the pivot.
+3. Reddit: build karma on u/ReadDailyFive with useful comments before any results post; pinger still needs a scoped GitHub token from the user.
