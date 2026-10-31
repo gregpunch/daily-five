@@ -493,12 +493,16 @@ def recap(prev):
 def today_strip(ps,where='home',settled=None):
     """'Today so far' running P/L strip for open picks. live.js recomputes it every minute."""
     op=[p for p in ps if not p.get('final')]; rs=[p for p in op if p.get('ret') is not None]
+    st=[p for p in (settled or []) if p.get('final') and p.get('ret') is not None]
+    if not op:  # no open same-day picks: show the open 3-month calls' live edge vs the S&P instead of "0 up 0 down of 0 open"
+        oc=sorted([p for p in open3() if p.get('ret') is not None],key=lambda p:-p['ret'])
+        if not oc and not st: return ''
+        if oc: return today3(oc,where,st)
     up=sum(p['ret']>0 for p in rs); dn=sum(p['ret']<0 for p in rs); avg=sum(p['ret'] for p in rs)/len(rs) if rs else None
     so=[p['so'] for p in op if p.get('so') is not None]; aso=sum(so)/len(so) if so else None
     best=max(rs,key=lambda p:p['ret']) if rs else None; worst=min(rs,key=lambda p:p['ret']) if rs else None
     ids=json.dumps({p['id']:p['label'] for p in op})
     lab=lambda p: f'{E(p["label"])} {chip(p["ret"])}' if p else '—'
-    st=[p for p in (settled or []) if p.get('final') and p.get('ret') is not None]
     sett=(f'<span class="tsc set"><small>settled</small> '+' '.join(f'<a href="{BASE}/picks/{p["id"]}/">{E(p["label"])} {chip(p["ret"],True)}</a>' for p in st)+'</span>') if st else ''
     return (f'<div class="tsf {where}" id="tsf" data-picks="{E(ids)}" aria-live="polite"><span class="tsl"><span class="live"></span><span data-t="lbl">Today so far</span></span>'
             f'<span class="tsc"><b class="up" data-t="up">▲ {up}</b> up <b class="dn" data-t="dn">▼ {dn}</b> down <small>of {len(op)} open</small></span>'
@@ -507,6 +511,20 @@ def today_strip(ps,where='home',settled=None):
             f'<span class="tsc"><small>best</small> <span data-t="best">{lab(best)}</span></span>'
             f'<span class="tsc"><small>worst</small> <span data-t="worst">{lab(worst)}</span></span>{sett}'
             f'<span class="tsc nx"><small>next edition</small> <b class="nxc">7 AM ET</b></span><span class="tsc mk" data-t="mk" hidden></span></div>')
+def today3(oc,where,st=()):
+    """No-pick-day fallback for the 'Today so far' strip: open 3-month calls vs the S&P 500 (live.js repaints #tsf3 from live.json)."""
+    ah=sum(p['ret']>0 for p in oc); b,w=oc[0],oc[-1]
+    pts=lambda p: f'<a href="{BASE}/picks/{p["id"]}/">{E(p["label"])} <b class="{"up" if p["ret"]>=0 else "dn"}" data-edge="{p["id"]}">{p["ret"]*100:+.1f} pts</b></a>'
+    quip=('No fresh picks today, so the 3-month calls get the mic. They\'re handling it.' if ah*2>len(oc) else 'No fresh picks today. The 3-month calls are building character.')
+    sett=(f'<span class="tsc set"><small>settled</small> '+' '.join(f'<a href="{BASE}/picks/{p["id"]}/">{E(p["label"])} {chip(p["ret"],True)}</a>' for p in st)+'</span>') if st else ''
+    ids=json.dumps({p['id']:p['label'] for p in oc})
+    return (f'<div class="tsf t3 {where}" id="tsf3" data-ids="{E(ids)}" data-base="{BASE}" aria-live="polite"><span class="tsl"><span class="live"></span><span>📈 3-month calls vs the S&amp;P</span></span>'
+            f'<span class="tsc"><b class="{"up" if ah else "dn"}" data-t3="ah">{ah} of {len(oc)}</b> open calls beating the S&amp;P</span>'
+            f'<span class="tsc"><small>best</small> <span data-t3="best">{pts(b)}</span></span>'
+            +(f'<span class="tsc"><small>worst</small> <span data-t3="worst">{pts(w)}</span></span>' if len(oc)>1 else '')+sett+
+            f'<span class="tsc q"><i data-t3="q">{quip}</i></span>'
+            f'<span class="tsc"><a class="t3a" href="{BASE}/3-month-stock-picks/">All calls →</a></span>'
+            f'<span class="tsc nx"><small>next edition</small> <b class="nxc">7 AM ET</b></span></div>')
 ALLEDS=[]  # all editions, newest first (set in main before pages render)
 def _cb_show(ed):
     """Closing-bell recap shows on the newest edition once today's stock session is over (4:15 PM ET, when exits freeze),

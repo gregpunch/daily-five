@@ -23,6 +23,10 @@ function stale(ts){const u=document.getElementById('upd');if(!u||!ts)return;let 
 async function tick(){let stamp=null;
  try{const j=await (await fetch((document.querySelector('link[rel=stylesheet][href$="style.css"]').getAttribute('href').replace('style.css',''))+'data/live.json?t='+Date.now(),{cache:'no-store'})).json();
   for(const b of $('[data-edge]')){const x=j.picks[b.dataset.edge];if(x&&x.ret!=null){b.textContent=(x.ret>=0?'+':'')+(x.ret*100).toFixed(1)+' pts';b.className=x.ret>=0?'up':'dn';}}
+  const T3=document.getElementById('tsf3');if(T3){try{const L=JSON.parse(T3.dataset.ids),q=k=>T3.querySelector('[data-t3='+k+']'),r=Object.keys(L).map(id=>[id,j.picks[id]&&j.picks[id].ret]).filter(x=>x[1]!=null).sort((a,b)=>b[1]-a[1]);
+   if(r.length){const ah=r.filter(x=>x[1]>0).length,A=q('ah'),pill=x=>'<a href="'+T3.dataset.base+'/picks/'+x[0]+'/">'+L[x[0]].replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))+' <b class="'+(x[1]>=0?'up':'dn')+'">'+(x[1]>=0?'+':'')+(x[1]*100).toFixed(1)+' pts</b></a>';
+    A.textContent=ah+' of '+r.length;A.className=ah?'up':'dn';if(q('best'))q('best').innerHTML=pill(r[0]);if(q('worst'))q('worst').innerHTML=pill(r[r.length-1]);
+    if(q('q'))q('q').textContent=ah*2>r.length?"No fresh picks today, so the 3-month calls get the mic. They're handling it.":'No fresh picks today. The 3-month calls are building character.';}}catch(e){}}
   for(const id in j.picks){if(state[id]&&state[id].lf&&!j.picks[id].final)continue;state[id]=Object.assign(state[id]||{},j.picks[id]);}
   for(const el of $('.lv')){const d=state[el.dataset.id];if(d)paint(el,d);}stamp=j.updated_et;stale(j.ts);}catch(e){}
  const sp=[...$('.lv[data-slug]')];
