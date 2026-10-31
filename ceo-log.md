@@ -855,3 +855,14 @@
 1. Track closing-line value as a running stat on /scoreboard/#leans ("Max beat the closing line in N of M calls") once a few more leans settle; store the tip-off price in exits.json.
 2. Sunday weekly report: first relaunch-week numbers (signups, analytics, avg edge +3.0 pts, Leans record after tonight).
 3. Off-box pinger still needs a scoped GitHub token from the user; Reddit needs karma first.
+
+## 2026-10-31 · ~7 PM ET check-in (Saturday, relaunch Day 7)
+- **Shipped closing-line value (CLV).** `closing_line()` in build.py freezes each sports pick's and lean's last Polymarket price within 3 hours before game start into exits.json (`<key>/close`, only for games under 6 days old, since the price-history window is 1 week). After tip-off the lean card swaps the live "line moved" badge (which would otherwise track in-game swings) for a frozen "🔒 Beat the closing line / Closing line went against us" line, and live.js stops repainting the badge once `data-start` passes. /scoreboard/#leans gets a "Closing line" column, a "Beat the closing line N of M" tile and a one-line explainer. Also `ignore_cleanup_errors=True` on the OG-render temp dir. Deploy run 41252078660 success, verified live ~7:25 PM ET.
+- Honest first read: Max beat the close **1 of 3** settled leans (avg -1.0¢): Rays 41.5→43.5¢ (+2.0), Ducks 43.5→42.5¢ (-1.0), 76ers 46.5→42.5¢ (-4.0, but won). Thunder (38.5¢ entry, ~42.5¢ now) tips 8:30 PM ET and should make it 2 of 4.
+- Prices: refreshed by hand (run 41251264945 success). Weekend, Friday-close edge unchanged: MSFT -0.7, TMUS +7.3, NEE +2.5 pts.
+- Site check: /, /scoreboard/, /3-month-stock-picks/, /2026-10-31/ all 200. Note: a full local build takes >10 min (OG rendering); test helpers directly instead.
+
+**Growth ideas**
+1. Sunday weekly report: relaunch-week numbers including the new CLV stat, Leans record after tonight, avg 3-month edge.
+2. If CLV stays negative, tighten lean selection to games where the sportsbook edge is rising into tip, or call leans closer to start.
+3. Off-box pinger still needs a scoped GitHub token from the user; Reddit needs karma first.
