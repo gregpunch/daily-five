@@ -187,11 +187,31 @@ def enrich(ed):
         midnight=datetime.datetime.combine(TODAY,datetime.time()).timestamp()
         tp=[v for t,v in p['pts'] if t>=midnight]; p['open']=tp[0] if tp else None; p['qt']=int(NOW.timestamp())
         p['ret']=None if p['cur'] is None else (p['cur']-p['entry'])/p['entry']
+        closing_line(p,m,exits,key+'/close')
         p['id']=p.get('pid') or f"{ed['date']}-{slugify(p['label']+'-'+p['market'])[:60].strip('-')}"; p['tslug']=p['slug'][:70]; p['tname']=p['market'].split(',')[0]; p['kind']='Sports'
     for p in ed['finance']+ed['sports']:
         p['so']=None if (p.get('open') in (None,0) or p.get('cur') is None) else (p['cur']-p['open'])/p['open']
     enrich_lean(ed,exits)
     json.dump(exits,open(EX,'w'),indent=1)
+def closing_line(p,m,exits,ck):
+    """Closing-line value: the Polymarket price of our side at the last hourly point before the game started.
+    Frozen in exits ('<key>/close') because the 1-week history window eventually drops it."""
+    p['start_ts']=None; st=(m or {}).get('start')
+    if st:
+        try: p['start_ts']=int(datetime.datetime.fromisoformat(st.replace(' ','T').replace('+00','+00:00')).timestamp())
+        except Exception: pass
+    if ck in exits: p['close']=exits[ck]['price']; return
+    p['close']=None
+    if not p['start_ts'] or time.time()<p['start_ts'] or not m or len(m['tokens'])<=p['outcome']: return
+    if time.time()-p['start_ts']>6*86400: return  # history window is 1 week: older closes can't be trusted, so leave them blank
+    h=phistory(m['tokens'][p['outcome']]) or []; pre=[(t,v) for t,v in h if p['start_ts']-3*3600<=t<=p['start_ts']]
+    if pre and 0.01<pre[-1][1]<0.99: p['close']=pre[-1][1]; exits[ck]={'price':pre[-1][1],'note':'last price before start'}
+def clv_rec(ps):
+    """(beat, total, avg cents) over picks with a frozen closing price."""
+    c=[p for p in ps if p.get('close') is not None]
+    if not c: return 0,0,None
+    d=[(p['close']-p['entry'])*100 for p in c]
+    return sum(x>=0.5 for x in d),len(c),sum(d)/len(d)
 def enrich_lean(ed,exits):
     """Max's lean (FORMAT.md): on a no-Bold-Bet day, the closest-to-qualifying edge play. Priced and settled exactly like a
     sports pick (Polymarket resolution, or the final score while UMA catches up), but kept OUT of ed['sports'] so it never
@@ -209,6 +229,7 @@ def enrich_lean(ed,exits):
             if d: p['cur'],p['final'],p['note']=(1.0 if d>0 else 0.0),True,'final score, awaiting resolution'
     p['ret']=None if p['cur'] is None else (p['cur']-p['entry'])/p['entry']; p['so']=None; p['open']=None
     p['id']=f"{ed['date']}-lean-{slugify(p['label'])}"
+    closing_line(p,m,exits,key+'/close')
 def leans(eds=None):
     """Every Max's lean, newest first, as (edition, lean)."""
     return [(e,e['lean']) for e in (eds if eds is not None else ALLEDS) if e.get('lean') and e['date']>=LAUNCH]
@@ -313,7 +334,14 @@ def linemove(p):
     """Sports only, before settlement: did the market move toward or away from Max's price since the call?
     Beating the closing line is a better signal than one game's W/L. live.js repaints [data-lm] every minute."""
     if p.get('kind')!='Sports' or p.get('action','BUY')!='BUY': return ''
-    return f'<p class="lm" data-lm="{p["id"]}" data-entry="{p["entry"]}"{"" if (p.get("cur") is not None and not p.get("final")) else " hidden"}>{lm_txt(p["entry"],p.get("cur"))}</p>'
+    if p.get('close') is not None: return f'<p class="lm lm-close" data-lm="{p["id"]}" data-frozen="1">{clv_txt(p["entry"],p["close"])}</p>'
+    st=f' data-start="{p["start_ts"]}"' if p.get('start_ts') else ''
+    return f'<p class="lm" data-lm="{p["id"]}" data-entry="{p["entry"]}"{st}{"" if (p.get("cur") is not None and not p.get("final")) else " hidden"}>{lm_txt(p["entry"],p.get("cur"))}</p>'
+def clv_txt(e,c):
+    d=round((c-e)*100,1)
+    if d>=0.5: return f'🔒 <b class="up">Beat the closing line</b> · Max got {e*100:.1f}¢, the market closed at {c*100:.1f}¢ before start (+{d:.1f}¢). Sharp price, whatever the score says.'
+    if d<=-0.5: return f'🔒 <b class="dn">Closing line went against us</b> · Max got {e*100:.1f}¢, the market closed at {c*100:.1f}¢ before start ({d:.1f}¢). The market wasn\'t buying it.'
+    return f'🔒 <b>Closing line: no change</b> · Max got {e*100:.1f}¢, closed at {c*100:.1f}¢ before start.'
 def lm_txt(e,c):
     if c is None: return ''
     d=round((c-e)*100,1)
@@ -1144,7 +1172,7 @@ def _render_png(svgp,pngp):
     chrome=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('chromium-browser')
     if not chrome: return False
     import subprocess, tempfile
-    with tempfile.TemporaryDirectory() as ud:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as ud:
         try: subprocess.run([chrome,'--headless=new','--no-sandbox','--hide-scrollbars','--disable-gpu',f'--user-data-dir={ud}','--window-size=1200,630',f'--screenshot={pngp}','file://'+svgp],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=60)
         except Exception: return False
     return os.path.exists(pngp)
@@ -2202,11 +2230,15 @@ def leans_section(eds):
     if not ls: return ''
     ef=lambda p: f"{p['edge']:+.1f} pts" if p.get('edge') is not None else '—'
     w_,l_,avg,op=lean_rec(eds)
-    tr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini buy">LEAN</span> <b>{E(p["label"])}</b> <small>{E(p["market"])}</small></td><td class="mono">{p["entry"]*100:.1f}¢</td><td class="mono">{ef(p)}</td><td class="mono">{money("Sports",p.get("cur"))} <small>{E(p.get("note") or "")}</small></td><td>{chip(p.get("ret"),p.get("final"))}</td><td>{("Win" if p["ret"]>0 else "Loss") if p.get("final") and p.get("ret") is not None else "Pending"}</td><td><a href="{BASE}/{e["date"]}/#lean">edition ↗</a></td></tr>' for e,p in ls)
+    cl=lambda p: '—' if p.get('close') is None else f'{p["close"]*100:.1f}¢ <small class="{"up" if p["close"]-p["entry"]>=0.005 else "dn" if p["close"]-p["entry"]<=-0.005 else ""}">{(p["close"]-p["entry"])*100:+.1f}¢</small>'
+    cb,ct,cavg=clv_rec([p for _,p in ls])
+    clt=(f'<div class="tile"><span class="h">Beat the closing line</span><b class="{"up" if cb*2>=ct else "dn"}">{cb} of {ct}</b><span class="s">avg {cavg:+.1f}¢ vs the last price before start</span></div>' if ct else '')
+    tr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini buy">LEAN</span> <b>{E(p["label"])}</b> <small>{E(p["market"])}</small></td><td class="mono">{p["entry"]*100:.1f}¢</td><td class="mono">{ef(p)}</td><td class="mono">{cl(p)}</td><td class="mono">{money("Sports",p.get("cur"))} <small>{E(p.get("note") or "")}</small></td><td>{chip(p.get("ret"),p.get("final"))}</td><td>{("Win" if p["ret"]>0 else "Loss") if p.get("final") and p.get("ret") is not None else "Pending"}</td><td><a href="{BASE}/{e["date"]}/#lean">edition ↗</a></td></tr>' for e,p in ls)
     hd=f"{w_}-{l_}" if w_+l_ else "0-0"
     return (f'<section class="sec leans" id="leans"><div class="sh"><span class="si">🤏</span><div><h2>Max\'s Leans · separate record</h2><p class="sub">On days when no game clears our bar (no Bold Bet), Max Edge, our AI host, names his closest miss as a <b>lean</b>. Leans are graded here in public, one 1-unit buy at the published Polymarket price, and are <b>never</b> counted in the sports or Bold Bet record. Think of it as the bench: it plays, but it doesn\'t get a jersey.</p></div></div>'
-            f'<div class="tiles"><div class="tile"><span class="h">Leans</span><b class="{"up" if (avg or 0)>=0 else "dn"}">{hd}</b><span class="s">{(pct(avg)+" avg per $1") if avg is not None else "no settled leans yet"} · {op} open</span></div></div>'
-            f'<div class="tbl"><table><thead><tr><th>Date</th><th>Lean</th><th>Entry</th><th>Edge vs books</th><th>Now / exit</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div></section>')
+            f'<div class="tiles"><div class="tile"><span class="h">Leans</span><b class="{"up" if (avg or 0)>=0 else "dn"}">{hd}</b><span class="s">{(pct(avg)+" avg per $1") if avg is not None else "no settled leans yet"} · {op} open</span></div>{clt}</div>'
+            f'<p class="sub">🔒 <b>Closing line</b> is our side\'s Polymarket price right before the game starts. Getting a better price than the close (buying cheaper than where the market ends up) is the stat sharp bettors trust more than any one game\'s result.</p>'
+            f'<div class="tbl"><table><thead><tr><th>Date</th><th>Lean</th><th>Entry</th><th>Edge vs books</th><th>Closing line</th><th>Now / exit</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div></section>')
 def main():
     shutil.rmtree(OUT,ignore_errors=True); os.makedirs(OUT)
     w('style.css',open(os.path.join(ROOT,'style.css')).read()); w('.nojekyll','')
