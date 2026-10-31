@@ -308,7 +308,18 @@ def livebox(p):
 <div><span class="lbl">Entry</span><span class="price">{money(k,p['entry'])}</span></div>
 <div><span class="lbl">Live</span><span class="price" data-k="cur">{money(k,p.get('cur'))}</span></div>
 <div><span class="lbl">Today</span><span data-k="so">{mv(p.get('so'))}</span></div>
-<div><span class="lbl">Since pick</span><span data-k="ret">{chip(p.get('ret'),p.get('final'))}</span></div></div>"""
+<div><span class="lbl">Since pick</span><span data-k="ret">{chip(p.get('ret'),p.get('final'))}</span></div></div>{linemove(p)}"""
+def linemove(p):
+    """Sports only, before settlement: did the market move toward or away from Max's price since the call?
+    Beating the closing line is a better signal than one game's W/L. live.js repaints [data-lm] every minute."""
+    if p.get('kind')!='Sports' or p.get('action','BUY')!='BUY': return ''
+    return f'<p class="lm" data-lm="{p["id"]}" data-entry="{p["entry"]}"{"" if (p.get("cur") is not None and not p.get("final")) else " hidden"}>{lm_txt(p["entry"],p.get("cur"))}</p>'
+def lm_txt(e,c):
+    if c is None: return ''
+    d=round((c-e)*100,1)
+    if d>=0.5: return f'📈 <b class="up">Line moved our way</b> · {e*100:.1f}¢ → {c*100:.1f}¢ (+{d:.1f}¢) since Max called it. The market agrees, for now.'
+    if d<=-0.5: return f'📉 <b class="dn">Line moved against us</b> · {e*100:.1f}¢ → {c*100:.1f}¢ ({d:.1f}¢) since Max called it. We show this one too.'
+    return f'↔ <b>Line hasn\'t budged</b> · still {c*100:.1f}¢, same as Max\'s price.'
 GLBL={'nfl':'\u23f1 Kickoff','cfb':'\u23f1 Kickoff','mlb':'\u26be First pitch','nba':'\u23f1 Tip-off','wnba':'\u23f1 Tip-off','cbb':'\u23f1 Tip-off','nhl':'\u23f1 Puck drop'}
 def _left(sec):
     m=max(0,round(sec/60)); d,h,mm=m//1440,m%1440//60,m%60
