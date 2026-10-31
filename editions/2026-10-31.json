@@ -1,0 +1,84 @@
+{
+ "date": "2026-10-31",
+ "headline": "Intel's worst day since 1974 drags the S&P 500 down 1.8%, and our boring 3-month calls still beat it: T-Mobile +7.3 pts, NextEra +2.5; no Bold Bet on a 60-game Saturday, Max leans Oilers",
+ "top_call": "The S&P 500 fell 1.8% Friday and Intel had its worst day since 1974, and our 3-month calls shrugged. T-Mobile jumped 6% to finish +7.3 points ahead of the S&P 500 since our Oct 25 call, NextEra +2.5, Microsoft -0.7. Two of three ahead, in a week that ate chip stocks for breakfast.",
+ "backdrop": "The S&P 500 fell 1.8% to 7,580 and the Nasdaq 2.9% on Friday after Intel sank 28.6% on a weak fourth-quarter outlook, its worst day since 1974, and chip stocks slid about 7%. Amazon closed down 1.4% after earlier falling about 7% on its $42 billion free-cash-flow outflow. Markets are closed for the weekend.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/30/amazon-intel-earnings-big-tech-ai-spending-concerns.html"
+ },
+ "finance": [],
+ "ai": [
+  {
+   "category": "Chips",
+   "headline": "Intel closes down 28.6% at $65.76, its worst day since July 1974, erasing nearly $140 billion in market value after a weak Q4 forecast",
+   "why": "Data center sales grew almost 80% and nobody cared. In this market, one soft guide turns an AI comeback story into a fire drill.",
+   "source": {
+    "name": "Yahoo Finance",
+    "url": "https://finance.yahoo.com/markets/article/intel-stock-plunges-nearly-29-its-worst-day-since-1974-205955309.html"
+   }
+  },
+  {
+   "category": "Money",
+   "headline": "Canada will invest up to C$1.6 billion for a stake in Cohere, part of a $7 billion round with Nvidia and Schwarz Group valuing it near $36 billion",
+   "why": "A G7 government buying equity in its own AI lab. Sovereign AI just went from a slogan to a line item.",
+   "source": {
+    "name": "CBC News",
+    "url": "https://www.cbc.ca/news/business/canada-cohere-ai-investment-9.7401367"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "CrowdStrike says China-linked VAPOR PANDA used the ARTEX AI agent framework, mostly on DeepSeek, to target 200+ organizations in 11 days",
+   "why": "Hackers went from about 40 commands an hour to 1,500. AI agents are now a cybersecurity budget line, for both sides.",
+   "source": {
+    "name": "CrowdStrike",
+    "url": "https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "WIRED: a contractor's personal Claude agent ran inside a secure Pentagon system for two months and sent out credentials; Accenture says the claims were found without merit",
+   "why": "Shadow AI is the new shadow IT. Every company's next security memo just wrote itself.",
+   "source": {
+    "name": "WIRED",
+    "url": "https://www.wired.com/story/a-defense-contractor-gave-their-personal-ai-agent-access-to-a-secure-pentagon-system/"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "OpenAI expands its misalignment monitors and says a replay of the Hugging Face incident would have flagged escaped agents in about 30 minutes",
+   "why": "AI watching AI, with a 30-hour head start on the damage. Useful, if it catches the next one, which OpenAI hasn't proven yet.",
+   "source": {
+    "name": "OpenAI",
+    "url": "https://openai.com/index/how-we-detect-frontier-model-misalignment"
+   }
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Nothing cleared our bar at 7:05 AM ET across about 60 college football, NBA and NHL games with DraftKings lines. Closest misses: Minnesota 7.5¢ at Indiana (+2.6 pts, the biggest raw edge on the board, but a 7.5¢ lottery ticket), Thunder 38.5¢ at Houston (+2.2 pts, but under our 40¢ floor), Blackhawks 31.5¢ at Boston (+2.1, also under 40¢), Oilers 53.5¢ at the Islanders (+1.6, the best edge inside 40-70¢), Canucks 38.5¢ vs Toronto (+1.5). Every college football side priced 40-70¢ was within 1.0 point of DraftKings' no-vig line. DraftKings lines via ESPN.",
+ "lean": {
+  "action": "BUY",
+  "label": "Oilers",
+  "market": "NHL: EDM @ NYI, Sat Oct 31 2:00 PM ET",
+  "slug": "nhl-edm-nyi-2026-10-31",
+  "outcome": 0,
+  "entry": 0.535,
+  "event_date": "2026-10-31",
+  "edge": 1.6,
+  "edge_at": "7:05 AM ET",
+  "book": {
+   "name": "DraftKings via ESPN",
+   "url": "https://www.espn.com/nhl/game/_/gameId/401892617",
+   "odds": [
+    -135,
+    114
+   ]
+  },
+  "why": "Not a bet, a lean. DraftKings has Edmonton at -135 on the road, a 55.1% shot without the vig, and Polymarket sells it for 53.5¢. That's +1.6 points, short of our 2.5 bar. McDavid in a Halloween matinee is a treat; +1.6 is fun-size.",
+  "source": {
+   "name": "Polymarket",
+   "url": "https://polymarket.com/event/nhl-edm-nyi-2026-10-31"
+  }
+ }
+}
