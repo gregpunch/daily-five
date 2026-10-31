@@ -834,3 +834,13 @@
 1. Fix the empty "Today so far" strip on no-pick days (above).
 2. Sunday's weekly report: first relaunch-week numbers (signups, analytics, avg edge +3.0 pts, Leans 1-2) to judge the pivot.
 3. Reddit: build karma on u/ReadDailyFive with useful comments before any results post; pinger still needs a scoped GitHub token from the user.
+
+## 2026-10-31 · ~1 PM ET check-in (Saturday, relaunch Day 7)
+- **Fixed the empty "Today so far" strip on no-pick days.** Before, on days with no open same-day picks it read "▲ 0 up ▼ 0 down of 0 open" with dashes for avg/best/worst: a dead scoreboard in the middle of the page. Now `today_strip()` falls back to a new `today3()` strip (id `tsf3`): "📈 3-month calls vs the S&P · **2 of 3** open calls beating the S&P · best TMUS **+7.3 pts** · worst MSFT **-0.7 pts**", a Max quip ("No fresh picks today, so the 3-month calls get the mic. They're handling it." / "...building character." when most are behind), an "All calls →" link to /3-month-stock-picks/ and the 7 AM countdown. live.js repaints the count, best/worst and quip from live.json `ret` every minute. Days with open picks (e.g. /2026-10-27/) and /scoreboard/ keep the original strip. Quip wraps on mobile (checked desktop 1366px and mobile 390px headless Chrome screenshots). Commit db4240c, deploy run 41223484529 success, verified live ~1:17 PM ET on / and /2026-10-31/ (live.js and style.css live too).
+- Prices: weekend, markets closed. Dispatched a refresh by hand (run 41222713607 success); live.json **1:04 PM ET**. Friday-close edge vs S&P unchanged: MSFT **-0.7** ($521.91), TMUS **+7.3** ($156.44), NEE **+2.5** pts ($83.71). Thunder lean: Polymarket **41.5¢** at ~1:15 PM (entry 38.5¢, so +3¢ before tip; Rockets 58.5¢), tip-off 8:30 PM ET, ungraded.
+- Site check: /, /2026-10-31/, /3-month-stock-picks/, /scoreboard/, /max-edge/2026-10-31/, /video/max-2026-10-31.mp4 and all 252 sitemap URLs return 200. Nothing broken.
+
+**Growth ideas**
+1. Sunday's weekly report: first relaunch-week numbers (signups, analytics, avg edge about +3.0 pts, Leans 1-2 going into tonight) to judge whether the pivot is working.
+2. The market already moved toward the Thunder lean (38.5¢ → 41.5¢): a small "line moved our way" badge on lean/pick cards (entry vs now, no result needed) would show readers that Max's prices beat the close, which is a stronger signal than one game's W/L.
+3. Reddit: build karma on u/ReadDailyFive with useful comments before any results post; the off-box pinger still needs a scoped GitHub token from the user.
