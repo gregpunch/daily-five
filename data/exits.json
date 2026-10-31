@@ -294,5 +294,25 @@
  "2026-10-30/lean": {
   "price": 1.0,
   "note": "resolved"
+ },
+ "2026-10-30/lean/close": {
+  "price": 0.425,
+  "note": "last price before start"
+ },
+ "2026-10-29/lean/close": {
+  "price": 0.425,
+  "note": "last price before start"
+ },
+ "2026-10-28/lean/close": {
+  "price": 0.435,
+  "note": "last price before start"
+ },
+ "2026-10-25/s0/close": {
+  "price": 0.465,
+  "note": "last price before start"
+ },
+ "2026-10-19/s4/close": {
+  "price": 0.585,
+  "note": "last price before start"
  }
 }
