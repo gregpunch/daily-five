@@ -473,13 +473,15 @@ def tape(ed):
 def open3(upto=None):
     return [p for e in ALLEDS if e['date']>=LAUNCH and (upto is None or e['date']<=upto) for p in e['finance'] if p['horizon']=='3 Month' and not p.get('final')]
 def hero(ed,nice):
-    top=(ed['finance'] or open3(ed['date']) or [None])[0]
+    oc=[p for p in open3(ed['date']) if p.get('ret') is not None]
+    best=None if ed['finance'] or not oc else max(oc,key=lambda p:p['ret'])
+    top=(ed['finance'] or ([best] if best else open3(ed['date'])) or [None])[0]
     if top is None: return f'<section class="hero"><div class="mesh" aria-hidden="true"></div><div class="wrap hgrid"><div><p class="date"><span class="live"></span>{nice}</p><h1>{E(ed.get("top_call") or ed["headline"])}</h1><p class="tag">{E(TAG)}</p>{sform("hero")}</div></div>{tape(ed)}</section>'
     return f"""<section class="hero"><div class="mesh" aria-hidden="true"></div><div class="wrap hgrid"><div>
 <p class="date"><span class="live"></span>{nice}</p><h1>{E(ed.get('top_call') or ed['headline'])}</h1><p class="tag">{E(TAG)}</p>
 {sform('hero')}<div class="jump"><a href="#finance">💰 Money moves</a><a href="#ai">🤖 AI</a><a href="#sports">🏟 Sports markets</a></div></div>
-<aside class="topcall {top['action'].lower()}"><span class="tlbl">Top call today</span><div class="crow"><span class="act {top['action'].lower()}">{top['action']}</span><span class="tk">{E(top['label'])}</span></div>
-<span class="price">${top['entry']:,.2f}</span>{spark(top.get('pts'),220,56)}<p>{E(top['why'])}</p>{chip(top.get('ret'))}</aside></div>{tape(ed)}</section>"""
+<aside class="topcall {top['action'].lower()}"><span class="tlbl">{'Top call today' if not best else 'Best open call · no new call today'}</span><div class="crow"><span class="act {top['action'].lower()}">{top['action']}</span><span class="tk">{E(top['label'])}</span></div>
+{f'<span class="price"><b class="{"up" if best["ret"]>=0 else "dn"}" data-edge="{best["id"]}">{best["ret"]*100:+.1f} pts</b></span><p class="tsub">vs the S&amp;P 500 · day {min(91,(datetime.date.fromisoformat(ed["date"])-datetime.date.fromisoformat(best["id"][:10])).days+1)} of 91 · entry ${best["entry"]:,.2f}</p>' if best else f'<span class="price">${top["entry"]:,.2f}</span>'}{spark(top.get('pts'),220,56)}<p>{E(top['why'])}</p>{'<a class="tsa" href="'+BASE+'/3-month-stock-picks/">All open 3-month calls vs the S&amp;P →</a>' if best else chip(top.get('ret'))}</aside></div>{tape(ed)}</section>"""
 def recap(prev):
     if not prev: return '<div class="recap"><div><span class="kicker">📬 Yesterday\'s results</span><p>Day 1 of Max Edge, our AI handicapper. Every pick is graded in public from today; results start tomorrow. Every pick is tracked on the <a href="'+BASE+'/track-record/">Track record</a>.</p></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
     ps=prev['finance']+prev['sports']; rs=[p['ret'] for p in ps if p.get('ret') is not None]
