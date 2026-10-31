@@ -25,9 +25,66 @@ def run(cmd):
     if r.returncode: print(' '.join(cmd)); print(r.stderr[-3000:]); sys.exit(1)
     return r.stdout
 def dur(f): return float(run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',f]).strip())
+_ONES='zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen'.split()
+_TENS='_ _ twenty thirty forty fifty sixty seventy eighty ninety'.split()
+def numwords(n):
+    """Integer -> spelled-out words (0..999,999,999)."""
+    n=int(n)
+    if n<20: return _ONES[n]
+    if n<100: return _TENS[n//10]+('' if n%10==0 else ' '+_ONES[n%10])
+    if n<1000: return _ONES[n//100]+' hundred'+('' if n%100==0 else ' '+numwords(n%100))
+    for v,name in ((10**6,'million'),(1000,'thousand')):
+        if n>=v: return numwords(n//v)+' '+name+('' if n%v==0 else ' '+numwords(n%v))
+def yearwords(y):
+    y=int(y)
+    if 2000<=y<=2009: return numwords(y)
+    return numwords(y//100)+' '+(numwords(y%100) if y%100>=10 else ('hundred' if y%100==0 else 'oh '+numwords(y%100)))
+def glue(t):
+    """Undo STT spacing artifacts: '8 .30'->'8.30', 'S &P'->'S&P', 'T -Mobile'->'T-Mobile', 'x .com'->'x.com', '2 %'->'2%'."""
+    t=re.sub(r"\s+([.&:\-])(?=\w)",r"\1",t)
+    t=re.sub(r"(\w)\s+(&)\s*(?=\w)",r"\1\2",t)
+    return re.sub(r"(\d)\s+%",r"\1%",t)
+def canon(t):
+    """Canonical spoken-word form so digits and spelled-out numbers compare equal."""
+    t=glue(t.lower()).replace('a.i.','ai').replace('½',' point five')
+    t=re.sub(r"\bs\s*(?:&|and)\s*p\b",' s and p ',t)
+    t=re.sub(r"\bt[\s\-]*mobile\b",' tmobile ',t)
+    t=re.sub(r"\bnext\s*era\b",' nextera ',t)
+    t=re.sub(r"\bread\s*daily\s*five\b",' read daily five ',t)
+    t=re.sub(r"\.com\b",' dot com',t)
+    t=re.sub(r"\band a half\b",'point five',t)
+    t=t.replace('%',' percent ')
+    t=re.sub(r"(?<=\d),(?=\d{3}\b)",'',t)
+    # times: 8.30 / 8:30 (hour 1-12, two-digit minutes)
+    t=re.sub(r"\b(1[0-2]|[1-9])[.:]([0-5]\d)\b",lambda m:' '+numwords(m[1])+('' if m[2]=='00' else ' '+(('oh '+numwords(m[2])) if m[2][0]=='0' else numwords(m[2])))+' ',t)
+    # decimals: 38.5 -> thirty eight point five
+    t=re.sub(r"\b(\d+)\.(\d+)\b",lambda m:' '+numwords(m[1])+' point '+' '.join(_ONES[int(c)] for c in m[2])+' ',t)
+    # years 1900-2099, then plain integers (ordinal suffixes dropped)
+    t=re.sub(r"\b(19\d\d|20\d\d)\b",lambda m:' '+yearwords(m[1])+' ',t)
+    t=re.sub(r"\b(\d+)(?:st|nd|rd|th)?\b",lambda m:' '+numwords(m[1])+' ',t)
+    t=re.sub(r"'s\b",'',t.replace('\u2019',"'")).replace("'",'')
+    return t.replace('-',' ')
 def norm(t):
-    t=t.lower().replace('a.i.','ai').replace('½',' and a half')
-    return re.findall(r"[a-z0-9']+",t)
+    return re.findall(r"[a-z0-9]+",canon(t))
+def clean_caption(txt):
+    """On-screen caption cleanup: no '8 .30', '38 .5', 'S &P', 'T -Mobile' artifacts."""
+    txt=glue(txt).replace('A.I.','AI')
+    txt=re.sub(r"(?<![$\d.])\b(1[0-2]|[1-9])\.([0-5]\d)\b(?!\.\d)",r"\1:\2",txt)  # 8.30 -> 8:30
+    txt=re.sub(r"\b[Ss]\s*(?:&|and)\s*[Pp]\b",'S&P',txt)
+    txt=re.sub(r"\b[Tt][\s\-]*[Mm]obile\b",'T-Mobile',txt)
+    txt=re.sub(r"\b[Nn]ext\s*[Ee]ra\b",'NextEra',txt)
+    return txt.replace('Phillies priced',"Philly's priced").replace('Grated against','Graded against').replace("Lean's record","Leans record").replace('My Lean','My lean').replace('thunder','Thunder').replace(' of Edge',' of edge')
+def merge_words(words):
+    """Fold STT tokens that start with . - & % : into the previous word so captions never split them."""
+    out=[]
+    for w in words:
+        tok=w.word.strip()
+        if out and re.match(r"^[.\-&%:]",tok):
+            p=out[-1]; out[-1]=type('W',(),{'start':p.start,'end':w.end,'word':p.word.rstrip()+tok})()
+        elif out and re.search(r"[&]$",out[-1].word.strip()):
+            p=out[-1]; out[-1]=type('W',(),{'start':p.start,'end':w.end,'word':p.word.rstrip()+tok})()
+        else: out.append(w)
+    return out
 # ---------- 1. STT ----------
 from faster_whisper import WhisperModel
 model=WhisperModel(os.environ.get('WHISPER_MODEL','small.en'),device='cpu',compute_type='int8')
@@ -60,13 +117,12 @@ ass=["[Script Info]","ScriptType: v4.00+",f"PlayResX: {W}",f"PlayResY: {H}","",
  "[Events]","Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
 off=0.0; parts=[]
 for i,(s,f,t0,t1,words) in enumerate(segs):
-    ws=[w for w in words if w.end>t0 and w.start<t1]
+    ws=merge_words([w for w in words if w.end>t0 and w.start<t1])
     chunk=[]
     def flush(chunk):
         if not chunk: return
         a=off+chunk[0].start-t0; b=off+chunk[-1].end-t0+0.08
-        txt=' '.join(w.word.strip() for w in chunk).replace('A.I.','AI')
-        txt=re.sub(r' (?=[.\-]\w)','',txt).replace('Phillies priced',"Philly's priced").replace('Grated against','Graded against')
+        txt=clean_caption(' '.join(w.word.strip() for w in chunk))
         ass.append(f"Dialogue: 0,{ts(max(a,off))},{ts(b)},Cap,,0,0,0,,{txt}")
     for w in ws:
         chunk.append(w)
