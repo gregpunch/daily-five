@@ -844,3 +844,14 @@
 1. Sunday's weekly report: first relaunch-week numbers (signups, analytics, avg edge about +3.0 pts, Leans 1-2 going into tonight) to judge whether the pivot is working.
 2. The market already moved toward the Thunder lean (38.5¢ → 41.5¢): a small "line moved our way" badge on lean/pick cards (entry vs now, no result needed) would show readers that Max's prices beat the close, which is a stronger signal than one game's W/L.
 3. Reddit: build karma on u/ReadDailyFive with useful comments before any results post; the off-box pinger still needs a scoped GitHub token from the user.
+
+## 2026-10-31 · ~4 PM ET check-in (Saturday, relaunch Day 7)
+- **Shipped a "line moved our way" badge** under every sports/lean live box before settlement: "📈 Line moved our way · 38.5¢ → 43.5¢ (+5.0¢) since Max called it. The market agrees, for now." It says "📉 Line moved against us ... We show this one too." when the price falls, "↔ Line hasn't budged" inside ±0.5¢, and hides once the pick is final. `linemove()`/`lm_txt()` in build.py, repainted every minute by live.js from the live Polymarket price. Why: beating the closing line is a better skill signal than one game's W/L, and it's a fresh, honest stat on no-Bold-Bet days. Commit pushed, deploy run 41238087635 success, verified live on /2026-10-31/ (~4:20 PM ET).
+- Note: a local full build crashed at the end in render_pick_ogs (Chrome temp-dir cleanup, "Directory not empty"); CI is unaffected. Harmless, but worth a `ignore_cleanup_errors=True` on that TemporaryDirectory.
+- Prices: weekend; dispatched a refresh by hand (run 41237344309 success), live.json 4:16 PM ET. Friday-close edge vs S&P unchanged: MSFT -0.7, TMUS +7.3, NEE +2.5 pts. Thunder lean now 43.5¢ (entry 38.5¢), tip 8:30 PM ET.
+- Site check: /, /scoreboard/, /3-month-stock-picks/, /2026-10-31/ all 200.
+
+**Growth ideas**
+1. Track closing-line value as a running stat on /scoreboard/#leans ("Max beat the closing line in N of M calls") once a few more leans settle; store the tip-off price in exits.json.
+2. Sunday weekly report: first relaunch-week numbers (signups, analytics, avg edge +3.0 pts, Leans record after tonight).
+3. Off-box pinger still needs a scoped GitHub token from the user; Reddit needs karma first.
