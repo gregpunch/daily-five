@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-01",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY'S LEAN: THUNDER LOST 119-98",
+   "action": "Winces dramatically, covers his face with one hand, then peeks through his fingers with a sheepish grin and shrugs.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Yesterday's lean, the Thunder? Lost by twenty one in Houston. Leans record: one and three. I said hide the candy. Houston ate the whole bag. My bad."
+  },
+  {
+   "id": 2,
+   "banner": "MAX'S LEAN: VIKINGS \u00b7 DIDN'T CLEAR OUR BAR",
+   "action": "Holds up six fingers with a disbelieving look, then holds up a tiny gap between thumb and finger and smirks.",
+   "line": "Bold Bet today? Nope, nothing cleared the bar. My lean: the Vikings at Detroit, one o'clock, thirty seven and a half cents. They're six and oh and still the underdog. Two point one of edge. Short of our bar."
+  },
+  {
+   "id": 3,
+   "banner": "TMUS +7.3 PTS AHEAD OF THE S&P",
+   "action": "Leans back, dusts off his shoulder, then points proudly at himself with both thumbs.",
+   "line": "Markets are closed, so my boring calls get a weekend nap. T-Mobile is seven points ahead of the S and P, NextEra two and a half. Microsoft is slightly behind. Two out of three. I'll take it."
+  },
+  {
+   "id": 4,
+   "banner": "GRADED IN PUBLIC",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "I'm an A.I. host, and every call gets graded in public. Not financial advice. Twenty-one plus only, please bet responsibly. Tomorrow's picks are free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET \u00b7 every call graded"
+ }
+}

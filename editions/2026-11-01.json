@@ -1,0 +1,84 @@
+{
+ "date": "2026-11-01",
+ "headline": "NFL Sunday, no Bold Bet: Max leans the 6-0 Vikings as +142 dogs in Detroit (+2.1 pts, just short of our bar); Thunder lean lost 119-98; OpenAI trims its raise to $20 billion",
+ "top_call": "Nothing on a 21-game NFL, NBA and NHL Sunday cleared our bar, so no Bold Bet. Max's lean: the unbeaten 6-0 Vikings at 37.5¢ in Detroit, +2.1 points vs DraftKings' no-vig line, 1 PM ET. Our 3-month calls rest on a weekend lead: T-Mobile +7.3 points ahead of the S&P 500, NextEra +2.5, Microsoft -0.7.",
+ "backdrop": "Markets are closed for the weekend. On Friday the S&P 500 fell 1.8% to 7,580 and the Nasdaq 2.9% after Intel sank 28.6% on a weak fourth-quarter outlook. On Saturday CNBC confirmed OpenAI cut its latest fundraising target to up to $20 billion from about $30 billion.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/10/30/amazon-intel-earnings-big-tech-ai-spending-concerns.html"
+ },
+ "finance": [],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "OpenAI pares its new funding round to up to $20 billion from about $30 billion, at a $1.25 trillion post-money valuation, after some investors cut allocations",
+   "why": "Even the biggest name in AI is finding the checkbooks a little lighter. AI spending fatigue just reached the cap table.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/31/openai-fundraising-20-billion-valuation.html"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "OpenAI, Google, Microsoft and Anthropic back one shared robots.txt signal that lets websites opt out of AI training across all of them at once",
+   "why": "One line in robots.txt instead of a crawler-by-crawler whack-a-mole. It's voluntary, and Google and Microsoft don't start until next year.",
+   "source": {
+    "name": "The Verge",
+    "url": "https://www.theverge.com/tech/1023763/openai-google-microsoft-ai-scraping-standard-opt-out"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "A Claude Sonnet 5 agent picked a gene therapy from 19 options and ran the injection into a live mouse's brain at startup Exin Therapeutics; Opus 5.5 refused to guide the needle",
+   "why": "AI agents just went from writing code to running lab hardware. Not peer-reviewed yet, but the 'AI scientist' pitch got a lot less hypothetical.",
+   "source": {
+    "name": "WIRED",
+    "url": "https://www.wired.com/story/an-ai-agent-did-brain-surgery-on-live-mouse/"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "Nvidia weighs cosigning debt for Nscale's Anthropic data center in West Virginia, where Anthropic has a $44.6 billion contract for the first 460-megawatt building",
+   "why": "The chip seller backstopping its customers' construction loans. When the vendor becomes the lender, watch who's left holding the risk.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/10/30/nvidia-weighs-playing-the-cosigner-for-nscales-ai-data-center-in-west-virginia/"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Apple Intelligence comes to China with Alibaba's Qwen built into Siri, Writing Tools and Visual Intelligence: testing from Nov 4, rollout with iOS 27.3 in December",
+   "why": "Apple's second-biggest market finally gets its AI, powered by a Chinese model. A big unlock for iPhone demand and a big win for Alibaba.",
+   "source": {
+    "name": "China Daily",
+    "url": "https://www.chinadaily.com.cn/a/202610/31/WS6ae54463e4b06d4aa0566359.html"
+   }
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Nothing cleared our bar at 7:05 AM ET across 21 NFL, NBA and NHL games with DraftKings lines. Closest misses: Chargers 26.5¢ at the Rams (+4.4 pts, the biggest raw edge on the board, but a long shot under our 40¢ floor), Winnipeg 27.5¢ at Carolina (+2.9, under 35¢), Vikings 37.5¢ at Detroit (+2.1, the best edge inside our 35-75¢ lean band, but under the 2.5 bar and the 40¢ pick floor), Browns 35.5¢ at Pittsburgh (+1.4), Oilers 45.5¢ at the Rangers (+1.3). Every NBA side was within 0.6 points of DraftKings' no-vig line. DraftKings lines via ESPN.",
+ "lean": {
+  "action": "BUY",
+  "label": "Vikings",
+  "market": "NFL Week 8: MIN @ DET, Sun Nov 1 1:00 PM ET",
+  "slug": "nfl-min-det-2026-11-01",
+  "outcome": 0,
+  "entry": 0.375,
+  "event_date": "2026-11-01",
+  "edge": 2.1,
+  "edge_at": "7:05 AM ET",
+  "book": {
+   "name": "DraftKings via ESPN",
+   "url": "https://www.espn.com/nfl/game/_/gameId/401873030",
+   "odds": [
+    142,
+    -170
+   ]
+  },
+  "why": "Not a bet, a lean. DraftKings has the 6-0 Vikings at +142 in Detroit, a 39.6% shot without the vig, and Polymarket sells it for 37.5¢. That's +2.1 points, short of our 2.5 bar and under our 40¢ pick floor. Undefeated and still the underdog? Somebody in Minnesota is printing that on a T-shirt.",
+  "source": {
+   "name": "Polymarket",
+   "url": "https://polymarket.com/event/nfl-min-det-2026-11-01"
+  }
+ }
+}
