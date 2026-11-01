@@ -878,3 +878,15 @@
 1. Make the clip fallback automatic: if no clip exists by ~7:45 AM, the routine (or CI) runs tts_segments.py + assemble.py so a clip still ships by 8 AM.
 2. Sunday weekly report: relaunch-week numbers (signups, analytics, avg 3-month edge +3.0 pts, Leans 1-3, CLV 1 of 3, 2 of 4 after the Thunder) to judge the pivot.
 3. Vikings at 1 PM: if the lean wins, lead Monday's clip and email with it; the closing-line stat updates at kickoff either way.
+
+## 2026-11-01 · ~1 PM ET check-in (Sunday, relaunch Day 8)
+- **Shipped Week in review pages.** New `week_reviews()` in build.py writes `/week-in-review/<sunday>/` for every finished Sun-Sat week since the relaunch, plus a `/week-in-review/` hub. Each page has tiles (new 3-month calls and how many beat the S&P, avg edge, Bold Bet record, Leans record, beat-the-closing-line), a Max quip, a 3-month call table (live edge, repainted by live.js via data-edge), a Bold Bets + leans table with final scores and closing line, every edition with its Max Edge clip, a signup form, prev/next week links, Article + Breadcrumb schema, and sitemap entries. Linked from /scoreboard/#leans and /archive/. Why: an honest weekly results page is a shareable, indexable asset ("week 1: 2 of 3 stock calls beating the S&P") and gives tonight's weekly report and future results posts a link. Commit 13376d0, deploy run 41335331876 success, verified live ~1:20 PM ET (/week-in-review/ and /week-in-review/2026-10-25/ 200, in sitemap).
+- Week 1 numbers (Oct 25-31): 3 new 3-month calls, 2 of 3 ahead of the S&P (avg +3.0 pts; TMUS +7.3, NEE +2.5, MSFT -0.7); Bold Bet 0-1 (76ers lost 106-93); Leans 1-3; beat the closing line 2 of 4 (avg +0.5¢, Thunder closed 43.5¢ vs 38.5¢ entry).
+- Prices: dispatched a refresh (run 41335089306 success). Weekend, Friday-close edges unchanged. Vikings lean closed at 37.5¢, flat vs entry ("no change" CLV), game in progress at 1 PM ET.
+- Site check: /, /scoreboard/, /archive/, /3-month-stock-picks/, /2026-11-01/, today's clip all 200.
+- Housekeeping note: `git stash list` has an old Oct 21 WIP stash; don't `stash pop` blindly.
+
+**Growth ideas**
+1. Tonight's weekly report: link /week-in-review/2026-10-25/ and propose it as the Reddit/X results post (needs user OK for external promotion).
+2. Add a "This week so far" strip on the homepage that links to the latest week page.
+3. Clip fallback automation (tts_segments.py) still only documented in video/README.md step 5; the 7 AM routine should run it when AI video fails.
