@@ -951,7 +951,7 @@ def body(ed,prev=None,home=False):
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
     upd=NOW.strftime('%-I:%M %p ET')
     beta=(f'<p class="disc-bar">🧪 <b>Beta edition (pre-launch).</b> This is from our October 2026 beta, before Max Edge\'s Day 1 on Oct 25. Its picks are graded on the <a href="{BASE}/beta-archive/">Beta archive</a>, not the main scoreboard.</p>' if ed['date']<LAUNCH else '')
-    return beta+(latest_clip(ed['date']) if home else clip_html(ed['date']))+closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
+    return beta+(latest_clip(ed['date']) if home else clip_html(ed['date']))+closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}{week_strip() if home and ed["date"]>=LAUNCH else ""}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">{'Buy-and-hold 3-month calls (1–2 a week), graded against the S&amp;P 500.' if ed['date']>=LAUNCH else 'The best ideas from AI agents, analysts and public sources, by horizon.'}</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
 <section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a>{''.join(f' · <a href="{BASE}{u}">{n[:1].upper()+n[1:]} →</a>' for n,u in LGHUBS.values())}</p></div></div>{verdict_summary(ed["sports"])}{gd_board(ed["sports"])}<div class="grid g3">{sp}</div>{nobets(ed)}</section>"""
@@ -2249,6 +2249,30 @@ _ALL=[]
 def ALLEDS_ALL(): return _ALL
 def _pts(x): return '—' if x is None else f"{x*100:+.1f} pts"
 def _sun(d): return d-datetime.timedelta(days=(d.weekday()+1)%7)
+def _wk_line(we):
+    """One-line tally for a list of editions (used by week_reviews and the home 'week' strip)."""
+    calls=[p for e in we for p in e['finance'] if p.get('horizon')=='3 Month']; gr=[p for p in calls if p.get('ret') is not None]
+    ah=sum(p['ret']>0 for p in gr); avg=sum(p['ret'] for p in gr)/len(gr) if gr else None
+    bb=[p for e in we for p in e['sports']]; bst=[p for p in bb if p.get('final') and p.get('ret') is not None]; bw=sum(p['ret']>0 for p in bst)
+    ls=[e['lean'] for e in we if e.get('lean') and not e['sports']]; lst=[p for p in ls if p.get('final') and p.get('ret') is not None]; lw=sum(p['ret']>0 for p in lst)
+    cb,ct,_=clv_rec(ls); bits=[]
+    if calls: bits.append(f"{len(calls)} new 3-month call{'s' if len(calls)!=1 else ''}"+(f", {ah} of {len(gr)} ahead of the S&P ({avg*100:+.1f} pts avg)" if gr else ''))
+    if bb: bits.append(f"Bold Bets {bw}-{len(bst)-bw}" if bst else f"{len(bb)} Bold Bet{'s' if len(bb)!=1 else ''} open")
+    if ls: bits.append(f"leans {lw}-{len(lst)-lw}"+(f" ({len(ls)-len(lst)} open)" if len(ls)>len(lst) else '')+(f", beat the close {cb} of {ct}" if ct else ''))
+    return '; '.join(bits)
+def week_strip():
+    """Home: 'This week so far' (current Sun-Sat week since LAUNCH) + link to last finished week's recap."""
+    d=datetime.date.fromisoformat; L=d(LAUNCH); s=_sun(TODAY)
+    if s<_sun(L): return ''
+    eds=[e for e in ALLEDS if d(e['date'])>=L]
+    cur=[e for e in eds if s<=d(e['date'])<=TODAY]; n=(s-_sun(L)).days//7+1
+    ps=s-datetime.timedelta(days=7); prev=[e for e in eds if ps<=d(e['date'])<ps+datetime.timedelta(days=7)]
+    if not cur and not prev: return ''
+    cl=_wk_line(cur) or 'just getting started'
+    last=(f'<span class="tsc"><a class="t3a" href="{BASE}/week-in-review/{ps.isoformat()}/">Week {n-1} recap →</a> <small>{E(_wk_line(prev))}</small></span>' if prev and ps>=_sun(L) else '')
+    day=(TODAY-s).days+1
+    return (f'<div class="tsf t3 wk" id="wkstrip"><span class="tsl"><span data-t="lbl">🗓 Week {n} so far</span></span>'
+            f'<span class="tsc"><b>Day {day} of 7:</b> {E(cl)}</span>{last}</div>')
 def week_reviews(eds):
     """/week-in-review/<sunday>/: one recap page per finished Sun-Sat week since LAUNCH (3-month calls vs the S&P, Bold Bets,
     Max's leans with closing-line value, every edition + clip), plus a /week-in-review/ hub. Returns sitemap (url, lastmod) pairs."""
