@@ -643,9 +643,30 @@ def clip_meta(d):
     desc=(f"Max Edge, The Daily Five's AI-generated host, in under a minute. {(story.rstrip('.')+'.') if story else 'Today\'s calls.'}{extra} "
           f"3-month stock calls graded vs the S&P 500. Not financial advice. 21+.")
     return title,desc,f'/max-edge/{d}/'
+def clip_ed(d):
+    ed=CLIP_EDS.get(d)
+    if ed: return ed
+    try: return json.load(open(os.path.join(ROOT,'editions',f'{d}.json')))
+    except Exception: return {}
+def clip_topic(d):
+    """What the clip headline promises: the Bold Bet only on days that have one (else Max's lean, else the 3-month calls)."""
+    ed=clip_ed(d)
+    if any(p.get('bold') for p in ed.get('sports',[])): return "today's calls + the Bold Bet"
+    if ed.get('lean'): return "no Bold Bet, just Max's lean + the 3-month calls"
+    return "no Bold Bet today + the 3-month calls"
+def clip_fallback(d):
+    """No mp4 for this day (video generation failed or is running late): never leave a dead player or yesterday's clip.
+    Show Max's script as text instead, if one was saved; else nothing."""
+    tr=clip_transcript(d)
+    if not tr: return ''
+    return ('<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:left"><h2 style="font-size:1.05em;margin:0 0 8px;text-align:center">🎙️ Max Edge\'s rundown, in writing today</h2>'
+            '<p class="sub" style="font-size:.85em;text-align:center">The video is running late (even AI hosts oversleep). Here\'s exactly what Max would have said.</p>'
+            +''.join(f'<p style="margin:8px 0"><b style="font-size:.8em;letter-spacing:.04em;opacity:.75">{E(b)}</b><br>{E(l)}</p>' for b,l in tr)
+            +'<figcaption class="sub" style="font-size:.85em;text-align:center">Max Edge is an AI-generated host. Not financial advice. 21+. '
+            f'<a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption></figure>')
 def clip_html(d):
     v=os.path.join(ROOT,'clips',f'max-{d}.mp4')
-    if not os.path.exists(v): return ''
+    if not os.path.exists(v): return clip_fallback(d)
     os.makedirs(os.path.join(OUT,'video'),exist_ok=True)
     for x in ('mp4','jpg'):
         f=os.path.join(ROOT,'clips',f'max-{d}.{x}')
@@ -664,7 +685,7 @@ def clip_html(d):
     js=("<script>(function(){var v=document.getElementById('mxv'),b=document.getElementById('mxs');if(!v)return;"
         "if('IntersectionObserver'in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting&&x.intersectionRatio>=.6){if(v.muted)v.play().catch(function(){})}else if(v.muted)v.pause()})},{threshold:[0,.6]}).observe(v)}"
         "b.onclick=function(){v.muted=false;v.currentTime=0;v.play();b.style.display='none'};v.addEventListener('volumechange',function(){if(!v.muted)b.style.display='none'})})()</script>")
-    return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><h2 style="font-size:1.05em;margin:0 0 8px">🎙️ Max Edge\'s {secs}rundown: today\'s calls + the Bold Bet</h2>'
+    return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><h2 style="font-size:1.05em;margin:0 0 8px">🎙️ Max Edge\'s {secs}rundown: {clip_topic(d)}</h2>'
             f'<div style="position:relative"><video id="mxv" controls playsinline muted loop preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000;display:block" src="{BASE}/video/max-{d}.mp4"></video>'
             f'<button type="button" id="mxs" style="position:absolute;top:10px;right:10px;border:0;border-radius:999px;padding:6px 12px;font-weight:700;background:rgba(0,0,0,.7);color:#fff;cursor:pointer">🔊 Tap for sound</button></div>'
             f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+. <a href="{BASE}{vp}">Share this clip</a> \u00b7 <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption>'
@@ -907,7 +928,9 @@ def earnings_hub():
          {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}
     w('earnings/index.html',shell(title,desc,P,bodyh,sch,og=earnings_og(ops)))
     return P
-def latest_clip():
+def latest_clip(today=None):
+    """Home page clip: today's clip, or today's script as text if the video is missing; only falls back to an older clip when today has neither."""
+    if today and (os.path.exists(os.path.join(ROOT,'clips',f'max-{today}.mp4')) or clip_transcript(today)): return clip_html(today)
     fs=sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))
     return clip_html(os.path.basename(fs[-1])[4:14]) if fs else ''
 def body(ed,prev=None,home=False):
@@ -928,7 +951,7 @@ def body(ed,prev=None,home=False):
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
     upd=NOW.strftime('%-I:%M %p ET')
     beta=(f'<p class="disc-bar">🧪 <b>Beta edition (pre-launch).</b> This is from our October 2026 beta, before Max Edge\'s Day 1 on Oct 25. Its picks are graded on the <a href="{BASE}/beta-archive/">Beta archive</a>, not the main scoreboard.</p>' if ed['date']<LAUNCH else '')
-    return beta+(latest_clip() if home else clip_html(ed['date']))+closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
+    return beta+(latest_clip(ed['date']) if home else clip_html(ed['date']))+closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">{'Buy-and-hold 3-month calls (1–2 a week), graded against the S&amp;P 500.' if ed['date']>=LAUNCH else 'The best ideas from AI agents, analysts and public sources, by horizon.'}</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
 <section class="sec sp" id="sports"><div class="sh"><span class="si">🏟</span><div><h2>Sports market plays</h2><p class="sub">Live Polymarket odds: big moves, big volume, and lines that look off. <a href="{BASE}/polymarket-picks-today/">Every Polymarket pick, graded →</a> · <a href="{BASE}/nfl-picks-this-week/">NFL picks this week →</a>{''.join(f' · <a href="{BASE}{u}">{n[:1].upper()+n[1:]} →</a>' for n,u in LGHUBS.values())}</p></div></div>{verdict_summary(ed["sports"])}{gd_board(ed["sports"])}<div class="grid g3">{sp}</div>{nobets(ed)}</section>"""
