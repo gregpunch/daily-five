@@ -2247,6 +2247,76 @@ def beta_page(BETA,brows):
     w('beta-archive/index.html',shell(f"Beta archive (Oct 2026) | {BRAND}","Every Daily Five beta pick from Oct 15-24, 2026, graded honestly.",'/beta-archive/',bodyh))
 _ALL=[]
 def ALLEDS_ALL(): return _ALL
+def _pts(x): return '—' if x is None else f"{x*100:+.1f} pts"
+def _sun(d): return d-datetime.timedelta(days=(d.weekday()+1)%7)
+def week_reviews(eds):
+    """/week-in-review/<sunday>/: one recap page per finished Sun-Sat week since LAUNCH (3-month calls vs the S&P, Bold Bets,
+    Max's leans with closing-line value, every edition + clip), plus a /week-in-review/ hub. Returns sitemap (url, lastmod) pairs."""
+    d=datetime.date.fromisoformat; L=d(LAUNCH); out=[]; wks=[]
+    s=_sun(L)
+    while s+datetime.timedelta(days=6)<TODAY:
+        e_=s+datetime.timedelta(days=6); we=[e for e in eds if s<=d(e['date'])<=e_]
+        if we: wks.append((s,e_,sorted(we,key=lambda e:e['date'])))
+        s+=datetime.timedelta(days=7)
+    if not wks: return out
+    rng=lambda s,e_: f"{s.strftime('%b %-d')}–{e_.strftime('%-d, %Y') if s.month==e_.month else e_.strftime('%b %-d, %Y')}"
+    summ={}
+    for i,(s,e_,we) in enumerate(wks):
+        P=f"/week-in-review/{s.isoformat()}/"; n=i+1
+        calls=[(p,e) for e in we for p in e['finance'] if p.get('horizon')=='3 Month']
+        gr=[p for p,_ in calls if p.get('ret') is not None]; ah=sum(p['ret']>0 for p in gr); avg=sum(p['ret'] for p in gr)/len(gr) if gr else None
+        bb=[(p,e) for e in we for p in e['sports']]; bst=[p for p,_ in bb if p.get('final') and p.get('ret') is not None]; bw=sum(p['ret']>0 for p in bst)
+        ls=[(e,e['lean']) for e in we if e.get('lean') and not e['sports']]; lst=[p for _,p in ls if p.get('final') and p.get('ret') is not None]; lw=sum(p['ret']>0 for p in lst)
+        cb,ct,cavg=clv_rec([p for _,p in ls])
+        def t(h,v,s_,c=''): return f'<div class="tile"><span class="h">{h}</span><b class="{c}">{v}</b><span class="s">{s_}</span></div>'
+        tiles=(t('New 3-month calls',str(len(calls)),(f'{ah} of {len(gr)} ahead of the S&amp;P now' if gr else 'none this week'))
+               +(t('Avg edge vs S&amp;P',f'{avg*100:+.1f} pts','stock return minus SPY, live','up' if avg>=0 else 'dn') if avg is not None else '')
+               +t('Bold Bets',f'{bw}-{len(bst)-bw}' if bst else str(len(bb)),('settled' if bst else 'none settled')+(f' · {len(bb)-len(bst)} open' if len(bb)>len(bst) else ''),('up' if bw*2>=len(bst) else 'dn') if bst else '')
+               +t("Max's leans",f'{lw}-{len(lst)-lw}' if lst else '0-0',f'{len(ls)-len(lst)} open' if len(ls)>len(lst) else 'separate record',('up' if lw*2>=len(lst) else 'dn') if lst else '')
+               +(t('Beat the closing line',f'{cb} of {ct}',f'avg {cavg:+.1f}¢','up' if cb*2>=ct else 'dn') if ct else ''))
+        bits=[]
+        if calls: bits.append(f"{len(calls)} new 3-month stock call{'s' if len(calls)!=1 else ''}"+(f", {ah} of {len(gr)} ahead of the S&P 500 (avg {avg*100:+.1f} pts)" if gr else ''))
+        if bb: bits.append(f"{len(bb)} Bold Bet{'s' if len(bb)!=1 else ''}"+(f" ({bw}-{len(bst)-bw})" if bst else ''))
+        if ls: bits.append(f"Max's leans {lw}-{len(lst)-lw}"+(f", beat the closing line {cb} of {ct}" if ct else ''))
+        line='; '.join(bits) or 'no picks'
+        best=max(gr,key=lambda p:p['ret'],default=None)
+        if best is not None and best['ret']>0 and lst and lw*2<len(lst): quip=f"The stock calls carried the week and the leans carried a grudge. {best['label']} is up {best['ret']*100:+.1f} pts on the market; the bench went {lw}-{len(lst)-lw}. We print both."
+        elif best is not None and best['ret']>0: quip=f"{best['label']} is leading the S&P by {best['ret']*100:+.1f} pts. Max would like that framed."
+        elif lst and lw*2>=len(lst): quip=f"The leans went {lw}-{len(lst)-lw}. Max is calling it a hot streak; statisticians are calling it a small sample."
+        else: quip="Rough week. Every miss stays on the board, because a scoreboard that only shows wins is just an ad."
+        cr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini {p["action"].lower()}">{p["action"]}</span> <a href="{BASE}/picks/{p["id"]}/"><b>{E(p["label"])}</b></a></td><td class="mono">{money("Finance",p["entry"])}</td><td class="mono">'+(f'{p["abs_ret"]*100:+.1f}% vs {p["spy_ret"]*100:+.1f}%' if p.get('abs_ret') is not None and p.get('spy_ret') is not None else '—')+f'</td><td><b class="{"up" if (p.get("ret") or 0)>=0 else "dn"}" data-edge="{p["id"]}">{_pts(p.get("ret"))}</b></td><td>{"Final" if p.get("final") else "Open · day "+str((TODAY-d(e["date"])).days+1)+" of 91"}</td></tr>' for p,e in calls)
+        def res(p):
+            if not (p.get('final') and p.get('ret') is not None): return 'Pending'
+            fl=final_line(p); return ('✅ Win' if p['ret']>0 else '❌ Loss')+(f' · {fl[0]}' if fl else '')
+        clv=lambda p: '—' if p.get('close') is None else f'{p["close"]*100:.1f}¢ <small class="{"up" if p["close"]-p["entry"]>=0.005 else "dn" if p["close"]-p["entry"]<=-0.005 else ""}">{(p["close"]-p["entry"])*100:+.1f}¢</small>'
+        sr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini buy">{tag}</span> <b>{E(p["label"])}</b> <small>{E(p["market"])}</small></td><td class="mono">{p["entry"]*100:.1f}¢</td><td class="mono">{clv(p)}</td><td>{chip(p.get("ret"),p.get("final"))}</td><td>{res(p)}</td><td><a href="{BASE}/{e["date"]}/{anc}">edition ↗</a></td></tr>'
+                   for tag,anc,lst_ in (('BOLD BET','',[(e,p) for p,e in bb]),('LEAN','#lean',ls)) for e,p in lst_)
+        clips={os.path.basename(f)[4:14] for f in glob.glob(os.path.join(ROOT,'clips','max-*.mp4'))}
+        er=''.join(f'<a href="{BASE}/{e["date"]}/"><span class="ad">{d(e["date"]).strftime("%a %b %-d")}</span><b>{E(e["headline"])}</b></a>'+(f'<a class="wkclip" href="{BASE}/max-edge/{e["date"]}/">🎬 Max Edge clip, {d(e["date"]).strftime("%b %-d")}</a>' if e['date'] in clips else '') for e in we)
+        prv=f'<a class="pill ghost" href="{BASE}/week-in-review/{wks[i-1][0].isoformat()}/">← Week {n-1}</a>' if i>0 else ''
+        nxt=f'<a class="pill ghost" href="{BASE}/week-in-review/{wks[i+1][0].isoformat()}/">Week {n+1} →</a>' if i+1<len(wks) else ''
+        h1=f"Week {n} in review: {rng(s,e_)}"
+        cnav,csch=crumbs([('Home','/'),('Week in review','/week-in-review/'),(f'Week {n}',P)])
+        bd=(f'{cnav}<section class="sbhero"><span class="kicker">🗓 Week in review · week {n} since the relaunch</span><h1 class="pt">{E(h1)}</h1>'
+            f'<p class="sub">Every call from the week, graded in public: {E(line)}. 3-month calls are still marked to live prices (Yahoo Finance), so their edge keeps moving until day 91.</p></section>'
+            f'<div class="tiles">{tiles}</div><p class="lean-why">🤖 <b>Max Edge (AI host):</b> {E(quip)}</p>'
+            +(f'<h2 class="hzh">📈 3-month stock calls made this week</h2><div class="tbl"><table><thead><tr><th>Date</th><th>Call</th><th>Entry</th><th>Stock vs S&amp;P</th><th>Edge</th><th>Status</th></tr></thead><tbody>{cr}</tbody></table></div>' if calls else '')
+            +(f'<h2 class="hzh">🏟 Bold Bets and Max\'s leans</h2><div class="tbl"><table><thead><tr><th>Date</th><th>Play</th><th>Entry</th><th>Closing line</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{sr}</tbody></table></div><p class="sub">Leans are Max\'s closest miss on days with no Bold Bet, kept on a <a href="{BASE}/scoreboard/#leans">separate record</a>. Closing line is our side\'s Polymarket price right before the game started: buying below it is the skill signal sharp bettors trust. Not betting advice.</p>' if sr else '')
+            +f'<h2 class="hzh">🗞 Every edition this week</h2><div class="arch">{er}</div>'
+            f'<section class="signup wksign"><div><span class="kicker">📬 Next week\'s calls</span><h2>Get every call the morning we make it, graded like this every week.</h2><p>Free 7 AM email with a 60-second Max Edge clip. Unsubscribe anytime.</p></div>{sform("wk")}</section>'
+            f'<div class="hubcta">{prv}<a class="pill ghost" href="{BASE}/scoreboard/">Full scoreboard</a><a class="pill ghost" href="{BASE}/3-month-stock-picks/">3-month calls</a>{nxt}</div>')
+        desc=(f"The Daily Five week {n} ({rng(s,e_)}): {line}. Every pick graded in public.")
+        desc=desc if len(desc)<=155 else desc[:154].rsplit(' ',1)[0]+'…'
+        sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"datePublished":(e_+datetime.timedelta(days=1)).isoformat(),"dateModified":TODAY.isoformat(),"description":desc,"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P},csch]}
+        w(P.strip('/')+'/index.html',shell(f"{h1} | {BRAND}",desc,P,bd,sch))
+        lm=TODAY.isoformat() if any(not p.get('final') for p,_ in calls) else (e_+datetime.timedelta(days=1)).isoformat()
+        out.append((P,lm)); summ[P]=(n,rng(s,e_),line)
+    hb=''.join(f'<a href="{BASE}{P}"><span class="ad">Week {n} · {r}</span><b>{E(l)}</b></a>' for P,(n,r,l) in reversed(list(summ.items())))
+    H='/week-in-review/'
+    w('week-in-review/index.html',shell(f"Week in Review: Every Pick, Graded Weekly | {BRAND}","Weekly recaps of The Daily Five: 3-month stock calls vs the S&P 500, Bold Bets, Max's leans and closing-line value, graded in public.",H,
+      f'<section class="sbhero"><span class="kicker">🗓 Week in review</span><h1 class="pt">Week in review</h1><p class="sub">One page per week since the Oct 25, 2026 relaunch: every call, every miss, and whether we beat the market and the closing line.</p></section><div class="arch">{hb}</div>'))
+    out.insert(0,(H,TODAY.isoformat()))
+    return out
 def leans_section(eds):
     """Scoreboard: Max's Leans, a separate record (never mixed into the tiles, sports or Bold Bet record above)."""
     ls=leans(eds)
@@ -2260,7 +2330,7 @@ def leans_section(eds):
     hd=f"{w_}-{l_}" if w_+l_ else "0-0"
     return (f'<section class="sec leans" id="leans"><div class="sh"><span class="si">🤏</span><div><h2>Max\'s Leans · separate record</h2><p class="sub">On days when no game clears our bar (no Bold Bet), Max Edge, our AI host, names his closest miss as a <b>lean</b>. Leans are graded here in public, one 1-unit buy at the published Polymarket price, and are <b>never</b> counted in the sports or Bold Bet record. Think of it as the bench: it plays, but it doesn\'t get a jersey.</p></div></div>'
             f'<div class="tiles"><div class="tile"><span class="h">Leans</span><b class="{"up" if (avg or 0)>=0 else "dn"}">{hd}</b><span class="s">{(pct(avg)+" avg per $1") if avg is not None else "no settled leans yet"} · {op} open</span></div>{clt}</div>'
-            f'<p class="sub">🔒 <b>Closing line</b> is our side\'s Polymarket price right before the game starts. Getting a better price than the close (buying cheaper than where the market ends up) is the stat sharp bettors trust more than any one game\'s result.</p>'
+            f'<p class="sub">🔒 <b>Closing line</b> is our side\'s Polymarket price right before the game starts. Getting a better price than the close (buying cheaper than where the market ends up) is the stat sharp bettors trust more than any one game\'s result. <a href="{BASE}/week-in-review/">Week-by-week recaps →</a></p>'
             f'<div class="tbl"><table><thead><tr><th>Date</th><th>Lean</th><th>Entry</th><th>Edge vs books</th><th>Closing line</th><th>Now / exit</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div></section>')
 def main():
     shutil.rmtree(OUT,ignore_errors=True); os.makedirs(OUT)
@@ -2302,7 +2372,7 @@ def main():
         d,nice,title,desc,ed,hr=items[0]
         w('index.html',shell(f"The Daily Five: Today's Best Stock Picks, AI News & Sports Market Plays",f"{TAG} Today: {desc}",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG},hr))
     items=[x for x in items]  # archive lists every edition, beta included
-    w('archive/index.html',shell(f"Archive | {BRAND}","Every past edition of The Daily Five.",'/archive/','<h1 class="pt">Archive</h1><div class="arch">'+''.join(f'<a href="{BASE}/{d}/"><span class="ad">{n}</span><b>{E(e["headline"])}</b></a>' for d,n,_,_,e,_ in items)+'</div>'))
+    w('archive/index.html',shell(f"Archive | {BRAND}","Every past edition of The Daily Five.",'/archive/',f'<h1 class="pt">Archive</h1><p class="sub"><a href="{BASE}/week-in-review/">Week in review: every week\'s calls, graded →</a></p><div class="arch">'+''.join(f'<a href="{BASE}/{d}/"><span class="ad">{n}</span><b>{E(e["headline"])}</b></a>' for d,n,_,_,e,_ in items)+'</div>'))
     rows=[]
     for ed in eds:
         for p in ed['finance']: rows.append(dict(id=p['id'],date=ed['date'],kind='Finance',horizon=p['horizon'],action=p['action'],pick=p['label'],short=p['label'],entry=p['entry'],cur=p['cur'],final=p['final'],note=p['note'],ret=p['ret'],src=p['source']['url'],pts=p['pts']))
@@ -2322,7 +2392,7 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>{leans_section(eds)}'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); erh=earnings_hub(); tmh=three_month_hub(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); erh=earnings_hub(); tmh=three_month_hub(eds); wkr=week_reviews(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
@@ -2331,7 +2401,7 @@ def main():
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
     # lastmod: hubs today; an edition page changes until all its picks settle; pick/ticker pages from lastmod()
     edlm=lambda e: max([lastmod(p,e) for p in e['finance']+e['sports']]+[e['date']])
-    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+([tmh] if tmh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+[(f'/max-edge/{os.path.basename(f)[4:14]}/',os.path.basename(f)[4:14]) for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))]+nfr+extra
+    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+([tmh] if tmh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+[(f'/max-edge/{os.path.basename(f)[4:14]}/',os.path.basename(f)[4:14]) for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))]+nfr+wkr+extra
     seen={u for u,_ in urls}; urls+=[x for x in beta_extra if x[0] not in seen]
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')
