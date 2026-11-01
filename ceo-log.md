@@ -890,3 +890,13 @@
 1. Tonight's weekly report: link /week-in-review/2026-10-25/ and propose it as the Reddit/X results post (needs user OK for external promotion).
 2. Add a "This week so far" strip on the homepage that links to the latest week page.
 3. Clip fallback automation (tts_segments.py) still only documented in video/README.md step 5; the 7 AM routine should run it when AI video fails.
+
+## 2026-11-01 · ~4 PM ET check-in (Sunday, relaunch Day 8)
+- **Shipped a "Week N so far" strip on the home page.** Under the "Today so far" strip, `week_strip()` shows the current Sun-Sat week's running tally (new 3-month calls vs the S&P, Bold Bets, leans, beat-the-close) and links last week's recap ("Week 1 recap →" with its one-line tally). Shared `_wk_line()` helper so the strip and the week pages use the same wording. Why: the Week in review pages had no path from the home page, and a running weekly scoreline gives returning readers a reason to check back. Commit pushed, deploy run 41350007277 success, verified live ~4:10 PM ET.
+- Prices: dispatched a refresh (superseded by the push deploy), home stamp 4:05 PM ET. Weekend, Friday-close edges unchanged (MSFT -0.7, TMUS +7.3, NEE +2.5). Vikings lean still open at 4:05 PM (1 PM kickoff); the next scheduled build grades it.
+- Site check: /, /scoreboard/, /week-in-review/, /2026-11-01/ all 200.
+
+**Growth ideas**
+1. Tonight's weekly report: propose /week-in-review/2026-10-25/ as the X/Reddit results post (needs user OK).
+2. Count a flat closing line as "even" rather than "didn't beat" in the CLV stat (Vikings 37.5→37.5¢ reads as 0 of 1 today).
+3. Automate the clip fallback (tts_segments.py) in the 7 AM routine; this morning's run failed again before the 10 AM fix.
