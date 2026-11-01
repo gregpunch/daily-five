@@ -73,6 +73,7 @@ def clean_caption(txt):
     txt=re.sub(r"\b[Ss]\s*(?:&|and)\s*[Pp]\b",'S&P',txt)
     txt=re.sub(r"\b[Tt][\s\-]*[Mm]obile\b",'T-Mobile',txt)
     txt=re.sub(r"\b[Nn]ext\s*[Ee]ra\b",'NextEra',txt)
+    txt=re.sub(r"\b[Rr]ead daily five dot com\b",'readdailyfive.com',txt)
     return txt.replace('Phillies priced',"Philly's priced").replace('Grated against','Graded against').replace("Lean's record","Leans record").replace('My Lean','My lean').replace('thunder','Thunder').replace(' of Edge',' of edge')
 def merge_words(words):
     """Fold STT tokens that start with . - & % : into the previous word so captions never split them."""
@@ -84,6 +85,38 @@ def merge_words(words):
         elif out and re.search(r"[&]$",out[-1].word.strip()):
             p=out[-1]; out[-1]=type('W',(),{'start':p.start,'end':w.end,'word':p.word.rstrip()+tok})()
         else: out.append(w)
+    return out
+def script_words(ws,line,exact=False):
+    """Snap STT caption words to the script where they line up one-for-one (fixes 'My mad'->'My bad', 'Old bet'->'Bold Bet', 'Lean'->'lean').
+    Only similar plain alphabetic words are swapped; numbers, symbols and multi-word differences keep the STT text.
+    exact=True (TTS segments, where the audio IS the script): captions use the script words verbatim, timed from the STT
+    words they align with (unmatched runs are spread evenly across the matching time span)."""
+    key=lambda t: re.sub(r"[^a-z0-9']","",t.lower().replace('\u2019',"'"))
+    plain=lambda t: re.fullmatch(r"[A-Za-z']+[.,?!:;]*",t.replace('\u2019',"'")) is not None
+    mk=lambda a,b,t: type('W',(),{'start':a,'end':b,'word':' '+t})()
+    if exact:
+        line=re.sub(r"\b[Ss] and [Pp]\b",'S&P',line.replace('A.I.','AI'))
+        line=re.sub(r"\b[Rr]ead daily five dot com\b",'readdailyfive.com',line)
+    st=line.split(); ht=[w.word.strip() for w in ws]
+    ops=difflib.SequenceMatcher(None,[key(t) for t in ht],[key(t) for t in st],autojunk=False).get_opcodes()
+    if exact and ws:
+        out=[]
+        for op,i1,i2,j1,j2 in ops:
+            if j2==j1: continue
+            if i2>i1: a0,b0=ws[i1].start,ws[i2-1].end
+            else:
+                a0=ws[i1-1].end if i1>0 else ws[0].start; b0=ws[i1].start if i1<len(ws) else ws[-1].end
+                if b0-a0<0.12*(j2-j1): b0=a0+0.12*(j2-j1)
+            n=j2-j1; step=(b0-a0)/n
+            out+=[mk(a0+k*step,a0+(k+1)*step,st[j1+k]) for k in range(n)]
+        return out
+    out=list(ws)
+    for op,i1,i2,j1,j2 in ops:
+        if op not in ('equal','replace') or i2-i1!=j2-j1: continue
+        for k in range(i2-i1):
+            h,s=ht[i1+k],st[j1+k]
+            if plain(h) and plain(s) and h!=s and difflib.SequenceMatcher(None,key(h),key(s)).ratio()>=0.5:
+                w=ws[i1+k]; out[i1+k]=mk(w.start,w.end,s)
     return out
 # ---------- 1. STT ----------
 from faster_whisper import WhisperModel
@@ -104,7 +137,9 @@ for s in S['segments']:
     report.append({'seg':s['id'],'expected':s['line'],'heard':heard,'match':round(ratio,3),'missing_words':missing})
     print(f"seg{s['id']}: match {ratio:.2f}  heard: {heard}")
     if not words: print('no speech found'); sys.exit(1)
-    t0=max(0,words[0].start-0.10); t1=min(dur(f),words[-1].end+0.22)
+    t0=max(0,words[0].start-0.18); t1=min(dur(f),words[-1].end+0.22)
+    _a,_b=norm(s['line']),norm(heard)
+    if not any(difflib.SequenceMatcher(None,_a[0],x).ratio()>=0.5 for x in _b[:2]): print(f"seg{s['id']}: opening words not heard ({_a[0]!r}) - trimming would cut them; regenerate this segment"); GATE and sys.exit(2)
     segs.append((s,f,t0,t1,words))
 json.dump(report,open(os.path.join(SEG,'stt-report.json'),'w'),indent=1)
 bad=[r for r in report if r['match']<0.85]
@@ -117,7 +152,7 @@ ass=["[Script Info]","ScriptType: v4.00+",f"PlayResX: {W}",f"PlayResY: {H}","",
  "[Events]","Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
 off=0.0; parts=[]
 for i,(s,f,t0,t1,words) in enumerate(segs):
-    ws=merge_words([w for w in words if w.end>t0 and w.start<t1])
+    ws=script_words(merge_words([w for w in words if w.end>t0 and w.start<t1]),s['line'],exact=os.path.exists(os.path.join(SEG,f"tts{s['id']}.wav")))
     chunk=[]
     def flush(chunk):
         if not chunk: return
