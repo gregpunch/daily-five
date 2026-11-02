@@ -527,13 +527,24 @@ def hero(ed,nice):
 {sform('hero')}<div class="jump"><a href="#finance">💰 Money moves</a><a href="#ai">🤖 AI</a><a href="#sports">🏟 Sports markets</a></div></div>
 <aside class="topcall {top['action'].lower()}"><span class="tlbl">{'Top call today' if not best else 'Best open call · no new call today'}</span><div class="crow"><span class="act {top['action'].lower()}">{top['action']}</span><span class="tk">{E(top['label'])}</span></div>
 {f'<span class="price"><b class="{"up" if best["ret"]>=0 else "dn"}" data-edge="{best["id"]}">{best["ret"]*100:+.1f} pts</b></span><p class="tsub">vs the S&amp;P 500 · day {min(91,(datetime.date.fromisoformat(ed["date"])-datetime.date.fromisoformat(best["id"][:10])).days+1)} of 91 · entry ${best["entry"]:,.2f}</p>' if best else f'<span class="price">${top["entry"]:,.2f}</span>'}{spark(top.get('pts'),220,56)}<p>{E(top['why'])}</p>{'<a class="tsa" href="'+BASE+'/3-month-stock-picks/">All open 3-month calls vs the S&amp;P →</a>' if best else chip(top.get('ret'))}</aside></div>{tape(ed)}</section>"""
+def rc_res(p):
+    """Recap result for a settled game pick or lean: 'Lost · MIN 15, DET 19 · closed flat at 37.5¢' instead of a bare -100% chip.
+    Stocks and unsettled picks keep the % chip."""
+    if p.get('kind')!='Sports' or not p.get('final') or p.get('ret') is None: return chip(p.get('ret'),p.get('final'))
+    fl=final_line(p); w_=p['ret']>0
+    cl=''
+    if p.get('close') is not None:
+        d=(p['close']-p['entry'])*100
+        cl=f' · closed flat at {p["close"]*100:.1f}¢' if abs(d)<0.5 else f' · {"beat" if d>0 else "lost"} the close ({p["close"]*100:.1f}¢ vs {p["entry"]*100:.1f}¢)'
+    return (f'<span class="chip {"up" if w_ else "dn"}">{"✅ Won" if w_ else "❌ Lost"} {p["ret"]*100:+.0f}% per $1</span>'
+            f'<span class="rcx">{E(fl[1]) if fl else "final"}{cl}</span>')
 def recap(prev):
     if not prev: return '<div class="recap"><div><span class="kicker">📬 Yesterday\'s results</span><p>Day 1 of Max Edge, our AI handicapper. Every pick is graded in public from today; results start tomorrow. Every pick is tracked on the <a href="'+BASE+'/track-record/">Track record</a>.</p></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
     ps=prev['finance']+prev['sports']; rs=[p['ret'] for p in ps if p.get('ret') is not None]
-    items=''.join(f'<a href="{BASE}/picks/{p["id"]}/" class="rc"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} {chip(p.get("ret"),p.get("final"))}</a>' for p in ps)
+    items=''.join(f'<a href="{BASE}/picks/{p["id"]}/" class="rc"><b class="{p["action"].lower()}">{p["action"]}</b> {E(p["label"])} {rc_res(p)}</a>' for p in ps)
     summ=f'{sum(r>0 for r in rs)}/{len(rs)} winning · avg {pct(sum(rs)/len(rs)) if rs else "—"}' if ps else 'No picks (nothing cleared our bar)'
     ln=prev.get('lean') if not prev['sports'] else None
-    if ln: items+=f'<a href="{BASE}/scoreboard/#leans" class="rc"><b class="buy">LEAN</b> Max\'s lean (not a pick): {E(ln["label"])} {chip(ln.get("ret"),ln.get("final"))}</a>'
+    if ln: items+=f'<a href="{BASE}/scoreboard/#leans" class="rc"><b class="buy">LEAN</b> Max\'s lean (not a pick): {E(ln["label"])} {rc_res(ln)}</a>'
     return f'<div class="recap"><div><span class="kicker">📬 Yesterday\'s results ({prev["date"]})</span><p><b>{summ}</b></p><div class="rcs">{items}</div></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
 def today_strip(ps,where='home',settled=None):
     """'Today so far' running P/L strip for open picks. live.js recomputes it every minute."""
