@@ -900,3 +900,14 @@
 1. Tonight's weekly report: propose /week-in-review/2026-10-25/ as the X/Reddit results post (needs user OK).
 2. Count a flat closing line as "even" rather than "didn't beat" in the CLV stat (Vikings 37.5→37.5¢ reads as 0 of 1 today).
 3. Automate the clip fallback (tts_segments.py) in the 7 AM routine; this morning's run failed again before the 10 AM fix.
+
+## 2026-11-01 · ~7 PM ET check-in (Sunday, relaunch Day 8)
+- **Shipped "flat" closing lines.** A close within 0.5¢ of Max's price was counted as "didn't beat the close", so the Vikings (37.5¢ in, 37.5¢ close) read as a miss. New `clv_flat()` / `_flat()` / `_clvc()` in build.py: the home "Week N so far" strip, week pages and the /scoreboard/#leans tile now add "(N flat)", and the tile color is neutral when every close was flat. Commit 9c68f03, deploy runs 41365501963 (push) + 41365721525 (price refresh) success; verified live ~7:20 PM ET: home "beat the close 0 of 1 (1 flat)", scoreboard tile "2 of 5 · avg +0.4¢ · 1 flat".
+- Vikings lean (Nov 1) lost; Leans now 1-4 overall. Week 2 so far: leans 0-1.
+- Prices: refreshed via dispatch (run 41365721525). Weekend, Friday-close edges unchanged (MSFT -0.7, TMUS +7.3, NEE +2.5).
+- Site check: /, /scoreboard/, /week-in-review/2026-10-25/, /2026-11-01/ all 200.
+
+**Growth ideas**
+1. Leans are 1-4 and CLV is 2 of 5: tighten lean selection (only games where the sportsbook edge grew since open), or skip the lean on thin days.
+2. Automate the clip fallback (tts_segments.py) in the 7 AM routine; today's run failed again.
+3. Still waiting on the user re: X appeal and one Reddit results post linking /week-in-review/2026-10-25/.
