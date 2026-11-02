@@ -212,6 +212,12 @@ def clv_rec(ps):
     if not c: return 0,0,None
     d=[(p['close']-p['entry'])*100 for p in c]
     return sum(x>=0.5 for x in d),len(c),sum(d)/len(d)
+def clv_flat(ps):
+    """How many frozen closes landed within half a cent of Max's price: a push, not a loss, so we say so."""
+    return sum(abs(p['close']-p['entry'])*100<0.5 for p in ps if p.get('close') is not None)
+def _clvc(cb,ct,ps):
+    n=ct-clv_flat(ps); return '' if n==0 else ('up' if cb*2>=n else 'dn')
+def _flat(ps,pre=', '): f=clv_flat(ps); return f"{pre}{f} flat" if f else ''
 def enrich_lean(ed,exits):
     """Max's lean (FORMAT.md): on a no-Bold-Bet day, the closest-to-qualifying edge play. Priced and settled exactly like a
     sports pick (Polymarket resolution, or the final score while UMA catches up), but kept OUT of ed['sports'] so it never
@@ -2258,7 +2264,7 @@ def _wk_line(we):
     cb,ct,_=clv_rec(ls); bits=[]
     if calls: bits.append(f"{len(calls)} new 3-month call{'s' if len(calls)!=1 else ''}"+(f", {ah} of {len(gr)} ahead of the S&P ({avg*100:+.1f} pts avg)" if gr else ''))
     if bb: bits.append(f"Bold Bets {bw}-{len(bst)-bw}" if bst else f"{len(bb)} Bold Bet{'s' if len(bb)!=1 else ''} open")
-    if ls: bits.append(f"leans {lw}-{len(lst)-lw}"+(f" ({len(ls)-len(lst)} open)" if len(ls)>len(lst) else '')+(f", beat the close {cb} of {ct}" if ct else ''))
+    if ls: bits.append(f"leans {lw}-{len(lst)-lw}"+(f" ({len(ls)-len(lst)} open)" if len(ls)>len(lst) else '')+(f", beat the close {cb} of {ct}{_flat(ls,' (')+')' if clv_flat(ls) else ''}" if ct else ''))
     return '; '.join(bits)
 def week_strip():
     """Home: 'This week so far' (current Sun-Sat week since LAUNCH) + link to last finished week's recap."""
@@ -2297,11 +2303,11 @@ def week_reviews(eds):
                +(t('Avg edge vs S&amp;P',f'{avg*100:+.1f} pts','stock return minus SPY, live','up' if avg>=0 else 'dn') if avg is not None else '')
                +t('Bold Bets',f'{bw}-{len(bst)-bw}' if bst else str(len(bb)),('settled' if bst else 'none settled')+(f' · {len(bb)-len(bst)} open' if len(bb)>len(bst) else ''),('up' if bw*2>=len(bst) else 'dn') if bst else '')
                +t("Max's leans",f'{lw}-{len(lst)-lw}' if lst else '0-0',f'{len(ls)-len(lst)} open' if len(ls)>len(lst) else 'separate record',('up' if lw*2>=len(lst) else 'dn') if lst else '')
-               +(t('Beat the closing line',f'{cb} of {ct}',f'avg {cavg:+.1f}¢','up' if cb*2>=ct else 'dn') if ct else ''))
+               +(t('Beat the closing line',f'{cb} of {ct}',f'avg {cavg:+.1f}¢'+_flat([p for _,p in ls],' · '),_clvc(cb,ct,[p for _,p in ls])) if ct else ''))
         bits=[]
         if calls: bits.append(f"{len(calls)} new 3-month stock call{'s' if len(calls)!=1 else ''}"+(f", {ah} of {len(gr)} ahead of the S&P 500 (avg {avg*100:+.1f} pts)" if gr else ''))
         if bb: bits.append(f"{len(bb)} Bold Bet{'s' if len(bb)!=1 else ''}"+(f" ({bw}-{len(bst)-bw})" if bst else ''))
-        if ls: bits.append(f"Max's leans {lw}-{len(lst)-lw}"+(f", beat the closing line {cb} of {ct}" if ct else ''))
+        if ls: bits.append(f"Max's leans {lw}-{len(lst)-lw}"+(f", beat the closing line {cb} of {ct}{_flat([p for _,p in ls],' (')+')' if clv_flat([p for _,p in ls]) else ''}" if ct else ''))
         line='; '.join(bits) or 'no picks'
         best=max(gr,key=lambda p:p['ret'],default=None)
         if best is not None and best['ret']>0 and lst and lw*2<len(lst): quip=f"The stock calls carried the week and the leans carried a grudge. {best['label']} is up {best['ret']*100:+.1f} pts on the market; the bench went {lw}-{len(lst)-lw}. We print both."
@@ -2349,7 +2355,7 @@ def leans_section(eds):
     w_,l_,avg,op=lean_rec(eds)
     cl=lambda p: '—' if p.get('close') is None else f'{p["close"]*100:.1f}¢ <small class="{"up" if p["close"]-p["entry"]>=0.005 else "dn" if p["close"]-p["entry"]<=-0.005 else ""}">{(p["close"]-p["entry"])*100:+.1f}¢</small>'
     cb,ct,cavg=clv_rec([p for _,p in ls])
-    clt=(f'<div class="tile"><span class="h">Beat the closing line</span><b class="{"up" if cb*2>=ct else "dn"}">{cb} of {ct}</b><span class="s">avg {cavg:+.1f}¢ vs the last price before start</span></div>' if ct else '')
+    clt=(f'<div class="tile"><span class="h">Beat the closing line</span><b class="{_clvc(cb,ct,[p for _,p in ls])}">{cb} of {ct}</b><span class="s">avg {cavg:+.1f}¢ vs the last price before start{_flat([p for _,p in ls]," · ")}</span></div>' if ct else '')
     tr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini buy">LEAN</span> <b>{E(p["label"])}</b> <small>{E(p["market"])}</small></td><td class="mono">{p["entry"]*100:.1f}¢</td><td class="mono">{ef(p)}</td><td class="mono">{cl(p)}</td><td class="mono">{money("Sports",p.get("cur"))} <small>{E(p.get("note") or "")}</small></td><td>{chip(p.get("ret"),p.get("final"))}</td><td>{("Win" if p["ret"]>0 else "Loss") if p.get("final") and p.get("ret") is not None else "Pending"}</td><td><a href="{BASE}/{e["date"]}/#lean">edition ↗</a></td></tr>' for e,p in ls)
     hd=f"{w_}-{l_}" if w_+l_ else "0-0"
     return (f'<section class="sec leans" id="leans"><div class="sh"><span class="si">🤏</span><div><h2>Max\'s Leans · separate record</h2><p class="sub">On days when no game clears our bar (no Bold Bet), Max Edge, our AI host, names his closest miss as a <b>lean</b>. Leans are graded here in public, one 1-unit buy at the published Polymarket price, and are <b>never</b> counted in the sports or Bold Bet record. Think of it as the bench: it plays, but it doesn\'t get a jersey.</p></div></div>'
