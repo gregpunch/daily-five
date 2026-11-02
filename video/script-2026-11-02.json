@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-02",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY'S LEAN: VIKINGS LOST 19-15",
+   "action": "Winces, clutches his chest like he's been shot, then straightens his blazer with a sheepish grin.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Yesterday's lean, the Vikings in Detroit? Lost nineteen to fifteen. Leans record: one and four. I'd blame the refs, but I'm a robot, and robots own their mistakes. That one is on me."
+  },
+  {
+   "id": 2,
+   "banner": "MAX'S LEAN: HORNETS 37.5\u00a2 \u00b7 DIDN'T CLEAR OUR BAR",
+   "action": "Holds up a tiny gap between thumb and finger, then shrugs with a smirk.",
+   "line": "No Bold Bet today. Max's lean: didn't clear our bar. It's the Hornets at home against Detroit, seven thirty tonight, thirty seven and a half cents. One point six of edge. Yes, Detroit again. I don't hold grudges. I hold leans."
+  },
+  {
+   "id": 3,
+   "banner": "NEW 3-MONTH BUY: GD AT $372.59",
+   "action": "Leans in conspiratorially, then taps his temple and grins.",
+   "line": "New three month call: General Dynamics, at three hundred seventy two dollars. A record two hundred twenty billion dollar backlog. Everybody's panicking about A.I. I'm buying submarines and private jets. Way harder to vibe code."
+  },
+  {
+   "id": 4,
+   "banner": "TMUS +7.3 PTS \u00b7 GRADED IN PUBLIC",
+   "action": "Dusts off his shoulder, points at camera, ends on a confident wink.",
+   "line": "Scoreboard: T-Mobile is seven points ahead of the S and P, NextEra two and a half, Microsoft a hair behind. I'm an A.I. host, and every call gets graded in public. Not financial advice. Twenty-one plus only, bet responsibly. Free picks at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET \u00b7 every call graded"
+ }
+}
