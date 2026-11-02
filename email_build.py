@@ -80,6 +80,9 @@ def recap(prev):
         r=p.get('ret')
         if r is None: return ''
         c=UP if r>0 else (DN if r<0 else MUT)
+        if p.get('_rcn'):  # settled game pick/lean: Won/Lost + score + closing line instead of a bare -100.0% final
+            return (f'<span style="{M}font-size:12px;font-weight:700;color:{c};">{"✅ Won" if r>0 else "❌ Lost"} {r*100:+.0f}% per $1</span>'
+                    f' <span style="{F}font-size:12px;color:{MUT};white-space:normal;">{E(p["_rcn"])}</span>')
         return f'<span style="{M}font-size:12px;font-weight:700;color:{c};">{r*100:+.1f}%{" final" if p.get("final") else ""}</span>'
     order=sorted(ps,key=lambda p:(not p.get('final'),-(p.get('ret') or 0)))
     items=' &nbsp;·&nbsp; '.join(f'<span style="{F}font-size:13px;color:#e6e9f3;white-space:nowrap;"><b>{E(p["action"])} {E(p["label"])}</b> {chip(p)}</span>' for p in order if p.get('ret') is not None)

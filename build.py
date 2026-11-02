@@ -527,15 +527,22 @@ def hero(ed,nice):
 {sform('hero')}<div class="jump"><a href="#finance">💰 Money moves</a><a href="#ai">🤖 AI</a><a href="#sports">🏟 Sports markets</a></div></div>
 <aside class="topcall {top['action'].lower()}"><span class="tlbl">{'Top call today' if not best else 'Best open call · no new call today'}</span><div class="crow"><span class="act {top['action'].lower()}">{top['action']}</span><span class="tk">{E(top['label'])}</span></div>
 {f'<span class="price"><b class="{"up" if best["ret"]>=0 else "dn"}" data-edge="{best["id"]}">{best["ret"]*100:+.1f} pts</b></span><p class="tsub">vs the S&amp;P 500 · day {min(91,(datetime.date.fromisoformat(ed["date"])-datetime.date.fromisoformat(best["id"][:10])).days+1)} of 91 · entry ${best["entry"]:,.2f}</p>' if best else f'<span class="price">${top["entry"]:,.2f}</span>'}{spark(top.get('pts'),220,56)}<p>{E(top['why'])}</p>{'<a class="tsa" href="'+BASE+'/3-month-stock-picks/">All open 3-month calls vs the S&amp;P →</a>' if best else chip(top.get('ret'))}</aside></div>{tape(ed)}</section>"""
+def rc_cl(p):
+    """' · closed flat at 37.5¢' / ' · beat the close (..)' for a settled game pick with a frozen closing line, else ''."""
+    if p.get('close') is None or p.get('entry') is None: return ''
+    d=(p['close']-p['entry'])*100
+    return f' · closed flat at {p["close"]*100:.1f}¢' if abs(d)<0.5 else f' · {"beat" if d>0 else "lost"} the close ({p["close"]*100:.1f}¢ vs {p["entry"]*100:.1f}¢)'
+def rc_note(p):
+    """Plain-text result note for the email recap: final score + closing line (settled game picks and leans only)."""
+    if p.get('kind')!='Sports' or not p.get('final') or p.get('ret') is None: return None
+    fl=final_line(p)
+    return (fl[1] if fl else 'final')+rc_cl(p)
 def rc_res(p):
     """Recap result for a settled game pick or lean: 'Lost · MIN 15, DET 19 · closed flat at 37.5¢' instead of a bare -100% chip.
     Stocks and unsettled picks keep the % chip."""
     if p.get('kind')!='Sports' or not p.get('final') or p.get('ret') is None: return chip(p.get('ret'),p.get('final'))
     fl=final_line(p); w_=p['ret']>0
-    cl=''
-    if p.get('close') is not None:
-        d=(p['close']-p['entry'])*100
-        cl=f' · closed flat at {p["close"]*100:.1f}¢' if abs(d)<0.5 else f' · {"beat" if d>0 else "lost"} the close ({p["close"]*100:.1f}¢ vs {p["entry"]*100:.1f}¢)'
+    cl=rc_cl(p)
     return (f'<span class="chip {"up" if w_ else "dn"}">{"✅ Won" if w_ else "❌ Lost"} {p["ret"]*100:+.0f}% per $1</span>'
             f'<span class="rcx">{E(fl[1]) if fl else "final"}{cl}</span>')
 def recap(prev):
@@ -2464,6 +2471,10 @@ def main():
     w('feed.xml','<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel>'+f"<title>{BRAND}</title><link>{SITE}/</link><description>{E(TAG)}</description>"+''.join(f"<item><title>{E(t)}</title><link>{SITE}/{d}/</link><guid>{SITE}/{d}/</guid><pubDate>{rfc(d)}</pubDate><description>{E(ds)}</description></item>" for d,_,t,ds,_,_ in items)+'</channel></rss>')
     w('404.html',shell(f"Not found | {BRAND}","Page not found",'/404.html',f'<h1 class="pt">Not found</h1><p><a href="{BASE}/">Go to today\'s edition →</a></p>'))
     try:
+        if len(eds)>1:  # settled game picks/leans: hand the email the same score + closing-line note the site recap shows
+            for p in eds[1]['sports']+([eds[1]['lean']] if eds[1].get('lean') else []):
+                try: p['_rcn']=rc_note(p)
+                except Exception: pass
         import email_build; print('email ->',email_build.write(eds[0],eds[1] if len(eds)>1 else None,safe_rec(),open3(eds[0]['date'])))
     except Exception as ex: print('email build skipped:',ex)
     print(f"built {len(items)} editions, {len(rows)} scoreboard rows -> {OUT}")
