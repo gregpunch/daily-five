@@ -335,7 +335,17 @@ def livebox(p):
 <div><span class="lbl">Entry</span><span class="price">{money(k,p['entry'])}</span></div>
 <div><span class="lbl">Live</span><span class="price" data-k="cur">{money(k,p.get('cur'))}</span></div>
 <div><span class="lbl">Today</span><span data-k="so">{mv(p.get('so'))}</span></div>
-<div><span class="lbl">Since pick</span><span data-k="ret">{chip(p.get('ret'),p.get('final'))}</span></div></div>{linemove(p)}"""
+<div><span class="lbl">Since pick</span><span data-k="ret">{chip(sret(p),p.get('final'))}</span></div></div>{vsspy(p)}{linemove(p)}"""
+def sret(p):
+    """The stock's own move since the call. For 3-month calls p['ret'] is the edge vs the S&P (the grade), so the
+    'Since pick' cell uses abs_ret, matching what live.js repaints from the live price."""
+    return p['abs_ret'] if p.get('abs_ret') is not None else p.get('ret')
+def vsspy(p):
+    """3-month calls: the actual grade (stock return minus the S&P's) under the live box. live.js repaints [data-edge]."""
+    if p.get('abs_ret') is None or p.get('spy_ret') is None or p.get('ret') is None: return ''
+    r=p['ret']; c='up' if r>0 else 'dn' if r<0 else ''
+    return (f'<p class="lvs">vs the S&amp;P 500 <b class="{c}" data-edge="{p["id"]}">{r*100:+.1f} pts</b>'
+            f' <small>· S&amp;P {p["spy_ret"]*100:+.1f}% since the call{" · final grade" if p.get("final") else " · this is the grade"}</small></p>')
 def linemove(p):
     """Sports only, before settlement: did the market move toward or away from Max's price since the call?
     Beating the closing line is a better signal than one game's W/L. live.js repaints [data-lm] every minute."""
@@ -555,7 +565,7 @@ def recap(prev):
     return f'<div class="recap"><div><span class="kicker">📬 Yesterday\'s results ({prev["date"]})</span><p><b>{summ}</b></p><div class="rcs">{items}</div></div><div class="tmr">⏰ Come back tomorrow at <b>7 AM ET</b> for the next five.<span class="tmc">Next edition in <b class="nxc">a few hours</b></span></div></div>'
 def today_strip(ps,where='home',settled=None):
     """'Today so far' running P/L strip for open picks. live.js recomputes it every minute."""
-    op=[p for p in ps if not p.get('final')]; rs=[p for p in op if p.get('ret') is not None]
+    op=[{**p,'ret':sret(p)} for p in ps if not p.get('final')]; rs=[p for p in op if p.get('ret') is not None]  # stock's own move, same as live.js
     st=[p for p in (settled or []) if p.get('final') and p.get('ret') is not None]
     if not op:  # no open same-day picks: show the open 3-month calls' live edge vs the S&P instead of "0 up 0 down of 0 open"
         oc=sorted([p for p in open3() if p.get('ret') is not None],key=lambda p:-p['ret'])
