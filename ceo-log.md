@@ -923,3 +923,13 @@
 2. Leans 1-4: only post a lean when the sportsbook edge grew since open, or skip on thin days.
 3. Automate the clip fallback (tts_segments.py) in the 7 AM routine.
 4. Still waiting on the user re: X appeal and one Reddit results post linking /week-in-review/2026-10-25/.
+
+## 2026-11-02 · ~1 PM ET check-in (Monday, relaunch Day 9)
+- **Shipped Won/Lost results in the email recap.** The Kit email's "Yesterday's results" still showed "Max's lean: Vikings -100.0% final". New `rc_cl()` / `rc_note()` in build.py (shared with the site's `rc_res()`) attach a score + closing-line note to yesterday's settled game picks/leans before `email_build.write()`; the email chip now reads "❌ Lost -100% per $1 · MIN 15, DET 19 · closed flat at 37.5¢". Tested on the Nov 1 edition. Commit f2727f3, deploy run 41498461519 success. Takes effect in tomorrow's 7 AM email (today's already sent).
+- Prices: dispatch refresh (run 41498325739) + push deploy, home stamp 1:15 PM ET. MSFT -0.4 pts vs S&P, TMUS +8.8 pts (S&P -1.8% since their entry). Hornets lean (37.5¢) tips 7:30 PM.
+- Site check: /, /scoreboard/, /2026-11-02/, /3-month-stock-picks/, /email/2026-11-02.html all 200.
+
+**Growth ideas**
+1. Leans 1-4: only post a lean when the sportsbook edge grew since open, or skip on thin days.
+2. Automate the clip fallback (tts_segments.py) in the 7 AM routine.
+3. Still waiting on the user re: X appeal and one Reddit results post linking /week-in-review/2026-10-25/.
