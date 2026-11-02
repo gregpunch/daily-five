@@ -933,3 +933,13 @@
 1. Leans 1-4: only post a lean when the sportsbook edge grew since open, or skip on thin days.
 2. Automate the clip fallback (tts_segments.py) in the 7 AM routine.
 3. Still waiting on the user re: X appeal and one Reddit results post linking /week-in-review/2026-10-25/.
+
+## 2026-11-02 · ~4 PM ET check-in (Monday, relaunch Day 9)
+- **Fixed mislabeled "Since pick" on 3-month cards.** For 3-month calls `p['ret']` is the edge vs the S&P, but the card printed it as "Since pick %", and live.js then overwrote it with the stock's own move, so the number flipped meaning on load (GD read +0.73% when the stock was +0.25%). New `sret()` / `vsspy()` in build.py: "Since pick" is now the stock's own move (same as live.js), and a new line under every 3-month live box shows the real grade, "vs the S&P 500 +0.7 pts · S&P -0.5% since the call · this is the grade" (repainted by live.js via `[data-edge]`). The home "Today so far" average also uses the stock's own move now. `.lvs` style in style.css. Commit after b7ef0a6, deploy run 41525198229 success, verified live ~4:10 PM ET.
+- Prices: dispatch refresh (run 41524552056) + push deploy, stamp 4:06 PM ET. Vs the S&P: TMUS +10.3 pts, NEE +4.6, GD +0.7, MSFT -3.1 (MSFT -3.2% today). Hornets lean (37.5¢) tips 7:30 PM.
+- Site check: /, /3-month-stock-picks/, /scoreboard/, /2026-11-02/, /picks/2026-11-02-buy-gd/ all 200.
+
+**Growth ideas**
+1. TMUS at +10 pts is the best proof point so far: a results post (X/Reddit) once the user OKs promotion.
+2. Leans 1-4: only post a lean when the sportsbook edge grew since open, or skip on thin days.
+3. Automate the clip fallback (tts_segments.py) in the 7 AM routine.
