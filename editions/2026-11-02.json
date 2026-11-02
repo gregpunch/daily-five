@@ -1,0 +1,107 @@
+{
+ "date": "2026-11-02",
+ "headline": "New 3-month buy: General Dynamics at $372.59 on a record $220 billion backlog while AI stocks sulk; no Bold Bet, Max leans the Hornets at 37.5¢ (+1.6 pts); Vikings lean lost 19-15",
+ "top_call": "Buy General Dynamics for the next 3 months. While the AI trade nurses a brutal October, GD just beat, raised its 2026 outlook and booked a record $220.3 billion backlog, Jefferies lifted its target to $455, and it trades near 20x forward earnings above its 50-day. Graded against the S&P 500, like everything else.",
+ "backdrop": "Stock futures are bouncing after a dismal October for tech: S&P 500 futures are up about 0.5% and Nasdaq-100 futures about 0.9% early Monday, with oil down more than 4% on U.S.-Iran talk hopes. Apple and Palantir report after the bell, the midterms are Tuesday and the October jobs report lands Friday.",
+ "backdrop_source": {
+  "name": "Reuters",
+  "url": "https://www.investing.com/news/stock-market-news/wall-street-futures-rise-as-ai-stocks-catch-their-breath-midterms-in-focus-4990733"
+ },
+ "finance": [
+  {
+   "horizon": "3 Month",
+   "action": "BUY",
+   "label": "GD",
+   "symbol": "GD",
+   "entry": 372.59,
+   "entry_note": "Yahoo Finance, Fri Oct 30 close (Monday edition, before the open)",
+   "why": "Beat and raise, record $220.3B backlog after 14 new subs, Jefferies to $455; ~20x forward earnings, above its 50-day.",
+   "risk": "Defense budgets can swing with Tuesday's midterms, and RBC and Bernstein cut targets to ~$360 last month on shipyard costs.",
+   "source": {
+    "name": "Reuters",
+    "url": "https://www.investing.com/news/stock-market-news/general-dynamics-tops-quarterly-estimates-on-robust-gulfstream-marine-bookings-4987898"
+   },
+   "consensus": {
+    "agree": [
+     {"name": "Reuters", "url": "https://www.investing.com/news/stock-market-news/general-dynamics-tops-quarterly-estimates-on-robust-gulfstream-marine-bookings-4987898"},
+     {"name": "Investing.com", "url": "https://www.investing.com/news/analyst-ratings/jefferies-raises-general-dynamics-stock-price-target-on-earnings-beat-93CH-4990563"},
+     {"name": "TipRanks", "url": "https://www.tipranks.com/news/the-fly/general-dynamics-price-target-raised-to-455-from-440-at-jefferies-thefly-news"}
+    ],
+    "dissent": [
+     {"name": "StockAnalysis", "url": "https://stockanalysis.com/stocks/gd/forecast/"}
+    ]
+   },
+   "spy_entry": 755.72,
+   "target_price": 413.45,
+   "target_note": "Yahoo Finance analyst mean target (21 analysts), Nov 2",
+   "catalyst": {
+    "event": "General Dynamics earnings (Q4 2026, expected)",
+    "date": "2027-01-27",
+    "when": "before the open",
+    "right": [
+     "Gulfstream deliveries and shipyard hours keep climbing, as the CEO said on Friday's call",
+     "The raised 2026 outlook ($17.20 to $17.30 a share) holds or gets beaten",
+     "GD beats the S&P 500 from $372.59 by early February (that's the actual grade)"
+    ],
+    "wrong": [
+     "Midterm results put the defense budget on the chopping block",
+     "Submarine or Gulfstream supply-chain snags come back",
+     "The AI trade rips higher and leaves boring winners behind"
+    ],
+    "max": "Everybody's panicking about AI capex. I'm buying a company that builds submarines and private jets. One of these is a lot harder to vibe-code."
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "OpenAI signs a batch of Abu Dhabi deals (ADNOC and G42 deploying its frontier models, Mubadala investment analysis, machine-readable government rules) as it courts UAE money for its $20 billion round",
+   "why": "When the U.S. checkbooks get lighter, you fly to Abu Dhabi. The Gulf is now a co-pilot on who funds frontier AI.",
+   "source": {"name": "CNBC", "url": "https://www.cnbc.com/2026/11/02/openai-abu-dhabi-ai-deals.html"}
+  },
+  {
+   "category": "Money",
+   "headline": "Aramco closes its deal for 49% of Saudi AI company HUMAIN, putting in about $2.6 billion in cash plus AI and compute assets; PIF keeps 51% and HUMAIN targets 3 gigawatts of data centers by 2030",
+   "why": "The world's biggest oil company is turning barrels into GPUs. Cheap power is the AI moat nobody can code around.",
+   "source": {"name": "Aramco", "url": "https://www.aramco.com/en/news-media/news/2026/pif-and-aramco-close-humain-transaction-to-accelerate-humains-global-growth"}
+  },
+  {
+   "category": "Money",
+   "headline": "Blackstone tells investors Anthropic may get a high-yield 'junk' credit rating, likely double-B, after its IPO instead of investment grade",
+   "why": "A hot IPO and a junk rating can live in the same house. Debt-funded AI buildouts just got a little pricier to finance.",
+   "source": {"name": "TechCrunch", "url": "https://techcrunch.com/2026/10/30/anthropic-expected-to-receive-high-junk-rating-from-credit-agencies-following-ipo-report-says/"}
+  },
+  {
+   "category": "Safety",
+   "headline": "Grok API text gets an invisible watermark by default from Nov 7 across seven models, with an x-watermark header and opt-outs only for admins who confirm a legal exception",
+   "why": "Watermarks are going from research papers to default settings. If you ship AI text, assume it's tagged.",
+   "source": {"name": "TokenPost", "url": "https://www.tokenpost.com/news/technology/45622"}
+  },
+  {
+   "category": "Models",
+   "headline": "OpenAI releases GPT-Rosalind-6, a biology and drug-discovery reasoning model built on its GPT-6 flagship, available only to vetted labs through trusted access",
+   "why": "The most powerful biology AI ships with a bouncer at the door. Expect more 'too useful to release openly' models.",
+   "source": {"name": "OpenAI", "url": "https://deploymentsafety.openai.com/gpt-rosalind-6"}
+  }
+ ],
+ "sports": [],
+ "no_bets_note": "Nothing cleared our bar at 7:10 AM ET across 20 NBA, NHL and NFL games with DraftKings lines, including Bears at Seahawks on Monday Night Football. Closest misses: Nets 11.5¢ at the Knicks (+2.2 pts, the biggest raw edge, but a long shot), Kings 21.5¢ at Dallas (+1.9, a long shot), Hornets 37.5¢ vs Detroit (+1.6, the best edge inside our 35-75¢ lean band, but under the 2.5 bar and the 40¢ pick floor), Wizards 44.5¢ at Orlando (+1.2, but DraftKings has moved away from them since the open), Cavaliers 60.5¢ vs OKC (+1.1). The Bears are 38.5¢ in Seattle, +0.6 vs a line that moved from +180 to +145. DraftKings lines via ESPN.",
+ "lean": {
+  "action": "BUY",
+  "label": "Hornets",
+  "market": "NBA: DET @ CHA, Mon Nov 2 7:30 PM ET",
+  "slug": "nba-det-cha-2026-11-02",
+  "outcome": 1,
+  "entry": 0.375,
+  "event_date": "2026-11-02",
+  "edge": 1.6,
+  "edge_at": "7:10 AM ET",
+  "book": {
+   "name": "DraftKings via ESPN",
+   "url": "https://www.espn.com/nba/game/_/gameId/401909908",
+   "odds": [145, -175]
+  },
+  "why": "Not a bet, a lean. DraftKings has Charlotte at +145 at home, a 39.1% shot without the vig, and Polymarket sells it for 37.5¢: +1.6 points, short of our 2.5 bar and under the 40¢ floor. The one thing we like: the book has moved toward the Hornets since the open (+150 to +145), and Detroit is without Jalen Duren. The 5-1 Pistons are the better team. That's why it's a lean and not a proposal.",
+  "source": {"name": "Polymarket", "url": "https://polymarket.com/event/nba-det-cha-2026-11-02"}
+ }
+}
