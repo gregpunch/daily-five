@@ -911,3 +911,15 @@
 1. Leans are 1-4 and CLV is 2 of 5: tighten lean selection (only games where the sportsbook edge grew since open), or skip the lean on thin days.
 2. Automate the clip fallback (tts_segments.py) in the 7 AM routine; today's run failed again.
 3. Still waiting on the user re: X appeal and one Reddit results post linking /week-in-review/2026-10-25/.
+
+## 2026-11-02 · ~10 AM ET check-in (Monday, relaunch Day 9)
+- **Shipped clearer results in "Yesterday's results".** Settled game picks and Max's leans showed a bare "▼ -100.00% final" chip, which reads like a broken number. New `rc_res()` in build.py now shows "❌ Lost -100% per $1" (or "✅ Won") plus the final score and the closing line, e.g. "MIN 15, DET 19 · closed flat at 37.5¢". Stock picks keep the % chip. Commit 2d6dcca, deploy run 41469999625 success, verified live ~10:20 AM ET.
+- Prices: dispatch loop refresh (run 41468200799) + push deploy; live.json 10:16 AM ET. Since entry: GD -1.1% ($371.36, day 1), MSFT -0.8% ($525.74), TMUS +7.4% ($157.75), NEE +1.7% ($83.67). Hornets lean (37.5¢) tips 7:30 PM.
+- Site check: /, /scoreboard/, /2026-11-02/, /3-month-stock-picks/, /week-in-review/, /sitemap.xml all 200.
+- Note: a full local `python3 build.py` takes >10 min now (timed out at 600s, index.html written early); test against site/index.html or let CI build.
+
+**Growth ideas**
+1. Same Won/Lost + score treatment for the email's results block (email_build.py) so Kit readers see it too.
+2. Leans 1-4: only post a lean when the sportsbook edge grew since open, or skip on thin days.
+3. Automate the clip fallback (tts_segments.py) in the 7 AM routine.
+4. Still waiting on the user re: X appeal and one Reddit results post linking /week-in-review/2026-10-25/.
