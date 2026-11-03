@@ -30,7 +30,7 @@ def move(slug,url,label):
         op=[_am(((ml.get(s) or {}).get('open') or {}).get('odds')) for s in (ms,os_)]
         nw=[_am(((ml.get(s) or {}).get('close') or {}).get('odds')) for s in (ms,os_)]
         if None in op or None in nw: continue
-        return {'open':op,'now':nw,'state':comp['status']['type']['state'],'book':(pc.get('provider') or {}).get('name','Sportsbook'),'team':me[0]['team'].get('abbreviation','')}
+        return {'open':op,'now':nw,'state':comp['status']['type']['state'],'book':((pc.get('provider') or {}).get('name') or 'Sportsbook').replace('Draft Kings','DraftKings'),'team':me[0]['team'].get('abbreviation','')}
     return None
 def check(mv):
     """Lean line check: post a lean only if the book's no-vig chance for our side has held or grown since open
