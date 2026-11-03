@@ -42,7 +42,7 @@ def render(B, reports):
         if gd: faqs.append((f"What is {nm}'s guidance after {q}?",' '.join(f"{h['metric']}: {h['actual']} (consensus {h['consensus']})." for h in gd)))
         if move is not None: faqs.append((f"How did {tk} stock react to earnings?",f"{tk} was {move:+.1f}% {rx['kind']} at ${rx['price']:,.2f} versus the ${pc:,.2f} close before the report, as of {rx['asof']}."))
         faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
-        cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),(f'{tk} {q}',P)])
+        cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),(f'{tk} earnings',f'/earnings/{tk.lower()}/'),(f'{tk} {q}',P)])
         h1=f"{nm} ({tk}) {q} Earnings Explained"
         body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🧾 Earnings explained · {E(d)} · {E(r["when"])}</span><h1 class="pt">{E(h1)}</h1>'
               f'<p class="sub wksum"><b>Bottom line: {E(r["verdict_word"])}.</b> The numbers vs Wall Street, what actually mattered, and how the stock took it, in plain English.</p></section>'
@@ -52,13 +52,44 @@ def render(B, reports):
               f'<section class="card"><h2 class="h2s">🤖 Max\'s verdict</h2><p class="why">{E(r["verdict"])}</p><p class="disc">Max Edge is an AI host. This is commentary, not financial advice.</p></section>'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get every big earnings report explained in your inbox, free.</h2><p>Beat or miss, guidance, the stock reaction and what it means, in plain English. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'<section class="card"><h2 class="h2s">Sources</h2><ul class="why">{srcs}</ul><p class="disc">Numbers come from the company\'s release and the coverage above. Where no consensus was published we leave it out rather than guess.</p></section>'
-              f'{faqh}<p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
+              f'{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
         title=f"{nm} {q} earnings explained: beat or miss, guidance, stock reaction"
         desc=f"{nm} ({tk}) {q} earnings: {r['verdict_word']}. "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'. Guidance, key takeaways and stock reaction.'
         sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc[:300],"datePublished":r['date'],"dateModified":B['TODAY'].isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P,"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"citation":[s['url'] for s in r['sources']]},csch,
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
         r['_move']=move; urls.append((P,B['TODAY'].isoformat()))
+    return urls+ticker_hubs(B,reports)
+
+def ticker_hubs(B, reports):
+    """/earnings/<ticker>/: one evergreen page per company for searches like "AMD earnings" that name no quarter.
+    Latest report's numbers up top, then every quarter we've explained. Renders only from the same JSON as the explainers."""
+    E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]; by={}
+    for r in reports: by.setdefault(r['ticker'],[]).append(r)
+    for tk,rs in by.items():
+        rs=sorted(rs,key=lambda r:r['date'],reverse=True); L=rs[0]; nm=L['company']; P=f"/earnings/{tk.lower()}/"
+        d=lambda r: datetime.date.fromisoformat(r['date']).strftime('%B %-d, %Y')
+        mv=L.get('_move')
+        rows=''.join(f"<tr><td>{E(h['metric'])}</td><td><b>{E(h['actual'])}</b></td><td>{E(h['consensus'])}</td><td>{E(h['result'])}</td></tr>" for h in L['headline'])
+        hist=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["quarter"])}</b></a> ({E(d(r))}, {E(r["when"])}): {E(r["verdict_word"])}'+(f' · stock {r["_move"]:+.1f}% after' if r.get('_move') is not None else '')+'</li>' for r in rs)
+        lead=(f"{nm}'s latest report was {L['quarter']} on {d(L)} ({L['when']}): <b>{E(L['verdict_word'])}</b>"
+              +(f", and the stock moved {mv:+.1f}% on it" if mv is not None else '')+". Below: the numbers vs Wall Street, then every quarter we've explained in plain English.")
+        faqs=[(f"Did {nm} ({tk}) beat earnings last quarter?",f"In {L['quarter']}, reported {d(L)}, {nm} came in {L['verdict_word']}. "+'; '.join(f"{h['metric']}: {h['actual']} vs {h['consensus']}" for h in L['headline'][:3] if h['consensus']!='n/a')+'.'),
+              (f"When did {nm} last report earnings?",f"{nm} reported {L['quarter']} results on {d(L)}, {L['when']}.")]
+        faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
+        cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),(f'{tk} earnings',P)])
+        h1=f"{nm} ({tk}) Earnings: Results, Guidance and Stock Reaction"
+        body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🧾 Earnings explained · {E(tk)}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{lead}</p></section>'
+              f'<section class="card"><h2 class="h2s">Latest: {E(L["quarter"])} vs consensus</h2><div class="tbl"><table><thead><tr><th>Metric</th><th>Reported</th><th>Consensus</th><th>Result</th></tr></thead><tbody>{rows}</tbody></table></div>'
+              f'<p class="sub"><a href="{BASE}/earnings/{L["slug"]}/">Full {E(tk)} {E(L["quarter"])} explainer: what mattered, the reaction and Max\'s verdict →</a></p></section>'
+              f'<section class="card"><h2 class="h2s">Every {E(nm)} report we\'ve explained</h2><ul class="why">{hist}</ul></section>'
+              f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get the next {E(tk)} report explained in your inbox.</h2><p>Every big earnings report in plain English: beat or miss, guidance, and how the stock took it. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
+              f'{faqh}<p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources on each report page.</p>')
+        title=f"{nm} ({tk}) earnings: latest results, guidance and stock reaction"
+        desc=f"{nm} ({tk}) earnings in plain English. Latest: {L['quarter']}, {L['verdict_word']}. Beat or miss vs consensus, guidance and how the stock reacted."
+        sch={"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":h1,"url":SITE+P,"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"publisher":{"@type":"Organization","name":BRAND}},csch,
+             {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
+        B['w'](f"earnings/{tk.lower()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,B['TODAY'].isoformat()))
     return urls
 
 def index_section(B, reports):
