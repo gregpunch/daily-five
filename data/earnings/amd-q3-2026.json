@@ -1,0 +1,31 @@
+{
+ "slug": "amd-q3-2026",
+ "ticker": "AMD",
+ "company": "AMD",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "after the close",
+ "verdict_word": "Beat and big guide",
+ "headline": [
+  {"metric": "Adjusted EPS", "actual": "$2.09 (up 74% y/y)", "consensus": "$1.95 (LSEG)", "result": "Beat"},
+  {"metric": "Revenue", "actual": "$13.38B (up 45% y/y)", "consensus": "$13.09B (LSEG)", "result": "Beat"},
+  {"metric": "Data Center revenue", "actual": "$8.55B (up 97% y/y)", "consensus": "n/a", "result": ""},
+  {"metric": "Q4 revenue guidance", "actual": "~$17B, plus or minus 3%", "consensus": "$16.2B (LSEG)", "result": "Above"},
+  {"metric": "Q4 adj. gross margin guidance", "actual": "~55%", "consensus": "55.3% (StreetAccount)", "result": "Slightly below"}
+ ],
+ "takeaways": [
+  "AMD beat on both lines: $2.09 of adjusted EPS vs $1.95 expected, and $13.38 billion in revenue vs $13.09 billion (LSEG). The company says revenue came in above the top of its own guidance.",
+  "The AI data center business is now the whole story: Data Center revenue nearly doubled to a record $8.5 billion (up 97%), driven by EPYC server CPUs and the launch of its Instinct MI450 AI GPUs. That segment is now 64% of sales, up from 47% a year ago (CNBC).",
+  "The guide is the headline: about $17 billion in Q4 revenue, roughly 66% growth from a year ago and 27% more than this quarter, vs a $16.2 billion analyst estimate (LSEG). The one nitpick: a ~55% gross margin guide, a hair under the 55.3% expected (StreetAccount).",
+  "Not everything is booming. Client and Gaming fell 8% to $3.7 billion; PC chips grew 7%, but gaming sales dropped 40% on weaker console (semi-custom) and graphics demand.",
+  "Reported (GAAP) EPS was $1.46, well below the adjusted $2.09, mainly because of a $1.1 billion non-cash hit from remeasuring warrants AMD gave to customers, which rises as AMD's stock price rises. Free cash flow was just $554 million as inventory jumped by about $3 billion ahead of the Q4 ramp."
+ ],
+ "verdict": "AMD beat, then guided Q4 about $800 million above what Wall Street wanted, which is the chip-stock version of dropping the mic. The stock jumped after hours, undoing the last few days of 'AI is overspending' jitters. Fine print: the inventory pile and thin free cash flow mean the Q4 ramp actually has to show up.",
+ "sources": [
+  {"title": "AMD Q3 2026 press release (AMD Investor Relations)", "url": "https://ir.amd.com/news-events/press-releases/detail/1303/amd-reports-third-quarter-2026-financial-results"},
+  {"title": "CNBC: AMD Q3 2026 earnings (LSEG and StreetAccount estimates)", "url": "https://www.cnbc.com/2026/11/03/amd-amd-q3-earnings-report-2026-.html"},
+  {"title": "Investing.com: after-hours movers", "url": "https://www.investing.com/news/stock-market-news/afterhours-movers-amd-smci-swks-nrix-tost-bkng-432SI-4996579"}
+ ],
+ "prev_close": 483.9,
+ "reaction": {"kind": "after hours", "price": 523.0, "asof": "2026-11-03 5:01 PM ET"}
+}
