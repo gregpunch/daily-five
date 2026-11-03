@@ -236,6 +236,18 @@ def enrich_lean(ed,exits):
     p['ret']=None if p['cur'] is None else (p['cur']-p['entry'])/p['entry']; p['so']=None; p['open']=None
     p['id']=f"{ed['date']}-lean-{slugify(p['label'])}"
     closing_line(p,m,exits,key+'/close')
+    import lines; p['bmove']=memo(('lmv',key),lambda: lines.move(p.get('slug'),(p.get('book') or {}).get('url'),p['label']))
+def bmove_txt(p,short=False):
+    """Sportsbook moneyline for our side: open -> at Max's call -> now (closing line once the game starts). From ESPN (lines.py)."""
+    mv=p.get('bmove')
+    if not mv: return ''
+    import lines; f=lines.fmt; call=((p.get('book') or {}).get('odds') or [None])[0]
+    d=(lines.novig(*mv['now'])-lines.novig(*mv['open']))*100; st=mv.get('state')!='pre'
+    if short: return f"{f(mv['open'][0])} → {f(mv['now'][0])} <small class=\"{'up' if d>=0.5 else 'dn' if d<=-0.5 else ''}\">{d:+.1f} pts</small>"
+    way='moved toward' if d>=0.5 else 'moved against' if d<=-0.5 else 'held for'
+    return (f'📈 <b>Book line</b> ({E(mv.get("book","Sportsbook"))}): opened {f(mv["open"][0])}'+(f', {f(call)} at Max\'s call' if call else '')
+            +f', {"closed" if st else "now"} {f(mv["now"][0])}: the money <b class="{"up" if d>=0.5 else "dn" if d<=-0.5 else ""}">{way} the {E(p["label"])}</b> ({d:+.1f} pts no-vig since open). '
+            +'From Nov 3, a lean only runs if the line has held or moved our way since open.')
 def leans(eds=None):
     """Every Max's lean, newest first, as (edition, lean)."""
     return [(e,e['lean']) for e in (eds if eds is not None else ALLEDS) if e.get('lean') and e['date']>=LAUNCH]
@@ -260,7 +272,7 @@ def lean_box(ed):
     return (f'<div class="lean" id="lean"><span class="lean-tag">🤏 Max\'s lean · not a Bold Bet · not a pick</span>'
             f'<h3><span class="mini buy">LEAN</span> {E(p["label"])} <small>at {p["entry"]*100:.1f}¢</small></h3><p class="lean-mkt">{E(p["market"])}</p>'
             f'<p class="lean-why">🤖 <b>Max Edge (AI host):</b> {E(p["why"])}</p>'
-            f'<p class="lean-book">{bl}</p>{livebox(p)}{gd(p)}{res}'
+            f'<p class="lean-book">{bl}</p>'+(f'<p class="lean-book">{bmove_txt(p)}</p>' if p.get('bmove') else '')+f'{livebox(p)}{gd(p)}{res}'
             f'<p class="lean-fine">Leans are the closest miss on a day nothing clears our bar. They are graded in public on a separate <a href="{BASE}/scoreboard/#leans">Leans record</a> and never count toward the Bold Bet or sports record. {E(lean_rec_txt())} Not betting advice.</p>{bf}'
             f'<a class="lean-src" href="{E(p["source"]["url"])}" rel="nofollow noopener" target="_blank">{E(p["source"]["name"])} ↗</a></div>')
 def pct(x): return '—' if x is None else f"{x*100:+.2f}%"
@@ -2384,12 +2396,12 @@ def leans_section(eds):
     cl=lambda p: '—' if p.get('close') is None else f'{p["close"]*100:.1f}¢ <small class="{"up" if p["close"]-p["entry"]>=0.005 else "dn" if p["close"]-p["entry"]<=-0.005 else ""}">{(p["close"]-p["entry"])*100:+.1f}¢</small>'
     cb,ct,cavg=clv_rec([p for _,p in ls])
     clt=(f'<div class="tile"><span class="h">Beat the closing line</span><b class="{_clvc(cb,ct,[p for _,p in ls])}">{cb} of {ct}</b><span class="s">avg {cavg:+.1f}¢ vs the last price before start{_flat([p for _,p in ls]," · ")}</span></div>' if ct else '')
-    tr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini buy">LEAN</span> <b>{E(p["label"])}</b> <small>{E(p["market"])}</small></td><td class="mono">{p["entry"]*100:.1f}¢</td><td class="mono">{ef(p)}</td><td class="mono">{cl(p)}</td><td class="mono">{money("Sports",p.get("cur"))} <small>{E(p.get("note") or "")}</small></td><td>{chip(p.get("ret"),p.get("final"))}</td><td>{("Win" if p["ret"]>0 else "Loss") if p.get("final") and p.get("ret") is not None else "Pending"}</td><td><a href="{BASE}/{e["date"]}/#lean">edition ↗</a></td></tr>' for e,p in ls)
+    tr=''.join(f'<tr><td class="mono">{e["date"][5:]}</td><td><span class="mini buy">LEAN</span> <b>{E(p["label"])}</b> <small>{E(p["market"])}</small></td><td class="mono">{p["entry"]*100:.1f}¢</td><td class="mono">{ef(p)}</td><td class="mono">{cl(p)}</td><td class="mono">{bmove_txt(p,True) or "—"}</td><td class="mono">{money("Sports",p.get("cur"))} <small>{E(p.get("note") or "")}</small></td><td>{chip(p.get("ret"),p.get("final"))}</td><td>{("Win" if p["ret"]>0 else "Loss") if p.get("final") and p.get("ret") is not None else "Pending"}</td><td><a href="{BASE}/{e["date"]}/#lean">edition ↗</a></td></tr>' for e,p in ls)
     hd=f"{w_}-{l_}" if w_+l_ else "0-0"
     return (f'<section class="sec leans" id="leans"><div class="sh"><span class="si">🤏</span><div><h2>Max\'s Leans · separate record</h2><p class="sub">On days when no game clears our bar (no Bold Bet), Max Edge, our AI host, names his closest miss as a <b>lean</b>. Leans are graded here in public, one 1-unit buy at the published Polymarket price, and are <b>never</b> counted in the sports or Bold Bet record. Think of it as the bench: it plays, but it doesn\'t get a jersey.</p></div></div>'
             f'<div class="tiles"><div class="tile"><span class="h">Leans</span><b class="{"up" if (avg or 0)>=0 else "dn"}">{hd}</b><span class="s">{(pct(avg)+" avg per $1") if avg is not None else "no settled leans yet"} · {op} open</span></div>{clt}</div>'
-            f'<p class="sub">🔒 <b>Closing line</b> is our side\'s Polymarket price right before the game starts. Getting a better price than the close (buying cheaper than where the market ends up) is the stat sharp bettors trust more than any one game\'s result. <a href="{BASE}/week-in-review/">Week-by-week recaps →</a></p>'
-            f'<div class="tbl"><table><thead><tr><th>Date</th><th>Lean</th><th>Entry</th><th>Edge vs books</th><th>Closing line</th><th>Now / exit</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div></section>')
+            f'<p class="sub">🔒 <b>Closing line</b> is our side\'s Polymarket price right before the game starts. Getting a better price than the close (buying cheaper than where the market ends up) is the stat sharp bettors trust more than any one game\'s result. 📈 <b>Book line move</b> is the DraftKings moneyline for our side from open to close (no-vig change in pts): from Nov 3, Max only runs a lean when that line has held or moved our way since open. <a href="{BASE}/week-in-review/">Week-by-week recaps →</a></p>'
+            f'<div class="tbl"><table><thead><tr><th>Date</th><th>Lean</th><th>Entry</th><th>Edge vs books</th><th>Closing line</th><th>Book line open → close</th><th>Now / exit</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div></section>')
 def main():
     shutil.rmtree(OUT,ignore_errors=True); os.makedirs(OUT)
     w('style.css',open(os.path.join(ROOT,'style.css')).read()); w('.nojekyll','')
