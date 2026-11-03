@@ -1,0 +1,30 @@
+{
+ "slug": "anet-q3-2026",
+ "ticker": "ANET",
+ "company": "Arista Networks",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "after the close",
+ "verdict_word": "Blowout",
+ "headline": [
+  {"metric": "Adjusted EPS", "actual": "$1.20 (was $0.77)", "consensus": "$1.08 (FactSet)", "result": "Beat"},
+  {"metric": "Revenue", "actual": "$3.66B (up 58.5% y/y)", "consensus": "$3.33B (FactSet)", "result": "Beat"},
+  {"metric": "Q4 revenue guidance", "actual": "$3.9-$4.0B", "consensus": "$3.6B (Investing.com)", "result": "Above"},
+  {"metric": "Q4 adj. EPS guidance", "actual": "$1.26-$1.30", "consensus": "$1.15 (Investing.com)", "result": "Above"}
+ ],
+ "takeaways": [
+  "Arista crushed it: $1.20 of adjusted EPS vs $1.08 expected, and $3.66 billion in revenue vs $3.33 billion (FactSet via MarketWatch). Its own guidance had been $3.3 billion.",
+  "Revenue grew 58.5% from a year ago, the fastest growth since its 2014 IPO, and 20.5% from last quarter. Arista sells the networking gear that connects AI chips inside data centers, so AI build-outs show up here fast.",
+  "It's very profitable: a 49.1% adjusted operating margin (44.9% GAAP), and GAAP net income of $1.56 billion, or $1.22 a share, nearly double last year's 67 cents.",
+  "The Q4 guide is well above the Street: $3.9-4.0 billion in revenue vs $3.6 billion expected, and $1.26-1.30 in adjusted EPS vs $1.15 (Investing.com).",
+  "Arista also launched rack-scale AI networking designs with partners including AMD, Broadcom, Meta and Microsoft, and joined the S&P 100 in September, per the release."
+ ],
+ "verdict": "Arista beat its own guidance by about $360 million and then guided Q4 above where analysts had it, so the stock did a cannonball after hours. When AI companies build data centers, somebody has to sell them the cables-and-switches plumbing, and Arista is cashing those checks. Only catch: expectations just got taller too.",
+ "sources": [
+  {"title": "Arista Q3 2026 press release (Business Wire)", "url": "https://www.businesswire.com/news/home/20261103862513/en/Arista-Networks-Inc.-Reports-Third-Quarter-2026-Financial-Results"},
+  {"title": "MarketWatch: Arista nearly doubles 3Q profit (FactSet estimates)", "url": "https://www.marketwatch.com/story/arista-networks-nearly-doubles-3q-profit-on-ai-data-center-demand-0c2f22a4"},
+  {"title": "Investing.com: Arista shares jump on upbeat Q3 results", "url": "https://www.investing.com/news/earnings/arista-networks-shares-jump-on-upbeat-q3-results-strong-guidance-4996417"}
+ ],
+ "prev_close": 169.91,
+ "reaction": {"kind": "after hours", "price": 192.63, "asof": "2026-11-03 5:02 PM ET"}
+}
