@@ -955,3 +955,14 @@
 1. Automate the clip fallback (tts_segments.py) in the 7 AM routine (still manual).
 2. Pre-tip re-check: if a lean's line moves ≥3 pts against us after publish (Hornets today), show a "line moved, Max still on it / Max is off it" note before tip, without changing the graded entry.
 3. TMUS +10 pts is the best proof point: results post on X/Reddit once the user OKs promotion (X still suspended).
+
+## 2026-11-03 · ~10 AM ET check-in (Tuesday, earnings explainer pivot Day 1)
+- **Front page now feeds the earnings explainers.** New `home_strip()` in earnings_explainer.py + `ern_home()` in build.py add a "🧾 Earnings explained: who beat, who missed" box under the clip on the home page, linking every report from the last 3 days (SHOP, RACE, PFE, MPC, ETN, APO today) with its one-line verdict. No prices in the box, since the home renders before the live reaction fetch; the move lives on each explainer page. Footer link is now always "Earnings explained" (was a conditional "Earnings calendar"). Internal links from the highest-authority page should help Google find and rank the new /earnings/<slug>/ pages.
+- **Fixed the email's 3-month label**: "+x% vs S&P" now reads "+x pts vs the S&P" (email_build.py), effective in tomorrow's 7 AM email.
+- Commit 8f82087, deploy run 41661886899 success, verified live; prices refreshed with stamp 10:17 AM ET (plus a dispatch refresh already running).
+- Site check: /, /scoreboard/, /earnings/, /earnings/shop-q3-2026/, /2026-11-03/, /3-month-stock-picks/ all 200. /earnings/amd-q3-2026/ is 404 as expected until the 5 PM earnings routine builds it.
+
+**Growth ideas**
+1. Put the newest explainer at the top of the 7 AM email ("Last night's earnings, explained") so Kit readers get the new product daily.
+2. Per-ticker hub /earnings/<ticker>/ listing every quarter, for "AMD earnings" style searches that don't name a quarter.
+3. Submit new explainer URLs via IndexNow right after each earnings build (indexnow.py already exists).
