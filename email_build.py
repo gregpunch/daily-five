@@ -185,7 +185,7 @@ def render(ed,prev=None,rec=None,open3=None):
         rows.append(fin(p,i))
     newids={id(p) for p in finl}; oc=[p for p in (open3 or []) if id(p) not in newids]
     if oc or not finl:
-        li=''.join(f'<div style="padding:3px 0;">{E(p["action"])} <b>{E(p["label"])}</b> · entry ${p["entry"]:,.2f}'+(f' · target ${p["target_price"]:,.2f}' if p.get("target_price") else '')+(f' · {p["ret"]*100:+.1f}% vs S&amp;P' if p.get("ret") is not None else '')+'</div>' for p in oc)
+        li=''.join(f'<div style="padding:3px 0;">{E(p["action"])} <b>{E(p["label"])}</b> · entry ${p["entry"]:,.2f}'+(f' · target ${p["target_price"]:,.2f}' if p.get("target_price") else '')+(f' · {p["ret"]*100:+.1f} pts vs the S&amp;P' if p.get("ret") is not None else '')+'</div>' for p in oc)
         rows.append(f'<tr><td style="padding:8px 24px;{F}font-size:14px;line-height:20px;color:{TXT};">'+('<b>Open 3-month calls</b>'+li if oc else 'No new stock call today. We make 1–2 buy-and-hold 3-month calls a week.')+'</td></tr>')
     rows.append(sec('🤖','AI','The 5 stories that matter today'))
     rows+= [ai(n,i) for i,n in enumerate(ed['ai'][:5],1)]

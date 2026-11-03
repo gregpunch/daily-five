@@ -66,3 +66,18 @@ def index_section(B, reports):
     if not reports: return ''
     li=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]}) {E(r["quarter"])}</b></a>: {E(r["verdict_word"])}'+(f' · stock {r["_move"]:+.1f}%' if r.get('_move') is not None else '')+f' · {datetime.date.fromisoformat(r["date"]).strftime("%b %-d")}</li>' for r in reports)
     return f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
+
+def home_strip(B, reports, days=3):
+    """Home-page box: the newest earnings explainers (reports from the last `days` days), so the front page
+    links straight into the explainer pages. No prices here: the home renders before the live reaction fetch, so the move lives on each explainer page."""
+    E=B['E']; BASE=B['BASE']; today=B['TODAY']
+    rec=[r for r in reports if 0<=(today-datetime.date.fromisoformat(r['date'])).days<=days]
+    if not rec: return ''
+    def mv(r):
+        rx=r.get('_move')
+        if rx is None and (r.get('reaction') or {}).get('price') and r.get('prev_close'): rx=(r['reaction']['price']/r['prev_close']-1)*100
+        return f' <span class="{"up" if rx>=0 else "dn"}">{r["ticker"]} {rx:+.1f}%</span>' if rx is not None else ''
+    li=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]})</b></a>: {E(r["verdict_word"])}</li>' for r in rec[:8])
+    return (f'<section class="card ernhome"><h2 class="h2s">🧾 Earnings explained: who beat, who missed</h2>'
+            f'<p class="sub">This week\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it.</p>'
+            f'<ul class="why">{li}</ul><p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
