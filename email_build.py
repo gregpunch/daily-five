@@ -158,6 +158,28 @@ def preheader(ed,prev,rec):
     bits.append(ed['headline'])
     t=' \u00b7 '.join(bits)
     return t+'\u00a0\u200c'*40
+def earnings(ed):
+    """'Last night's earnings, explained': explainer pages for reports dated yesterday or today (after-the-close first)."""
+    try:
+        import earnings_explainer as EX; reps=EX.load(ROOT)
+    except Exception as ex:
+        print('email earnings skipped:',ex); return []
+    d=datetime.date.fromisoformat(ed['date'])
+    rec=[r for r in reps if 0<=(d-datetime.date.fromisoformat(r['date'])).days<=1]
+    if not rec: return []
+    rec.sort(key=lambda r:(r['date'],'after' in r.get('when','')),reverse=True)
+    out=[sec('🧾',"Earnings, explained",'Who beat, who missed, and how the stock took it · in plain English')]
+    for r in rec[:6]:
+        v=str(r.get('verdict','')); v=v.split('. ')[0].rstrip('.')+'.' if v else ''
+        u=f"{SITE}/earnings/{r['slug']}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-earnings"
+        tint='#1a1640'
+        inner=(f'<div style="{F}font-size:11px;font-weight:700;color:{MUT};letter-spacing:1px;text-transform:uppercase;padding-bottom:4px;">{E(r["quarter"])} · reported {E(r.get("when",""))}</div>'
+          f'<div style="{F}font-size:18px;font-weight:800;color:{TXT};"><a href="{u}" style="color:{TXT};text-decoration:none;">{E(r["company"])} ({E(r["ticker"])})</a></div>'
+          f'<div style="{F}font-size:14px;font-weight:700;color:{AMB};padding-top:3px;">{E(r["verdict_word"])}</div>'
+          f'<div style="{F}font-size:14px;line-height:20px;color:#cdd2e1;padding-top:6px;">{E(v)}</div>'
+          f'<div style="{F}font-size:13px;padding-top:8px;"><a href="{u}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Read the full breakdown →</a></div>')
+        out.append(row(inner,tint))
+    return out
 def render(ed,prev=None,rec=None,open3=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'3 Month':0,'1 Day':1,'1 Month':2,'1 Year':3}
@@ -177,6 +199,7 @@ def render(ed,prev=None,rec=None,open3=None):
     if rc: rows.append('<tr><td style="padding:14px 0 0;"></td></tr>'); rows.append(rc)
     tr_=record(rec,ed['date'])
     if tr_: rows.append('<tr><td style="padding:10px 0 0;"></td></tr>'); rows.append(tr_)
+    rows+=earnings(ed)
     rows.append(sec('💰','Money','Buy-and-hold 3-month calls · graded vs the S&P 500'))
     last=None
     for i,p in enumerate(finl,1):
