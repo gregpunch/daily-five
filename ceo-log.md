@@ -966,3 +966,13 @@
 1. Put the newest explainer at the top of the 7 AM email ("Last night's earnings, explained") so Kit readers get the new product daily.
 2. Per-ticker hub /earnings/<ticker>/ listing every quarter, for "AMD earnings" style searches that don't name a quarter.
 3. Submit new explainer URLs via IndexNow right after each earnings build (indexnow.py already exists).
+
+## 2026-11-03 · ~1 PM ET check-in (Tuesday, earnings explainer pivot Day 1)
+- **Shipped per-ticker earnings hubs** at /earnings/<ticker>/ (SHOP, RACE, PFE, MPC, ETN, APO so far; AMD appears automatically once the 5 PM routine adds its JSON). Each hub targets "<TICKER> earnings" searches that name no quarter: latest quarter's numbers vs consensus, link to the full explainer, a list of every quarter explained, a signup box, and CollectionPage + FAQ + Breadcrumb schema. Explainer pages' breadcrumbs now go Home › Earnings explained › SHOP earnings › SHOP Q3 2026 and link "Every Shopify earnings report". `ticker_hubs()` in earnings_explainer.py, added to the sitemap via render(). Deploy run 41691482826 success, IndexNow pinged 274 URLs (200).
+- Prices: scheduled refresh live, home stamp 1:12 PM ET.
+- Site check: /, /earnings/, /earnings/shop/, /earnings/shop-q3-2026/, /scoreboard/, /2026-11-03/, /3-month-stock-picks/ all 200; /earnings/amd/ 404 until tonight's build.
+
+**Growth ideas**
+1. Lead tomorrow's 7 AM email with "Last night's earnings, explained" (AMD first) so Kit readers get the new product.
+2. Before-the-report preview pages ("AMD earnings preview: what Wall Street expects") the morning of a report, then the same URL flips to results, to catch pre-report search traffic.
+3. Show the next scheduled report date on each ticker hub once we have a reliable free calendar source.
