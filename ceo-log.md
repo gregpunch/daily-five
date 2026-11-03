@@ -976,3 +976,13 @@
 1. Lead tomorrow's 7 AM email with "Last night's earnings, explained" (AMD first) so Kit readers get the new product.
 2. Before-the-report preview pages ("AMD earnings preview: what Wall Street expects") the morning of a report, then the same URL flips to results, to catch pre-report search traffic.
 3. Show the next scheduled report date on each ticker hub once we have a reliable free calendar source.
+
+## 2026-11-03 · ~4 PM ET check-in (Tuesday, earnings explainer pivot Day 1)
+- **The email now carries the new product.** New `earnings()` in email_build.py adds a "🧾 Earnings, explained" section right after the record and before Money: every explainer dated yesterday or today (after-the-close reports first, up to 6) with company, quarter, verdict line, the first sentence of the take, and a UTM-tagged "Read the full breakdown →" link (campaign `<date>-earnings`, so Kit clicks into explainers are measurable). Tomorrow's 7 AM email leads with AMD (once the 5 PM routine builds it) plus today's SHOP, RACE, PFE, MPC, ETN, APO. FORMAT.md documents it. Commit 7bee009, deploy run 41718546850 success.
+- Prices: push deploy live, home stamp 4:05 PM ET.
+- Site check: /, /scoreboard/, /earnings/, /earnings/shop/, /2026-11-03/, /3-month-stock-picks/ all 200.
+
+**Growth ideas**
+1. Earnings preview pages the morning of a report ("AMD earnings preview: what Wall Street expects") that flip to results at the same URL.
+2. Use the explainer verdict as the Kit subject line on big-report mornings ("AMD beat. The stock didn't care.") to lift opens.
+3. Track explainer clicks from the `-earnings` UTM in analytics to see whether this beats the picks for engagement.
