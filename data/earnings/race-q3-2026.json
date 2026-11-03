@@ -1,0 +1,73 @@
+{
+ "slug": "race-q3-2026",
+ "ticker": "RACE",
+ "company": "Ferrari",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "before the open",
+ "verdict_word": "Small beat, small raise",
+ "headline": [
+  {
+   "metric": "Diluted EPS",
+   "actual": "€2.44",
+   "consensus": "€2.37 (LSEG)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Net revenue",
+   "actual": "€1.896B (+7%, +10% const. currency)",
+   "consensus": "€1.89B (LSEG)",
+   "result": "In line"
+  },
+  {
+   "metric": "EBITDA",
+   "actual": "€753M (39.7% margin)",
+   "consensus": "€739.2M (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "FY2026 adj. EPS guidance",
+   "actual": "≥€9.85 (was ≥€9.68)",
+   "consensus": "€9.86 (Investing.com)",
+   "result": "Raised, in line"
+  },
+  {
+   "metric": "FY2026 revenue guidance",
+   "actual": "~€7.65B (was ~€7.60B)",
+   "consensus": "€7.64B (Investing.com)",
+   "result": "Raised, in line"
+  }
+ ],
+ "takeaways": [
+  "Ferrari sold slightly fewer cars but made more money on each one: revenue up 7% (10% in constant currency) to €1.896 billion, EBITDA up 12% to €753 million.",
+  "The reason is mix and personalizations: richer models like the F80 and buyers paying extra to customize. Shipments through nine months were 10,170, down 318 from a year ago (CNBC).",
+  "EBIT margin rose to 29.7% and industrial free cash flow jumped 43% to €567 million.",
+  "Second guidance raise of the year: revenue about €7.65 billion, adjusted EBITDA at least €3.0 billion, adjusted EPS at least €9.85. That lands right on consensus, which is why Milan shares slipped (Reuters).",
+  "CEO Benedetto Vigna said the order book now reaches into 2028, with two more launches this year."
+ ],
+ "verdict": "Ferrari sold fewer cars and made more money, which is the most Ferrari sentence ever written. The guidance raise was polite rather than thrilling, so Milan sulked while the U.S. shares pointed up premarket. Your move, prancing horse.",
+ "sources": [
+  {
+   "title": "Ferrari Q3 2026 press release (GlobeNewswire)",
+   "url": "https://www.globenewswire.com/news-release/2026/11/03/3394014/0/en/strong-mix-and-personalizations-sustain-q3-growth-and-further-2026-guidance-upgrade.html"
+  },
+  {
+   "title": "CNBC: Ferrari raises 2026 guidance",
+   "url": "https://www.cnbc.com/2026/11/03/ferrari-race-earnings-q3-2026.html"
+  },
+  {
+   "title": "Investing.com: Ferrari slips as guidance meets estimates",
+   "url": "https://www.investing.com/news/earnings/ferrari-slips-as-2026-guidance-upgrade-meets-estimates-q3-profit-beats-4994544"
+  },
+  {
+   "title": "Reuters via TimesLIVE",
+   "url": "https://www.timeslive.co.za/motoring/2026-11-03-ferrari-raises-full-year-outlook-after-stronger-than-expected-q3-results/"
+  }
+ ],
+ "prev_close": 403.09,
+ "reaction": {
+  "kind": "premarket",
+  "price": 415.09,
+  "asof": "2026-11-03 8:26 AM ET"
+ }
+}

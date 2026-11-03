@@ -937,6 +937,7 @@ def earnings_og(ops):
     rel='og/earnings'; w(rel+'.svg',svg)
     PICK_OG_JOBS.append((os.path.join(OUT,rel+'.svg'),os.path.join(OUT,rel+'.png')))
     import hashlib; return f"/{rel}.png?v={hashlib.sha1(svg.encode()).hexdigest()[:8]}"
+ERN_IDX={'h':''}
 def earnings_hub():
     """/earnings/: next earnings date (or catalyst) for every open 3-month call, with right-if/wrong-if and the live edge vs the S&P 500."""
     P='/earnings/'; ops=[p for p in open3()]
@@ -966,9 +967,9 @@ def earnings_hub():
     h1='Earnings Calendar for Our Open Stock Calls'
     bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">📅 Earnings watch · updated {TODAY.strftime("%b %-d, %Y")}</span><h1 class="pt">{h1}</h1><p class="sub wksum">{E(lead)}</p>'
            f'<div class="hubcta"><a class="pill" href="{BASE}/best-stocks-to-buy-today/">Today\'s stock picks →</a><a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard →</a><a class="pill ghost" href="{BASE}/max-edge/">Max Edge videos →</a></div></section>'
-           +verdict_box(ops)+''.join(card(p) for p in ops)+f'<section class="signup wksign"><div><span class="kicker">📬 The morning after</span><h2>Get the post-earnings verdict at 7 AM ET.</h2><p>The free email grades our calls the morning after each report, wins and losses. No spam, unsubscribe anytime.</p></div>{sform("wk")}</section>'
+           +ERN_IDX['h']+verdict_box(ops)+''.join(card(p) for p in ops)+f'<section class="signup wksign"><div><span class="kicker">📬 The morning after</span><h2>Get the post-earnings verdict at 7 AM ET.</h2><p>The free email grades our calls the morning after each report, wins and losses. No spam, unsubscribe anytime.</p></div>{sform("wk")}</section>'
            f'{faqh}<p class="disc-bar">⚠️ <b>Not financial advice.</b> Earnings dates come from company investor-relations pages and can change. Past results don\'t guarantee future returns.</p>')
-    title=f"Earnings Dates This Week: {syms} | What Would Make Our Calls Right or Wrong | {BRAND}"
+    title=f"Earnings Explained: Beat or Miss, Guidance, Stock Reaction + Our Calls ({syms}) | {BRAND}"
     desc=(f"Next earnings dates for every open Daily Five stock call ({syms}), with what would make each call right or wrong and the live edge vs the S&P 500.")[:155]
     sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc,"dateModified":TODAY.isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P},csch,
          {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}
@@ -2462,7 +2463,7 @@ def main():
     sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>{leans_section(eds)}'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
-    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); erh=earnings_hub(); tmh=three_month_hub(eds); wkr=week_reviews(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
+    hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); import earnings_explainer as EX; ERPTS=EX.load(ROOT); exu=EX.render(dict(shell=shell,w=w,sform=sform,crumbs=crumbs,E=E,BASE=BASE,SITE=SITE,BRAND=BRAND,TODAY=TODAY),ERPTS); ERN_IDX['h']=EX.index_section(dict(E=E,BASE=BASE),ERPTS); erh=earnings_hub(); tmh=three_month_hub(eds); wkr=week_reviews(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())
     faq_ents=[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in FAQS]
     how_sch={'@context':'https://schema.org','@graph':[
         {'@type':'Article','headline':'How we rank: the Daily Five Score','author':{'@type':'Organization','name':BRAND},'publisher':{'@type':'Organization','name':BRAND},'mainEntityOfPage':SITE+'/how-we-rank/','description':'How the 0-100 Daily Five Score ranks every stock and sports-market pick.'},
@@ -2471,7 +2472,7 @@ def main():
     w('how-we-rank/index.html',shell(f'How We Rank Picks: The Daily Five Score Methodology | {BRAND}','How the 0-100 Daily Five Score ranks every stock and sports-market pick: source credibility, consensus, edge vs analyst targets and sportsbook odds, and risk/reward.','/how-we-rank/',HOWTO,how_sch))
     # lastmod: hubs today; an edition page changes until all its picks settle; pick/ticker pages from lastmod()
     edlm=lambda e: max([lastmod(p,e) for p in e['finance']+e['sports']]+[e['date']])
-    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+([tmh] if tmh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+[(f'/max-edge/{os.path.basename(f)[4:14]}/',os.path.basename(f)[4:14]) for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))]+nfr+wkr+extra
+    urls=[(u,TODAY.isoformat()) for u in ['/','/scoreboard/','/track-record/','/how-we-rank/',hub,pmh,nfh]+([mxh] if mxh else [])+([erh] if erh else [])+([tmh] if tmh else [])+lgh+['/archive/','/beta-archive/']]+[(f"/{e['date']}/",edlm(e)) for e in eds_all]+[(f'/max-edge/{os.path.basename(f)[4:14]}/',os.path.basename(f)[4:14]) for f in sorted(glob.glob(os.path.join(ROOT,'clips','max-*.mp4')))]+nfr+wkr+extra+exu
     seen={u for u,_ in urls}; urls+=[x for x in beta_extra if x[0] not in seen]
     w('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f"<url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>" for u,lm in urls)+'</urlset>')
     w('googlef258d1e6972b7938.html','google-site-verification: googlef258d1e6972b7938.html')

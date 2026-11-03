@@ -1,0 +1,67 @@
+{
+ "slug": "mpc-q3-2026",
+ "ticker": "MPC",
+ "company": "Marathon Petroleum",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "before the open",
+ "verdict_word": "Big beat",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$26.93 (vs $3.01 a year ago)",
+   "consensus": "$25.38 (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue and other income",
+   "actual": "$56.49B (+58% y/y)",
+   "consensus": "$46.72B (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Adjusted EBITDA",
+   "actual": "$11.7B (vs $3.2B)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Dividend",
+   "actual": "Raised 10%",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Refiners are having a moment. Marathon earned $26.93 a share adjusted, almost 9x the $3.01 from a year ago, and beat the $25.38 estimate.",
+  "The driver is refining margins: $45.70 a barrel vs $17.60 a year ago, with crude utilization at 100% (company release via TradingKey/Reuters). With oil near $97, the spread between crude and fuel is enormous.",
+  "It returned $3.3 billion to shareholders and raised the quarterly dividend 10%. MPLX, its pipeline partner, raised its payout 12.5%.",
+  "It plans to divest its Mid-Con assets, including two refineries to CVR Energy per Reuters, and reinvest mainly on the Gulf Coast.",
+  "No numeric guidance for next quarter in the release, so we leave that out."
+ ],
+ "verdict": "When the world is short on gasoline, the people who make gasoline get very rich, very fast. Nine times last year's earnings is not a typo. The catch: margins this fat rarely stay this fat, and the market prices refiners like everyone knows it.",
+ "sources": [
+  {
+   "title": "Marathon Petroleum Q3 2026 press release",
+   "url": "https://ir.marathonpetroleum.com/investor/news-releases/news-details/2026/Marathon-Petroleum-Corp--Reports-Third-Quarter-2026-Results/default.aspx"
+  },
+  {
+   "title": "Investing.com: MPC beat by $1.55",
+   "url": "https://www.investing.com/news/earnings/marathon-petroleum-earnings-beat-by-155-revenue-topped-estimates-4994574"
+  },
+  {
+   "title": "Reuters via StreetInsider: Marathon to sell two refineries to CVR",
+   "url": "https://www.streetinsider.com/Reuters/Marathon+beats+quarterly+estimates%2C+to+sell+two+refineries+to+CVR+Energy/27277897.html"
+  },
+  {
+   "title": "TradingKey: refining margins lift EBITDA",
+   "url": "https://www.tradingkey.com/news/earnings/262267294-"
+  }
+ ],
+ "prev_close": 430.39,
+ "reaction": {
+  "kind": "premarket",
+  "price": 436.32,
+  "asof": "2026-11-03 8:26 AM ET"
+ }
+}

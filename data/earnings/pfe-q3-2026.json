@@ -1,0 +1,67 @@
+{
+ "slug": "pfe-q3-2026",
+ "ticker": "PFE",
+ "company": "Pfizer",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "before the open",
+ "verdict_word": "Beat and raise",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$0.87",
+   "consensus": "$0.73 (LSEG)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$16.58B (flat y/y)",
+   "consensus": "$15.87B (LSEG)",
+   "result": "Beat"
+  },
+  {
+   "metric": "FY2026 revenue guidance",
+   "actual": "$62.0-$64.0B (was $60.5-$62.5B)",
+   "consensus": "$62.2B (Investing.com)",
+   "result": "Raised, in line"
+  },
+  {
+   "metric": "FY2026 adj. EPS guidance",
+   "actual": "$2.95-$3.05 (was $2.80-$3.00)",
+   "consensus": "$2.96 (Reuters)",
+   "result": "Raised, in line"
+  }
+ ],
+ "takeaways": [
+  "Pfizer beat on both lines: 87 cents of adjusted EPS vs 73 cents expected, and $16.58 billion in revenue vs $15.87 billion (LSEG).",
+  "Sales were flat overall because COVID products (Comirnaty, Paxlovid) keep shrinking. Strip those out and revenue grew 7% operationally; newer \"launched and acquired\" products grew 32%.",
+  "Eliquis (blood thinner), Padcev (bladder cancer), the Vyndaqel family, Nurtec and Lorbrena did the heavy lifting, per the release.",
+  "It raised full-year guidance: revenue to $62-64 billion (+$1.5B at the midpoint) and adjusted EPS to $2.95-3.05, even after absorbing a one-time $650 million (about 10 cents a share) charge for its Innovent Biologics deal.",
+  "Reported (GAAP) EPS was $0.56, down 9% from a year ago, so the \"adjusted\" number is doing some work here. Also new: Cecile Guegan is the new CFO (CNBC)."
+ ],
+ "verdict": "Pfizer beat by 14 cents and raised guidance, which in pharma is basically a standing ovation. The stock barely moved premarket because the new guidance just lands where analysts already were. Solid, boring, and still waiting on post-2028 patent cliffs to stop haunting it.",
+ "sources": [
+  {
+   "title": "Pfizer Q3 2026 press release (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261103921895/en/Pfizer-Reports-Strong-Third-Quarter-2026-Results-And-Raises-2026-Guidance"
+  },
+  {
+   "title": "CNBC: Pfizer Q3 2026 earnings",
+   "url": "https://www.cnbc.com/2026/11/03/pfizer-pfe-earnings-q3-2026.html"
+  },
+  {
+   "title": "Investing.com: Pfizer beat by $0.14",
+   "url": "https://www.investing.com/news/earnings/pfizer-earnings-beat-by-014-revenue-topped-estimates-4994584"
+  },
+  {
+   "title": "Reuters via U.S. News",
+   "url": "https://money.usnews.com/investing/news/articles/2026-11-03/pfizer-raises-2026-forecast-on-strong-demand-for-blood-thinner-eliquis"
+  }
+ ],
+ "prev_close": 30.67,
+ "reaction": {
+  "kind": "premarket",
+  "price": 30.64,
+  "asof": "2026-11-03 8:26 AM ET"
+ }
+}

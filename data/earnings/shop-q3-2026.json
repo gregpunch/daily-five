@@ -1,0 +1,77 @@
+{
+ "slug": "shop-q3-2026",
+ "ticker": "SHOP",
+ "company": "Shopify",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "before the open",
+ "verdict_word": "Mixed: EPS beat, GMV miss",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$0.49",
+   "consensus": "$0.47 (FactSet/Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$3.74B (+32% y/y)",
+   "consensus": "$3.74B",
+   "result": "In line"
+  },
+  {
+   "metric": "GMV",
+   "actual": "$119.15B (+~30%)",
+   "consensus": "$120.08B",
+   "result": "Miss"
+  },
+  {
+   "metric": "Subscription revenue",
+   "actual": "$836M (+~20%)",
+   "consensus": "$850.2M",
+   "result": "Miss"
+  },
+  {
+   "metric": "Q4 revenue guidance",
+   "actual": "Low-30s % growth y/y",
+   "consensus": "~$4.76B consensus (TipRanks)",
+   "result": "Roughly in line"
+  }
+ ],
+ "takeaways": [
+  "Revenue grew 32% to $3.74 billion, exactly what Wall Street expected. For a stock priced for perfection, \"exactly as expected\" is not a compliment.",
+  "The number that hurt was GMV, the total value of stuff sold on Shopify: $119.15 billion vs $120.08 billion expected, and growth slowed from 31% in Q2 to 29% (TipRanks). Shopify earns most of its money as a cut of that flow.",
+  "Subscription revenue (what merchants pay monthly) rose about 20% to $836 million but missed the $850.2 million estimate.",
+  "Profit was the bright spot: operating income jumped 66% to $568 million, above the $523.9 million estimate, and free cash flow hit $816 million, a 22% margin vs 18% a year ago.",
+  "Q4 guide: low-thirties revenue growth, high-twenties gross profit growth, and operating expenses dropping to 29-30% of revenue from about 32%. Holiday season looks fine, not spectacular."
+ ],
+ "verdict": "Shopify made more money than ever and the stock still got dragged out back. That's what happens when you're priced like a rocket and report like a very nice minivan. The GMV miss is small, but GMV is the whole engine, so the market isn't wrong to care.",
+ "sources": [
+  {
+   "title": "Shopify Q3 2026 press release",
+   "url": "https://www.shopify.com/news/shopify-q3-2026-financial-results"
+  },
+  {
+   "title": "Investing.com: Shopify tanks premarket as GMV, subscription revenue miss",
+   "url": "https://www.investing.com/news/earnings/shopify-tanks-19-premarket-as-q3-gmv-subscription-revenue-miss-estimates-4994809"
+  },
+  {
+   "title": "Investing.com: EPS beat by $0.02",
+   "url": "https://www.investing.com/news/earnings/shopify-inc-earnings-beat-by-002-revenue-was-in-line-with-estimates-4994807"
+  },
+  {
+   "title": "TipRanks: why SHOP plunged premarket",
+   "url": "https://www.tipranks.com/news/shopify-stock-shop-plunges-premarket-despite-32-revenue-growth-heres-why"
+  },
+  {
+   "title": "MarketWatch",
+   "url": "https://www.marketwatch.com/story/shopifys-stock-slides-after-earnings-this-is-whats-worrying-wall-street-e2e8d52b"
+  }
+ ],
+ "prev_close": 156.22,
+ "reaction": {
+  "kind": "premarket",
+  "price": 132.37,
+  "asof": "2026-11-03 8:26 AM ET"
+ }
+}

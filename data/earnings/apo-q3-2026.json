@@ -1,0 +1,71 @@
+{
+ "slug": "apo-q3-2026",
+ "ticker": "APO",
+ "company": "Apollo Global Management",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "before the open",
+ "verdict_word": "Headline miss, core beat",
+ "headline": [
+  {
+   "metric": "Adjusted net income per share",
+   "actual": "$2.07",
+   "consensus": "~$2.21-$2.22",
+   "result": "Miss"
+  },
+  {
+   "metric": "Fee-related earnings",
+   "actual": "$802M ($1.28/share, +23% y/y)",
+   "consensus": "Above consensus (Seeking Alpha)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Assets under management",
+   "actual": "~$1.07 trillion (record)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Quarterly dividend",
+   "actual": "$0.5625/share",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "The headline number missed: adjusted net income of $2.07 a share vs roughly $2.21-2.22 expected.",
+  "But fee-related earnings, the steady management-fee profit investors pay up for, rose 23% to $802 million ($1.28 a share) and beat estimates (Seeking Alpha).",
+  "On a GAAP basis Apollo swung to a net loss on investment-related losses (Dow Jones), the volatile part of the business tied to its Athene insurance arm and marks on investments.",
+  "Growth engines kept running: record origination of $114 billion in the quarter, $270 billion of inflows over 12 months, and assets under management hit about $1.07 trillion.",
+  "CEO Marc Rowan said core earnings power is \"poised for a robust close to 2026 with a strong setup for 2027.\" The dividend stays at $0.5625."
+ ],
+ "verdict": "Apollo missed the headline and the stock went up anyway, because investors only really pay for the fee machine, and the fee machine beat. Wall Street: where losing money on investments is fine as long as you charge enough to manage them.",
+ "sources": [
+  {
+   "title": "Apollo Q3 2026 press release",
+   "url": "https://ir.apollo.com/news-events/press-releases/detail/658/apollo-reports-third-quarter-2026-results"
+  },
+  {
+   "title": "Apollo Q3 2026 earnings release (PDF)",
+   "url": "https://ir.apollo.com/_assets/_6caa86a09f5321c1a84bc05932f603e1/apollo/db/2247/22889/full_earnings_release/AGM_Earnings_Release_3Q%272026.pdf"
+  },
+  {
+   "title": "Seeking Alpha: Q3 disappoints, FRE surprises to the upside",
+   "url": "https://seekingalpha.com/news/4663258-apollo-global-q3-earnings-disappoint-but-fee-related-earnings-surprise-to-the-upside"
+  },
+  {
+   "title": "Reuters via Investing.com: Apollo assets reach $1.07 trillion",
+   "url": "https://www.investing.com/news/economy-news/apollo-assets-reach-107-trillion-on-alternative-investment-demand-4994487"
+  },
+  {
+   "title": "Dow Jones via Morningstar",
+   "url": "https://www.morningstar.com/news/dow-jones/202611035141/dow-jones-top-company-headlines-at-7-am-et-apollo-global-swings-to-a-loss-on-investment-related-losses-carl"
+  }
+ ],
+ "prev_close": 119.46,
+ "reaction": {
+  "kind": "premarket",
+  "price": 118.0,
+  "asof": "2026-11-03 8:26 AM ET"
+ }
+}

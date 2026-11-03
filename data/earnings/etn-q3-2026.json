@@ -1,0 +1,67 @@
+{
+ "slug": "etn-q3-2026",
+ "ticker": "ETN",
+ "company": "Eaton",
+ "quarter": "Q3 2026",
+ "date": "2026-11-03",
+ "when": "before the open",
+ "verdict_word": "Beat and raise",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$3.68 (record)",
+   "consensus": "$3.54 (Zacks/StreetInsider)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$8.95B (+28% y/y)",
+   "consensus": "$8.53B",
+   "result": "Beat"
+  },
+  {
+   "metric": "Q4 adj. EPS guidance",
+   "actual": "$4.05-$4.15",
+   "consensus": "$4.10 (Zacks)",
+   "result": "In line"
+  },
+  {
+   "metric": "FY2026 adj. EPS guidance",
+   "actual": "$13.70-$13.80",
+   "consensus": "$13.60 (StreetInsider)",
+   "result": "Above"
+  }
+ ],
+ "takeaways": [
+  "Eaton sells the electrical gear that keeps data centers and the grid running, and that business is on fire: sales up 28% to a record $8.95 billion, 19% of it organic, above the top of its own guidance.",
+  "Orders are the real story. Rolling 12-month organic orders rose 39% in Electrical Americas, 51% in Electrical Global and 20% in Aerospace, and backlog grew 46% in Electrical.",
+  "Segment margins hit a record 25.3%, above the high end of guidance.",
+  "It raised the full-year organic growth outlook to 13-15% and guided full-year adjusted EPS to $13.70-13.80, above the $13.60 consensus.",
+  "It also agreed to buy COL Group to add European capacity for data center and utility power distribution."
+ ],
+ "verdict": "Eaton is the shovel seller of the AI gold rush, and the shovels are back-ordered. Record sales, record margins, record backlog. The only bear case is that everyone already knows this, which is why the stock had dipped into the print.",
+ "sources": [
+  {
+   "title": "Eaton Q3 2026 press release (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261102754211/en/Eaton-Reports-Record-Third-Quarter-2026-Results-with-Strong-Organic-Growth-Accelerating-Record-Orders-and-Backlog-Raises-Organic-Growth-Guidance"
+  },
+  {
+   "title": "Investing.com: Eaton beats estimates",
+   "url": "https://www.investing.com/news/earnings/eaton-beats-estimates-on-strong-demand-4994504"
+  },
+  {
+   "title": "StreetInsider: ETN tops Q3 EPS by 14c",
+   "url": "https://www.streetinsider.com/Earnings/Eaton+%28ETN%29+Tops+Q3+EPS+by+14c%2C+Beats+on+Revenue%3B+Offers+FY26+EPS+Guidance/27276784.html"
+  },
+  {
+   "title": "Zacks via Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/eaton-etn-q3-earnings-revenues-114502106.html"
+  }
+ ],
+ "prev_close": 366.07,
+ "reaction": {
+  "kind": "premarket",
+  "price": 372.5,
+  "asof": "2026-11-03 8:26 AM ET"
+ }
+}
