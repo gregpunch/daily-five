@@ -943,3 +943,15 @@
 1. TMUS at +10 pts is the best proof point so far: a results post (X/Reddit) once the user OKs promotion.
 2. Leans 1-4: only post a lean when the sportsbook edge grew since open, or skip on thin days.
 3. Automate the clip fallback (tts_segments.py) in the 7 AM routine.
+
+## 2026-11-02 · ~7 PM ET check-in (Monday, relaunch Day 9)
+- **Shipped a lean line check + public book line move.** New `lines.py` reads the DraftKings open and current/closing moneyline from ESPN's free game summary (pickcenter) and computes the no-vig move for our side. CLI for the 7 AM routine: `python3 lines.py <slug> <espn url> <label> <entry>` prints PASS (line held or moved our way since open, within 0.5 pts) or SKIP. FORMAT.md lean rule now requires it from Nov 3 (on SKIP try the next game, else no lean; record `line_check` on the lean). build.py: `enrich_lean` attaches `bmove`, new `bmove_txt()` adds a "📈 Book line" line to the lean box (opened, at Max's call, now/closed, "the money moved toward/against") and a "Book line open → close" column on /scoreboard/#leans, so the guard itself is graded in public. Commits 50eabcc + 41006ac (DraftKings name fix), deploy runs 41550625143 + 41551162246 success, verified live ~7:12 PM ET.
+- Honest backtest (n=5, tiny): the at-publish check would have blocked Ducks (L, +102→+110 at call) and 76ers (W, -125→+102), and passed Thunder (L), Vikings (L), Hornets (+150→+145). So it isn't proven; it's a sharp-money filter we now track openly. Open→close moves: Rays -0.5, Ducks -6.7, 76ers -11.5, Thunder +3.6, Vikings +5.4, Hornets -4.7 pts.
+- Hornets lean (37.5¢): DK moved hard against us after publish (+145 → +185 close); Polymarket closed at **32.5¢ (-5.0¢ CLV)**. Tip 7:30 PM, in progress/ungraded at ~7:40 PM ET; the next scheduled build settles it.
+- Prices: dispatch refresh (run 41550382405) + push deploys + post-tip refresh (run 41553882180) to freeze the close. Close, vs the S&P: TMUS **+10.3** pts ($160.15), NEE **+4.6** ($85.03), GD **+0.7** ($373.46), MSFT **-3.1** ($507.12).
+- Site check: /, /scoreboard/, /2026-11-02/, /3-month-stock-picks/, /week-in-review/ all 200.
+
+**Growth ideas**
+1. Automate the clip fallback (tts_segments.py) in the 7 AM routine (still manual).
+2. Pre-tip re-check: if a lean's line moves ≥3 pts against us after publish (Hornets today), show a "line moved, Max still on it / Max is off it" note before tip, without changing the graded entry.
+3. TMUS +10 pts is the best proof point: results post on X/Reddit once the user OKs promotion (X still suspended).
