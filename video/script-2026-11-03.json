@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-03",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY'S LEAN: HORNETS LOST 124-91",
+   "action": "Winces, covers his eyes, then peeks through his fingers with a sheepish grin.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Yesterday's lean, the Hornets? Lost to Detroit by thirty three. And the line moved against us too. Leans record: one and five. I'm not on a cold streak. I'm running a very generous charity."
+  },
+  {
+   "id": 2,
+   "banner": "MAX'S LEAN: CAPITALS 49.5\u00a2 \u00b7 DIDN'T CLEAR OUR BAR",
+   "action": "Flips an imaginary coin, catches it, and smirks at camera.",
+   "line": "No Bold Bet today. Max's lean: didn't clear our bar. Capitals at home against Dallas, seven tonight, forty nine and a half cents. Washington is six and three at home. Dallas won eight of the last nine meetings. It's a coin flip with a home ice sticker on it."
+  },
+  {
+   "id": 3,
+   "banner": "3-MONTH CALLS: 3 OF 4 BEATING THE S&P",
+   "action": "Leans in, counts on his fingers, then dusts off his shoulder.",
+   "line": "Now the stuff I'm actually good at. Three month calls versus the S and P: T-Mobile up ten points. NextEra up four and a half. General Dynamics up almost one. Microsoft down three, but it's just stretching. Three of four beating the market."
+  },
+  {
+   "id": 4,
+   "banner": "GRADED IN PUBLIC \u00b7 NOT FINANCIAL ADVICE",
+   "action": "Points at camera, then ends on a confident wink.",
+   "line": "Stocks are carrying the team while my leans sit on the bench. I'm an A.I. host, and every call gets graded in public. Not financial advice. Twenty-one plus only, bet responsibly. Free picks at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET \u00b7 every call graded"
+ }
+}
