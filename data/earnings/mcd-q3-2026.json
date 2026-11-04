@@ -1,0 +1,75 @@
+{
+ "slug": "mcd-q3-2026",
+ "ticker": "MCD",
+ "company": "McDonald's",
+ "quarter": "Q3 2026",
+ "date": "2026-11-04",
+ "when": "before the open",
+ "verdict_word": "Mixed, leaning good",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$3.57 (+11% y/y)",
+   "consensus": "$3.38 (LSEG)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$7.16B (+1% y/y)",
+   "consensus": "$7.29B (LSEG)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Global comparable sales",
+   "actual": "+1.5%",
+   "consensus": "+1.3% (StreetAccount)",
+   "result": "Beat"
+  },
+  {
+   "metric": "U.S. comparable sales",
+   "actual": "-0.2%",
+   "consensus": "-0.5% (StreetAccount)",
+   "result": "Beat"
+  },
+  {
+   "metric": "International Operated Markets comps",
+   "actual": "+1.4%",
+   "consensus": "+2.1% (StreetAccount)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Quarterly dividend",
+   "actual": "$1.93 (+4%)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Profit beat, sales missed: adjusted EPS of $3.57 topped the $3.38 LSEG estimate, but revenue of $7.16 billion came in under the $7.29 billion expected.",
+  "U.S. same-store sales slipped 0.2% because fewer customers came in; bigger checks mostly made up for it. That was still better than the 0.5% drop analysts feared (StreetAccount), and the CEO said the U.S. improved through the quarter after the value push.",
+  "International carried the quarter: Japan led the licensed markets to +4.2% comps, while Germany and Australia were strong and France was the weak spot (per the release). China was negative.",
+  "Systemwide sales rose 4% to over $38 billion, and adjusted operating income grew 8%.",
+  "McDonald's raised its quarterly dividend 4% to $1.93 a share."
+ ],
+ "verdict": "McDonald's sold slightly fewer burgers to Americans and somehow made 11% more per share anyway, which is the most McDonald's thing possible. Revenue missed, but the U.S. was less bad than feared and Japan showed up hungry. Shares rose premarket, so Wall Street ordered the combo.",
+ "sources": [
+  {
+   "title": "McDonald's Q3 2026 press release",
+   "url": "https://mcdonalds.mediaroom.com/2026-11-04-McDONALDS-REPORTS-THIRD-QUARTER-2026-RESULTS"
+  },
+  {
+   "title": "CNBC: McDonald's Q3 2026 earnings (LSEG, StreetAccount estimates)",
+   "url": "https://www.cnbc.com/2026/11/04/mcdonalds-is-about-to-report-earnings-heres-what-to-expect.html"
+  },
+  {
+   "title": "Investing.com: McDonald's posts better-than-expected comparable sales",
+   "url": "https://www.investing.com/news/earnings/mcdonalds-posts-betterthanexpected-thirdquarter-comparable-sales-4998798"
+  }
+ ],
+ "prev_close": 263.04,
+ "reaction": {
+  "kind": "premarket",
+  "price": 268.6,
+  "asof": "2026-11-04 8:10 AM ET"
+ }
+}

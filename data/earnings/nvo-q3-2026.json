@@ -1,0 +1,73 @@
+{
+ "slug": "nvo-q3-2026",
+ "ticker": "NVO",
+ "company": "Novo Nordisk",
+ "quarter": "Q3 2026",
+ "date": "2026-11-04",
+ "when": "before the open",
+ "verdict_word": "Beat and raise",
+ "headline": [
+  {
+   "metric": "Sales",
+   "actual": "DKK 79.2B (+4% at constant currency)",
+   "consensus": "DKK 73.6B (FactSet via CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Adjusted operating profit",
+   "actual": "DKK 31.7B (+27% at constant currency)",
+   "consensus": "DKK 28.6B (CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "EPS",
+   "actual": "DKK 5.79",
+   "consensus": "DKK 5.10 (CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Wegovy pill sales",
+   "actual": "DKK 5.4B",
+   "consensus": "about DKK 4.5B (CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "FY2026 adj. sales and operating profit growth guidance",
+   "actual": "-2% to +2% at constant currency (was -6% to flat)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Novo beat across the board: sales of DKK 79.2 billion (about $11.9 billion) vs DKK 73.6 billion expected, and adjusted operating profit of DKK 31.7 billion vs DKK 28.6 billion (CNBC).",
+  "The Wegovy pill is the star. It sold DKK 5.4 billion in its launch year vs roughly DKK 4.5 billion expected, and injectable Wegovy (DKK 20.4 billion) and Ozempic (DKK 29.7 billion) also beat (CNBC).",
+  "Guidance went up again: 2026 adjusted sales and operating profit growth is now -2% to +2% at constant currency, up from -6% to flat.",
+  "Reported operating profit fell 9% at constant currency because of DKK 8.7 billion in non-cash impairments: DKK 4.6 billion on the drug candidate ziltivekimab and DKK 4.1 billion for shrinking its manufacturing network.",
+  "Also new: CFO Karsten Munk Knudsen leaves at the end of 2026, replaced by Galderma's Luigi La Corte, and Novo is preparing a U.S. launch of CagriSema in early 2027, pending approval."
+ ],
+ "verdict": "Novo finally had a quarter where the pill did the heavy lifting instead of the investors. Sales beat by about DKK 5.6 billion and guidance went from 'shrinking' to 'roughly flat', which counts as a comeback when your rival is Eli Lilly. Even the CEO says one good quarter isn't a turnaround, so don't build a shrine just yet.",
+ "sources": [
+  {
+   "title": "Novo Nordisk Q3 2026 company announcement (GlobeNewswire)",
+   "url": "https://www.globenewswire.com/news-release/2026/11/04/3395015/0/en/novo-raises-full-year-outlook-on-continued-glp-1-momentum-with-third-quarter-adjusted-operating-profit-increasing-27-at-cer-to-dkk-31-720-million.html"
+  },
+  {
+   "title": "Novo Nordisk Q3 2026 investor presentation (PDF)",
+   "url": "https://www.novonordisk.com/content/dam/nncorp/global/en/investors/pdfs/financial-results/2026/Q3-2026-Full-presentation.pdf"
+  },
+  {
+   "title": "CNBC: Novo shares jump as Wegovy pill sales impress",
+   "url": "https://www.cnbc.com/2026/11/04/novo-q3-earnings-wegovy-sales.html"
+  },
+  {
+   "title": "CNBC: Stocks making the biggest moves premarket",
+   "url": "https://www.cnbc.com/2026/11/04/stocks-making-the-biggest-moves-premarket-djt-tsla-crwv-nvo.html"
+  }
+ ],
+ "prev_close": 40.19,
+ "reaction": {
+  "kind": "premarket",
+  "price": 42.59,
+  "asof": "2026-11-04 8:11 AM ET"
+ }
+}

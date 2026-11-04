@@ -1,0 +1,71 @@
+{
+ "slug": "cvs-q3-2026",
+ "ticker": "CVS",
+ "company": "CVS Health",
+ "quarter": "Q3 2026",
+ "date": "2026-11-04",
+ "when": "before the open",
+ "verdict_word": "Beat, raise, and break up",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$2.09 (was $1.60 a year ago)",
+   "consensus": "$1.65 (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$108.4B (+5.4% y/y)",
+   "consensus": "$104.75B (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "FY2026 adj. EPS guidance",
+   "actual": "At least $8.20 (was $7.90-$8.10)",
+   "consensus": "$8.04 (Investing.com)",
+   "result": "Raised, above"
+  },
+  {
+   "metric": "FY2026 cash flow from operations guidance",
+   "actual": "At least $15.5B (was at least $11.5B)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Big beat: adjusted EPS of $2.09 vs $1.65 expected, and revenue of $108.4 billion vs $104.75 billion (Investing.com consensus).",
+  "Aetna is the turnaround story. Its medical benefit ratio (the share of premiums spent on claims) improved to 91.3% from 92.8%, and the insurance segment's adjusted operating income jumped to $912 million from $314 million (24/7 Wall St.).",
+  "Guidance went up: adjusted EPS to at least $8.20 and operating cash flow to at least $15.5 billion, though management kept a cautious view on elevated medical costs and the economy.",
+  "The headline news: CVS plans to split into two public companies by the first half of 2028. One gets Aetna, Caremark, Specialty, Oak Street and Signify; the other gets about 9,000 pharmacies, mail pharmacy, MinuteClinic and Health100.",
+  "GAAP EPS was $1.68, up from a $3.13 loss a year ago, when CVS booked a $5.7 billion goodwill impairment."
+ ],
+ "verdict": "CVS beat by 44 cents, raised guidance, and then announced it's splitting up, which is like acing the exam and dropping out the same morning. The stock dipped premarket anyway, because investors hate a 2028 breakup timeline almost as much as they hate pharmacy lines. The insurance turnaround is real; the breakup is a long story.",
+ "sources": [
+  {
+   "title": "CVS Health Q3 2026 press release (PR Newswire)",
+   "url": "https://www.prnewswire.com/news-releases/cvs-health-corporation-reports-third-quarter-2026-results-and-raises-full-year-2026-guidance-302928358.html"
+  },
+  {
+   "title": "CVS Health Q3 2026 earnings release (PDF)",
+   "url": "https://www.cvshealth.com/content/dam/enterprise/cvs-enterprise/pdfs/2026/Q3-2026-EarningsRelease.pdf"
+  },
+  {
+   "title": "Investing.com: CVS Health beats estimates, raises guidance amid split plans",
+   "url": "https://www.investing.com/news/earnings/cvs-health-beats-estimates-raises-guidance-amid-split-plans-4998598"
+  },
+  {
+   "title": "24/7 Wall St.: Aetna's turnaround drives the EPS beat",
+   "url": "https://247wallst.com/cards/cvs-health-q3-2026-earnings-cvs-01m6k5f04826s9mm2y63w9c7m8"
+  },
+  {
+   "title": "CNBC: Stocks making the biggest moves premarket",
+   "url": "https://www.cnbc.com/2026/11/04/stocks-making-the-biggest-moves-premarket-djt-tsla-crwv-nvo.html"
+  }
+ ],
+ "prev_close": 91.41,
+ "reaction": {
+  "kind": "premarket",
+  "price": 89.88,
+  "asof": "2026-11-04 8:10 AM ET"
+ }
+}
