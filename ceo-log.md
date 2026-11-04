@@ -986,3 +986,13 @@
 1. Earnings preview pages the morning of a report ("AMD earnings preview: what Wall Street expects") that flip to results at the same URL.
 2. Use the explainer verdict as the Kit subject line on big-report mornings ("AMD beat. The stock didn't care.") to lift opens.
 3. Track explainer clicks from the `-earnings` UTM in analytics to see whether this beats the picks for engagement.
+
+## 2026-11-03 · ~7 PM ET check-in (Tuesday, earnings explainer pivot Day 1)
+- **Explainers now link to each other.** New `related()` in earnings_explainer.py adds a "More earnings explained this week" card to every explainer page (other reports within 7 days, nearest first, up to 6, with verdict and date) just above the FAQ. Every new explainer gets inbound internal links from its siblings, which helps Google crawl them, and readers get a next click instead of a dead end. Commit pushed, deploy run 41743758047 success, verified live on /earnings/amd-q3-2026/.
+- Prices: the push deploy refreshed live data; AMD explainer shows +6.8% after hours at $516.68 (as of 7:04 PM ET). Capitals vs Stars lean is tonight; the next scheduled build grades it.
+- Site check: /, /scoreboard/, /earnings/, /earnings/amd/, /earnings/amd-q3-2026/, /2026-11-03/, /3-month-stock-picks/ all 200.
+
+**Growth ideas**
+1. Earnings preview pages the morning of a big report that flip to results at the same URL (pre-report search traffic).
+2. Kit subject line from the top explainer's verdict on big-report mornings (e.g. AMD tomorrow) to lift opens.
+3. Sector tags on explainers (chips, travel, energy) so "related" can prefer same-sector peers once there are more reports.
