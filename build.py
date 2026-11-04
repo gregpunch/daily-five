@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 os.environ['TZ']='America/New_York'; time.tzset()
 ROOT=os.path.dirname(os.path.abspath(__file__)); OUT=os.path.join(ROOT,'site')
 SITE=os.environ.get('SITE_URL','https://readdailyfive.com').rstrip('/'); BASE=urlparse(SITE).path.rstrip('/')
-BRAND="The Daily Five"; TAG="The best money-making ideas on the web, ranked every morning."
+BRAND="The Daily Five"; TAG="Plain-English earnings explained every day, plus 3-month stock calls graded against the S&P 500."
 DISC="Not financial, investment, or betting advice. The Daily Five aggregates public ideas and market prices for information and entertainment only. Past results don't guarantee future returns. You can lose money."
 TODAY=datetime.date.today(); E=lambda s: html.escape(str(s))
 EX=os.path.join(ROOT,'data','exits.json'); os.makedirs(os.path.dirname(EX),exist_ok=True)
@@ -288,8 +288,7 @@ OGIMG={'v':None}
 def refer_bar():
     """'Know someone who trades?' share row under every signup box: X intent, SMS and copy-link, each to the subscribe form with its own UTM tags."""
     q=urllib.parse.quote
-    hook='Max Edge\'s Bold Bet, the sports plays that clear our bar, and 3-month stock calls vs the S&P 500, graded in public'
-    if SPR: hook+=f" (sports {SPR['w']}-{SPR['l']} so far)"
+    hook='the big earnings reports explained in plain English every day, plus 3-month stock calls graded vs the S&P 500'
     txt=f'The Daily Five: {hook}. Free 7 AM email:'
     u=lambda m: f'{SITE}/?utm_source=site_share&utm_medium={m}&utm_campaign=refer#subscribe'
     cp=u('copy')
@@ -310,16 +309,10 @@ def hook():
     p=max(t or c,key=lambda p:p.get('score') or 0)
     return (p['market'].split(',')[0],bool(t))
 def hook_copy():
-    g=hook()
-    if g:
-        w="tonight's" if g[1] else "our next"
-        return (f"Get {w} best value play + tomorrow's five at 7 AM, free.",f"Our top-scored value pick for {g[0]} is priced under the sportsbooks. The side is in the email.")
-    return ("Get tomorrow's five at 7 AM, free.","Max Edge\'s Bold Bet of the Day plus every pick graded in public, before the opening bell.")
+    return ("Earnings, explained in plain English. Free at 7 AM.","Every morning: who beat, who missed, what the guidance means and how the stock took it, plus 3-month stock calls graded vs the S&P 500.")
 def stickybar():
     """Dismissible sticky signup bar: shown by live.js after the reader scrolls past the first screen, hidden while any other signup form is on screen, after a signup, or for 7 days once dismissed."""
-    rec=f" Sports {SPR['w']}-{SPR['l']} so far." if SPR else ''
-    bw=recent_win()
-    hot=(f'<a class="sbw" href="{BASE}/picks/{bw[0]["id"]}/">\U0001F525 {"Today" if bw[1]==TODAY else "Last night" if (TODAY-bw[1]).days==1 else bw[1].strftime("%a")}: {E(bw[0]["action"])} {E(bw[0]["label"])} settled {pct(bw[0]["ret"])}</a>' if bw else '')
+    rec=''; hot=''  # earnings-first (Nov 4, 2026): no sports record or sports wins in the signup bar
     return (f'<div class="sbar" id="sbar" hidden role="region" aria-label="Get The Daily Five by email"><div class="sbin"><p class="sbt">{hot}<b>{E(hook_copy()[0])}</b><span> {E(hook_copy()[1])}{rec}</span></p>'
             f'{sform("bar")}<button type="button" class="sbclose" aria-label="Dismiss">\u00d7</button></div></div>')
 def shell(title,desc,path,body,schema=None,hero='',og=None):
@@ -988,6 +981,25 @@ def ern_home():
     except Exception as ex:
         print('ern_home skipped:',ex); return ''
 
+def home_body(ed,fin,ai,bd,upd):
+    """Earnings-first home (Nov 4, 2026 pivot): 'Earnings, explained' leads, then 3-month stock calls, then AI.
+    No sports picks, Bold Bets or leans here; those live on as a frozen archive on /scoreboard/."""
+    try:
+        import earnings_explainer as EX; el=EX.home_lead(dict(E=E,BASE=BASE,TODAY=TODAY),EX.load(ROOT))
+    except Exception as ex:
+        print('home_lead skipped:',ex); el=''
+    return el+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">stocks via Yahoo Finance (may lag up to ~15 min)</span></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> Explainers summarize public company reports; stock calls are graded in public against the S&amp;P 500.</p>
+<section class="sec fin" id="finance"><div class="sh"><span class="si">📅</span><div><h2>3-month stock calls vs the S&amp;P 500</h2><p class="sub">Buy-and-hold calls (1–2 a week), each graded live against the S&amp;P 500. <a href="{BASE}/3-month-stock-picks/">All calls →</a></p></div></div>{bd}{fin}</section>
+<section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The stories most likely to move AI stocks.</p></div></div><div class="newsgrid">{ai}</div></section>
+<p class="sub" style="margin:18px 0">🗄 Our old sports picks, Bold Bets and Max\'s leans are a frozen archive on the <a href="{BASE}/scoreboard/">Scoreboard</a>.</p>"""
+
+def home_hero(nice):
+    try:
+        import earnings_explainer as EX; ld=EX.lead(EX.load(ROOT),TODAY,days=2,n=1)
+    except Exception: ld=[]
+    h1=(f"{ld[0]['company']}: {ld[0]['verdict_word']}. Earnings, explained." if ld else "Earnings, explained in plain English")
+    return f'<section class="hero"><div class="mesh" aria-hidden="true"></div><div class="wrap hgrid"><div><p class="date"><span class="live"></span>{nice}</p><h1>{E(h1)}</h1><p class="tag">{E(TAG)}</p>{sform("hero")}<div class="jump"><a href="#earnings">🧾 Earnings, explained</a><a href="#finance">📅 3-month calls</a><a href="#ai">🤖 AI</a></div></div></div></section>'
+
 def body(ed,prev=None,home=False):
     rank=0; fin=''
     for h,ic in [('3 Month','📅'),('1 Day','⚡'),('1 Month','📅'),('1 Year','🌱')]:
@@ -1006,6 +1018,7 @@ def body(ed,prev=None,home=False):
     bd=f'<p class="backdrop">📉 <b>Backdrop:</b> {E(ed["backdrop"])} <a href="{E(ed["backdrop_source"]["url"])}" rel="nofollow noopener" target="_blank">{E(ed["backdrop_source"]["name"])} ↗</a></p>' if ed.get('backdrop') else ''
     upd=NOW.strftime('%-I:%M %p ET')
     beta=(f'<p class="disc-bar">🧪 <b>Beta edition (pre-launch).</b> This is from our October 2026 beta, before Max Edge\'s Day 1 on Oct 25. Its picks are graded on the <a href="{BASE}/beta-archive/">Beta archive</a>, not the main scoreboard.</p>' if ed['date']<LAUNCH else '')
+    if home: return home_body(ed,fin,ai,bd,upd)
     return beta+(latest_clip(ed['date']) if home else clip_html(ed['date']))+(ern_home() if home else '')+closing_bell(ed)+recap(prev)+(wins_wall(3,7,'home') or wins_wall(3,None,'home'))+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">delayed: stocks via Yahoo Finance (may lag up to ~15 min), sports via Polymarket</span></p>{today_strip(ed["finance"]+ed["sports"],"home",ed["finance"]+ed["sports"])}{week_strip() if home and ed["date"]>=LAUNCH else ""}<p class="disc-bar">⚠️ <b>Not financial or betting advice.</b> Entry prices are real snapshots at publish time; P/L updates with each rebuild.</p>
 <section class="sec fin" id="finance"><div class="sh"><span class="si">💰</span><div><h2>Money moves</h2><p class="sub">{'Buy-and-hold 3-month calls (1–2 a week), graded against the S&amp;P 500.' if ed['date']>=LAUNCH else 'The best ideas from AI agents, analysts and public sources, by horizon.'}</p></div></div>{bd}{fin}</section>
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The five stories most likely to shape what's next.</p></div></div><div class="newsgrid">{ai}</div></section>
@@ -2449,7 +2462,7 @@ def main():
         hr=hero(ed,nice); w(f'{d}/index.html',shell(title,desc,f'/{d}/',body(ed,prev),sch,hr,og)); items.append((d,nice,title,desc,ed,hr))
     if items:
         d,nice,title,desc,ed,hr=items[0]
-        w('index.html',shell(f"The Daily Five: Today's Best Stock Picks, AI News & Sports Market Plays",f"{TAG} Today: {desc}",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG},hr))
+        w('index.html',shell(f"The Daily Five: Earnings Explained in Plain English, Every Day",f"{TAG} Who beat, who missed, guidance and the stock reaction. Free 7 AM email.",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG},home_hero(nice)))
     items=[x for x in items]  # archive lists every edition, beta included
     w('archive/index.html',shell(f"Archive | {BRAND}","Every past edition of The Daily Five.",'/archive/',f'<h1 class="pt">Archive</h1><p class="sub"><a href="{BASE}/week-in-review/">Week in review: every week\'s calls, graded →</a></p><div class="arch">'+''.join(f'<a href="{BASE}/{d}/"><span class="ad">{n}</span><b>{E(e["headline"])}</b></a>' for d,n,_,_,e,_ in items)+'</div>'))
     rows=[]
@@ -2468,7 +2481,7 @@ def main():
     tr=''.join(f'<tr><td class="mono">{r["date"][5:]}</td><td><span class="mini {r["action"].lower()}">{r["action"]}</span> <a href="{BASE}/picks/{r['id']}/"><b>{E(r["pick"])}</b></a></td><td>{E(r["horizon"])}</td><td class="mono">{fmt(r,r["entry"])}</td><td class="mono">{fmt(r,r["cur"])} <small>{E(r["note"])}</small></td><td>{spark(r["pts"],90,26)}</td><td>{chip(r["ret"],r["final"])}</td><td>{("Win" if r["ret"]>0 else "Loss" if r["ret"]<0 else "Flat") if r["ret"] is not None else "Pending"}{"" if r["final"] else " <small>open</small>"}</td><td><a href="{E(r["src"])}" rel="nofollow noopener" target="_blank" aria-label="source">↗</a></td></tr>' for r in rows)
     upd=datetime.datetime.now().strftime('%b %-d, %Y · %-I:%M %p ET')
     sbstrip=today_strip([p for e in eds for p in e['finance']+e['sports']],'sb',max(eds,key=lambda e:e['date'])['finance']+max(eds,key=lambda e:e['date'])['sports'])
-    sb=f'''<section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
+    sb=f'''<p class="disc-bar">🗄 <b>Sports picks, Bold Bets and Max's leans are a frozen archive.</b> We stopped them on Nov 4, 2026 when The Daily Five went earnings-first. Final record, counted from Oct 25 only: <b>Leans {lean_rec()[0]}-{lean_rec()[1]}{(' (the last lean, from Nov 4, grades when its game ends)' if lean_rec()[3] else '')}, Bold Bets 0-1.</b> Nothing new is added; 3-month stock calls are still live and graded vs the S&amp;P 500.</p><section class="sbhero"><span class="kicker">📊 Scoreboard</span><h1 class="pt">If you traded it immediately</h1><p class="sub">Every pick at its published entry price, marked to real market data from Yahoo Finance (stocks) and Polymarket (markets). SELL returns are short-side. Picks close at the end of their horizon or when the market resolves. Updated {upd}.</p>{sbstrip}</section>
 <div class="tiles">{tiles}</div>{bar_chart(rows)}<div class="tbl"><table><thead><tr><th>Date</th><th>Pick</th><th>Horizon</th><th>Entry</th><th>Now / exit</th><th>Trend</th><th>P/L</th><th>Result</th><th></th></tr></thead><tbody>{tr}</tbody></table></div>{leans_section(eds)}'''
     w('scoreboard/index.html',shell(f"Scoreboard: Track Record of Every Pick | {BRAND}","If you traded every Daily Five pick immediately: entry, current price, % return, win rate and average return by horizon.",'/scoreboard/',sb,{"@context":"https://schema.org","@type":"Dataset","name":f"{BRAND} Scoreboard","description":"Track record of featured picks","url":SITE+"/scoreboard/"}))
     hub=best_stocks_hub(eds); pmh=polymarket_hub(eds); nfr=nfl_results(eds)+stock_results(eds)+sports_results(eds); nfh=nfl_hub(eds); mxh=max_edge_hub(eds_all); import earnings_explainer as EX; ERPTS=EX.load(ROOT); exu=EX.render(dict(shell=shell,w=w,sform=sform,crumbs=crumbs,E=E,BASE=BASE,SITE=SITE,BRAND=BRAND,TODAY=TODAY),ERPTS); ERN_IDX['h']=EX.index_section(dict(E=E,BASE=BASE,TODAY=TODAY),ERPTS); erh=earnings_hub(); tmh=three_month_hub(eds); wkr=week_reviews(eds); league_hub_pages(eds); extra=seo_pages(eds,rows,tiles); render_pick_ogs(); write_live(eds); w('live.js',open(os.path.join(ROOT,'live.js')).read())

@@ -2,6 +2,18 @@
 Every number lives in the JSON with its sources; this file only renders. See prototypes/earnings-explainer-runbook.md."""
 import json, glob, os, datetime, time, urllib.request
 
+# Rough market cap in $B, used only to order explainers "biggest names first". A report JSON may override with "mcap_b".
+MCAP={'NVDA':4500,'AAPL':3800,'MSFT':3700,'GOOGL':3000,'AMZN':2400,'META':1800,'AVGO':1600,'TSLA':1400,'BRK.B':1000,'LLY':800,'AMD':800,'JPM':800,
+ 'WMT':800,'V':650,'ORCL':600,'MA':500,'NFLX':500,'XOM':480,'COST':400,'PLTR':400,'JNJ':400,'HD':380,'ABBV':380,'PG':360,'BAC':340,'KO':300,
+ 'NVO':250,'CVX':250,'CSCO':250,'CRM':240,'MCD':220,'PEP':200,'SHOP':200,'IBM':200,'DIS':200,'UBER':190,'ANET':180,'AMGN':170,'BKNG':170,
+ 'QCOM':170,'PFE':145,'ETN':140,'CVS':90,'APO':80,'RACE':80,'MPC':50}
+def size(r): return r.get('mcap_b') or MCAP.get(r['ticker'],0)
+def lead(reports,today,days=2,n=8):
+    """Latest explainers for the home lead / email: reports from the last `days` days, biggest names first.
+    Falls back to the newest `n` reports if nothing is that recent."""
+    rec=[r for r in reports if 0<=(today-datetime.date.fromisoformat(r['date'])).days<=days] or reports[:n]
+    return sorted(rec,key=lambda r:(-size(r),r['ticker']))[:n]
+
 def load(root):
     out=[json.load(open(f)) for f in sorted(glob.glob(os.path.join(root,'data','earnings','*.json')))]
     return sorted(out,key=lambda r:(r['date'],r['ticker']),reverse=True)
@@ -134,6 +146,19 @@ def index_section(B, reports):
     if not reports: return ''
     li=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]}) {E(r["quarter"])}</b></a>: {E(r["verdict_word"])}'+(f' · stock {r["_move"]:+.1f}%' if r.get('_move') is not None else '')+f' · {datetime.date.fromisoformat(r["date"]).strftime("%b %-d")}</li>' for r in reports)
     return scorecard(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
+
+def home_lead(B, reports):
+    """Home-page lead: 'Earnings, explained' cards for the latest reports, biggest names first."""
+    E=B['E']; BASE=B['BASE']; rec=lead(reports,B['TODAY'],days=2,n=8)
+    if not rec: return ''
+    def card(r):
+        v=str(r.get('verdict','')); v=v.split('. ')[0].rstrip('.')+'.' if v else ''
+        hl=' · '.join(f'{E(h["metric"])}: <b>{E(h["result"])}</b>' for h in r['headline'] if h.get('result'))[:400]
+        return (f'<a class="ercard" href="{BASE}/earnings/{r["slug"]}/"><span class="erk">{E(r["ticker"])} · {E(r["quarter"])} · {E(r.get("when",""))}</span>'
+                f'<h3>{E(r["company"])}: {E(r["verdict_word"])}</h3><p>{E(v)}</p><span class="erm">{hl}</span><span class="erg">Read the plain-English breakdown →</span></a>')
+    return (f'<section class="sec ernlead" id="earnings"><div class="sh"><span class="si">🧾</span><div><h2>Earnings, explained</h2>'
+            f'<p class="sub">Last night\'s and this morning\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it. Biggest names first.</p></div></div>'
+            f'<div class="ergrid">{"".join(card(r) for r in rec)}</div><p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
 
 def home_strip(B, reports, days=3):
     """Home-page box: the newest earnings explainers (reports from the last `days` days), so the front page

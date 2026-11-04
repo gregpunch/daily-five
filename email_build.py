@@ -134,40 +134,61 @@ def record(rec,date):
 def refer(rec,date):
     # "Forward this to a friend who trades": share links (X / text / email) to the subscribe form, UTM-tagged per channel
     q=urllib.parse.quote
-    hook='Max Edge\'s Bold Bet, the sports plays that clear our bar, and 3-month stock calls vs the S&P 500, graded in public'
-    r=(rec or {}).get('sports')
-    if r: hook+=f" (sports {r['w']}-{r['l']} so far)"
+    hook='the big earnings reports explained in plain English every day, plus 3-month stock calls graded vs the S&P 500'
     txt=f'The Daily Five: {hook}. Free 7 AM email:'
     u=lambda m: f'{SITE}/?utm_source=newsletter_fwd&utm_medium={m}&utm_campaign=refer_{date}#subscribe'
     links=[('\U0001D54F Post it',f"https://x.com/intent/tweet?text={q(txt)}&url={q(u('x'))}",UP,'#04130c'),
-           ('\u2709\ufe0f Email it',f"mailto:?subject={q('Free daily stock + sports picks, graded in public')}&body={q(txt+' '+u('email'))}",'#ffffff','#07080d')]
+           ('\u2709\ufe0f Email it',f"mailto:?subject={q('Earnings, explained in plain English (free daily email)')}&body={q(txt+' '+u('email'))}",'#ffffff','#07080d')]
     btns=''.join(f'<a href="{E(h)}" style="display:inline-block;margin:6px 6px 0 0;padding:10px 16px;background:{bg};color:{fg};{F}font-size:14px;font-weight:900;text-decoration:none;border-radius:999px;">{E(t)}</a>' for t,h,bg,fg in links)
-    inner=(f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;padding-bottom:6px;">\U0001F91D Know someone who trades or bets?</div>'
+    inner=(f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;padding-bottom:6px;">\U0001F91D Know someone who trades?</div>'
       f'<div style="{F}font-size:20px;line-height:26px;font-weight:900;color:{TXT};">Forward this to a friend who trades.</div>'
-      f'<div style="{F}font-size:14px;line-height:21px;color:#cdd2e1;padding:6px 0 4px;">Or send them the free signup in one tap. Every pick is graded in public, wins and losses.</div>'
+      f'<div style="{F}font-size:14px;line-height:21px;color:#cdd2e1;padding:6px 0 4px;">Or send them the free signup in one tap. Plain-English earnings every morning, free.</div>'
       f'<div>{btns}</div>')
     return row(inner,'#1a1530')
 def preheader(ed,prev,rec):
     # Inbox preview text: lead with yesterday's biggest settled win (+25%+) or the running sports record, then the headline
-    bits=[]
-    if prev:
-        w=topwin(prev)
-        if w: bits.append(f"Yesterday: {w['action']} {w['label']} settled {w['ret']*100:+.{0 if w['ret']>=0.25 else 1}f}%")
-    r=(rec or {}).get('sports')
-    if r and not bits: bits.append(f"Sports picks {r['w']}-{r['l']}, graded in public")
-    bits.append(ed['headline'])
+    rep=lead_reports(ed)
+    bits=[f"{r['company']} {r['verdict_word'].lower()}" for r in rep[:3]] or [ed['headline']]
+    bits.append('plain English, 2-minute read')
     t=' \u00b7 '.join(bits)
     return t+'\u00a0\u200c'*40
-def earnings(ed):
-    """'Last night's earnings, explained': explainer pages for reports dated yesterday or today (after-the-close first)."""
+def lead_reports(ed):
+    """Explainers dated yesterday or today, biggest names first (same order as the home page lead)."""
     try:
         import earnings_explainer as EX; reps=EX.load(ROOT)
     except Exception as ex:
         print('email earnings skipped:',ex); return []
     d=datetime.date.fromisoformat(ed['date'])
     rec=[r for r in reps if 0<=(d-datetime.date.fromisoformat(r['date'])).days<=1]
+    return sorted(rec,key=lambda r:(-EX.size(r),r['ticker']))
+def subject(ed):
+    """Kit subject line: the lead earnings verdict ('AMD: Beat and big guide. Earnings, explained'); falls back to the edition headline."""
+    rec=lead_reports(ed)
+    if rec:
+        r=rec[0]; more=""
+        return f"{r['company']}: {r['verdict_word']}{more} · earnings, explained"
+    return ed.get('top_call') or ed['headline']
+def on_deck(ed):
+    """'On deck today': ed['on_deck'] = [{ticker, company, when, eps_consensus?, rev_consensus?, source:{name,url}}], verified
+    reporters only. Consensus shows only when the edition carries it from a reliable free source. Omitted when empty."""
+    od=[x for x in (ed.get('on_deck') or []) if x.get('ticker') and x.get('source',{}).get('url')]
+    if not od: return []
+    li=''
+    for x in od[:10]:
+        cs=' · '.join(b for b in [f"EPS est. {x['eps_consensus']}" if x.get('eps_consensus') else '',f"revenue est. {x['rev_consensus']}" if x.get('rev_consensus') else ''] if b)
+        li+=(f'<div style="padding:4px 0;{F}font-size:14px;line-height:20px;color:{TXT};"><b>{E(x.get("company") or x["ticker"])} ({E(x["ticker"])})</b>'
+             f' <span style="color:{MUT};">· {E(x.get("when",""))}</span>'+(f' <span style="{M}font-size:13px;color:#cdd2e1;">· {E(cs)}</span>' if cs else '')+'</div>')
+    srcs=sorted({src(x['source']['name']) for x in od})
+    li+=f'<div style="{F}font-size:11px;color:{MUT};padding-top:6px;">Schedule and estimates: {E(", ".join(srcs))}. Explainers go up after each report.</div>'
+    return [sec('📅','On deck today','Who reports today, and what Wall Street expects'),f'<tr><td style="padding:4px 24px;">{li}</td></tr>']
+def earnings(ed):
+    """'Last night's earnings, explained': explainer pages for reports dated yesterday or today (after-the-close first)."""
+    try:
+        import earnings_explainer as EX; reps=EX.load(ROOT)
+    except Exception as ex:
+        print('email earnings skipped:',ex); return []
+    rec=lead_reports(ed)
     if not rec: return []
-    rec.sort(key=lambda r:(r['date'],'after' in r.get('when','')),reverse=True)
     out=[sec('🧾',"Earnings, explained",'Who beat, who missed, and how the stock took it · in plain English')]
     for r in rec[:6]:
         v=str(r.get('verdict','')); v=v.split('. ')[0].rstrip('.')+'.' if v else ''
@@ -184,9 +205,9 @@ def render(ed,prev=None,rec=None,open3=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'3 Month':0,'1 Day':1,'1 Month':2,'1 Year':3}
     finl=sorted([p for p in ed['finance'] if keep(p)],key=lambda p:(order.get(p['horizon'],9),-(p.get('score') or 0)))
-    hl=ed.get('top_call') or ed['headline']
+    hl=subject(ed)
     btn=(f'<table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td style="border-radius:999px;background:{UP};">'
-         f'<a href="{SITE}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed["date"]}" style="display:inline-block;padding:14px 30px;{F}font-size:16px;font-weight:900;color:#04130c;text-decoration:none;border-radius:999px;">See live prices →</a></td></tr></table>')
+         f'<a href="{SITE}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed["date"]}" style="display:inline-block;padding:14px 30px;{F}font-size:16px;font-weight:900;color:#04130c;text-decoration:none;border-radius:999px;">Read today on the site →</a></td></tr></table>')
     rows=[f'<tr><td style="padding:28px 24px 8px;background:{BG};background-image:radial-gradient(120% 100% at 0 0,#2a1f66,{BG} 60%);">'
       f'<div style="{F}font-size:13px;font-weight:600;color:{MUT};">The</div>'
       f'<div style="{F}font-size:38px;font-weight:900;color:{TXT};letter-spacing:-1px;line-height:1;">Daily <span style="color:{UP};">Five</span></div>'
@@ -195,12 +216,11 @@ def render(ed,prev=None,rec=None,open3=None):
       f'<div style="{F}font-size:14px;line-height:21px;color:#cdd2e1;padding:12px 0 6px;">{E(ed["backdrop"])}</div>'
       f'<div style="padding:14px 0 10px;">{btn}</div></td></tr>',
       ]
-    rc=recap(prev)
-    if rc: rows.append('<tr><td style="padding:14px 0 0;"></td></tr>'); rows.append(rc)
-    tr_=record(rec,ed['date'])
-    if tr_: rows.append('<tr><td style="padding:10px 0 0;"></td></tr>'); rows.append(tr_)
-    rows+=earnings(ed)
-    rows.append(sec('💰','Money','Buy-and-hold 3-month calls · graded vs the S&P 500'))
+    # Earnings-first (Nov 4, 2026): earnings, on deck, stock calls, short AI. No sports, Bold Bets or leans.
+    er=earnings(ed)
+    rows+=er if er else [sec('🧾',"Earnings, explained",'No big reports overnight'),f'<tr><td style="padding:4px 24px;{F}font-size:14px;color:{TXT};">No major company reported last night or this morning. <a href="{SITE}/earnings/" style="color:#a5b4fc;">Recent explainers →</a></td></tr>']
+    rows+=on_deck(ed)
+    rows.append(sec('📅','3-month stock calls','Buy and hold 3 months · graded vs the S&P 500'))
     last=None
     for i,p in enumerate(finl,1):
         if p['horizon']!=last:
@@ -210,25 +230,14 @@ def render(ed,prev=None,rec=None,open3=None):
     if oc or not finl:
         li=''.join(f'<div style="padding:3px 0;">{E(p["action"])} <b>{E(p["label"])}</b> · entry ${p["entry"]:,.2f}'+(f' · target ${p["target_price"]:,.2f}' if p.get("target_price") else '')+(f' · {p["ret"]*100:+.1f} pts vs the S&amp;P' if p.get("ret") is not None else '')+'</div>' for p in oc)
         rows.append(f'<tr><td style="padding:8px 24px;{F}font-size:14px;line-height:20px;color:{TXT};">'+('<b>Open 3-month calls</b>'+li if oc else 'No new stock call today. We make 1–2 buy-and-hold 3-month calls a week.')+'</td></tr>')
-    rows.append(sec('🤖','AI','The 5 stories that matter today'))
-    rows+= [ai(n,i) for i,n in enumerate(ed['ai'][:5],1)]
-    rows.append(sec('🏆','Sports','Prediction markets · Polymarket & Kalshi'))
-    rows+= [sp(p,i) for i,p in enumerate(sorted([p for p in ed['sports'] if keep(p)],key=lambda p:-(p.get('score') or 0))[:5],1)]
-    if not ed['sports']: rows.append(f'<tr><td style="padding:8px 24px;{F}font-size:14px;line-height:20px;color:{TXT};"><b>🚫 No bets today: nothing cleared our bar.</b> A pick needs a real sportsbook line, a 40¢–70¢ price and +2.5 points of edge. No Bold Bet of the Day. '+E(ed.get('no_bets_note') or '')+'</td></tr>')
-    ln=ed.get('lean') if not ed['sports'] else None
-    if ln:
-        _b=sys.modules['__main__'] if hasattr(sys.modules.get('__main__'),'lean_rec_txt') else __import__('build')
-        rows.append(f'<tr><td style="padding:6px 24px;"><div style="border:1px dashed {VIO};border-radius:14px;padding:14px 16px;background:#151233;{F}color:{TXT};">'
-          f'<div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#c4b5fd;">🤏 Max\'s lean · not a Bold Bet · not a pick</div>'
-          f'<div style="font-size:20px;font-weight:800;padding-top:6px;">{E(ln["label"])} <span style="{M}font-size:14px;color:{MUT};font-weight:500;">at {ln["entry"]*100:.1f}¢'+(f' · {ln["edge"]:+.1f} pts vs the books' if ln.get('edge') is not None else '')+'</span></div>'
-          f'<div style="font-size:13px;color:{MUT};padding-top:2px;">{E(ln["market"])}</div>'
-          f'<div style="font-size:14px;line-height:20px;padding-top:8px;">🤖 <b>Max Edge (AI host):</b> {E(ln["why"])}</div>'
-          f'<div style="font-size:12px;line-height:18px;color:{MUT};padding-top:8px;">Graded on a separate Leans record, never mixed into the sports or Bold Bet record. {E(_b.lean_rec_txt())} <a href="{SITE}/scoreboard/#leans" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Leans record →</a></div></div></td></tr>')
-    rows.append(f'<tr><td style="padding:30px 24px;" align="center"><div style="{F}font-size:15px;color:{MUT};padding-bottom:14px;">Prices move all day. Track every pick live and on the Scoreboard.</div>{btn}</td></tr>')
+    if ed.get('ai'):
+        rows.append(sec('🤖','AI in brief','The stories that matter for AI stocks'))
+        rows+= [ai(n,i) for i,n in enumerate(ed['ai'][:3],1)]
+    rows.append(f'<tr><td style="padding:30px 24px;" align="center"><div style="{F}font-size:15px;color:{MUT};padding-bottom:14px;">Every explainer and live stock-call prices are on the site.</div>{btn}</td></tr>')
     rows.append('<tr><td style="padding:4px 0 0;"></td></tr>'); rows.append(refer(rec,ed['date'])); rows.append('<tr><td style="padding:14px 0 0;"></td></tr>')
     rows.append(f'<tr><td style="padding:22px 24px 30px;border-top:1px solid {LINE};{F}font-size:12px;line-height:18px;color:{MUT};">'
       f'<b style="color:{TXT};font-size:14px;">The Daily Five</b> · <a href="{SITE}/?utm_source=email&utm_medium=footer&utm_campaign=forward#subscribe" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Got this forwarded? Get your own (free)</a> · <a href="{SITE}/scoreboard/" style="color:#a5b4fc;text-decoration:none;">Scoreboard</a><br><br>'
-      f'<b>Not financial advice.</b> Not financial, investment, or betting advice. The Daily Five aggregates public ideas and market prices for information and entertainment only. Past results don\'t guarantee future returns. You can lose money. D5 Score = 0–100 from source credibility, consensus, edge and risk/reward.</td></tr>')
+      f'<b>Not financial advice.</b> Not financial or investment advice. Earnings explainers summarize public company reports and news coverage for information only. Past results don\'t guarantee future returns. You can lose money.</td></tr>')
     pre=E(preheader(ed,prev,rec))
     return ('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
       '<meta name="color-scheme" content="dark light"><meta name="supported-color-schemes" content="dark light">'
@@ -239,7 +248,8 @@ def render(ed,prev=None,rec=None,open3=None):
       + ''.join(rows) + '</table></td></tr></table></body></html>')
 def write(ed,prev=None,rec=None,open3=None):
     os.makedirs(os.path.join(ROOT,'email'),exist_ok=True); path=os.path.join(ROOT,'email',ed['date']+'.html')
-    open(path,'w').write(render(ed,prev,rec,open3)); return path
+    open(path,'w').write(render(ed,prev,rec,open3))
+    open(path[:-5]+'.subject.txt','w').write(subject(ed)+'\n'); return path
 if __name__=='__main__':
     sys.path.insert(0,ROOT); import build
     f=os.path.join(ROOT,'editions',(sys.argv[1] if len(sys.argv)>1 else sorted(os.listdir(os.path.join(ROOT,'editions')))[-1].replace('.json',''))+'.json')

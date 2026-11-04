@@ -17,7 +17,20 @@ git add -A && git commit -m "Edition YYYY-MM-DD" && git push   # auth: credentia
 - **Sports value rule (pick quality).** For every candidate game, read the DraftKings moneyline (ESPN scoreboard JSON above, or another real published line) and compute the edge: no-vig sportsbook chance minus the Polymarket price, in points. Prefer plays where Polymarket is **≥ 2 pts under** the no-vig line (verdict 💰 Value); fill the 5 with those first. A play within 2 pts either way is a **coin flip at a fair price** (🪙): use one only when there aren't 5 value plays, and its `why` must say so plainly, e.g. "Coin flip at a fair price: Polymarket 41¢ vs 41.5% no-vig at DraftKings; we like it because …". Never pick a side that is ≥ 2 pts **over** the line (⚠️ Pricey). Always fill `book` with the line you used. Why: through Oct 20, 14 settled picks bought within 2 pts of the books went 8-6 but averaged −5.5% per $1; a winning record at fair prices still loses money.
 
 
-## Relaunch rules (from Oct 25, 2026: Max Edge Day 1) — these override older rules below
+## EARNINGS-FIRST rules (from Nov 4, 2026) — these override the Relaunch sports rules and everything older below
+The Daily Five is now **plain-English earnings explained every day, plus 3-month stock calls vs the S&P 500**.
+- **No new sports picks, Bold Bets or Max's leans.** Editions from Nov 5 on must have `"sports": []` and no `"lean"` key. The sports/Bold Bet/Leans records are a **frozen archive** on /scoreboard/, counted from Oct 25 only (never cite beta): Bold Bets 0-1, Leans 1-6 before the Nov 4 Cavaliers @ Thunder lean. That last lean is graded once when its game is final (the normal exits run), then nothing more is added.
+- **Lead product: earnings explainers** (`data/earnings/<ticker>-<quarter>.json`, see prototypes/earnings-explainer-runbook.md). Real, sourced numbers only; consensus must name its source (LSEG, FactSet, Zacks, etc.). Home page and email order them **biggest names first** (`earnings_explainer.MCAP`, or `"mcap_b"` in the JSON for tickers not listed).
+- **Home page:** hero = lead explainer verdict; then "Earnings, explained" cards (last 2 days); then 3-month stock calls; then AI. No sports, Bold Bet, lean or Max clip on the home page.
+- **Email (email_build.py) order:** header → Earnings, explained → On deck today → 3-month stock calls → AI in brief (3 items) → footer. No sports section.
+  - **Subject line** = lead earnings verdict, written to `email/<date>.subject.txt` (e.g. "AMD: Beat and big guide · earnings, explained"). Use that file as the Kit broadcast subject. Fallback: edition headline.
+  - **On deck today:** optional `"on_deck"` list in the edition: `[{"ticker","company","when":"before the open|after the close","eps_consensus"?,"rev_consensus"?,"source":{"name","url"}}]`. Only companies whose report date is confirmed by the company IR page or a reliable free calendar (e.g. Nasdaq earnings calendar, Zacks, Yahoo). Include consensus only if that free source shows it; otherwise leave it out. No reliable source → omit `on_deck` entirely.
+- **Stock calls:** unchanged: 1–2 buy-and-hold 3-month calls a week, graded vs the S&P 500.
+- **Edition `headline`/`top_call`:** lead with the biggest earnings story, not picks.
+- **Copy:** tagline "Plain-English earnings explained every day, plus 3-month stock calls graded against the S&P 500." Don't pitch sports or bets anywhere.
+- **Max Edge clips:** may continue as an AI-host earnings recap, but must not call sports bets or leans.
+
+## Relaunch rules (from Oct 25, 2026 — SUPERSEDED for sports by the earnings-first rules above): Max Edge Day 1) — these override older rules below
 Data behind them (beta, Oct 15–24, 42 settled sports picks, 16 settled 1-day stock calls):
 - Sports under 40¢ went **2-13, avg −64% per $1**, even with a +2–3 pt "value" edge (13 picks at +2–3 pts went 3-10, −46%). A 2-pt edge on a longshot is inside the noise of the line.
 - Coin flips (within 2 pts of the no-vig line) went 11-11, **−14%**.
