@@ -1,0 +1,64 @@
+{
+ "slug": "app-q3-2026",
+ "ticker": "APP",
+ "company": "AppLovin",
+ "quarter": "Q3 2026",
+ "date": "2026-11-04",
+ "when": "after the close",
+ "mcap_b": 91,
+ "verdict_word": "Money printer",
+ "headline": [
+  {
+   "metric": "Diluted EPS",
+   "actual": "$4.30",
+   "consensus": "$4.04 (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$2.185B (+55% y/y)",
+   "consensus": "$2.08B (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Q4 2026 revenue guidance",
+   "actual": "$2.365B-$2.395B",
+   "consensus": "$2.25B (Investing.com)",
+   "result": "Above"
+  },
+  {
+   "metric": "Q4 2026 adj. EBITDA guidance",
+   "actual": "$1.995B-$2.025B",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Clean beat: EPS of $4.30 vs $4.04 expected, and revenue of $2.185 billion, up 55%, vs $2.08 billion (Investing.com consensus).",
+  "The margins are absurd: net income rose 72% to $1.44 billion, a 66% net margin, with an 84% adjusted EBITDA margin.",
+  "Fourth-quarter revenue guidance of $2.365-$2.395 billion is well above the $2.25 billion consensus (Investing.com).",
+  "AppLovin bought back and withheld 4.1 million shares for $1.4 billion in the quarter, and the board added $3.2 billion to the buyback, for $3.6 billion of authorization as of the end of October.",
+  "Investing.com reported the stock up more than 16% in after-hours trading."
+ ],
+ "verdict": "AppLovin keeps 66 cents of every revenue dollar as profit, which is a margin most businesses only see in their dreams and most lemonade stands only see before their parents bill them for sugar. It beat, it guided way above, and it's buying back stock like it's on sale. The stock jumped, because of course it did.",
+ "sources": [
+  {
+   "title": "AppLovin Q3 2026 results (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261104553587/en/AppLovin-Announces-Third-Quarter-2026-Financial-Results"
+  },
+  {
+   "title": "Investing.com: AppLovin earnings beat by $0.26, revenue topped estimates",
+   "url": "https://www.investing.com/news/earnings/applovin-earnings-beat-by-026-revenue-topped-estimates-5001290"
+  },
+  {
+   "title": "Investing.com: AppLovin shares surge on strong Q3 results and guidance",
+   "url": "https://ca.investing.com/news/earnings/applovin-shares-surge-on-strong-q3-results-and-guidance-4931760"
+  }
+ ],
+ "prev_close": 271.75,
+ "reaction": {
+  "kind": "after hours",
+  "price": 315.15,
+  "asof": "2026-11-04 5:06 PM ET"
+ }
+}

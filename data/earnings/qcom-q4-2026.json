@@ -1,0 +1,59 @@
+{
+ "slug": "qcom-q4-2026",
+ "ticker": "QCOM",
+ "company": "Qualcomm",
+ "quarter": "Q4 FY2026",
+ "date": "2026-11-04",
+ "when": "after the close",
+ "verdict_word": "Cars yes, phones no",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$2.17 (was $3.00 a year ago)",
+   "consensus": "$2.16 (LSEG via CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue (GAAP)",
+   "actual": "$10.32B (-8% y/y)",
+   "consensus": "$10.11B (LSEG via CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Q1 FY2027 adj. EPS guidance",
+   "actual": "$2.15-$2.35",
+   "consensus": "$2.27 (CNBC)",
+   "result": ""
+  },
+  {
+   "metric": "Q1 FY2027 revenue guidance",
+   "actual": "$10.4B-$11.2B",
+   "consensus": "$10.48B (CNBC)",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "A small beat: adjusted EPS of $2.17 vs $2.16 expected and revenue of $10.32 billion vs $10.11 billion (LSEG via CNBC), but revenue still fell 8% from a year ago.",
+  "Phones are the problem. Handset chip revenue dropped 26% to $5.14 billion, below the $5.21 billion StreetAccount estimate, as rising memory costs push phone makers to raise prices and hurt demand (CNBC).",
+  "Cars are the bright spot: automotive revenue jumped 89% to a record $1.99 billion, Qualcomm's first $2 billion auto quarter. IoT rose 4% to $1.89 billion.",
+  "The current-quarter EPS range of $2.15-$2.35 brackets the $2.27 consensus, and CNBC called the forecast lighter than expected; the stock slid about 6% after hours.",
+  "Qualcomm reiterated a $5 billion data center revenue target for fiscal 2027 and said non-handset revenue should grow more than 60%. CEO Cristiano Amon on data center: \"We don't have a demand issue; it's a supply issue\" (CNBC)."
+ ],
+ "verdict": "Qualcomm beat by a penny, which is the earnings version of making your flight because the gate agent was also late. The car business is on fire in the good way, but phones are 26% smaller and the guide didn't promise a rescue. The data center story is a $5 billion IOU for 2027, and after hours the market wasn't in a lending mood.",
+ "sources": [
+  {
+   "title": "Qualcomm Q4 and fiscal 2026 earnings release (via MarketScreener)",
+   "url": "https://www.marketscreener.com/news/qualcomm-incorporated-fy-2026-4th-quarter-earnings-release-ce785fdfd18bfe23"
+  },
+  {
+   "title": "CNBC: Qualcomm stock drops 6% on weak earnings forecast",
+   "url": "https://www.cnbc.com/2026/11/04/qualcomm-qcom-earnings-report-q4-2026.html"
+  }
+ ],
+ "prev_close": 173.19,
+ "reaction": {
+  "kind": "after hours",
+  "price": 164.39,
+  "asof": "2026-11-04 5:06 PM ET"
+ }
+}
