@@ -115,7 +115,7 @@ def script_words(ws,line,exact=False):
         if op not in ('equal','replace') or i2-i1!=j2-j1: continue
         for k in range(i2-i1):
             h,s=ht[i1+k],st[j1+k]
-            if plain(h) and plain(s) and h!=s and difflib.SequenceMatcher(None,key(h),key(s)).ratio()>=0.5:
+            if plain(h) and plain(s) and h!=s and (difflib.SequenceMatcher(None,key(h),key(s)).ratio()>=0.5 or {key(h),key(s)}<={'in','and','an','on'}):  # 'one in six'->'one and six'
                 w=ws[i1+k]; out[i1+k]=mk(w.start,w.end,s)
     return out
 # ---------- 1. STT ----------
