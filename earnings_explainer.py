@@ -64,9 +64,8 @@ def surprise_block(B, r, move, rx):
         gen=("A miss doesn't always sink a stock. Shares can rise when guidance, a key growth metric or a one-off announcement beats what the market feared, "
              "or when expectations had already fallen so far that 'less bad' counts as good news.")
         lead=f"{nm} missed Wall Street's earnings-per-share estimate, yet {tk} was {move:+.1f}% {rx.get('kind','')}."
-    li=''.join(f'<li>{E(t)}</li>' for t in tw)
     html=(f'<section class="card"><h2 class="h2s">🤔 {E(q)}</h2><p class="why"><b>{E(lead)}</b> {E(gen)}</p>'
-          f'<p class="sub">What else was in this report that the market is weighing:</p><ul class="why">{li}</ul></section>')
+          f'<p class="sub">The rest of the report, which is what the market is weighing, is in "What actually mattered" just below.</p></section>')
     ans=f"{lead} {gen} Key points from the report: "+' '.join(tw)
     return html,(q,ans)
 
