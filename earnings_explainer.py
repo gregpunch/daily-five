@@ -33,6 +33,43 @@ def live_reaction(r):
     except Exception: pass
     return r.get('reaction') or {}
 
+def eps_result(r):
+    """'Beat'/'Miss'/'In line' on the EPS line (not guidance), or None."""
+    for h in r['headline']:
+        m=h['metric'].lower()
+        if ('eps' in m or 'per share' in m) and 'guid' not in m and h['result']: return h['result'].split(',')[0].strip()
+    return None
+
+def surprise(r, move, thr=1.0):
+    """'beat-fell' when EPS beat but the stock is down more than thr%, 'miss-rose' for the reverse, else None.
+    These mismatches are what searchers ask about ("why did X stock fall after earnings")."""
+    if move is None: return None
+    e=eps_result(r)
+    if e=='Beat' and move<=-thr: return 'beat-fell'
+    if e=='Miss' and move>=thr: return 'miss-rose'
+    return None
+
+def surprise_block(B, r, move, rx):
+    """Explainer card + FAQ answer for a beat-but-fell or miss-but-rose reaction. Generic, sourced from the page's own takeaways."""
+    E=B['E']; k=surprise(r,move)
+    if not k: return '',None
+    nm=r['company']; tk=r['ticker']; tw=r['takeaways'][:3]
+    if k=='beat-fell':
+        q=f"Why did {tk} stock fall after beating earnings?"
+        gen=("A beat on its own rarely moves a stock up, because the market prices in what it expects before the report. "
+             "Stocks often fall after a beat when guidance, margins or a one-off announcement disappoint, or when the beat was smaller than the whisper number traders were hoping for.")
+        lead=f"{nm} beat Wall Street's earnings-per-share estimate, yet {tk} was {move:+.1f}% {rx.get('kind','')}."
+    else:
+        q=f"Why did {tk} stock rise after missing earnings?"
+        gen=("A miss doesn't always sink a stock. Shares can rise when guidance, a key growth metric or a one-off announcement beats what the market feared, "
+             "or when expectations had already fallen so far that 'less bad' counts as good news.")
+        lead=f"{nm} missed Wall Street's earnings-per-share estimate, yet {tk} was {move:+.1f}% {rx.get('kind','')}."
+    li=''.join(f'<li>{E(t)}</li>' for t in tw)
+    html=(f'<section class="card"><h2 class="h2s">🤔 {E(q)}</h2><p class="why"><b>{E(lead)}</b> {E(gen)}</p>'
+          f'<p class="sub">What else was in this report that the market is weighing:</p><ul class="why">{li}</ul></section>')
+    ans=f"{lead} {gen} Key points from the report: "+' '.join(tw)
+    return html,(q,ans)
+
 def related(B, r, reports, n=6):
     """'More earnings this week' cross-links on each explainer: the other reports within 7 days, nearest first.
     Internal links between explainers help Google crawl new pages and give readers a next click."""
@@ -63,13 +100,16 @@ def render(B, reports):
         faqs=[(f"Did {nm} beat earnings in {q}?",ans_beat)]
         if gd: faqs.append((f"What is {nm}'s guidance after {q}?",' '.join(f"{h['metric']}: {h['actual']} (consensus {h['consensus']})." for h in gd)))
         if move is not None: faqs.append((f"How did {tk} stock react to earnings?",f"{tk} was {move:+.1f}% {rx['kind']} at ${rx['price']:,.2f} versus the ${pc:,.2f} close before the report, as of {rx['asof']}."))
+        sbh,sfq=surprise_block(B,r,move,rx)
+        if sfq: faqs.insert(0,sfq)
+        r['_surprise']=surprise(r,move)
         faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
         cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),(f'{tk} earnings',f'/earnings/{tk.lower()}/'),(f'{tk} {q}',P)])
         h1=f"{nm} ({tk}) {q} Earnings Explained"
         body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🧾 Earnings explained · {E(d)} · {E(r["when"])}</span><h1 class="pt">{E(h1)}</h1>'
               f'<p class="sub wksum"><b>Bottom line: {E(r["verdict_word"])}.</b> The numbers vs Wall Street, what actually mattered, and how the stock took it, in plain English.</p></section>'
               f'<section class="card"><h2 class="h2s">The headline numbers</h2><div class="tbl"><table><thead><tr><th>Metric</th><th>Reported</th><th>Consensus</th><th>Result</th></tr></thead><tbody>{rows}</tbody></table></div></section>'
-              f'<section class="card"><h2 class="h2s">📈 Stock reaction</h2>{rxh}</section>'
+              f'<section class="card"><h2 class="h2s">📈 Stock reaction</h2>{rxh}</section>{sbh}'
               f'<section class="card"><h2 class="h2s">What actually mattered</h2><ol class="why">{tks}</ol></section>'
               f'<section class="card"><h2 class="h2s">🤖 Max\'s verdict</h2><p class="why">{E(r["verdict"])}</p><p class="disc">Max Edge is an AI host. This is commentary, not financial advice.</p></section>'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get every big earnings report explained in your inbox, free.</h2><p>Beat or miss, guidance, the stock reaction and what it means, in plain English. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
@@ -137,6 +177,8 @@ def scorecard(B, reports, days=7):
     lnk=lambda r: f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a>'
     if mv and mv[-1]['_move']>0: tiles+=tile(f'<span class="up">{mv[-1]["ticker"]} {mv[-1]["_move"]:+.1f}%</span>',f'biggest pop: {lnk(mv[-1])}')
     if mv and mv[0]['_move']<0: tiles+=tile(f'<span class="dn">{mv[0]["ticker"]} {mv[0]["_move"]:+.1f}%</span>',f'biggest drop: {lnk(mv[0])}')
+    bf=[r for r in rec if r.get('_move') is not None and surprise(r,r['_move'])=='beat-fell']
+    if bf: tiles+=tile(f'{len(bf)}','beat and still fell: '+', '.join(lnk(r) for r in sorted(bf,key=lambda r:r['_move'])[:4]))
     return (f'<section class="card scard"><h2 class="h2s">📊 Earnings season scorecard: last {days} days</h2>'
             f'<p class="sub">{len(rec)} big reports explained. Beat or miss is vs the consensus on each page; stock moves are vs the close before the report and refresh with every site rebuild.</p>'
             f'<div class="scgrid">{tiles}</div></section>')
