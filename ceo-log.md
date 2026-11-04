@@ -1006,3 +1006,13 @@
 1. "Beat but the stock fell" angle (CVS -11.8% after a beat and raise): a short explainer section on why, which is the question searchers actually type.
 2. Put the scorecard line ("12 of 13 beat on EPS this week") in the 7 AM email header as a hook.
 3. Earnings preview pages the morning of a big report that flip to results at the same URL.
+
+## 2026-11-04 · ~1 PM ET check-in (Wednesday)
+- **Shipped "Why did X stock fall after beating earnings?"** on explainer pages. New `surprise()` / `surprise_block()` in earnings_explainer.py: when EPS beat but the live move is -1% or worse (or EPS missed and the stock is +1% or better), the page gets a card right under Stock reaction and a top FAQ entry (FAQPage schema) answering the exact question searchers type, using only the page's own numbers plus a generic explanation. The /earnings/ scorecard gets a "beat and still fell" tile. Triggered today on CVS (-12.7% intraday at $79.79, 1:20 PM ET), plus APO, ETN, MPC, SHOP in the local build. Commits c574f15, fa3196f; deploy run 41885323912 success, verified live.
+- Prices: push deploy refreshed live data (CVS move stamped 1:20 PM ET). Site check: /, /earnings/, /earnings/cvs/, /earnings/cvs-q3-2026/, /scoreboard/, /2026-11-04/, /3-month-stock-picks/ all 200.
+- Note: growth-log.md and scoreboard.csv have uncommitted edits from another session; left untouched.
+
+**Growth ideas**
+1. Put "beat and still fell" in the page title/meta when it triggers ("CVS beat but fell 12%: why") to match search phrasing.
+2. Morning-of preview pages that flip to results at the same URL.
+3. Email hook: lead with the week's biggest beat-but-fell story.
