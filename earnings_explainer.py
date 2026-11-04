@@ -21,6 +21,16 @@ def live_reaction(r):
     except Exception: pass
     return r.get('reaction') or {}
 
+def related(B, r, reports, n=6):
+    """'More earnings this week' cross-links on each explainer: the other reports within 7 days, nearest first.
+    Internal links between explainers help Google crawl new pages and give readers a next click."""
+    E=B['E']; BASE=B['BASE']; d0=datetime.date.fromisoformat(r['date'])
+    rel=[x for x in reports if x['slug']!=r['slug'] and abs((datetime.date.fromisoformat(x['date'])-d0).days)<=7]
+    rel=sorted(rel,key=lambda x:(abs((datetime.date.fromisoformat(x['date'])-d0).days),x['ticker']))[:n]
+    if not rel: return ''
+    li=''.join(f'<li><a href="{BASE}/earnings/{x["slug"]}/"><b>{E(x["company"])} ({x["ticker"]}) {E(x["quarter"])}</b></a>: {E(x["verdict_word"])} · {datetime.date.fromisoformat(x["date"]).strftime("%b %-d")}</li>' for x in rel)
+    return f'<section class="card"><h2 class="h2s">More earnings explained this week</h2><ul class="why">{li}</ul></section>'
+
 def render(B, reports):
     """B: dict of build.py helpers (shell,w,sform,crumbs,E,BASE,SITE,BRAND,TODAY). Returns sitemap (url,lastmod) pairs."""
     E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]
@@ -52,7 +62,7 @@ def render(B, reports):
               f'<section class="card"><h2 class="h2s">🤖 Max\'s verdict</h2><p class="why">{E(r["verdict"])}</p><p class="disc">Max Edge is an AI host. This is commentary, not financial advice.</p></section>'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get every big earnings report explained in your inbox, free.</h2><p>Beat or miss, guidance, the stock reaction and what it means, in plain English. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'<section class="card"><h2 class="h2s">Sources</h2><ul class="why">{srcs}</ul><p class="disc">Numbers come from the company\'s release and the coverage above. Where no consensus was published we leave it out rather than guess.</p></section>'
-              f'{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
+              f'{related(B,r,reports)}{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
         title=f"{nm} {q} earnings explained: beat or miss, guidance, stock reaction"
         desc=f"{nm} ({tk}) {q} earnings: {r['verdict_word']}. "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'. Guidance, key takeaways and stock reaction.'
         sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc[:300],"datePublished":r['date'],"dateModified":B['TODAY'].isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P,"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"citation":[s['url'] for s in r['sources']]},csch,
