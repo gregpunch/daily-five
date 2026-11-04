@@ -102,11 +102,38 @@ def ticker_hubs(B, reports):
         B['w'](f"earnings/{tk.lower()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,B['TODAY'].isoformat()))
     return urls
 
+def scorecard(B, reports, days=7):
+    """'Earnings season scorecard' on /earnings/: share of reports that beat on EPS and on revenue,
+    and the biggest stock moves, over the last `days` days. Computed only from the JSON results and live moves."""
+    E=B['E']; BASE=B['BASE']; today=B.get('TODAY') or datetime.date.today()
+    rec=[r for r in reports if 0<=(today-datetime.date.fromisoformat(r['date'])).days<=days]
+    if len(rec)<3: return ''
+    def pick(r,keys):
+        for h in r['headline']:
+            m=h['metric'].lower()
+            if any(k in m for k in keys) and 'guid' not in m and h['result']: return h['result'].split(',')[0].strip()
+        return None
+    def tally(keys):
+        res=[x for x in (pick(r,keys) for r in rec) if x]
+        return len(res),sum(x=='Beat' for x in res),sum(x=='Miss' for x in res)
+    en,eb,em=tally(('eps','per share')); rn,rb,rm=tally(('revenue','sales'))
+    mv=sorted([r for r in rec if r.get('_move') is not None],key=lambda r:r['_move'])
+    def tile(big,lab): return f'<div class="sct"><b>{big}</b><span>{lab}</span></div>'
+    tiles=''
+    if en: tiles+=tile(f'{eb} of {en}',f'beat on earnings per share ({em} missed)')
+    if rn: tiles+=tile(f'{rb} of {rn}',f'beat on revenue ({rm} missed)')
+    lnk=lambda r: f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a>'
+    if mv and mv[-1]['_move']>0: tiles+=tile(f'<span class="up">{mv[-1]["ticker"]} {mv[-1]["_move"]:+.1f}%</span>',f'biggest pop: {lnk(mv[-1])}')
+    if mv and mv[0]['_move']<0: tiles+=tile(f'<span class="dn">{mv[0]["ticker"]} {mv[0]["_move"]:+.1f}%</span>',f'biggest drop: {lnk(mv[0])}')
+    return (f'<section class="card scard"><h2 class="h2s">📊 Earnings season scorecard: last {days} days</h2>'
+            f'<p class="sub">{len(rec)} big reports explained. Beat or miss is vs the consensus on each page; stock moves are vs the close before the report and refresh with every site rebuild.</p>'
+            f'<div class="scgrid">{tiles}</div></section>')
+
 def index_section(B, reports):
     E=B['E']; BASE=B['BASE']
     if not reports: return ''
     li=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]}) {E(r["quarter"])}</b></a>: {E(r["verdict_word"])}'+(f' · stock {r["_move"]:+.1f}%' if r.get('_move') is not None else '')+f' · {datetime.date.fromisoformat(r["date"]).strftime("%b %-d")}</li>' for r in reports)
-    return f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
+    return scorecard(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
 
 def home_strip(B, reports, days=3):
     """Home-page box: the newest earnings explainers (reports from the last `days` days), so the front page
