@@ -323,7 +323,7 @@ def shell(title,desc,path,body,schema=None,hero='',og=None):
 <meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{url}"><meta property="og:type" content="website"><meta property="og:site_name" content="{BRAND}"><meta name="twitter:card" content="summary_large_image">{ogm}
 <link rel="icon" href="{BASE}/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="{BRAND}" href="{BASE}/feed.xml">{FONTS}<link rel="stylesheet" href="{BASE}/style.css">{s}</head><body>
 <header class="top"><div class="wrap nav"><a class="logo" href="{BASE}/" aria-label="{BRAND} home">{LOGO}<span class="word"><span class="the">The</span> Daily Five</span></a>
-<nav><a href="{BASE}/#finance">Money</a><a href="{BASE}/track-record/">Track record</a><a href="{BASE}/#ai">AI</a><a href="{BASE}/#sports">Sports</a><a class="ncta" href="#subscribe" data-sub="nav" aria-label="Get The Daily Five free by email"><span class="nd">Free 7 AM email</span><span class="nm">Get it free</span></a><a href="{BASE}/scoreboard/" class="pill-nav">Scoreboard</a></nav></div></header>
+<nav><a href="{BASE}/earnings/">Earnings</a><a href="{BASE}/3-month-stock-picks/">Stock calls</a><a href="{BASE}/#ai">AI</a><a class="ncta" href="#subscribe" data-sub="nav" aria-label="Get The Daily Five free by email"><span class="nd">Free 7 AM email</span><span class="nm">Get it free</span></a><a href="{BASE}/scoreboard/" class="pill-nav">Scoreboard</a></nav></div></header>
 {hero}<main class="wrap">{body}
 <section class="signup" id="subscribe"><div><h2>{E(hook_copy()[0])}</h2><p>{E(hook_copy()[1])}</p></div>
 {sform('cta')}{refer_bar()}</section>
