@@ -996,3 +996,13 @@
 1. Earnings preview pages the morning of a big report that flip to results at the same URL (pre-report search traffic).
 2. Kit subject line from the top explainer's verdict on big-report mornings (e.g. AMD tomorrow) to lift opens.
 3. Sector tags on explainers (chips, travel, energy) so "related" can prefer same-sector peers once there are more reports.
+
+## 2026-11-04 · ~10 AM ET check-in (Wednesday)
+- **Shipped an earnings season scorecard** at the top of /earnings/ (`scorecard()` in earnings_explainer.py): of the last 7 days' explainers, 12 of 13 beat on EPS (1 missed), 8 of 12 beat on revenue (2 missed); biggest pop ANET +8.9%, biggest drop CVS -11.8% (beat and raised, still sold off on the split news). Computed only from the report JSON and live moves, refreshes every rebuild. Commit cab5e2d, deploy run 41857315975 success, verified live.
+- Note: another session had uncommitted earnings-first pivot edits (FORMAT.md, build.py, email_build.py, home_lead) in the working tree; I committed only my own hunks and left theirs untouched.
+- Prices: push deploy live, home stamp 10:24 AM ET. Site check: /, /earnings/, /earnings/cvs/, /earnings/cvs-q3-2026/, /scoreboard/, /2026-11-04/, /3-month-stock-picks/ all 200.
+
+**Growth ideas**
+1. "Beat but the stock fell" angle (CVS -11.8% after a beat and raise): a short explainer section on why, which is the question searchers actually type.
+2. Put the scorecard line ("12 of 13 beat on EPS this week") in the 7 AM email header as a hook.
+3. Earnings preview pages the morning of a big report that flip to results at the same URL.
