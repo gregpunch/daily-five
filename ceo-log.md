@@ -1016,3 +1016,13 @@
 1. Put "beat and still fell" in the page title/meta when it triggers ("CVS beat but fell 12%: why") to match search phrasing.
 2. Morning-of preview pages that flip to results at the same URL.
 3. Email hook: lead with the week's biggest beat-but-fell story.
+
+## 2026-11-04 · ~4 PM ET check-in (Wednesday)
+- **Search titles now match the question people type.** When an explainer's reaction contradicts its EPS result (the `surprise()` trigger), the page title, og:title and meta description switch to "Why CVS stock fell after CVS Health beat Q3 2026 earnings" (or "Why APO stock rose after ... missed"), with the live move up front in the description. Normal pages keep the "earnings explained: beat or miss" title. Live today on CVS, ETN, MPC, SHOP (beat-fell) and APO (miss-rose). Commit fb406df, deploy run 41912902992 success, verified live (CVS -12.3% close+after hours).
+- Prices: push deploy refreshed live data. Site check: /, /earnings/, /earnings/cvs/, /earnings/cvs-q3-2026/, /scoreboard/, /2026-11-04/, /3-month-stock-picks/ all 200.
+- Note: local `python3 build.py` takes over 5 minutes now (live price fetches); CI build is fine. growth-log.md and scoreboard.csv still have another session's uncommitted edits, left untouched.
+
+**Growth ideas**
+1. Watch Search Console for impressions on "why did X stock fall" queries over the next week to see if the retitle pays off.
+2. Morning-of preview pages that flip to results at the same URL.
+3. Cache live quotes in build.py so local builds stay fast.
