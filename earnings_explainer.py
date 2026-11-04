@@ -116,6 +116,13 @@ def render(B, reports):
               f'{related(B,r,reports)}{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
         title=f"{nm} {q} earnings explained: beat or miss, guidance, stock reaction"
         desc=f"{nm} ({tk}) {q} earnings: {r['verdict_word']}. "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'. Guidance, key takeaways and stock reaction.'
+        # When the reaction contradicts the EPS result, match the question searchers type in the title and meta.
+        if r['_surprise']=='beat-fell':
+            title=f"Why {tk} stock fell after {nm} beat {q} earnings"
+            desc=f"{nm} beat on EPS but {tk} was {move:+.1f}% {rx.get('kind','')}. What spooked the market, explained: "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'.'
+        elif r['_surprise']=='miss-rose':
+            title=f"Why {tk} stock rose after {nm} missed {q} earnings"
+            desc=f"{nm} missed on EPS but {tk} was {move:+.1f}% {rx.get('kind','')}. Why the market shrugged, explained: "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'.'
         sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc[:300],"datePublished":r['date'],"dateModified":B['TODAY'].isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P,"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"citation":[s['url'] for s in r['sources']]},csch,
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
