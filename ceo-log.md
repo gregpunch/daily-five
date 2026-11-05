@@ -1037,3 +1037,13 @@
 1. Put the week's scorecard one-liner ("N of M beat on EPS; biggest pop/drop") under the home Earnings, explained heading — free SEO + proof without an extra click.
 2. Max clip for earnings mornings: wire GenerateVideo (or tts_segments fallback) into the 7 AM / 8 AM earnings routine so the AI host reads the lead verdict; still no sports.
 3. Distribution is still the bottleneck (0 outside Kit subs, X suspended). Once Greg OKs, one Reddit results post pointing at /earnings/ + the beat-but-fell pages is the highest-leverage external move — do not do it without asking.
+
+## 2026-11-05 · ~1 PM ET check-in (Thursday)
+- **Home page now leads with the week's earnings scorecard in one line** under the "Earnings, explained" heading: "N of M beat on EPS this week · biggest pop · biggest drop · full scorecard →" (`home_scoreline()` in earnings_explainer.py, `.ersl` in style.css). Beat tally from the last 7 days' report JSON; pop/drop from the live moves on the lead cards. Proof and a click into /earnings/ without scrolling.
+- Morning check: the 7 AM routine shows "failed" but edition 2026-11-05 is live (85e356e) and all pages returned 200; scheduled live-price deploy 42079687166 (12:57 PM ET) succeeded, home badges live (QCOM -10.8%, ARM -12.1%, APP +27.8%, COP +0.7%, CI -1.2%). email/2026-11-05.html is untracked from the morning run; left as is.
+- Site check: /, /earnings/, /scoreboard/, /2026-11-05/, /earnings/cop-q3-2026/, /sitemap.xml all 200.
+
+**Growth ideas**
+1. Same scorecard one-liner as the 7 AM email's first line.
+2. Morning-of preview pages that flip to results at the same URL (still open).
+3. Distribution is still the bottleneck; ask Greg about one Reddit results post on the beat-but-fell pages.

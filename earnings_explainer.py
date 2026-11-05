@@ -219,9 +219,31 @@ def home_lead(B, reports):
         hl=' · '.join(f'{E(h["metric"])}: <b>{E(h["result"])}</b>' for h in r['headline'] if h.get('result'))[:400]
         return (f'<a class="ercard" href="{BASE}/earnings/{r["slug"]}/"><span class="erk">{E(r["ticker"])} · {E(r["quarter"])} · {E(r.get("when",""))}</span>'
                 f'<h3>{E(r["company"])}: {E(r["verdict_word"])}</h3>{mv_badge(r)}<p>{E(v)}</p><span class="erm">{hl}</span><span class="erg">Read the plain-English breakdown →</span></a>')
-    return (f'<section class="sec ernlead" id="earnings"><div class="sh"><span class="si">🧾</span><div><h2>Earnings, explained</h2>'
+    cards=''.join(card(r) for r in rec)
+    sline=home_scoreline(B,reports,rec)
+    return (f'<section class="sec ernlead" id="earnings"><div class="sh"><span class="si">🧾</span><div><h2>Earnings, explained</h2>{sline}'
             f'<p class="sub">Last night\'s and this morning\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it. Biggest names first. Live stock moves refresh with every rebuild.</p></div></div>'
-            f'<div class="ergrid">{"".join(card(r) for r in rec)}</div><p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
+            f'<div class="ergrid">{cards}</div><p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
+
+def home_scoreline(B, reports, rec, days=7):
+    """One-line earnings season scorecard under the home 'Earnings, explained' heading:
+    EPS beat tally over the last `days` days plus the biggest pop/drop among the lead cards (live moves)."""
+    E=B['E']; BASE=B['BASE']; today=B.get('TODAY') or datetime.date.today()
+    wk=[r for r in reports if 0<=(today-datetime.date.fromisoformat(r['date'])).days<=days]
+    if len(wk)<3: return ''
+    res=[]
+    for r in wk:
+        for h in r['headline']:
+            m=h['metric'].lower()
+            if ('eps' in m or 'per share' in m) and 'guid' not in m and h.get('result'):
+                res.append(h['result'].split(',')[0].strip()); break
+    parts=[]
+    if res: parts.append(f'<b>{sum(x=="Beat" for x in res)} of {len(res)}</b> beat on EPS this week')
+    mv=sorted([r for r in rec if r.get('_move') is not None],key=lambda r:r['_move'])
+    if mv and mv[-1]['_move']>0: parts.append(f'biggest pop <span class="up">{E(mv[-1]["ticker"])} {mv[-1]["_move"]:+.1f}%</span>')
+    if mv and mv[0]['_move']<0: parts.append(f'biggest drop <span class="dn">{E(mv[0]["ticker"])} {mv[0]["_move"]:+.1f}%</span>')
+    if not parts: return ''
+    return f'<p class="ersl">📊 {" · ".join(parts)} · <a href="{BASE}/earnings/">full scorecard →</a></p>'
 
 def home_strip(B, reports, days=3):
     """Home-page box: the newest earnings explainers (reports from the last `days` days), so the front page
