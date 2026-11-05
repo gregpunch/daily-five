@@ -6,7 +6,7 @@ import json, glob, os, datetime, time, urllib.request
 MCAP={'NVDA':4500,'AAPL':3800,'MSFT':3700,'GOOGL':3000,'AMZN':2400,'META':1800,'AVGO':1600,'TSLA':1400,'BRK.B':1000,'LLY':800,'AMD':800,'JPM':800,
  'WMT':800,'V':650,'ORCL':600,'MA':500,'NFLX':500,'XOM':480,'COST':400,'PLTR':400,'JNJ':400,'HD':380,'ABBV':380,'PG':360,'BAC':340,'KO':300,
  'NVO':250,'CVX':250,'CSCO':250,'CRM':240,'MCD':220,'PEP':200,'SHOP':200,'IBM':200,'DIS':200,'UBER':190,'ANET':180,'AMGN':170,'BKNG':170,
- 'QCOM':170,'PFE':145,'ETN':140,'CVS':90,'APO':80,'RACE':80,'MPC':50}
+ 'QCOM':170,'PFE':145,'ETN':140,'CVS':90,'APO':80,'RACE':80,'MPC':50,'APP':110,'ARM':180,'CI':85,'COP':140,'CAH':55,'AMGN':170,'BKNG':170}
 def size(r): return r.get('mcap_b') or MCAP.get(r['ticker'],0)
 def fresh(r,today):
     """Last night's (after the close yesterday) or today's reports: these lead, ahead of yesterday morning's."""
@@ -201,16 +201,26 @@ def index_section(B, reports):
     return scorecard(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
 
 def home_lead(B, reports):
-    """Home-page lead: 'Earnings, explained' cards for the latest reports, biggest names first."""
+    """Home-page lead: 'Earnings, explained' cards for the latest reports, biggest names first.
+    Each card shows the live stock reaction vs the pre-report close (fetched here so the front page
+    answers 'and what did the stock do?' without an extra click)."""
     E=B['E']; BASE=B['BASE']; rec=lead(reports,B['TODAY'],days=2,n=8,pin=B.get('PIN'))
     if not rec: return ''
+    def mv_badge(r):
+        rx=live_reaction(r); pc=r.get('prev_close'); move=None
+        if rx.get('price') and pc: move=(rx['price']/pc-1)*100
+        r['_move']=move; r['_rx']=rx
+        if move is None: return ''
+        cls='up' if move>=0 else 'dn'
+        kind=E(rx.get('kind',''))
+        return f'<span class="ermv {cls}">{E(r["ticker"])} {move:+.1f}% <em>{kind}</em></span>'
     def card(r):
         v=str(r.get('verdict','')); v=v.split('. ')[0].rstrip('.')+'.' if v else ''
         hl=' · '.join(f'{E(h["metric"])}: <b>{E(h["result"])}</b>' for h in r['headline'] if h.get('result'))[:400]
         return (f'<a class="ercard" href="{BASE}/earnings/{r["slug"]}/"><span class="erk">{E(r["ticker"])} · {E(r["quarter"])} · {E(r.get("when",""))}</span>'
-                f'<h3>{E(r["company"])}: {E(r["verdict_word"])}</h3><p>{E(v)}</p><span class="erm">{hl}</span><span class="erg">Read the plain-English breakdown →</span></a>')
+                f'<h3>{E(r["company"])}: {E(r["verdict_word"])}</h3>{mv_badge(r)}<p>{E(v)}</p><span class="erm">{hl}</span><span class="erg">Read the plain-English breakdown →</span></a>')
     return (f'<section class="sec ernlead" id="earnings"><div class="sh"><span class="si">🧾</span><div><h2>Earnings, explained</h2>'
-            f'<p class="sub">Last night\'s and this morning\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it. Biggest names first.</p></div></div>'
+            f'<p class="sub">Last night\'s and this morning\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it. Biggest names first. Live stock moves refresh with every rebuild.</p></div></div>'
             f'<div class="ergrid">{"".join(card(r) for r in rec)}</div><p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
 
 def home_strip(B, reports, days=3):

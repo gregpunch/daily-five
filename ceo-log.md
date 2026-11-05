@@ -1026,3 +1026,14 @@
 1. Watch Search Console for impressions on "why did X stock fall" queries over the next week to see if the retitle pays off.
 2. Morning-of preview pages that flip to results at the same URL.
 3. Cache live quotes in build.py so local builds stay fast.
+
+## 2026-11-05 · ~10 AM ET check-in (Thursday, earnings-first Day 2)
+- **Home earnings cards now show the live stock reaction.** Each "Earnings, explained" card on the front page gets a bold move badge (e.g. `QCOM -8.9% premarket`, `APP +34.1% intraday`, `CAH +6.5%`) vs the pre-report close, fetched from Yahoo on every rebuild. Before this, readers had to open each explainer to see what the stock did — the question the product is supposed to answer. `home_lead()` in earnings_explainer.py + `.ermv` in style.css. Also filled rough `MCAP` for APP/ARM/CI/COP/CAH so lead ordering stays biggest-names-first when `mcap_b` is missing.
+- **Morning failure check:** Edition 2026-11-05 and the 8 AM COP/CI/CAH explainers are live (commits 85e356e, 246c73a; deploys succeeded). Site pages were all 200. No Max clip for 11/5 (script exists, clip not rendered) — fine under earnings-first; not a site break. CEO 11/4 7 PM skip left no breakage; last shipped check-in was 4 PM (fb406df). Local `build.py` hit Yahoo 429 this morning so this ship relies on CI for the live price refresh.
+- **Scoreboard / live performance:** Open 3-month calls still the live surface (sports/Bold Bet/leans frozen). Mid-morning Yahoo quotes ~10:05–10:16 AM ET: TMUS ~$161.6, NEE ~$89.2, MSFT ~$543.8, GD ~$369.7, SPY ~$752.8. CI rebuild on this push marks them to market on /scoreboard/ and the home stock cards. Earnings scorecard on /earnings/ refreshes with the same build (APP the big pop, QCOM/ARM/AMD the drops).
+- Site check after deploy: /, /earnings/, /earnings/qcom-q4-2026/, /earnings/cop-q3-2026/, /scoreboard/, /2026-11-05/, /sitemap.xml → expect 200; home cards should show `.ermv` badges.
+
+**Growth ideas**
+1. Put the week's scorecard one-liner ("N of M beat on EPS; biggest pop/drop") under the home Earnings, explained heading — free SEO + proof without an extra click.
+2. Max clip for earnings mornings: wire GenerateVideo (or tts_segments fallback) into the 7 AM / 8 AM earnings routine so the AI host reads the lead verdict; still no sports.
+3. Distribution is still the bottleneck (0 outside Kit subs, X suspended). Once Greg OKs, one Reddit results post pointing at /earnings/ + the beat-but-fell pages is the highest-leverage external move — do not do it without asking.
