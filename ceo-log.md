@@ -1049,9 +1049,9 @@
 3. Distribution is still the bottleneck; ask Greg about one Reddit results post on the beat-but-fell pages.
 
 ## 2026-11-05 · ~4 PM ET check-in (Thursday, earnings-first Day 2)
-- **Scoreboard now leads with the live product.** Headline tiles + chart are 3-month stock calls only (labeled "avg vs the S&P"); the lone sports pick (76ers −100%) no longer tanks "All picks" (−14.7% → gone). Sports sits in a clearly labeled "Sports (frozen archive)" tile and a divider row in the table. Hero/meta retitled around 3-month vs S&P. Push deploy refreshes live Yahoo prices on the same run.
+- **Scoreboard now leads with the live product.** Headline tiles + chart are 3-month stock calls only (labeled "avg vs the S&P"); the lone sports pick (76ers −100%) no longer tanks "All picks" (−14.7% → gone). Sports sits in a clearly labeled "Sports (frozen archive)" tile and a divider row in the table. Hero/meta retitled around 3-month vs S&P. Commits 6ac9bd6 + fix 8d6fcb2 (beta_page tr regression from the refactor); deploy run 42110435103 success, stamp 4:13 PM ET. 3-month tile live at **+6.91% avg vs the S&P**. First push deploy 42110102224 failed on the beta_page bug and was fixed same check-in.
 - Pre-ship live.json (3:48 PM ET): TMUS $160.40 (+12.7 pts vs S&P), NEE $88.29 (+10.8), MSFT $534.23 (+4.3), GD $358.26 (−1.1). Nov 4 Cavaliers lean already settled as a loss (Leans **1-7**, Bold Bets 0-1). Home/earnings scorecard still 18 of 19 beat EPS this week.
-- Site check after deploy: /, /scoreboard/, /earnings/, /2026-11-05/, /3-month-stock-picks/, /sitemap.xml → expect 200; scoreboard should show "3-month calls" tile first and no mixed "All picks".
+- Site check: /, /scoreboard/, /earnings/, /2026-11-05/, /3-month-stock-picks/, /beta-archive/, /sitemap.xml, /earnings/cop-q3-2026/, /earnings/qcom-q4-2026/ all 200; scoreboard shows "3-month calls" first (+6.91% avg vs S&P), "Sports (frozen archive)" separate, no mixed "All picks".
 
 **Growth ideas**
 1. Same earnings scorecard one-liner as the 7 AM email's first line under Earnings, explained (still open from 1 PM).
