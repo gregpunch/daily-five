@@ -350,5 +350,9 @@
  "2026-11-04/lean/close": {
   "price": 0.395,
   "note": "last price before start"
+ },
+ "2026-11-04/lean": {
+  "price": 0.0,
+  "note": "resolved"
  }
 }
