@@ -1,0 +1,69 @@
+{
+ "slug": "ci-q3-2026",
+ "ticker": "CI",
+ "company": "Cigna",
+ "quarter": "Q3 2026",
+ "date": "2026-11-05",
+ "when": "before the open",
+ "verdict_word": "Beat and raise",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$7.98",
+   "consensus": "$7.52 (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$73.7B (+6%)",
+   "consensus": "$72.65B (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "$5.47 (vs $6.98 a year ago)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "FY2026 adjusted EPS guidance",
+   "actual": "at least $30.60 (was at least $30.45)",
+   "consensus": "$30.51 (Investing.com)",
+   "result": "Raised"
+  },
+  {
+   "metric": "FY2026 Cigna Healthcare medical care ratio guidance",
+   "actual": "84.2% +/- 25 bps (narrowed by 50 bps)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Cigna beat on both lines: adjusted EPS of $7.98 vs $7.52 expected, and revenue of $73.7 billion vs $72.65 billion (Investing.com).",
+  "It raised the 2026 floor again, to at least $30.60 a share in adjusted earnings, up $0.15 and a bit above the $30.51 consensus (Investing.com).",
+  "The insurance arm, Cigna Healthcare, grew adjusted revenue 9%, mainly from premium increases to cover higher expected medical costs. Evernorth, which includes the pharmacy benefit manager, grew revenue 6% but its adjusted pretax profit fell 4% (Investing.com).",
+  "GAAP EPS dropped to $5.47 from $6.98, mostly because last year's quarter included a one-time gain on a sale.",
+  "At its investor day Cigna set long-term targets of 10% to 14% annual adjusted EPS growth and about $50 billion of cumulative operating cash flow through 2030, plus a $3 billion multi-year efficiency push."
+ ],
+ "verdict": "In a year when health insurers have mostly been apologizing, Cigna beat and raised, which is the industry equivalent of showing up on time. The insurance side is carrying the team while the pharmacy benefit business is having an off quarter. Solid report, and the long-term targets give the bulls a fresh slide to tape to the wall.",
+ "sources": [
+  {
+   "title": "The Cigna Group Q3 2026 results release",
+   "url": "https://newsroom.thecignagroup.com/2026-11-05-The-Cigna-Group-Reports-Strong-Third-Quarter-2026-Results,-Raises-2026-Outlook"
+  },
+  {
+   "title": "Investing.com: Cigna shares climb on raised earnings outlook, Q3 beat",
+   "url": "https://www.investing.com/news/earnings/cigna-shares-climb-on-raised-earnings-outlook-q3-beat-5003087"
+  },
+  {
+   "title": "Investing.com: Cigna earnings preview (consensus)",
+   "url": "https://www.investing.com/news/earnings/cigna-earnings-ahead-can-specialty-offset-pbm-pressures-93CH-5001020"
+  }
+ ],
+ "prev_close": 305.41,
+ "reaction": {
+  "kind": "premarket",
+  "price": 314.66,
+  "asof": "2026-11-05 8:01 AM ET"
+ }
+}

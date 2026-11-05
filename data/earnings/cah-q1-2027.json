@@ -1,0 +1,59 @@
+{
+ "slug": "cah-q1-2027",
+ "ticker": "CAH",
+ "company": "Cardinal Health",
+ "quarter": "Q1 FY2027",
+ "date": "2026-11-05",
+ "when": "before the open",
+ "verdict_word": "Beat and raise",
+ "headline": [
+  {
+   "metric": "Non-GAAP EPS",
+   "actual": "$3.26 (+28%)",
+   "consensus": "$2.94 (Benzinga Pro)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$67.5B (+5%)",
+   "consensus": "$66.51B (Benzinga Pro)",
+   "result": "Beat"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "$2.38 (+27%)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "FY2027 non-GAAP EPS guidance",
+   "actual": "$12.80 to $13.00 (was $12.40 to $12.60)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Cardinal Health earned $3.26 a share on a non-GAAP basis, up 28% and well ahead of the $2.94 analysts expected, on revenue of $67.5 billion vs $66.51 billion expected (Benzinga Pro).",
+  "Non-GAAP operating earnings rose 17% to $1.0 billion. The EPS jumped even faster thanks to fewer shares outstanding and a lower tax rate (18.5% vs 21.9%).",
+  "Full-year guidance went up a lot for one quarter in: $12.80 to $13.00 a share, from $12.40 to $12.60, with the pharmaceutical and specialty segment's profit growth now seen at 10% to 12% (was 8% to 11%).",
+  "The company finished a $500 million share buyback in the quarter.",
+  "Before the report Benzinga noted Cardinal had reaffirmed its guidance on Oct. 1, so this raise came only about a month later."
+ ],
+ "verdict": "Cardinal Health moves boxes of medicine for a living, and right now the boxes are very profitable. A 32-cent beat plus a 40-cent guidance raise this early in the year is the kind of boring that makes shareholders grin. It had beaten estimates for eight straight quarters going in, so make that nine.",
+ "sources": [
+  {
+   "title": "Cardinal Health Q1 FY2027 results release",
+   "url": "https://newsroom.cardinalhealth.com/2026-11-05-Cardinal-Health-Reports-First-Quarter-Fiscal-Year-2027-Results-and-Raises-Outlook"
+  },
+  {
+   "title": "Benzinga: Cardinal Health earnings preview (consensus)",
+   "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/11/62904463/top-wall-street-forecasters-revamp-cardinal-health-expectations-ahead-of-q3-earnings"
+  },
+  {
+   "title": "Tickeron: Cardinal Health earnings preview (beat streak)",
+   "url": "https://tickeron.com/earnings/CAH/"
+  }
+ ],
+ "prev_close": 261.93,
+ "reaction": {}
+}

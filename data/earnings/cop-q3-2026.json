@@ -1,0 +1,69 @@
+{
+ "slug": "cop-q3-2026",
+ "ticker": "COP",
+ "company": "ConocoPhillips",
+ "quarter": "Q3 2026",
+ "date": "2026-11-05",
+ "when": "before the open",
+ "verdict_word": "Beat and a bigger dividend",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$3.27",
+   "consensus": "$2.97 (LSEG via Reuters)",
+   "result": "Beat"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "$3.34 (vs $1.38 a year ago)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Average realized price",
+   "actual": "$61.40 per BOE (+32% year over year)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Production",
+   "actual": "2,302 thousand BOE per day (down 97 thousand year over year)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Quarterly dividend",
+   "actual": "$0.93 per share (+11%)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Adjusted profit came in at $3.27 a share vs the $2.97 analysts expected (LSEG via Reuters), and adjusted earnings roughly doubled to $3.9 billion from $2.0 billion a year ago.",
+  "Prices did the work, not volume: ConocoPhillips realized $61.40 per barrel of oil equivalent, 32% more than a year ago, while production slipped to about 2.3 million barrels a day from 2.4 million.",
+  "Reuters notes Brent averaged about $89 a barrel in the quarter, up more than 31% from a year earlier, on Middle East supply worries.",
+  "Cash came back to shareholders: $3.4 billion in distributions, including $2.4 billion of buybacks, and the quarterly dividend goes up 11% to $0.93. The company says it's on track to return 45% of cash from operations in 2026.",
+  "GAAP EPS of $3.34 was a bit higher than the adjusted number, mainly because of a tax reserve reversal."
+ ],
+ "verdict": "When oil runs hot, ConocoPhillips basically just has to show up, and it showed up 30 cents a share better than expected. It pumped a little less and got paid a lot more, then handed shareholders an 11% raise. Max's take: nice quarter, but the real CEO here is the price of crude.",
+ "sources": [
+  {
+   "title": "ConocoPhillips Q3 2026 results release",
+   "url": "https://www.conocophillips.com/news-media/story/conocophillips-announces-third-quarter-2026-results-and-increases-quarterly-ordinary-dividend-by-11/"
+  },
+  {
+   "title": "Reuters via StreetInsider: ConocoPhillips beats estimates on higher oil prices, raises dividend",
+   "url": "https://www.streetinsider.com/Reuters/ConocoPhillips+beats+estimates+on+higher+oil+prices%2C+raises+dividend/27294984.html"
+  },
+  {
+   "title": "Investing.com: ConocoPhillips beats third-quarter profit estimates",
+   "url": "https://in.investing.com/news/earnings/conocophillips-beats-thirdquarter-profit-estimates-5682914"
+  }
+ ],
+ "prev_close": 136.94,
+ "reaction": {
+  "kind": "premarket",
+  "price": 139.45,
+  "asof": "2026-11-05 8:01 AM ET"
+ }
+}
