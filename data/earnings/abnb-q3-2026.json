@@ -1,0 +1,68 @@
+{
+ "slug": "abnb-q3-2026",
+ "ticker": "ABNB",
+ "company": "Airbnb",
+ "quarter": "Q3 2026",
+ "date": "2026-11-05",
+ "when": "after the close",
+ "mcap_b": 100,
+ "verdict_word": "Growth is back",
+ "headline": [
+  {
+   "metric": "Diluted EPS",
+   "actual": "$3.16",
+   "consensus": "$2.85 (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$4.87B (+19% y/y)",
+   "consensus": "$4.75B (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Q4 2026 revenue guidance",
+   "actual": "$3.22B-$3.28B",
+   "consensus": "$3.16B (Investing.com / Yahoo Finance)",
+   "result": "Above"
+  },
+  {
+   "metric": "FY2026 revenue growth outlook",
+   "actual": "High teens (raised)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Beat on both lines: diluted EPS of $3.16 vs $2.85 expected, and revenue of $4.87 billion, up 19%, vs $4.75 billion (Investing.com). Airbnb called it its fastest revenue growth in more than three years.",
+  "Bookings are hot: gross booking value rose 21% to $27.7 billion, nights and seats booked grew 16% to 155 million, and average daily rates rose 4% to $179 (company / Investing.com).",
+  "Profits followed: net income jumped 38% to $1.89 billion, and adjusted EBITDA rose 22% to $2.51 billion with a 52% margin.",
+  "It raised the full-year outlook to high-teens revenue growth and ~36% adjusted EBITDA margin, guided Q4 revenue to $3.22-$3.28 billion (above the ~$3.16 billion Street number), and authorized up to an additional $12 billion in Class A buybacks.",
+  "Investing.com's after-hours movers piece had ABNB up about 7% early; Yahoo Finance later showed roughly $188 vs a $170.13 regular-session close."
+ ],
+ "verdict": "Airbnb just rediscovered the growth button it misplaced around 2023 and is acting like it never left. Beat, raise, $12 billion more buybacks, and an AI travel agent promised for 2027. After hours the stock woke up too \u2014 which is what happens when a $100 billion vacation marketplace remembers how to book nights.",
+ "sources": [
+  {
+   "title": "Airbnb Q3 2026 financial results (company newsroom)",
+   "url": "https://news.airbnb.com/airbnb-q3-2026-financial-results"
+  },
+  {
+   "title": "PR Newswire: Airbnb Announces Third Quarter 2026 Results",
+   "url": "https://www.prnewswire.com/news-releases/airbnb-announces-third-quarter-2026-results-302917687.html"
+  },
+  {
+   "title": "Investing.com: Airbnb beats third-quarter estimates as travel demand accelerates",
+   "url": "https://www.investing.com/news/earnings/airbnb-beats-thirdquarter-estimates-as-travel-demand-accelerates-5005695"
+  },
+  {
+   "title": "Investing.com: After-Hours Movers (ABNB)",
+   "url": "https://ca.investing.com/news/stock-market-news/afterhours-movers-net-team-fivn-abnb-dkng-afrm-lrcx-mchp-aaoi-iren-axon-432SI-4936417"
+  }
+ ],
+ "prev_close": 170.13,
+ "reaction": {
+  "kind": "after hours",
+  "price": 187.91,
+  "asof": "2026-11-05 5:09 PM ET"
+ }
+}
