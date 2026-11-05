@@ -2302,8 +2302,7 @@ def beta_page(BETA,brows):
         return f"{w_}-{len(st)-w_}", (sum(r['ret'] for r in st)/len(st) if st else None)
     sr,sa=rec([r for r in brows if r['kind']=='Sports']); fr,fa=rec([r for r in brows if r['kind']=='Finance'])
     fmt=lambda r,v: (f"{v*100:.1f}¢" if r['kind']=='Sports' else f"${v:,.2f}") if v is not None else 'pending'
-    def tr_rows(rs):
-        return ''.join(f'<tr><td class="mono">{r["date"][5:]}</td><td><span class="mini {r["action"].lower()}">{r["action"]}</span> <a href="{BASE}/picks/{r["id"]}/"><b>{E(r["pick"])}</b></a></td><td>{E(r["horizon"])}</td><td class="mono">{fmt(r,r["entry"])}</td><td class="mono">{fmt(r,r["cur"])}</td><td>{chip(r["ret"],r["final"])}</td></tr>' for r in brows)
+    tr=''.join(f'<tr><td class="mono">{r["date"][5:]}</td><td><span class="mini {r["action"].lower()}">{r["action"]}</span> <a href="{BASE}/picks/{r["id"]}/"><b>{E(r["pick"])}</b></a></td><td>{E(r["horizon"])}</td><td class="mono">{fmt(r,r["entry"])}</td><td class="mono">{fmt(r,r["cur"])}</td><td>{chip(r["ret"],r["final"])}</td></tr>' for r in brows)
     wd=[(e,p) for e in ALLEDS_ALL() if e['date']==LAUNCH for p in e.get('withdrawn_finance',[])]
     wdh=('<h2 class="h2s">Withdrawn at relaunch (Oct 25 morning)</h2><p class="sub">These stock calls went out in the Oct 25 morning email under the old 1-day/1-month horizons, then were withdrawn when we moved to 3-month calls only. They are not graded anywhere.</p><ul>'+''.join(f'<li>{E(p["action"])} {E(p["label"])} ({E(p["horizon"])}) at ${p["entry"]:,.2f}</li>' for e,p in wd)+'</ul>') if wd else ''
     ws=[(e,p) for e in ALLEDS_ALL() if e['date']==LAUNCH for p in e.get('withdrawn_sports',[])]
