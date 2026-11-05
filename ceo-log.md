@@ -1047,3 +1047,13 @@
 1. Same scorecard one-liner as the 7 AM email's first line.
 2. Morning-of preview pages that flip to results at the same URL (still open).
 3. Distribution is still the bottleneck; ask Greg about one Reddit results post on the beat-but-fell pages.
+
+## 2026-11-05 · ~4 PM ET check-in (Thursday, earnings-first Day 2)
+- **Scoreboard now leads with the live product.** Headline tiles + chart are 3-month stock calls only (labeled "avg vs the S&P"); the lone sports pick (76ers −100%) no longer tanks "All picks" (−14.7% → gone). Sports sits in a clearly labeled "Sports (frozen archive)" tile and a divider row in the table. Hero/meta retitled around 3-month vs S&P. Push deploy refreshes live Yahoo prices on the same run.
+- Pre-ship live.json (3:48 PM ET): TMUS $160.40 (+12.7 pts vs S&P), NEE $88.29 (+10.8), MSFT $534.23 (+4.3), GD $358.26 (−1.1). Nov 4 Cavaliers lean already settled as a loss (Leans **1-7**, Bold Bets 0-1). Home/earnings scorecard still 18 of 19 beat EPS this week.
+- Site check after deploy: /, /scoreboard/, /earnings/, /2026-11-05/, /3-month-stock-picks/, /sitemap.xml → expect 200; scoreboard should show "3-month calls" tile first and no mixed "All picks".
+
+**Growth ideas**
+1. Same earnings scorecard one-liner as the 7 AM email's first line under Earnings, explained (still open from 1 PM).
+2. Morning-of preview pages that flip to results at the same URL.
+3. Distribution bottleneck unchanged (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
