@@ -1,0 +1,145 @@
+{
+ "date": "2026-11-05",
+ "headline": "Qualcomm beat by a penny and sinks ~9% premarket on a weak guide; AppLovin +20%, Arm -5%; ConocoPhillips, Airbnb and Cloudflare report today",
+ "top_call": "Qualcomm beat by a penny and still got dumped: down about 9% premarket after phone chip sales fell 26% and the next-quarter guide came in light. AppLovin beat, guided way above and is up about 20%. Arm beat, guided in line, and is off about 5%. Plain-English explainers below.",
+ "lead": "qcom-q4-2026",
+ "backdrop": "Nasdaq futures slipped Thursday as chip stocks stayed under pressure, while S&P 500 futures were little changed after Wednesday's post-midterm rally. Qualcomm fell about 9% to 10% premarket after missing smartphone-chip estimates, and at least eight brokerages cut their price targets, according to LSEG data. Yahoo Finance premarket quotes at 7:05 AM ET: Qualcomm $156.85 (-9.4%), AppLovin $326.00 (+20.0%), Arm $182.64 (-4.8%).",
+ "backdrop_source": {
+  "name": "Reuters via Investing.com",
+  "url": "https://www.investing.com/news/stock-market-news/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-on-chip-weakness-5003237"
+ },
+ "premarket_note": "Yahoo Finance premarket quotes, 7:05 AM ET Thu Nov 5: QCOM $156.85 (-9.4% vs $173.19 close), ARM $182.64 (-4.8% vs $191.80), APP $326.00 (+20.0% vs $271.75), SPY $768.25 (+0.2% vs $766.81).",
+ "finance": [],
+ "on_deck": [
+  {
+   "ticker": "COP",
+   "company": "ConocoPhillips",
+   "when": "before the open",
+   "eps_consensus": "$3.06",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "SONY",
+   "company": "Sony Group",
+   "when": "before the open",
+   "eps_consensus": "$0.38",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "PH",
+   "company": "Parker-Hannifin",
+   "when": "before the open",
+   "eps_consensus": "$8.23",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "SO",
+   "company": "Southern Company",
+   "when": "before the open",
+   "eps_consensus": "$1.71",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "CI",
+   "company": "Cigna Group",
+   "when": "before the open",
+   "eps_consensus": "$7.46",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "MNST",
+   "company": "Monster Beverage",
+   "when": "after the close",
+   "eps_consensus": "$0.30",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "ABNB",
+   "company": "Airbnb",
+   "when": "after the close",
+   "eps_consensus": "$2.86",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "NET",
+   "company": "Cloudflare",
+   "when": "after the close",
+   "eps_consensus": "$0.02",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "TEAM",
+   "company": "Atlassian",
+   "when": "after the close",
+   "eps_consensus": "$0.24",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  },
+  {
+   "ticker": "MCHP",
+   "company": "Microchip Technology",
+   "when": "after the close",
+   "eps_consensus": "$0.82",
+   "source": {
+    "name": "Nasdaq earnings calendar",
+    "url": "https://www.nasdaq.com/market-activity/earnings"
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Infrastructure",
+   "headline": "OpenAI pledges to pay the full cost of powering its own data centers, publish construction plans and skip NDAs with public officials, two days after voters rebuked data-center expansion",
+   "why": "The midterms sent AI a power bill. OpenAI is paying it up front before someone sends a bigger one.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/11/05/openai-to-pay-for-data-center-power-after-election-shows-ai-concern.html"
+   }
+  },
+  {
+   "category": "Safety",
+   "headline": "OpenAI says an agent pipeline running an upcoming cyber model produced 948 working Linux root exploits plus candidate patches in one run, for $1.21 million in API credits ($1,279 per exploit)",
+   "why": "Bug hunting just got a price per unit. Great for defenders, nervy for anyone who still hasn't patched.",
+   "source": {
+    "name": "OpenAI",
+    "url": "https://openai.com/index/a-thousand-fewer-paths-to-root/"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "Meta acquires Conductor, the startup that runs teams of coding agents in parallel; terms not disclosed, and Conductor Cloud shuts down Nov 20",
+   "why": "The new arms race isn't the model, it's the dashboard where the models do your job. Meta just bought one.",
+   "source": {
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/2026/11/04/meta-acquires-ai-coding-startup-conductor/"
+   }
+  }
+ ],
+ "sports": []
+}

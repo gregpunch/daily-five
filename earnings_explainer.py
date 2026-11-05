@@ -8,11 +8,16 @@ MCAP={'NVDA':4500,'AAPL':3800,'MSFT':3700,'GOOGL':3000,'AMZN':2400,'META':1800,'
  'NVO':250,'CVX':250,'CSCO':250,'CRM':240,'MCD':220,'PEP':200,'SHOP':200,'IBM':200,'DIS':200,'UBER':190,'ANET':180,'AMGN':170,'BKNG':170,
  'QCOM':170,'PFE':145,'ETN':140,'CVS':90,'APO':80,'RACE':80,'MPC':50}
 def size(r): return r.get('mcap_b') or MCAP.get(r['ticker'],0)
-def lead(reports,today,days=2,n=8):
-    """Latest explainers for the home lead / email: reports from the last `days` days, biggest names first.
+def fresh(r,today):
+    """Last night's (after the close yesterday) or today's reports: these lead, ahead of yesterday morning's."""
+    d=(today-datetime.date.fromisoformat(r['date'])).days
+    return d==0 or (d==1 and r.get('when')=='after the close')
+def lead(reports,today,days=2,n=8,pin=None):
+    """Latest explainers for the home lead / email: reports from the last `days` days, last night's and today's first,
+    then biggest names first. `pin` (the edition's optional "lead" explainer slug) goes first when it is in the window.
     Falls back to the newest `n` reports if nothing is that recent."""
     rec=[r for r in reports if 0<=(today-datetime.date.fromisoformat(r['date'])).days<=days] or reports[:n]
-    return sorted(rec,key=lambda r:(-size(r),r['ticker']))[:n]
+    return sorted(rec,key=lambda r:(r['slug']!=pin,not fresh(r,today),-size(r),r['ticker']))[:n]
 
 def load(root):
     out=[json.load(open(f)) for f in sorted(glob.glob(os.path.join(root,'data','earnings','*.json')))]
@@ -197,7 +202,7 @@ def index_section(B, reports):
 
 def home_lead(B, reports):
     """Home-page lead: 'Earnings, explained' cards for the latest reports, biggest names first."""
-    E=B['E']; BASE=B['BASE']; rec=lead(reports,B['TODAY'],days=2,n=8)
+    E=B['E']; BASE=B['BASE']; rec=lead(reports,B['TODAY'],days=2,n=8,pin=B.get('PIN'))
     if not rec: return ''
     def card(r):
         v=str(r.get('verdict','')); v=v.split('. ')[0].rstrip('.')+'.' if v else ''

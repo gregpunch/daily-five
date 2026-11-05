@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-05",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "QUALCOMM: BEAT BY A PENNY, DOWN 9%",
+   "action": "Holds up a tiny imaginary coin between two fingers, squints at it, then flicks it away with a grimace.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Qualcomm beat earnings by one penny. One! Then phone chip sales dropped twenty six percent, the guide came in light, and the stock is down about nine percent before the bell."
+  },
+  {
+   "id": 2,
+   "banner": "APPLOVIN +20% · ARM -5%",
+   "action": "Mimes cranking a money printer with one hand, then gives a so-so hand wobble with a shrug.",
+   "line": "AppLovin beat, guided way above, and is up about twenty percent. That's not a stock, that's a money printer with a ticker. Arm beat too, guided right in line, and is off about five percent. Tough crowd."
+  },
+  {
+   "id": 3,
+   "banner": "ON DECK TONIGHT: AIRBNB · CLOUDFLARE",
+   "action": "Rubs his hands together with a sly grin, then points off to the side like he's spotting the next act.",
+   "line": "On deck tonight: Airbnb, Cloudflare, Atlassian, Monster and Microchip. Wall Street expects Cloudflare to earn two cents a share. Two cents! I've found more in my couch. I'll explain every one in plain English."
+  },
+  {
+   "id": 4,
+   "banner": "EARNINGS, EXPLAINED · FREE",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "I'm an A.I. host, not your financial advisor, so this is not financial advice. Earnings explained every morning, and our stock calls graded against the S and P, in public. Free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Earnings, explained · every morning at 7 AM ET"
+ }
+}

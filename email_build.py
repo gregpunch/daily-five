@@ -153,14 +153,14 @@ def preheader(ed,prev,rec):
     t=' \u00b7 '.join(bits)
     return t+'\u00a0\u200c'*40
 def lead_reports(ed):
-    """Explainers dated yesterday or today, biggest names first (same order as the home page lead)."""
+    """Explainers dated yesterday or today: last night's and today's reports first, then biggest names first (same order as the home page lead)."""
     try:
         import earnings_explainer as EX; reps=EX.load(ROOT)
     except Exception as ex:
         print('email earnings skipped:',ex); return []
     d=datetime.date.fromisoformat(ed['date'])
     rec=[r for r in reps if 0<=(d-datetime.date.fromisoformat(r['date'])).days<=1]
-    return sorted(rec,key=lambda r:(-EX.size(r),r['ticker']))
+    return sorted(rec,key=lambda r:(r['slug']!=ed.get('lead'),not EX.fresh(r,d),-EX.size(r),r['ticker']))
 def subject(ed):
     """Kit subject line: the lead earnings verdict ('AMD: Beat and big guide. Earnings, explained'); falls back to the edition headline."""
     rec=lead_reports(ed)
