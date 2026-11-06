@@ -23,8 +23,13 @@ def load(root):
     out=[json.load(open(f)) for f in sorted(glob.glob(os.path.join(root,'data','earnings','*.json')))]
     return sorted(out,key=lambda r:(r['date'],r['ticker']),reverse=True)
 
+_rx_cache={}
 def live_reaction(r):
-    """Latest price incl. pre/post-market from Yahoo vs the stored pre-report close. Falls back to the stored snapshot."""
+    """Latest price incl. pre/post-market from Yahoo vs the stored pre-report close. Falls back to the stored snapshot.
+    Memoized per (ticker, report date) for a single build.py run so home + explainer pages don't re-hit Yahoo."""
+    key=(r.get('ticker'),r.get('date'))
+    if key in _rx_cache: return _rx_cache[key]
+    out=r.get('reaction') or {}
     try:
         u=f"https://query1.finance.yahoo.com/v8/finance/chart/{r['ticker']}?range=5d&interval=5m&includePrePost=true"
         j=json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=8))['chart']['result'][0]
@@ -34,9 +39,10 @@ def live_reaction(r):
             t,c=pts[-1]; lt=time.localtime(t); hm=lt.tm_hour*60+lt.tm_min
             kind='premarket' if hm<570 else 'after hours' if hm>=960 else 'intraday'
             if kind=='after hours' and r.get('when','').startswith('before'): kind='close+after hours'
-            return {'kind':kind,'price':round(c,2),'asof':time.strftime('%Y-%m-%d %-I:%M %p ET',lt)}
+            out={'kind':kind,'price':round(c,2),'asof':time.strftime('%Y-%m-%d %-I:%M %p ET',lt)}
     except Exception: pass
-    return r.get('reaction') or {}
+    _rx_cache[key]=out
+    return out
 
 def eps_result(r):
     """'Beat'/'Miss'/'In line' on the EPS line (not guidance), or None."""
@@ -209,16 +215,35 @@ def scorecard(B, reports, days=7):
     if mv and mv[-1]['_move']>0: tiles+=tile(f'<span class="up">{mv[-1]["ticker"]} {mv[-1]["_move"]:+.1f}%</span>',f'biggest pop: {lnk(mv[-1])}')
     if mv and mv[0]['_move']<0: tiles+=tile(f'<span class="dn">{mv[0]["ticker"]} {mv[0]["_move"]:+.1f}%</span>',f'biggest drop: {lnk(mv[0])}')
     bf=[r for r in rec if r.get('_move') is not None and surprise(r,r['_move']) in ('beat-fell','rev-beat-fell')]
-    if bf: tiles+=tile(f'{len(bf)}','beat and still fell: '+', '.join(lnk(r) for r in sorted(bf,key=lambda r:r['_move'])[:4]))
+    if bf: tiles+=tile(f'{len(bf)}','beat and still fell · <a href="#beat-but-fell">see all →</a>')
     return (f'<section class="card scard"><h2 class="h2s">📊 Earnings season scorecard: last {days} days</h2>'
             f'<p class="sub">{len(rec)} big reports explained. Beat or miss is vs the consensus on each page; stock moves are vs the close before the report and refresh with every site rebuild.</p>'
             f'<div class="scgrid">{tiles}</div></section>')
+
+def beat_fell_section(B, reports, days=7):
+    """Dedicated 'This week\'s beat-but-fell' list on /earnings/: every explainer where the stock dropped ≥1% after an EPS or revenue beat.
+    Matches the search phrasing ('why did X stock fall after beating earnings') and deep-links each page's surprise FAQ."""
+    E=B['E']; BASE=B['BASE']; today=B.get('TODAY') or datetime.date.today()
+    rec=[r for r in reports if 0<=(today-datetime.date.fromisoformat(r['date'])).days<=days]
+    bf=[r for r in rec if r.get('_move') is not None and surprise(r,r['_move']) in ('beat-fell','rev-beat-fell')]
+    if not bf: return ''
+    bf=sorted(bf,key=lambda r:r['_move'])
+    def row(r):
+        k=surprise(r,r['_move'])
+        why=('fell after a revenue beat' if k=='rev-beat-fell' else 'fell after beating earnings')
+        return (f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]})</b></a> '
+                f'<span class="dn">{r["_move"]:+.1f}%</span> · {E(why)} · {datetime.date.fromisoformat(r["date"]).strftime("%b %-d")}</li>')
+    li=''.join(row(r) for r in bf)
+    return (f'<section class="card" id="beat-but-fell"><h2 class="h2s">📉 This week\'s beat-but-fell: why the stock dropped anyway</h2>'
+            f'<p class="sub">{len(bf)} report{"s" if len(bf)!=1 else ""} where the company beat Wall Street on EPS or revenue, yet the stock still fell 1%+. '
+            f'Each page answers the question searchers type — "Why did X stock fall after beating earnings?" — with the real numbers and Max\'s take.</p>'
+            f'<ul class="why">{li}</ul></section>')
 
 def index_section(B, reports):
     E=B['E']; BASE=B['BASE']
     if not reports: return ''
     li=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]}) {E(r["quarter"])}</b></a>: {E(r["verdict_word"])}'+(f' · stock {r["_move"]:+.1f}%' if r.get('_move') is not None else '')+f' · {datetime.date.fromisoformat(r["date"]).strftime("%b %-d")}</li>' for r in reports)
-    return scorecard(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
+    return scorecard(B,reports)+beat_fell_section(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
 
 def home_lead(B, reports):
     """Home-page lead: 'Earnings, explained' cards for the latest reports, biggest names first.
