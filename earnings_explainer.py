@@ -45,30 +45,46 @@ def eps_result(r):
         if ('eps' in m or 'per share' in m) and 'guid' not in m and h['result']: return h['result'].split(',')[0].strip()
     return None
 
+def rev_result(r):
+    """'Beat'/'Miss'/'In line' on the revenue/sales line (not guidance), or None."""
+    for h in r['headline']:
+        m=h['metric'].lower()
+        if any(k in m for k in ('revenue','sales','net sales')) and 'guid' not in m and h.get('result'):
+            return h['result'].split(',')[0].strip()
+    return None
+
 def surprise(r, move, thr=1.0):
-    """'beat-fell' when EPS beat but the stock is down more than thr%, 'miss-rose' for the reverse, else None.
-    These mismatches are what searchers ask about ("why did X stock fall after earnings")."""
+    """Mismatch labels searchers ask about ("why did X stock fall after earnings"):
+    'beat-fell' = EPS Beat but stock down; 'rev-beat-fell' = revenue Beat (EPS not Beat) but stock down;
+    'miss-rose' = EPS Miss but stock up. Else None."""
     if move is None: return None
-    e=eps_result(r)
+    e=eps_result(r); v=rev_result(r)
     if e=='Beat' and move<=-thr: return 'beat-fell'
+    if e!='Beat' and v=='Beat' and move<=-thr: return 'rev-beat-fell'
     if e=='Miss' and move>=thr: return 'miss-rose'
     return None
 
 def surprise_block(B, r, move, rx):
-    """Explainer card + FAQ answer for a beat-but-fell or miss-but-rose reaction. Generic, sourced from the page's own takeaways."""
+    """Explainer card + FAQ answer for a beat-but-fell / rev-beat-but-fell / miss-but-rose reaction."""
     E=B['E']; k=surprise(r,move)
     if not k: return '',None
-    nm=r['company']; tk=r['ticker']; tw=r['takeaways'][:3]
+    nm=r['company']; tk=r['ticker']; tw=r['takeaways'][:3]; kind=rx.get('kind','')
     if k=='beat-fell':
         q=f"Why did {tk} stock fall after beating earnings?"
         gen=("A beat on its own rarely moves a stock up, because the market prices in what it expects before the report. "
              "Stocks often fall after a beat when guidance, margins or a one-off announcement disappoint, or when the beat was smaller than the whisper number traders were hoping for.")
-        lead=f"{nm} beat Wall Street's earnings-per-share estimate, yet {tk} was {move:+.1f}% {rx.get('kind','')}."
+        lead=f"{nm} beat Wall Street's earnings-per-share estimate, yet {tk} was {move:+.1f}% {kind}."
+    elif k=='rev-beat-fell':
+        q=f"Why did {tk} stock fall after a revenue beat?"
+        gen=("A top-line beat can still send a stock lower when earnings only matched (or missed), margins disappointed, guidance was soft, or traders had already priced in the growth. "
+             "After hours especially, the tape often reacts to the weakest line in the release, not the strongest.")
+        eps=eps_result(r) or 'no clean EPS print'
+        lead=f"{nm} beat Wall Street's revenue estimate, but EPS was {eps.lower()}, and {tk} was {move:+.1f}% {kind}."
     else:
         q=f"Why did {tk} stock rise after missing earnings?"
         gen=("A miss doesn't always sink a stock. Shares can rise when guidance, a key growth metric or a one-off announcement beats what the market feared, "
              "or when expectations had already fallen so far that 'less bad' counts as good news.")
-        lead=f"{nm} missed Wall Street's earnings-per-share estimate, yet {tk} was {move:+.1f}% {rx.get('kind','')}."
+        lead=f"{nm} missed Wall Street's earnings-per-share estimate, yet {tk} was {move:+.1f}% {kind}."
     html=(f'<section class="card"><h2 class="h2s">🤔 {E(q)}</h2><p class="why"><b>{E(lead)}</b> {E(gen)}</p>'
           f'<p class="sub">The rest of the report, which is what the market is weighing, is in "What actually mattered" just below.</p></section>')
     ans=f"{lead} {gen} Key points from the report: "+' '.join(tw)
@@ -97,6 +113,7 @@ def render(B, reports):
         rows=''.join('<tr><td>%s</td><td><b>%s</b></td><td>%s</td><td>%s</td></tr>'%(E(h['metric']),E(h['actual']),E(h['consensus']),('<span class="%s">%s</span>'%(cls(h['result']),E(h['result'])) if h['result'] else '')) for h in r['headline'])
         tks=''.join(f'<li>{E(t)}</li>' for t in r['takeaways'])
         rxh=(f"<p class=\"sub\"><b class=\"{'up' if move>=0 else 'dn'}\">{tk} {move:+.1f}%</b> {E(rx['kind'])} at ${rx['price']:,.2f} vs the ${pc:,.2f} close before the report (as of {E(rx['asof'])}). Live moves change fast; this updates every time the site rebuilds.</p>" if move is not None else '<p class="sub">Reaction pending: the first trade after the report will show here.</p>')
+        rx_h2=('📈 After-hours reaction' if 'after hours' in (rx.get('kind') or '') else '📈 Stock reaction')
         srcs=''.join(f'<li><a href="{E(s["url"])}" rel="nofollow noopener" target="_blank">{E(s["title"])}</a></li>' for s in r['sources'])
         bw=[h for h in r['headline'] if h['result']]
         ans_beat=f"{nm} reported {q} results on {d} ({r['when']}). "+'; '.join(f"{h['metric']}: {h['actual']} vs {h['consensus']} expected ({h['result'].lower()})" for h in bw if h['consensus']!='n/a')+'.'
@@ -113,7 +130,7 @@ def render(B, reports):
         body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🧾 Earnings explained · {E(d)} · {E(r["when"])}</span><h1 class="pt">{E(h1)}</h1>'
               f'<p class="sub wksum"><b>Bottom line: {E(r["verdict_word"])}.</b> The numbers vs Wall Street, what actually mattered, and how the stock took it, in plain English.</p></section>'
               f'<section class="card"><h2 class="h2s">The headline numbers</h2><div class="tbl"><table><thead><tr><th>Metric</th><th>Reported</th><th>Consensus</th><th>Result</th></tr></thead><tbody>{rows}</tbody></table></div></section>'
-              f'<section class="card"><h2 class="h2s">📈 Stock reaction</h2>{rxh}</section>{sbh}'
+              f'<section class="card"><h2 class="h2s">{rx_h2}</h2>{rxh}</section>{sbh}'
               f'<section class="card"><h2 class="h2s">What actually mattered</h2><ol class="why">{tks}</ol></section>'
               f'<section class="card"><h2 class="h2s">🤖 Max\'s verdict</h2><p class="why">{E(r["verdict"])}</p><p class="disc">Max Edge is an AI host. This is commentary, not financial advice.</p></section>'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get every big earnings report explained in your inbox, free.</h2><p>Beat or miss, guidance, the stock reaction and what it means, in plain English. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
@@ -125,6 +142,9 @@ def render(B, reports):
         if r['_surprise']=='beat-fell':
             title=f"Why {tk} stock fell after {nm} beat {q} earnings"
             desc=f"{nm} beat on EPS but {tk} was {move:+.1f}% {rx.get('kind','')}. What spooked the market, explained: "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'.'
+        elif r['_surprise']=='rev-beat-fell':
+            title=f"Why {tk} stock fell after {nm} beat on revenue in {q}"
+            desc=f"{nm} beat on revenue but {tk} was {move:+.1f}% {rx.get('kind','')}. Why the tape sold off, explained: "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'.'
         elif r['_surprise']=='miss-rose':
             title=f"Why {tk} stock rose after {nm} missed {q} earnings"
             desc=f"{nm} missed on EPS but {tk} was {move:+.1f}% {rx.get('kind','')}. Why the market shrugged, explained: "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'.'
@@ -188,7 +208,7 @@ def scorecard(B, reports, days=7):
     lnk=lambda r: f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a>'
     if mv and mv[-1]['_move']>0: tiles+=tile(f'<span class="up">{mv[-1]["ticker"]} {mv[-1]["_move"]:+.1f}%</span>',f'biggest pop: {lnk(mv[-1])}')
     if mv and mv[0]['_move']<0: tiles+=tile(f'<span class="dn">{mv[0]["ticker"]} {mv[0]["_move"]:+.1f}%</span>',f'biggest drop: {lnk(mv[0])}')
-    bf=[r for r in rec if r.get('_move') is not None and surprise(r,r['_move'])=='beat-fell']
+    bf=[r for r in rec if r.get('_move') is not None and surprise(r,r['_move']) in ('beat-fell','rev-beat-fell')]
     if bf: tiles+=tile(f'{len(bf)}','beat and still fell: '+', '.join(lnk(r) for r in sorted(bf,key=lambda r:r['_move'])[:4]))
     return (f'<section class="card scard"><h2 class="h2s">📊 Earnings season scorecard: last {days} days</h2>'
             f'<p class="sub">{len(rec)} big reports explained. Beat or miss is vs the consensus on each page; stock moves are vs the close before the report and refresh with every site rebuild.</p>'
