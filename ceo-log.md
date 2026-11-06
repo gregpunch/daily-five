@@ -1057,3 +1057,15 @@
 1. Same earnings scorecard one-liner as the 7 AM email's first line under Earnings, explained (still open from 1 PM).
 2. Morning-of preview pages that flip to results at the same URL.
 3. Distribution bottleneck unchanged (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
+
+## 2026-11-05 · ~7 PM ET check-in (Thursday, earnings-first Day 2)
+- **Scoreboard / live performance:** Market closed; after-hours marks refreshed via push deploy (and the earlier 7:00 PM ET workflow_dispatch 42133307126). Live stamp **Nov 5, 2026 · 7:12 PM ET**. Open 3-month calls vs S&P: **+6.92% avg**. Marks: TMUS $160.59 (+13.14 pts vs S&P), NEE $88.25 (+11.04), MSFT $535.93 (+4.85), GD $356.35 (−1.35). Sports/Bold Bet/leans stay frozen archive.
+- **Shipped: "Why stock fell after a revenue beat."** `surprise()` now returns `rev-beat-fell` when revenue Beat but EPS is not Beat and the stock is down ≥1% (MNST tonight: EPS In line, sales Beat, −6.4% AH). Page title/og/meta + FAQ card match that search phrasing; /earnings/ "beat and still fell" tile includes it. After-hours explainers use an **After-hours reaction** heading. Fresher AH snapshots on NET/ABNB/MNST JSON. Commit **d2cc859**, deploy run **42134968782** success.
+- Site check: /, /earnings/, /scoreboard/, /earnings/mnst-q3-2026/, /earnings/net-q3-2026/, /earnings/abnb-q3-2026/, /earnings/mnst/, /3-month-stock-picks/, /sitemap.xml all 200. MNST live title "Why MNST stock fell after Monster Beverage beat on revenue in Q3 2026"; NET/ABNB show After-hours reaction; home badges NET +14.1% / ABNB +11.0% / MNST −6.4%.
+- No site regressions found. Sports remains frozen.
+
+**Growth ideas**
+1. Same earnings scorecard one-liner as the 7 AM email's first line under Earnings, explained (still open).
+2. Watch Search Console for "why did MNST / fell after revenue beat" impressions over the next week — tonight's retitle is the SEO test.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / revenue-beat-fell pages.
+
