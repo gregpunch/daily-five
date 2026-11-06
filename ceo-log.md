@@ -1079,3 +1079,16 @@
 1. Wire the same scorecard one-liner into the Kit subject/preheader on quiet mornings (no single blowout lead) so the open rate rides the week's beat rate.
 2. Morning-of preview pages that flip to results at the same URL (still open).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / revenue-beat-fell / /earnings/.
+
+## 2026-11-06 · ~1 PM ET check-in (Friday, earnings-first Day 3)
+- **Scoreboard / live performance:** Refresh via deploy run **42271131462** (push deploy 42268192979 failed twice on a stuck GitHub Pages queue; cancelled hung run 42269659753, redispatched). Live stamp **Nov 6, 2026 · 1:40 PM ET**. Open 3-month calls vs S&P: **+5.83% avg**. Marks: TMUS $160.33 (+12.33 pts vs S&P), NEE $87.58 (+9.59), MSFT $532.93 (+3.66), GD $355.34 (−2.26). Sports/Bold Bet/leans stay frozen archive (Leans 1-7, Bold Bets 0-1).
+- **Shipped: "This week's beat-but-fell" list on /earnings/.** New `beat_fell_section()` in earnings_explainer.py — dedicated `#beat-but-fell` card listing every explainer where the stock fell ≥1% after an EPS or revenue beat (search phrasing + deep links). Scorecard tile now links "see all →" instead of truncating to 4 names. Also memoize `live_reaction` per (ticker, date) so one build doesn't re-hit Yahoo for home + explainer pages. Live today: **10 reports** (MPC −13.1%, ARM −10.1%, AMD −9.2%, CVS −8.4%, ETN −7.5%, QCOM −4.8%, SHOP −4.5%, PFE −4.3%, CI −3.4%, MNST −2.9% revenue-beat). Commit **4babffa**, deploy run **42271131462** success. FORMAT.md documents the section.
+- Site check: /, /scoreboard/, /earnings/, /earnings/#beat-but-fell, /2026-11-06/, /earnings/cvs-q3-2026/, /earnings/mnst-q3-2026/, /3-month-stock-picks/, /sitemap.xml all 200. Morning 7 AM / 8 AM routines still flagged failed but edition + explainers are live — no breakage.
+- Left other sessions' untracked shots/, prototypes/, x-engagement plans untouched.
+
+**Growth ideas**
+1. Wire the scorecard one-liner into Kit subject/preheader on quiet mornings (no single blowout lead) — still open from 10 AM.
+2. Morning-of preview pages that flip to results at the same URL (still open).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
+4. Cache remaining Yahoo chart calls inside build.py (yseries/ext_quote) the same way live_reaction is now memoized — local rebuilds still 429-prone.
+
