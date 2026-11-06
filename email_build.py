@@ -181,6 +181,38 @@ def on_deck(ed):
     srcs=sorted({src(x['source']['name']) for x in od})
     li+=f'<div style="{F}font-size:11px;color:{MUT};padding-top:6px;">Schedule and estimates: {E(", ".join(srcs))}. Explainers go up after each report.</div>'
     return [sec('📅','On deck today','Who reports today, and what Wall Street expects'),f'<tr><td style="padding:4px 24px;">{li}</td></tr>']
+def email_scoreline(ed, days=7):
+    """One-line earnings season scorecard under the email 'Earnings, explained' heading
+    (mirrors home_scoreline on the site): EPS beat tally over the last `days` days, plus
+    biggest pop/drop among yesterday/today lead cards from stored reaction prices."""
+    try:
+        import earnings_explainer as EX; reps=EX.load(ROOT)
+    except Exception as ex:
+        print('email scoreline skipped:',ex); return ''
+    d=datetime.date.fromisoformat(ed['date'])
+    wk=[r for r in reps if 0<=(d-datetime.date.fromisoformat(r['date'])).days<=days]
+    if len(wk)<3: return ''
+    res=[]
+    for r in wk:
+        for h in r['headline']:
+            m=h['metric'].lower()
+            if ('eps' in m or 'per share' in m) and 'guid' not in m and h.get('result'):
+                res.append(h['result'].split(',')[0].strip()); break
+    lead=lead_reports(ed)
+    moves=[]
+    for r in lead:
+        rx=r.get('reaction') or {}; pc=r.get('prev_close')
+        if rx.get('price') and pc: moves.append((r,(rx['price']/pc-1)*100))
+    parts=[]
+    if res: parts.append(f'<b>{sum(x=="Beat" for x in res)} of {len(res)}</b> beat on EPS this week')
+    if moves:
+        moves=sorted(moves,key=lambda x:x[1])
+        if moves[-1][1]>0: parts.append(f'biggest pop <span style="color:{UP};font-weight:700;">{E(moves[-1][0]["ticker"])} {moves[-1][1]:+.1f}%</span>')
+        if moves[0][1]<0: parts.append(f'biggest drop <span style="color:{DN};font-weight:700;">{E(moves[0][0]["ticker"])} {moves[0][1]:+.1f}%</span>')
+    if not parts: return ''
+    u=f"{SITE}/earnings/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-scorecard"
+    return (f'<tr><td style="padding:2px 24px 10px;{F}font-size:14px;line-height:21px;color:#cdd2e1;">'
+            f'📊 {" · ".join(parts)} · <a href="{u}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">full scorecard →</a></td></tr>')
 def earnings(ed):
     """'Last night's earnings, explained': explainer pages for reports dated yesterday or today (after-the-close first)."""
     try:
@@ -190,6 +222,8 @@ def earnings(ed):
     rec=lead_reports(ed)
     if not rec: return []
     out=[sec('🧾',"Earnings, explained",'Who beat, who missed, and how the stock took it · in plain English')]
+    sl=email_scoreline(ed)
+    if sl: out.append(sl)
     for r in rec[:6]:
         v=str(r.get('verdict','')); v=v.split('. ')[0].rstrip('.')+'.' if v else ''
         u=f"{SITE}/earnings/{r['slug']}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-earnings"
