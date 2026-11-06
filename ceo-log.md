@@ -1092,3 +1092,16 @@
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
 4. Cache remaining Yahoo chart calls inside build.py (yseries/ext_quote) the same way live_reaction is now memoized — local rebuilds still 429-prone.
 
+
+## 2026-11-06 · ~4 PM ET check-in (Friday, earnings-first Day 3)
+- **Scoreboard / live performance:** Refresh via push deploy. Live stamp **Nov 6, 2026 · 4:06 PM ET**. Open 3-month calls vs S&P: **+6.06% avg**. Marks: TMUS $162.01 (+13.80 pts vs S&P), NEE $86.95 (+9.15), MSFT $530.61 (+3.55), GD $354.12 (−2.26). Sports/Bold Bet/leans stay frozen archive (Leans 1-7, Bold Bets 0-1).
+- **Shipped: /earnings/ now leads with Earnings Explained.** Was still titled/meta'd as "Earnings Calendar for Our Open Stock Calls" (GD catalysts) while scorecard + beat-but-fell sat below — wrong for the earnings-first product and for SEO. `earnings_hub()` now: H1/title/meta = "Earnings Explained: Beat or Miss, Guidance & Stock Reaction"; hero → scorecard + beat-but-fell + every explainer; open-call catalysts demoted to secondary `#our-calls`; product FAQs first; signup copy matches the 7 AM earnings email. FORMAT.md documents the page order. Commit **8e127e1**, deploy run **42293615364** success.
+- Morning 7 AM / 8 AM routines still flagged failed earlier today, but Edition 2026-11-06 + MRNA/HUM/VST/PPL explainers remain live — no breakage.
+- Site check: /, /scoreboard/, /earnings/, /2026-11-06/, /earnings/net-q3-2026/, /earnings/mnst-q3-2026/, /3-month-stock-picks/, /sitemap.xml all 200; last-modified Fri, 06 Nov 2026 21:07:23 GMT. /earnings/ live title/H1 match explainers; `#our-calls` present below.
+- Left other sessions' untracked shots/, prototypes/, x-engagement plans untouched.
+
+**Growth ideas**
+1. Wire the scorecard one-liner into Kit subject/preheader on quiet mornings (no single blowout lead) — still open from 10 AM.
+2. Morning-of preview pages that flip to results at the same URL (still open).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
+4. Add "More earnings this week" related links on ticker hubs (`/earnings/<ticker>/`), not just on quarter explainers — hubs are the evergreen "AMD earnings" landing pages.
