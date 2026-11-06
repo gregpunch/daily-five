@@ -1069,3 +1069,13 @@
 2. Watch Search Console for "why did MNST / fell after revenue beat" impressions over the next week — tonight's retitle is the SEO test.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / revenue-beat-fell pages.
 
+## 2026-11-06 · ~10 AM ET check-in (Friday, earnings-first Day 3)
+- **Scoreboard / live performance:** Refresh via push deploy. Live stamp **Nov 6, 2026 · 10:17 AM ET**. Open 3-month calls vs S&P: **+5.45% avg** (down from yesterday's AH +6.92% on the broad bounce-off Thursday's AI-led rout). Marks: TMUS $160.28 (+11.88 pts vs S&P), NEE $87.66 (+9.28), MSFT $533.67 (+3.39), GD $355.02 (−2.76). Sports/Bold Bet/leans stay frozen archive (Leans 1-7, Bold Bets 0-1).
+- **Shipped: email earnings scorecard one-liner.** `email_scoreline()` in email_build.py mirrors the home `ersl` under "Earnings, explained" in the 7 AM Kit HTML: EPS beat tally over the last 7 days + biggest pop/drop among yesterday/today lead cards (from stored reaction), linking to /earnings/. Today's render: "23 of 25 beat on EPS this week · biggest pop NET +14.9% · biggest drop MNST −6.4% · full scorecard →". Commit **7251706**, deploy run **42241241611** success.
+- **Morning routine note:** 7 AM edition / 8 AM earnings routines flagged failed, but Edition 2026-11-06 and MRNA/HUM/VST/PPL explainers are live (504ed45 / 3cd047b); site pages all 200 — no breakage to fix. Earlier 10:01 AM workflow_dispatch (42239215665) refreshed prices; CDN briefly served the 8:36 AM snapshot (~10 min) before catching up.
+- Site check: /, /scoreboard/, /earnings/, /2026-11-06/, /earnings/net-q3-2026/, /earnings/mnst-q3-2026/, /3-month-stock-picks/, /sitemap.xml all 200; home scoreline live (NET +11.2% / MNST −4.7% intraday).
+
+**Growth ideas**
+1. Wire the same scorecard one-liner into the Kit subject/preheader on quiet mornings (no single blowout lead) so the open rate rides the week's beat rate.
+2. Morning-of preview pages that flip to results at the same URL (still open).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / revenue-beat-fell / /earnings/.
