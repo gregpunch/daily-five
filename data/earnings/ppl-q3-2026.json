@@ -1,0 +1,65 @@
+{
+ "slug": "ppl-q3-2026",
+ "ticker": "PPL",
+ "company": "PPL",
+ "quarter": "Q3 2026",
+ "date": "2026-11-06",
+ "when": "before the open",
+ "verdict_word": "Beat and a bigger runway",
+ "headline": [
+  {
+   "metric": "Ongoing EPS",
+   "actual": "$0.54 (vs $0.48 a year ago)",
+   "consensus": "$0.53 (Zacks via AP)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$2.50B",
+   "consensus": "$2.44B (Zacks via AP)",
+   "result": "Beat"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "$0.49 (vs $0.43 a year ago)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "2026 ongoing EPS guidance",
+   "actual": "$1.92 to $1.96 (narrowed; midpoint $1.94)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Long-term annual EPS growth target",
+   "actual": "7% to 9% through at least 2030 (was 6% to 8%)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "PPL earned $0.54 ongoing per share vs $0.53 expected and $2.50 billion of revenue vs $2.44 billion (Zacks via AP); GAAP EPS was $0.49.",
+  "Management narrowed 2026 ongoing EPS guidance to $1.92–$1.96 (midpoint still $1.94) and introduced 2027 guidance of $2.06–$2.14 (midpoint $2.10, up 8.2% from the 2026 midpoint).",
+  "The long-term EPS growth target rose to 7%–9% through at least 2030 from 6%–8%, backed by a $25 billion 2027–2030 capital plan and about 10% average annual rate-base growth.",
+  "Invitium Energy (PPL's JV with Blackstone Infrastructure) agreed to terms for roughly 2 GW of generation to supply QTS's Salem Township, Pennsylvania data center — a nonbinding term sheet with a cost-reimbursement backstop.",
+  "Kentucky's large-load pipeline and Pennsylvania data-center demand remain the upside story beyond the base plan, with PPL flagging $12–$16 billion of potential extra generation investment through 2032."
+ ],
+ "verdict": "A penny beat, a slightly tighter guide, and a louder growth story about data centers eating watts in Kentucky and Pennsylvania. Utilities don't do drama; they do rate base. Max's take: boring on the quarter, interesting on the decade — which is exactly how regulated power companies like to dress for earnings day.",
+ "sources": [
+  {
+   "title": "PPL Q3 2026 results release (PR Newswire)",
+   "url": "https://www.prnewswire.com/news-releases/ppl-corporation-delivers-strong-third-quarter-2026-earnings-raises-longterm-eps-growth-outlook-302932024.html"
+  },
+  {
+   "title": "AP via Kens5: PPL Q3 earnings snapshot (Zacks consensus)",
+   "url": "https://www.kens5.com/article/syndication/associatedpress/ppl-q3-earnings-snapshot/616-b7e820c6-660b-4ff3-8008-69f2facd3897"
+  }
+ ],
+ "prev_close": 36.00,
+ "reaction": {
+  "kind": "premarket",
+  "price": 36.94,
+  "asof": "2026-11-06 8:20 AM ET"
+ }
+}

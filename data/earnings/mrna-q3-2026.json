@@ -1,0 +1,59 @@
+{
+ "slug": "mrna-q3-2026",
+ "ticker": "MRNA",
+ "company": "Moderna",
+ "quarter": "Q3 2026",
+ "date": "2026-11-06",
+ "when": "before the open",
+ "verdict_word": "Crush and a raise",
+ "headline": [
+  {
+   "metric": "GAAP diluted EPS",
+   "actual": "$0.38 (vs −$0.51 a year ago)",
+   "consensus": "−$1.25 (LSEG via CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$1.31B (+29%)",
+   "consensus": "$885.1M (LSEG via CNBC)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Net income",
+   "actual": "$162M (vs −$200M a year ago)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "2026 revenue growth outlook",
+   "actual": "15% to 25% (was up to 10%)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Moderna swung to a $0.38 profit vs Wall Street's expected $1.25 loss, on $1.31 billion of revenue vs $885.1 million expected (LSEG via CNBC) — a roughly 48% revenue beat.",
+  "Sales jumped 29% year over year, with $780 million in the U.S. and $533 million internationally, helped by COVID vaccine deliveries under long-term government partnerships abroad.",
+  "Full-year 2026 revenue growth guidance went to 15%–25% from 'up to 10%,' R&D spend outlook fell to about $2.7 billion from $2.9 billion, and year-end cash is now seen at $8.1–$8.3 billion.",
+  "CEO Stéphane Bancel told CNBC newer products and geographic expansion (Canada, U.K., Asia) drove the quarter, and cost cuts helped the return to profit.",
+  "The company also highlighted U.S. approval of its flu shot mFLUSIVA and positive Phase 3 melanoma data for intismeran with Merck — though the stock had sold off earlier when some of that cancer data leaked."
+ ],
+ "verdict": "Wall Street showed up expecting another red quarter and Moderna handed it a green one, by a mile. International COVID contracts and a leaner cost base turned a predicted $1.25 loss into 38 cents of profit, then management hiked the sales outlook. Max's take: the mRNA story just reminded everyone it can still print money when the shots ship.",
+ "sources": [
+  {
+   "title": "Moderna Q3 2026 results release (Access Newswire)",
+   "url": "https://www.accessnewswire.com/newsroom/en/healthcare-and-pharmaceutical/moderna-reports-third-quarter-2026-financial-results-and-provides-bus-1247635"
+  },
+  {
+   "title": "CNBC: Moderna raises 2026 outlook (LSEG consensus)",
+   "url": "https://www.cnbc.com/2026/11/06/moderna-mrna-earnings-q3-2026.html"
+  }
+ ],
+ "prev_close": 241.46,
+ "reaction": {
+  "kind": "premarket",
+  "price": 236.56,
+  "asof": "2026-11-06 8:20 AM ET"
+ }
+}

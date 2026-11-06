@@ -1,0 +1,65 @@
+{
+ "slug": "hum-q3-2026",
+ "ticker": "HUM",
+ "company": "Humana",
+ "quarter": "Q3 2026",
+ "date": "2026-11-06",
+ "when": "before the open",
+ "verdict_word": "Smaller loss, bigger guide",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "−$0.70",
+   "consensus": "−$1.00 (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$41.16B (+26%)",
+   "consensus": "$40.87B (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "$1.33",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "FY2026 adjusted EPS guidance",
+   "actual": "at least $9.50 (was at least $9.00)",
+   "consensus": "$9.16 (Investing.com)",
+   "result": "Raised"
+  },
+  {
+   "metric": "Insurance segment GAAP benefit ratio",
+   "actual": "93.7% (guidance: slightly above 94%)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Humana's adjusted loss of 70 cents a share beat the $1.00 loss Wall Street expected, and revenue of $41.16 billion topped the $40.87 billion consensus (Investing.com).",
+  "On a GAAP basis the company earned $1.33 a share, lifted by put/call valuation gains on minority investments; adjusted pretax profit was much thinner after stripping those items.",
+  "Full-year adjusted EPS guidance moved to 'at least $9.50' from 'at least $9.00,' above the $9.16 Street number Investing.com cites; GAAP EPS guidance jumped to at least $15.09 from $6.52.",
+  "The insurance segment's GAAP benefit ratio came in at 93.7%, better than management's 'slightly above 94%' guide — medical costs ran a bit cooler than feared.",
+  "CenterWell Senior Primary Care patients are up 146,800 year to date (+30%), and Medicaid membership is up 103,600 (+7%) on Duals programs in Michigan, Illinois and South Carolina."
+ ],
+ "verdict": "Losing 70 cents instead of a buck is somehow a win in Medicare Advantage land, and Humana stacked a guidance raise on top. Medical costs behaved, CenterWell keeps adding patients, and the Street got the raise it was already half-expecting. Max's take: not a fireworks quarter — more like a quietly competent one that still left the stock a little soft premarket.",
+ "sources": [
+  {
+   "title": "Humana Q3 2026 results release",
+   "url": "https://humana.gcs-web.com/news-releases/news-release-details/humana-reports-third-quarter-2026-financial-results-raises-full"
+  },
+  {
+   "title": "Investing.com: Humana beats estimates, raises guidance",
+   "url": "https://www.investing.com/news/earnings/humana-beats-estimates-on-earnings-and-revenue-raises-guidance-5007444"
+  }
+ ],
+ "prev_close": 411.79,
+ "reaction": {
+  "kind": "premarket",
+  "price": 405.75,
+  "asof": "2026-11-06 8:20 AM ET"
+ }
+}

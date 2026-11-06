@@ -1,0 +1,65 @@
+{
+ "slug": "vst-q3-2026",
+ "ticker": "VST",
+ "company": "Vistra",
+ "quarter": "Q3 2026",
+ "date": "2026-11-06",
+ "when": "before the open",
+ "verdict_word": "Hot summer cash",
+ "headline": [
+  {
+   "metric": "Ongoing Operations Adjusted EBITDA",
+   "actual": "$2.378B (+50%)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Operating revenue",
+   "actual": "$6.347B (+28%)",
+   "consensus": "$6.79B (Investing.com)",
+   "result": "Miss"
+  },
+  {
+   "metric": "GAAP net income",
+   "actual": "$1.14B (vs $652M a year ago)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "2026 Ongoing Ops Adjusted EBITDA guidance",
+   "actual": "$7.1B to $7.5B (raised midpoint, narrowed)",
+   "consensus": "n/a",
+   "result": "Raised"
+  },
+  {
+   "metric": "Share repurchase authorization",
+   "actual": "additional $1.5B (through year-end 2028)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Vistra's Ongoing Operations Adjusted EBITDA jumped more than 50% to $2.378 billion, helped by higher realized energy and capacity prices, Lotus-acquired plants, and Martin Lake Unit 1 back online after a hot summer of record demand in ERCOT and PJM.",
+  "Revenue of $6.347 billion rose 28% year over year but missed Investing.com's $6.79 billion consensus; GAAP net income still climbed to $1.14 billion from $652 million, including a $559 million unrealized hedge gain expected to settle in future years.",
+  "Management raised and narrowed 2026 Ongoing Ops Adjusted EBITDA guidance to $7.1–$7.5 billion and initiated 2027 guidance of $7.7–$8.5 billion.",
+  "The board authorized another $1.5 billion of buybacks (about $2.5 billion total authorization left, aimed by year-end 2028), and Vistra closed the Cogentrix deal adding roughly 5,500 MW of gas generation in October.",
+  "Investing.com notes shares rose about 5% premarket even with the revenue miss — the EBITDA print and guide mattered more to traders."
+ ],
+ "verdict": "Miss the top line, crush the cash engine, raise the guide, add buybacks — classic Vistra. A blistering summer and higher power prices did the heavy lifting, and Wall Street cheered the EBITDA anyway. Max's take: when your product is electrons in a heat wave, the income statement kind of writes itself.",
+ "sources": [
+  {
+   "title": "Vistra Q3 2026 results release",
+   "url": "https://investor.vistracorp.com/2026-11-06-Vistra-Reports-Third-Quarter-2026-Results"
+  },
+  {
+   "title": "Investing.com: Vistra stock jumps despite revenue miss",
+   "url": "https://www.investing.com/news/earnings/vistra-stock-jumps-despite-revenue-miss-5007608"
+  }
+ ],
+ "prev_close": 112.89,
+ "reaction": {
+  "kind": "premarket",
+  "price": 119.40,
+  "asof": "2026-11-06 8:20 AM ET"
+ }
+}
