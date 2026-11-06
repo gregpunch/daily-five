@@ -932,9 +932,10 @@ def earnings_og(ops):
     import hashlib; return f"/{rel}.png?v={hashlib.sha1(svg.encode()).hexdigest()[:8]}"
 ERN_IDX={'h':''}
 def earnings_hub():
-    """/earnings/: next earnings date (or catalyst) for every open 3-month call, with right-if/wrong-if and the live edge vs the S&P 500."""
-    P='/earnings/'; ops=[p for p in open3()]
-    if not ops: return None
+    """/earnings/: lead product is plain-English earnings explainers (scorecard, beat-but-fell, every report).
+    Open 3-month calls' next catalysts sit below as a secondary 'Our calls' section (earnings-first pivot)."""
+    P='/earnings/'; ops=[p for p in open3()]; idx=ERN_IDX.get('h') or ''
+    if not ops and not idx: return None
     dd=lambda p: (p.get('catalyst') or {}).get('date') or '9999'
     ops=sorted(ops,key=dd)
     def card(p):
@@ -949,24 +950,32 @@ def earnings_hub():
         return (f'<article class="card">{head}<p class="why"><b>Our call:</b> {p["action"]} {sym} at ${p["entry"]:,.2f}, 3-month hold, currently {edge}. '
                 f'<a href="{BASE}/picks/{p["id"]}/">Full pick, chart and the why →</a></p>{catalyst_box(p)}</article>')
     nxt=[p for p in ops if p.get('catalyst') and p['catalyst']['date']>=TODAY.isoformat()]
-    lead=(f"{len(nxt)} of our {len(ops)} open 3-month stock calls report earnings in the next stretch: "+', '.join(f"{(cname(p['symbol'].upper()) or p['symbol'].upper())} ({p['symbol'].upper()}) on {datetime.date.fromisoformat(p['catalyst']['date']).strftime('%a %b %-d')} {p['catalyst'].get('when','')}" for p in nxt)+'. ' if nxt else '')+\
-         "Each call is graded against the S&P 500 over 3 months, so one report doesn't settle it, but it's the night the thesis gets tested. Here's exactly what would make us right or wrong, decided before the numbers come out."
-    faqs=[(f"When does {(cname(p['symbol'].upper()) or p['symbol'].upper())} ({p['symbol'].upper()}) report earnings?",
+    cal_lead=(f"{len(nxt)} of our {len(ops)} open 3-month stock calls report earnings in the next stretch: "+', '.join(f"{(cname(p['symbol'].upper()) or p['symbol'].upper())} ({p['symbol'].upper()}) on {datetime.date.fromisoformat(p['catalyst']['date']).strftime('%a %b %-d')} {p['catalyst'].get('when','')}" for p in nxt)+'. ' if nxt else '')+\
+         "Each call is graded against the S&P 500 over 3 months, so one report doesn't settle it, but it's the night the thesis gets tested. Here's exactly what would make us right or wrong, decided before the numbers come out." if ops else ''
+    faqs=[("What is Earnings Explained on The Daily Five?","Every big report in plain English: who beat or missed vs Wall Street, what the guidance means, and how the stock took it. Free every morning by email, and on this page with a weekly scorecard and a list of stocks that beat and still fell."),
+          ("How do you decide beat vs miss?","We compare the company's reported EPS and revenue to a named consensus (LSEG, FactSet, Zacks, etc.) from a cited source. If no consensus is published we leave it blank rather than guess.")]
+    faqs+=[(f"When does {(cname(p['symbol'].upper()) or p['symbol'].upper())} ({p['symbol'].upper()}) report earnings?",
            f"{(cname(p['symbol'].upper()) or p['symbol'].upper())} reports {p['catalyst']['event']} on {datetime.date.fromisoformat(p['catalyst']['date']).strftime('%A, %B %-d, %Y')} {p['catalyst'].get('when','')}. The Daily Five holds an open 3-month {p['action']} call on {p['symbol'].upper()} from ${p['entry']:,.2f}.")
-          for p in ops if p.get('catalyst')]+[("How does The Daily Five grade stock calls around earnings?","Every call is a 3-month hold graded against the S&P 500 from the day we publish. After a report we also show the move since the report-day close versus the index, but only the 3-month result counts toward the record.")]
+          for p in ops if p.get('catalyst')]
+    faqs+=[("How does The Daily Five grade stock calls around earnings?","Every call is a 3-month hold graded against the S&P 500 from the day we publish. After a report we also show the move since the report-day close versus the index, but only the 3-month result counts toward the record.")]
     faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
-    cnav,csch=crumbs([('Home','/'),('Stock picks','/best-stocks-to-buy-today/'),('Earnings calendar','/earnings/')])
-    syms=', '.join(p['symbol'].upper() for p in nxt) or ', '.join(p['symbol'].upper() for p in ops)
-    h1='Earnings Calendar for Our Open Stock Calls'
-    bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">📅 Earnings watch · updated {TODAY.strftime("%b %-d, %Y")}</span><h1 class="pt">{h1}</h1><p class="sub wksum">{E(lead)}</p>'
-           f'<div class="hubcta"><a class="pill" href="{BASE}/best-stocks-to-buy-today/">Today\'s stock picks →</a><a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard →</a><a class="pill ghost" href="{BASE}/max-edge/">Max Edge videos →</a></div></section>'
-           +ERN_IDX['h']+verdict_box(ops)+''.join(card(p) for p in ops)+f'<section class="signup wksign"><div><span class="kicker">📬 The morning after</span><h2>Get the post-earnings verdict at 7 AM ET.</h2><p>The free email grades our calls the morning after each report, wins and losses. No spam, unsubscribe anytime.</p></div>{sform("wk")}</section>'
-           f'{faqh}<p class="disc-bar">⚠️ <b>Not financial advice.</b> Earnings dates come from company investor-relations pages and can change. Past results don\'t guarantee future returns.</p>')
-    title=f"Earnings Explained: Beat or Miss, Guidance, Stock Reaction + Our Calls ({syms}) | {BRAND}"
-    desc=(f"Next earnings dates for every open Daily Five stock call ({syms}), with what would make each call right or wrong and the live edge vs the S&P 500.")[:155]
-    sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc,"dateModified":TODAY.isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P},csch,
+    cnav,csch=crumbs([('Home','/'),('Earnings explained','/earnings/')])
+    h1='Earnings Explained: Beat or Miss, Guidance, Stock Reaction'
+    lead=("Plain-English explainers for every big report we cover: the numbers vs Wall Street, what actually mattered, and how the stock took it. "
+          "The weekly scorecard and beat-but-fell list update with every rebuild. Free 7 AM email.")
+    cal=('' if not ops else
+         f'<section class="sec" id="our-calls"><div class="sh"><span class="si">📅</span><div><h2>Next earnings for our open 3-month calls</h2>'
+         f'<p class="sub">{E(cal_lead)}</p></div></div>{verdict_box(ops)}'+''.join(card(p) for p in ops)+'</section>')
+    bodyh=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🧾 Earnings explained · updated {TODAY.strftime("%b %-d, %Y")}</span><h1 class="pt">{h1}</h1><p class="sub wksum">{E(lead)}</p>'
+           f'<div class="hubcta"><a class="pill" href="#subscribe">Get the free 7 AM email →</a><a class="pill ghost" href="{BASE}/scoreboard/">Scoreboard →</a><a class="pill ghost" href="{BASE}/3-month-stock-picks/">3-month calls →</a></div></section>'
+           +idx+cal+f'<section class="signup wksign" id="subscribe"><div><span class="kicker">📬 Free</span><h2>Get every big earnings report explained at 7 AM ET.</h2><p>Beat or miss, guidance, the stock reaction and what it means, in plain English. No spam, unsubscribe anytime.</p></div>{sform("ern")}</section>'
+           f'{faqh}<p class="disc-bar">⚠️ <b>Not financial advice.</b> Explainers summarize public company reports; consensus and prices come from cited sources and can change.</p>')
+    title=f"Earnings Explained: Beat or Miss, Guidance & Stock Reaction | {BRAND}"
+    desc=("Plain-English earnings explained every day: who beat, who missed, guidance and how the stock took it. Weekly scorecard, beat-but-fell list, and 3-month calls vs the S&P.")[:155]
+    og=earnings_og(ops) if ops else None
+    sch={"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":h1,"description":desc,"dateModified":TODAY.isoformat(),"url":SITE+P,"publisher":{"@type":"Organization","name":BRAND}},csch,
          {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}]}
-    w('earnings/index.html',shell(title,desc,P,bodyh,sch,og=earnings_og(ops)))
+    w('earnings/index.html',shell(title,desc,P,bodyh,sch,og=og))
     return P
 def latest_clip(today=None):
     """Home page clip: today's clip, or today's script as text if the video is missing; only falls back to an older clip when today has neither."""
@@ -1527,7 +1536,7 @@ def three_month_hub(eds):
           +(f'<h2 class="hzh">Open calls</h2>'+''.join(card(p,ed) for p,ed in op) if op else '')
           +(f'<h2 class="hzh">Closed calls</h2>'+''.join(card(p,ed) for p,ed in cl) if cl else '')
           +f'<h2 class="hzh">How the 3-month calls work</h2>{faqh}'
-          f'<p class="sub"><a href="{BASE}/scoreboard/">Full scoreboard →</a> · <a href="{BASE}/stock-results/">Stock results →</a> · <a href="{BASE}/earnings/">Earnings calendar for open calls →</a></p>')
+          f'<p class="sub"><a href="{BASE}/scoreboard/">Full scoreboard →</a> · <a href="{BASE}/stock-results/">Stock results →</a> · <a href="{BASE}/earnings/">Earnings explained →</a></p>')
     names=', '.join(p['label'] for p,_ in op[:4])
     desc=(f'Our 3-month stock picks graded live against the S&P 500: {len(op)} open call{"s" if len(op)!=1 else ""}'+(f' ({names})' if names else '')+', with entry price, edge vs SPY, thesis and exit date.')[:155]
     sch={"@context":"https://schema.org","@graph":[
