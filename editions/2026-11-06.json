@@ -1,0 +1,145 @@
+{
+ "date": "2026-11-06",
+ "headline": "Cloudflare blows out Q3 and jumps ~19% premarket; Airbnb +13% on a beat-and-raise; Monster sales beat, stock still down ~5%; Moderna, Humana, Vistra report today",
+ "top_call": "Cloudflare just printed its 'best quarter ever,' beat and guided way above, and the stock is ripping about 19% in premarket. Airbnb beat, raised and authorized another $12 billion in buybacks — up about 13%. Monster sold more cans than expected, matched EPS, and still got slapped about 5%. Plain-English explainers below.",
+ "lead": "net-q3-2026",
+ "backdrop": "Nasdaq futures bounced Friday after Thursday's AI-led rout — the Nasdaq Composite tumbled 5.5% and entered a correction, while the S&P 500 fell 4.4% and the Dow lost more than 1,800 points, per CNBC. Early Friday, Nasdaq-100 futures were up about 1.7%, S&P 500 futures about 0.4%, and Dow futures down about 0.9%, with chip names bouncing and October's jobs report still on deck.",
+ "backdrop_source": {
+  "name": "CNBC",
+  "url": "https://www.cnbc.com/2026/11/05/stock-market-today-live-updates.html"
+ },
+ "premarket_note": "Yahoo Finance premarket quotes, ~7:13 AM ET Fri Nov 6: NET $291.29 (+19.1% vs $244.51 Thu close), ABNB $191.50 (+12.6% vs $170.13), MNST $45.61 (−4.6% vs $47.83), SPY $735.09 (+0.3% vs $733.00), QQQ $657.04 (+1.5% vs $647.05).",
+ "finance": [],
+ "on_deck": [
+  {
+   "ticker": "ENB",
+   "company": "Enbridge",
+   "when": "before the open",
+   "eps_consensus": "$0.49",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "MRNA",
+   "company": "Moderna",
+   "when": "before the open",
+   "eps_consensus": "−$1.25",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "BAM",
+   "company": "Brookfield Asset Management",
+   "when": "before the open",
+   "eps_consensus": "$0.46",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "HUM",
+   "company": "Humana",
+   "when": "before the open",
+   "eps_consensus": "−$1.00",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "VST",
+   "company": "Vistra",
+   "when": "before the open",
+   "eps_consensus": "$2.43",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "UI",
+   "company": "Ubiquiti",
+   "when": "before the open",
+   "eps_consensus": "$4.25",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "PPL",
+   "company": "PPL",
+   "when": "before the open",
+   "eps_consensus": "$0.53",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "CHTR",
+   "company": "Charter Communications",
+   "when": "before the open",
+   "eps_consensus": "$8.93",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "BEN",
+   "company": "Franklin Templeton",
+   "when": "before the open",
+   "eps_consensus": "$0.77",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  },
+  {
+   "ticker": "WULF",
+   "company": "TeraWulf",
+   "when": "before the open",
+   "eps_consensus": "−$0.37",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-06"
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Safety",
+   "headline": "OpenAI launches GPT-6 Cyber for authorized vulnerability research: 48.5% on ExploitGym vs 32.1% for GPT-5.6 Cyber, with Daybreak Red-only access at first",
+   "why": "The bug hunters got a new power tool. Patch your stack before someone else's Daybreak Red key does it for you.",
+   "source": {
+    "name": "OpenAI",
+    "url": "https://openai.com/index/introducing-gpt-6-cyber/"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "Meta rolls out real-time voice and expressive avatars for Muse in the U.S., with hundreds of voice styles and interruptible conversation on mobile, web and Mac",
+   "why": "Your AI now has a face and a New Yorker accent. Talking to your phone just got harder to explain at the coffee shop.",
+   "source": {
+    "name": "Meta",
+    "url": "https://about.fb.com/news/2026/11/introducing-muse-ai-voice-expressive-avatars/"
+   }
+  },
+  {
+   "category": "Infrastructure",
+   "headline": "TeraWulf says Google is backstopping project financing tied to roughly $19 billion in Anthropic lease commitments for its Kentucky AI campus, and signed a definitive Fluor EPC",
+   "why": "Google just co-signed Anthropic's Kentucky power bill. When your landlord needs a trillion-dollar roommate, you know AI capex is still the main character.",
+   "source": {
+    "name": "TeraWulf",
+    "url": "https://investors.terawulf.com/news-events/press-releases/detail/148/terawulf-secures-google-credit-backstop-for-project-financing-in-support-of-19-billion-anthropic-lease-executes-definitive-fluor-epc-agreement"
+   }
+  }
+ ],
+ "sports": []
+}

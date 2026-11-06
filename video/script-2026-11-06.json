@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-06",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "CLOUDFLARE: BLOWOUT · +19%",
+   "action": "Mimes an explosion with both hands near his chest, then pumps a fist with a cocky grin.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Cloudflare blew out. Adjusted E.P.S. thirty eight cents versus thirty four. Revenue seven hundred eighty two million, up thirty nine percent, and the guide is way above. Before the open, up about nineteen percent. Best quarter ever, said the C.E.O."
+  },
+  {
+   "id": 2,
+   "banner": "AIRBNB +13% · MONSTER −5%",
+   "action": "Mimes booking a vacation with a swipe, then mimes crushing an energy can with a wince.",
+   "line": "Airbnb beat and raised. E.P.S. three sixteen versus two eighty five. Revenue four point eight seven billion, plus a twelve billion dollar buyback. Up about thirteen percent. Monster matched E.P.S. at thirty cents, sold more cans, and still fell about five. Cool growth. Where is the margin party?"
+  },
+  {
+   "id": 3,
+   "banner": "ON DECK: MODERNA · HUMANA · VISTRA",
+   "action": "Rubs his hands, then points at camera like a tip-off.",
+   "line": "On deck today: Moderna, Humana, Vistra, Enbridge, Charter and TeraWulf. After Thursday's A.I. rout, Nasdaq futures are bouncing. I'll explain every print in plain English."
+  },
+  {
+   "id": 4,
+   "banner": "EARNINGS, EXPLAINED · FREE",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "I'm an A.I. host, not your financial advisor, so this is not financial advice. Earnings explained every morning, stock calls graded against the S and P, in public. Free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Earnings, explained · every morning at 7 AM ET"
+ }
+}
