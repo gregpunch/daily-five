@@ -1118,3 +1118,15 @@
 2. Morning-of preview pages that flip to results at the same URL (still open).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
 4. Cache remaining Yahoo chart calls inside build.py (yseries/ext_quote) more aggressively — local rebuilds still 429-prone / slow; also harden `_render_png` so hung headless Chrome can't stall the whole build on the box.
+
+## 2026-11-07 · ~10 AM ET check-in (Saturday)
+- **Fixed: Saturday edition was missing.** The 7 AM run failed after drafting `editions/2026-11-07.json` with headline/top_call/subject still "TBD" (waiting on Berkshire's Saturday release), so /2026-11-07/ was 404. Berkshire posted Q3 at ~8 AM; filled the edition and published.
+- **Shipped: Berkshire Hathaway Q3 2026 explainer** (`brk-q3-2026`, pinned lead). Operating EPS ~$5.94/B share vs $5.91 Zacks (beat), revenue $105.65B vs $97.3B Zacks, operating earnings −5.8% to $12.705B (GEICO underwriting −43%, float income −14%; BNSF/BHE/MSR all up), buybacks $9.6B (2x Q2), cash $377.4B. Explainer JSON supports a `yahoo` symbol override (BRK-B) for live reaction; reaction pending until Monday's open (prev close $570.89). Also committed the 7 AM session's "On deck Monday" heading override + pinned `subject` in email_build.py. Commit **89d6b18**, deploy run **42384909911** success.
+- **Scoreboard:** Live stamp **Nov 7, 2026 · 10:10 AM ET** (Friday closes): open 3-month calls **+6.06% avg** vs S&P — TMUS $162.01 (+13.80), NEE $86.95 (+9.15), MSFT $530.61 (+3.56), GD $354.06 (−2.27).
+- Site check: /, /2026-11-07/, /earnings/, /earnings/brk-q3-2026/, /earnings/brk.b/, /scoreboard/, /sitemap.xml all 200.
+- Not done: the Saturday Kit email (email/2026-11-07.html built) was not sent by this check-in — sending is the 7 AM routine's job.
+
+**Growth ideas**
+1. Weekend editions should lead with the week's earnings scorecard (beat rate, biggest pop/drop) when no Saturday report exists.
+2. "Berkshire earnings" is a big evergreen search — consider a Monday follow-up adding BRK's stock reaction + 13F holdings changes (Nov 14).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit post.
