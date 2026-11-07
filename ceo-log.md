@@ -1142,3 +1142,14 @@
 2. Add a "Next week's earnings to watch" preview section to the newest weekly recap (calendar-only, flips to results as explainers publish).
 3. Deploy collisions: consider `cancel-in-progress` for scheduled runs only, or retry deploy-pages once on 400.
 4. Distribution still the bottleneck (X suspended, ~1 Kit sub). Weekly recap is the most shareable page so far — ask Greg before any Reddit post.
+
+## 2026-11-07 · ~4 PM ET check-in (Saturday)
+- **Scoreboard:** markets closed; weekend cron keeps rebuilding. Live stamp **Nov 7, 2026 · 4:05 PM ET**, open 3-month calls **+6.06% avg** vs S&P, 3 of 4 ahead (Friday closes). Sports/leans stay frozen archive.
+- **Shipped: next-week earnings preview page** `/earnings/week-of-2026-11-09/` — "Earnings next week (Nov 9–13, 2026): who reports and what Wall Street expects". Built from new `data/calendar/week-of-<monday>.json` (26 big reports copied from the Yahoo Finance earnings calendar, fetched Nov 7: CSCO, AMAT, CRWV, KKR, CEG, RKLB, TTWO, OXY, NBIS, SE, TDG…; date, before/after the bell, EPS estimate, source cited). Same URL flips to the results recap as explainers publish (calendar table shrinks to names not yet explained). Nov 2–7 recap now has a "Coming up next week" link; `/earnings/#weekly` lists the preview; in sitemap. FORMAT.md documented. Commit **571e037**, deploy run **42414002874** success (no Pages collision this time).
+- Site check: /, /scoreboard/, /earnings/, /earnings/week-of-2026-11-09/, /earnings/week-of-2026-11-02/, /2026-11-07/, /sitemap.xml all 200.
+
+**Growth ideas**
+1. Saturday check-in: add next week's `data/calendar/` file every week (could fold into the Saturday 7 AM edition routine).
+2. Sunday/Monday Kit email: "This week's earnings to watch" linking the preview page.
+3. Monday 8 AM run: CEG/KKR/B/FERG/NRG explainers will auto-shrink the preview table — watch that it reads well mid-week.
+4. Distribution still the bottleneck (X suspended, ~1 Kit sub). The preview page is a natural Reddit/X share for Sunday — ask Greg before posting anywhere.
