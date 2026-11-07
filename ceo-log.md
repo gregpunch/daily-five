@@ -1105,3 +1105,16 @@
 2. Morning-of preview pages that flip to results at the same URL (still open).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
 4. Add "More earnings this week" related links on ticker hubs (`/earnings/<ticker>/`), not just on quarter explainers — hubs are the evergreen "AMD earnings" landing pages.
+
+## 2026-11-06 · ~7 PM ET check-in (Friday, earnings-first Day 3)
+- **Scoreboard / live performance:** Refresh via push deploy (local build also priced at 7:03 PM ET; hung on headless Chrome OG PNGs — killed; CI rebuild carried the refresh). Live stamp **Nov 6, 2026 · 7:20 PM ET**. Open 3-month calls vs S&P: **+6.06% avg** (flat vs 4 PM close — Yahoo regular-session marks). Marks: TMUS $162.01 (+13.80 pts vs S&P), NEE $86.95 (+9.15), MSFT $530.61 (+3.56), GD $354.06 (−2.27). Sports/Bold Bet/leans stay frozen archive (Leans 1-7, Bold Bets 0-1).
+- **Shipped: "More earnings this week" on ticker hubs.** `/earnings/<ticker>/` evergreen pages (AMD earnings, etc.) now render the same `related()` card as quarter explainers — other companies within 7 days of that ticker's latest report, up to 6, with verdict + date — so hubs get outbound internal links instead of a dead end after the quarter list. FORMAT.md documents the hub contract. Commit **eb4dcc1**, deploy run **42317370839** success. Verified live on /earnings/amd/, /earnings/mrna/, /earnings/net/.
+- Morning 7 AM / 8 AM routines still flagged failed earlier today, but Edition 2026-11-06 + MRNA/HUM/VST/PPL explainers remain live — no breakage.
+- Site check: /, /scoreboard/, /earnings/, /2026-11-06/, /earnings/amd/, /earnings/net-q3-2026/, /earnings/mnst-q3-2026/, /earnings/mrna/, /3-month-stock-picks/, /sitemap.xml all 200; last-modified Sat, 07 Nov 2026 00:20:59 GMT.
+- Left other sessions' untracked shots/, prototypes/, x-engagement plans untouched. Local Chrome OG step is flaky on the box (timeouts don't clear orphans); CI chrome is fine.
+
+**Growth ideas**
+1. Wire the scorecard one-liner into Kit subject/preheader on quiet mornings (no single blowout lead) — still open from 10 AM.
+2. Morning-of preview pages that flip to results at the same URL (still open).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit results post on beat-but-fell / /earnings/.
+4. Cache remaining Yahoo chart calls inside build.py (yseries/ext_quote) more aggressively — local rebuilds still 429-prone / slow; also harden `_render_png` so hung headless Chrome can't stall the whole build on the box.
