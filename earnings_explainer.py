@@ -162,7 +162,8 @@ def render(B, reports):
 
 def ticker_hubs(B, reports):
     """/earnings/<ticker>/: one evergreen page per company for searches like "AMD earnings" that name no quarter.
-    Latest report's numbers up top, then every quarter we've explained. Renders only from the same JSON as the explainers."""
+    Latest report's numbers up top, then every quarter we've explained, plus "More earnings explained this week"
+    (other companies within 7 days of the latest report — same related() card as quarter explainers)."""
     E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]; by={}
     for r in reports: by.setdefault(r['ticker'],[]).append(r)
     for tk,rs in by.items():
@@ -182,6 +183,7 @@ def ticker_hubs(B, reports):
               f'<section class="card"><h2 class="h2s">Latest: {E(L["quarter"])} vs consensus</h2><div class="tbl"><table><thead><tr><th>Metric</th><th>Reported</th><th>Consensus</th><th>Result</th></tr></thead><tbody>{rows}</tbody></table></div>'
               f'<p class="sub"><a href="{BASE}/earnings/{L["slug"]}/">Full {E(tk)} {E(L["quarter"])} explainer: what mattered, the reaction and Max\'s verdict →</a></p></section>'
               f'<section class="card"><h2 class="h2s">Every {E(nm)} report we\'ve explained</h2><ul class="why">{hist}</ul></section>'
+              f'{related(B,L,reports)}'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get the next {E(tk)} report explained in your inbox.</h2><p>Every big earnings report in plain English: beat or miss, guidance, and how the stock took it. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'{faqh}<p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources on each report page.</p>')
         title=f"{nm} ({tk}) earnings: latest results, guidance and stock reaction"
