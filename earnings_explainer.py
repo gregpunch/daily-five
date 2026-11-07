@@ -141,7 +141,7 @@ def render(B, reports):
               f'<section class="card"><h2 class="h2s">🤖 Max\'s verdict</h2><p class="why">{E(r["verdict"])}</p><p class="disc">Max Edge is an AI host. This is commentary, not financial advice.</p></section>'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get every big earnings report explained in your inbox, free.</h2><p>Beat or miss, guidance, the stock reaction and what it means, in plain English. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'<section class="card"><h2 class="h2s">Sources</h2><ul class="why">{srcs}</ul><p class="disc">Numbers come from the company\'s release and the coverage above. Where no consensus was published we leave it out rather than guess.</p></section>'
-              f'{related(B,r,reports)}{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
+              f'{related(B,r,reports)}{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/week-of-{_wk(r).isoformat()}/">This week\'s earnings recap →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
         title=f"{nm} {q} earnings explained: beat or miss, guidance, stock reaction"
         desc=f"{nm} ({tk}) {q} earnings: {r['verdict_word']}. "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'. Guidance, key takeaways and stock reaction.'
         # When the reaction contradicts the EPS result, match the question searchers type in the title and meta.
@@ -158,7 +158,7 @@ def render(B, reports):
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
         r['_move']=move; urls.append((P,B['TODAY'].isoformat()))
-    return urls+ticker_hubs(B,reports)
+    return urls+ticker_hubs(B,reports)+week_recaps(B,reports)
 
 def ticker_hubs(B, reports):
     """/earnings/<ticker>/: one evergreen page per company for searches like "AMD earnings" that name no quarter.
@@ -192,6 +192,68 @@ def ticker_hubs(B, reports):
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{tk.lower()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,B['TODAY'].isoformat()))
     return urls
+
+def _wk(r):
+    d=datetime.date.fromisoformat(r['date']); return d-datetime.timedelta(days=d.weekday())
+def week_label(m, rs=()):
+    f=max([m+datetime.timedelta(days=4)]+[datetime.date.fromisoformat(r['date']) for r in rs])
+    return f"{m.strftime('%b %-d')}–{f.strftime('%-d') if f.month==m.month else f.strftime('%b %-d')}, {f.year}"
+def week_recaps(B, reports):
+    """/earnings/week-of-<monday>/: one recap per week ("earnings this week: who beat, who missed"), built only from
+    the explainer JSON results and the live moves render() just computed. Weekend reports (e.g. Berkshire on Saturday) roll into that week."""
+    E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]; by={}
+    for r in reports: by.setdefault(_wk(r),[]).append(r)
+    weeks=sorted(by,reverse=True)
+    for i,m in enumerate(weeks):
+        rs=sorted(by[m],key=lambda r:(r['date'],-size(r))); P=f"/earnings/week-of-{m.isoformat()}/"; lab=week_label(m,by[m])
+        ep=[eps_result(r) for r in rs]; rv=[rev_result(r) for r in rs]
+        en=sum(1 for x in ep if x); eb=sum(x=='Beat' for x in ep); rn=sum(1 for x in rv if x); rb=sum(x=='Beat' for x in rv)
+        mv=sorted([r for r in rs if r.get('_move') is not None],key=lambda r:r['_move'])
+        bf=[r for r in mv if surprise(r,r['_move']) in ('beat-fell','rev-beat-fell')]
+        def cl(x): return 'up' if x=='Beat' else 'dn' if x=='Miss' else ''
+        def cell(x): return f'<span class="{cl(x)}">{E(x)}</span>' if x else '—'
+        rows=''.join(f'<tr><td><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])}</b> ({E(r["ticker"])})</a><br><small>{E(r["quarter"])} · {datetime.date.fromisoformat(r["date"]).strftime("%a %b %-d")}</small></td>'
+                     f'<td>{cell(eps_result(r))}</td><td>{cell(rev_result(r))}</td><td>'+(f'<b class="{"up" if r["_move"]>=0 else "dn"}">{r["_move"]:+.1f}%</b>' if r.get('_move') is not None else 'pending')+'</td></tr>' for r in rs)
+        def tile(big,l): return f'<div class="sct"><b>{big}</b><span>{l}</span></div>'
+        tiles=''
+        if en: tiles+=tile(f'{eb} of {en}','beat on EPS')
+        if rn: tiles+=tile(f'{rb} of {rn}','beat on revenue')
+        lnk=lambda r: f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a>'
+        if mv and mv[-1]['_move']>0: tiles+=tile(f'<span class="up">{mv[-1]["ticker"]} {mv[-1]["_move"]:+.1f}%</span>',f'biggest pop: {lnk(mv[-1])}')
+        if mv and mv[0]['_move']<0: tiles+=tile(f'<span class="dn">{mv[0]["ticker"]} {mv[0]["_move"]:+.1f}%</span>',f'biggest drop: {lnk(mv[0])}')
+        if bf: tiles+=tile(str(len(bf)),'beat and still fell')
+        beats=[r['company'] for r,x in zip(rs,ep) if x=='Beat']; miss=[r['company'] for r,x in zip(rs,ep) if x=='Miss']
+        summ=(f"{len(rs)} big reports explained the week of {lab}. "+(f"{eb} of {en} beat Wall Street on earnings per share" if en else '')
+              +(f"; the biggest pop was {mv[-1]['company']} ({mv[-1]['ticker']} {mv[-1]['_move']:+.1f}%)" if mv and mv[-1]['_move']>0 else '')
+              +(f" and the biggest drop {mv[0]['company']} ({mv[0]['ticker']} {mv[0]['_move']:+.1f}%)" if mv and mv[0]['_move']<0 else '')+'.')
+        faqs=[(f"Which companies beat earnings the week of {lab}?",(f"On EPS: {', '.join(beats)} beat consensus." if beats else 'No EPS beats among the reports we explained.')+(f" Missed: {', '.join(miss)}." if miss else ''))]
+        if mv: faqs.append((f"Which stock moved the most after earnings the week of {lab}?",f"Among the reports we explained, {mv[-1]['company']} ({mv[-1]['ticker']}) moved {mv[-1]['_move']:+.1f}% and {mv[0]['company']} ({mv[0]['ticker']}) moved {mv[0]['_move']:+.1f}% versus the close before each report, as of the latest site rebuild."))
+        if bf: faqs.append((f"Which stocks fell after beating earnings the week of {lab}?",'; '.join(f"{r['company']} ({r['ticker']} {r['_move']:+.1f}%)" for r in bf)+'. Each explainer covers why.'))
+        faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
+        nav=[]
+        if i+1<len(weeks): nav.append(f'<a href="{BASE}/earnings/week-of-{weeks[i+1].isoformat()}/">← Week of {E(week_label(weeks[i+1],by[weeks[i+1]]))}</a>')
+        if i>0: nav.append(f'<a href="{BASE}/earnings/week-of-{weeks[i-1].isoformat()}/">Week of {E(week_label(weeks[i-1],by[weeks[i-1]]))} →</a>')
+        cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),(f'Week of {lab}',P)])
+        h1=f"Earnings This Week ({lab}): Who Beat, Who Missed, Biggest Stock Moves"
+        body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">📊 Weekly earnings recap · {E(lab)}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p></section>'
+              f'<section class="card scard"><h2 class="h2s">📊 The week in one glance</h2><div class="scgrid">{tiles}</div><p class="sub">Beat or miss is vs the consensus on each explainer; stock moves are vs the close before the report and refresh with every site rebuild.</p></section>'
+              f'<section class="card"><h2 class="h2s">Every report this week</h2><div class="tbl"><table><thead><tr><th>Company</th><th>EPS</th><th>Revenue</th><th>Stock</th></tr></thead><tbody>{rows}</tbody></table></div></section>'
+              f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get next week\'s big reports explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
+              f'{faqh}<p class="sub">{" · ".join(nav+[f"<a href=\"{BASE}/earnings/\">All earnings explained →</a>"])}</p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources on each report page.</p>')
+        title=f"Earnings this week ({lab}): who beat, who missed, biggest stock moves"
+        desc=summ
+        sch={"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":h1,"url":SITE+P,"description":desc[:300],"publisher":{"@type":"Organization","name":BRAND},
+              "hasPart":[{"@type":"Article","headline":f"{r['company']} {r['quarter']} earnings explained","url":f"{SITE}/earnings/{r['slug']}/"} for r in rs]},csch,
+             {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
+        B['w'](f"earnings/week-of-{m.isoformat()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,B['TODAY'].isoformat()))
+    return urls
+
+def weeks_section(B, reports):
+    E=B['E']; BASE=B['BASE']; by={}
+    for r in reports: by.setdefault(_wk(r),[]).append(r)
+    if not by: return ''
+    li=''.join(f'<li><a href="{BASE}/earnings/week-of-{m.isoformat()}/"><b>Week of {E(week_label(m,by[m]))}</b></a>: {len(by[m])} reports, who beat, who missed, biggest moves</li>' for m in sorted(by,reverse=True))
+    return f'<section class="card" id="weekly"><h2 class="h2s">📅 Weekly earnings recaps</h2><ul class="why">{li}</ul></section>'
 
 def scorecard(B, reports, days=7):
     """'Earnings season scorecard' on /earnings/: share of reports that beat on EPS and on revenue,
@@ -245,7 +307,7 @@ def index_section(B, reports):
     E=B['E']; BASE=B['BASE']
     if not reports: return ''
     li=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]}) {E(r["quarter"])}</b></a>: {E(r["verdict_word"])}'+(f' · stock {r["_move"]:+.1f}%' if r.get('_move') is not None else '')+f' · {datetime.date.fromisoformat(r["date"]).strftime("%b %-d")}</li>' for r in reports)
-    return scorecard(B,reports)+beat_fell_section(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
+    return scorecard(B,reports)+beat_fell_section(B,reports)+weeks_section(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
 
 def home_lead(B, reports):
     """Home-page lead: 'Earnings, explained' cards for the latest reports, biggest names first.
