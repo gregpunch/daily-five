@@ -1,0 +1,75 @@
+{
+ "slug": "brk-q3-2026",
+ "ticker": "BRK.B",
+ "yahoo": "BRK-B",
+ "company": "Berkshire Hathaway",
+ "quarter": "Q3 2026",
+ "date": "2026-11-07",
+ "when": "Saturday morning (market closed)",
+ "verdict_word": "Penny beat, buybacks doubled",
+ "mcap_b": 1000,
+ "headline": [
+  {
+   "metric": "Operating EPS (per Class B share)",
+   "actual": "$5.94 (−5.8% y/y)",
+   "consensus": "$5.91 (Zacks)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$105.65B (+11%)",
+   "consensus": "$97.3B (Zacks)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Operating earnings",
+   "actual": "$12.705B (was $13.485B)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Share buybacks",
+   "actual": "$9.6B in Q3 (Q2: $4.5B)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Cash and T-bills",
+   "actual": "$377.4B (Q2: $365.5B)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Operating earnings fell 5.8% to $12.705 billion, about $5.94 per Class B share on 2.14 billion average equivalent shares — a few cents above the $5.91 Zacks consensus, which had already baked in the decline.",
+  "Insurance was the drag: underwriting profit tumbled 43% to $1.35 billion as GEICO's losses rose 8.5% and underwriting expenses jumped 17% (Bloomberg), and insurance investment income fell 14% to $2.73 billion on lower short-term rates.",
+  "Everything else grew: BNSF earned $1.73 billion (+19%), Berkshire Hathaway Energy $1.61 billion (+8%), and manufacturing, service and retailing $4.04 billion (+12%).",
+  "Greg Abel bought back about $9.6 billion of Berkshire stock in Q3, more than double Q2's $4.5 billion, for about $14.4 billion so far in 2026.",
+  "The cash pile still grew to $377.4 billion; excluding rail and utility cash and T-bill payables it was $352.3 billion, down 1.9% from Q2 (CNBC). Net earnings, including stock-portfolio gains, fell 28% to $22.1 billion — a number Berkshire itself calls 'usually meaningless.'"
+ ],
+ "verdict": "Profits slipped, the Street saw it coming, and Abel answered by buying back stock at more than twice the pace of last quarter — a loud 'we think we're cheap' from a company that's up 13% this year while tech melts. GEICO had a rough quarter and lower rates nicked the float income, but trains, power and factories all grew. Max's take: boring in the best way, and the buyback is the headline. The stock gets its first vote Monday.",
+ "sources": [
+  {
+   "title": "Berkshire Hathaway Q3 2026 news release",
+   "url": "https://www.berkshirehathaway.com/news/nov0726.pdf"
+  },
+  {
+   "title": "Berkshire Hathaway Q3 2026 Form 10-Q",
+   "url": "https://www.berkshirehathaway.com/qtrly/3rdqtr26.pdf"
+  },
+  {
+   "title": "CNBC: Berkshire more than doubles buybacks as earnings decline",
+   "url": "https://www.cnbc.com/2026/11/07/berkshire-hathaway-q3-2026-earnings-buybacks.html"
+  },
+  {
+   "title": "Bloomberg: Berkshire's operating earnings fall, buybacks rise",
+   "url": "https://www.bloomberg.com/news/articles/2026-11-07/berkshire-hathaway-s-operating-earnings-fall-buybacks-rise"
+  },
+  {
+   "title": "Zacks consensus via QuantisNow Q3 preview",
+   "url": "https://www.quantisnow.com/articles/berkshire-q3-2026-preview-operating-eps-seen-down-5-6-to-5-91-and-only-nov-7-fits-saturday-release-pattern"
+  }
+ ],
+ "prev_close": 570.89,
+ "reaction": {}
+}

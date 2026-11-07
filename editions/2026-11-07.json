@@ -1,0 +1,146 @@
+{
+ "date": "2026-11-07",
+ "headline": "Berkshire's profits dip 5.8% but Abel doubles buybacks to $9.6B; stocks bounce after an AI rout; Constellation, KKR, Rocket Lab and more report Monday",
+ "top_call": "Berkshire Hathaway's operating earnings fell 5.8% to $12.7 billion as GEICO had a rough quarter, but that was already priced into estimates, and Greg Abel answered by buying back $9.6 billion of stock, more than double last quarter. Railroad, energy and manufacturing all grew. Plain-English explainer below, plus who reports Monday.",
+ "lead": "brk-q3-2026",
+ "subject": "Berkshire: Penny beat, buybacks doubled · earnings, explained",
+ "backdrop": "Friday's bounce: the S&P 500 rose 0.3% to 7,376.86 and the Nasdaq gained 1.1% after Thursday's AI-led rout pushed it into a correction, while the Dow slipped 0.5%. October payrolls jumped 165,000 vs about 59,000 expected and unemployment dipped to 4.1% — strong enough to push December rate-hike odds to about 77% on CME FedWatch. Still the S&P's worst week since June.",
+ "backdrop_source": {
+  "name": "CNBC / CBS News",
+  "url": "https://www.cbsnews.com/news/stocks-tech-sell-off-nasdaq-correction-dow/"
+ },
+ "finance": [],
+ "on_deck_title": "On deck Monday",
+ "on_deck_sub": "Who reports Monday, Nov 9, and what Wall Street expects",
+ "on_deck": [
+  {
+   "ticker": "CEG",
+   "company": "Constellation Energy",
+   "when": "before the open",
+   "eps_consensus": "$3.89",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "KKR",
+   "company": "KKR & Co.",
+   "when": "before the open",
+   "eps_consensus": "$1.58",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "B",
+   "company": "Barrick Mining",
+   "when": "before the open",
+   "eps_consensus": "$0.80",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "FERG",
+   "company": "Ferguson Enterprises",
+   "when": "before the open",
+   "eps_consensus": "$3.29",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "NRG",
+   "company": "NRG Energy",
+   "when": "before the open",
+   "eps_consensus": "$3.03",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "OXY",
+   "company": "Occidental Petroleum",
+   "when": "after the close",
+   "eps_consensus": "$1.47",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "TTWO",
+   "company": "Take-Two Interactive",
+   "when": "after the close",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "RKLB",
+   "company": "Rocket Lab",
+   "when": "after the close",
+   "eps_consensus": "−$0.07",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "ASTS",
+   "company": "AST SpaceMobile",
+   "when": "after the close",
+   "eps_consensus": "−$0.45",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "QRVO",
+   "company": "Qorvo",
+   "when": "after the close",
+   "eps_consensus": "$2.05",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Research",
+   "headline": "METR's independent review says Anthropic is improving AI capabilities at roughly twice its 2024-25 pace, with AI tools doing much of the speed-up — but Anthropic redacted most of the key evidence",
+   "why": "The robots are helping build the robots, and the receipts are under a black marker. AI stocks just had a $3 trillion wobble over capex fears; the capability curve isn't slowing down.",
+   "source": {
+    "name": "The Neuron",
+    "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/"
+   }
+  },
+  {
+   "category": "Consumer",
+   "headline": "Claude gets a Personal Finance beta: U.S. Pro, Max and Ultra users can link bank accounts through Plaid, read-only, to ask about spending, bills and odd transactions",
+   "why": "Your chatbot can now see the DoorDash habit. Read-only, so it can judge you but not move a dime.",
+   "source": {
+    "name": "The Neuron",
+    "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/"
+   }
+  },
+  {
+   "category": "Models",
+   "headline": "Google ships Gemini Omni 1.2 Flash: 15-second video generation and editing with better consistency at 30% lower prices",
+   "why": "AI video keeps getting cheaper by the week. Great for creators, rough for anyone charging by the edit.",
+   "source": {
+    "name": "AI of the Day",
+    "url": "https://www.aiofthe.day/day/2026-11-06"
+   }
+  }
+ ],
+ "sports": []
+}

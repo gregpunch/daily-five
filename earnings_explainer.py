@@ -31,7 +31,7 @@ def live_reaction(r):
     if key in _rx_cache: return _rx_cache[key]
     out=r.get('reaction') or {}
     try:
-        u=f"https://query1.finance.yahoo.com/v8/finance/chart/{r['ticker']}?range=5d&interval=5m&includePrePost=true"
+        u=f"https://query1.finance.yahoo.com/v8/finance/chart/{r.get('yahoo') or r['ticker']}?range=5d&interval=5m&includePrePost=true"
         j=json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=8))['chart']['result'][0]
         pts=[(t,c) for t,c in zip(j['timestamp'],j['indicators']['quote'][0]['close']) if c]
         rep=datetime.date.fromisoformat(r['date'])

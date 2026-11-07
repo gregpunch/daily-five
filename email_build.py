@@ -180,7 +180,8 @@ def on_deck(ed):
              f' <span style="color:{MUT};">· {E(x.get("when",""))}</span>'+(f' <span style="{M}font-size:13px;color:#cdd2e1;">· {E(cs)}</span>' if cs else '')+'</div>')
     srcs=sorted({src(x['source']['name']) for x in od})
     li+=f'<div style="{F}font-size:11px;color:{MUT};padding-top:6px;">Schedule and estimates: {E(", ".join(srcs))}. Explainers go up after each report.</div>'
-    return [sec('📅','On deck today','Who reports today, and what Wall Street expects'),f'<tr><td style="padding:4px 24px;">{li}</td></tr>']
+    # Weekend editions preview the next trading day: ed['on_deck_title'] / ed['on_deck_sub'] override the heading.
+    return [sec('📅',ed.get('on_deck_title') or 'On deck today',ed.get('on_deck_sub') or 'Who reports today, and what Wall Street expects'),f'<tr><td style="padding:4px 24px;">{li}</td></tr>']
 def email_scoreline(ed, days=7):
     """One-line earnings season scorecard under the email 'Earnings, explained' heading
     (mirrors home_scoreline on the site): EPS beat tally over the last `days` days, plus
@@ -283,7 +284,8 @@ def render(ed,prev=None,rec=None,open3=None):
 def write(ed,prev=None,rec=None,open3=None):
     os.makedirs(os.path.join(ROOT,'email'),exist_ok=True); path=os.path.join(ROOT,'email',ed['date']+'.html')
     open(path,'w').write(render(ed,prev,rec,open3))
-    open(path[:-5]+'.subject.txt','w').write(subject(ed)+'\n'); return path
+    # ed['subject'] (optional) pins the Kit subject line, e.g. 'The Daily Five — Sat Nov 7: ...'.
+    open(path[:-5]+'.subject.txt','w').write((ed.get('subject') or subject(ed))+'\n'); return path
 if __name__=='__main__':
     sys.path.insert(0,ROOT); import build
     f=os.path.join(ROOT,'editions',(sys.argv[1] if len(sys.argv)>1 else sorted(os.listdir(os.path.join(ROOT,'editions')))[-1].replace('.json',''))+'.json')
