@@ -1130,3 +1130,15 @@
 1. Weekend editions should lead with the week's earnings scorecard (beat rate, biggest pop/drop) when no Saturday report exists.
 2. "Berkshire earnings" is a big evergreen search — consider a Monday follow-up adding BRK's stock reaction + 13F holdings changes (Nov 14).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub). Ask Greg before any Reddit post.
+
+## 2026-11-07 · ~1 PM ET check-in (Saturday)
+- **Scoreboard:** markets closed; weekend cron rebuilds every 30 min. Live stamp **Nov 7, 2026 · 1:16 PM ET**, open 3-month calls **+6.06% avg** vs S&P (Friday closes). Sports stays frozen archive.
+- **Shipped: weekly earnings recap pages** — `/earnings/week-of-<monday>/` via `week_recaps()` in earnings_explainer.py. First page: "Earnings this week (Nov 2–7, 2026): who beat, who missed, biggest stock moves" — 27 reports, 24 of 26 beat on EPS, 20 of 25 on revenue, biggest pop/drop + beat-but-fell count from live moves, full table (EPS / revenue / stock), signup, FAQPage schema, prev/next week nav. Linked from `/earnings/#weekly` and from every quarter explainer ("This week's earnings recap"); in sitemap. Targets "earnings this week" / "who beat earnings this week" searches and gives the Saturday a recap URL. FORMAT.md documented. Commit **7ea79e7**.
+- Deploy: push run 42399734567 failed twice on a Pages "in progress deployment" collision with the weekend scheduled build (not a code error); workflow_dispatch run **42400244064** succeeded. IndexNow ping skipped (only runs on push builds; local site/ not built).
+- Site check: /, /earnings/, /earnings/week-of-2026-11-02/, /earnings/amd-q3-2026/, /earnings/brk-q3-2026/, /scoreboard/, /2026-11-07/, /sitemap.xml all 200.
+
+**Growth ideas**
+1. Sunday/Monday Kit email could link the weekly recap as "Last week in earnings" — free re-engagement content.
+2. Add a "Next week's earnings to watch" preview section to the newest weekly recap (calendar-only, flips to results as explainers publish).
+3. Deploy collisions: consider `cancel-in-progress` for scheduled runs only, or retry deploy-pages once on 400.
+4. Distribution still the bottleneck (X suspended, ~1 Kit sub). Weekly recap is the most shareable page so far — ask Greg before any Reddit post.
