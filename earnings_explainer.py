@@ -198,14 +198,60 @@ def _wk(r):
 def week_label(m, rs=()):
     f=max([m+datetime.timedelta(days=4)]+[datetime.date.fromisoformat(r['date']) for r in rs])
     return f"{m.strftime('%b %-d')}–{f.strftime('%-d') if f.month==m.month else f.strftime('%b %-d')}, {f.year}"
+def load_calendar(root=None):
+    """data/calendar/week-of-<monday>.json: upcoming reports (date, ticker, company, quarter, when, eps_est) copied from a public
+    earnings calendar, with its source. Gives a week its recap URL before any explainer exists (preview flips to results in place)."""
+    root=root or os.path.dirname(os.path.abspath(__file__)); out={}
+    for f in sorted(glob.glob(os.path.join(root,'data','calendar','week-of-*.json'))):
+        c=json.load(open(f)); out[datetime.date.fromisoformat(c['week'])]=c
+    return out
+def cal_section(B, cal, rs):
+    """'On the calendar' table: calendar names with no explainer yet that week (matched by ticker)."""
+    E=B['E']; done={r['ticker'].upper() for r in rs}; it=[x for x in cal['items'] if x['ticker'].upper() not in done]
+    if not it: return ''
+    it=sorted(it,key=lambda x:(x['date'],x['when']!='before the open',x['ticker']))
+    def eps(v): return '—' if v is None else (f'-${abs(v):.2f}' if v<0 else f'${v:.2f}')
+    rows=''.join(f'<tr><td><a href="{B["BASE"]}/earnings/{x["ticker"].lower()}/"><b>{E(x["company"])}</b> ({E(x["ticker"])})</a><br><small>{E(x["quarter"])}</small></td><td>{datetime.date.fromisoformat(x["date"]).strftime("%a %b %-d")}<br><small>{E(x["when"])}</small></td><td>{eps(x.get("eps_est"))}</td></tr>'
+                 if x['ticker'].upper() in B.get('_hubs',set()) else
+                 f'<tr><td><b>{E(x["company"])}</b> ({E(x["ticker"])})<br><small>{E(x["quarter"])}</small></td><td>{datetime.date.fromisoformat(x["date"]).strftime("%a %b %-d")}<br><small>{E(x["when"])}</small></td><td>{eps(x.get("eps_est"))}</td></tr>' for x in it)
+    sc=cal['source']
+    return (f'<section class="card" id="calendar"><h2 class="h2s">🗓️ On the calendar'+(' this week' if rs else '')+f'</h2><p class="sub">Big reports still to come and the Wall Street EPS estimate. Each one gets a plain-English explainer here once it reports.</p>'
+            f'<div class="tbl"><table><thead><tr><th>Company</th><th>When</th><th>EPS est.</th></tr></thead><tbody>{rows}</tbody></table></div>'
+            f'<p class="sub">Dates and estimates: <a href="{E(sc["url"])}" rel="nofollow noopener">{E(sc["name"])}</a> as of {datetime.date.fromisoformat(cal["fetched"]).strftime("%b %-d")}; companies can move dates.</p></section>')
 def week_recaps(B, reports):
     """/earnings/week-of-<monday>/: one recap per week ("earnings this week: who beat, who missed"), built only from
     the explainer JSON results and the live moves render() just computed. Weekend reports (e.g. Berkshire on Saturday) roll into that week."""
     E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]; by={}
     for r in reports: by.setdefault(_wk(r),[]).append(r)
+    CAL=load_calendar(); B['_hubs']={r['ticker'].upper() for r in reports}
+    for m in CAL: by.setdefault(m,[])
     weeks=sorted(by,reverse=True)
     for i,m in enumerate(weeks):
-        rs=sorted(by[m],key=lambda r:(r['date'],-size(r))); P=f"/earnings/week-of-{m.isoformat()}/"; lab=week_label(m,by[m])
+        rs=sorted(by[m],key=lambda r:(r['date'],-size(r))); P=f"/earnings/week-of-{m.isoformat()}/"; lab=week_label(m,by[m]); cal=CAL.get(m)
+        calh=cal_section(B,cal,rs) if cal else ''
+        if rs and i>0 and not by[weeks[i-1]]:
+            calh+=f'<section class="card"><h2 class="h2s">🗓️ Coming up next week</h2><p class="sub"><a href="{BASE}/earnings/week-of-{weeks[i-1].isoformat()}/"><b>Earnings next week ({E(week_label(weeks[i-1]))}) →</b></a> who reports, when, and what Wall Street expects.</p></section>'
+        if not rs:
+            if not cal: continue
+            ci=sorted(cal['items'],key=lambda x:-(MCAP.get(x['ticker'],0)))
+            F=cal.get('featured') or []; tm={x['ticker']:x for x in cal['items']}
+            names=([tm[t]['company'] for t in F if t in tm] or [x['company'] for x in sorted(cal['items'],key=lambda x:(x['date'],x['ticker']))])[:6]
+            summ=f"{len(cal['items'])} big reports on the calendar the week of {lab}, including {', '.join(names[:-1])} and {names[-1]}. Dates, times and Wall Street's EPS estimates below; each gets a plain-English explainer once it reports."
+            faqs=[(f"Which companies report earnings the week of {lab}?",'; '.join(f"{datetime.date.fromisoformat(d).strftime('%A')}: "+', '.join(f"{x['company']} ({x['ticker']})" for x in cal['items'] if x['date']==d) for d in sorted({x['date'] for x in cal['items']}))+'.')]
+            nav=[]
+            if i+1<len(weeks): nav.append(f'<a href="{BASE}/earnings/week-of-{weeks[i+1].isoformat()}/">← Week of {E(week_label(weeks[i+1],by[weeks[i+1]]))}</a>')
+            if i>0: nav.append(f'<a href="{BASE}/earnings/week-of-{weeks[i-1].isoformat()}/">Week of {E(week_label(weeks[i-1],by[weeks[i-1]]))} →</a>')
+            faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
+            cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),(f'Week of {lab}',P)])
+            h1=f"Earnings Next Week ({lab}): Who Reports and What Wall Street Expects" if m>B['TODAY'] else f"Earnings This Week ({lab}): Who Reports and What Wall Street Expects"
+            body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🗓️ Earnings preview · {E(lab)}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p></section>{calh}'
+                  f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get these reports explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
+                  f'{faqh}<p class="sub">{" · ".join(nav+[f"<a href=\"{BASE}/earnings/\">All earnings explained →</a>"])}</p><p class="disc-bar">⚠️ <b>Not financial advice.</b> Calendar data from a public earnings calendar; dates can change.</p>')
+            title=h1.replace('Earnings Next Week','Earnings next week').replace('Earnings This Week','Earnings this week').replace('Who Reports and What Wall Street Expects','who reports and what Wall Street expects')
+            sch={"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":h1,"url":SITE+P,"description":summ[:300],"publisher":{"@type":"Organization","name":BRAND}},csch,
+                 {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
+            B['w'](f"earnings/week-of-{m.isoformat()}/index.html",B['shell'](title,summ[:155],P,body,sch)); urls.append((P,B['TODAY'].isoformat()))
+            continue
         ep=[eps_result(r) for r in rs]; rv=[rev_result(r) for r in rs]
         en=sum(1 for x in ep if x); eb=sum(x=='Beat' for x in ep); rn=sum(1 for x in rv if x); rb=sum(x=='Beat' for x in rv)
         mv=sorted([r for r in rs if r.get('_move') is not None],key=lambda r:r['_move'])
@@ -237,7 +283,7 @@ def week_recaps(B, reports):
         h1=f"Earnings This Week ({lab}): Who Beat, Who Missed, Biggest Stock Moves"
         body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">📊 Weekly earnings recap · {E(lab)}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p></section>'
               f'<section class="card scard"><h2 class="h2s">📊 The week in one glance</h2><div class="scgrid">{tiles}</div><p class="sub">Beat or miss is vs the consensus on each explainer; stock moves are vs the close before the report and refresh with every site rebuild.</p></section>'
-              f'<section class="card"><h2 class="h2s">Every report this week</h2><div class="tbl"><table><thead><tr><th>Company</th><th>EPS</th><th>Revenue</th><th>Stock</th></tr></thead><tbody>{rows}</tbody></table></div></section>'
+              f'<section class="card"><h2 class="h2s">Every report this week</h2><div class="tbl"><table><thead><tr><th>Company</th><th>EPS</th><th>Revenue</th><th>Stock</th></tr></thead><tbody>{rows}</tbody></table></div></section>{calh}'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get next week\'s big reports explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'{faqh}<p class="sub">{" · ".join(nav+[f"<a href=\"{BASE}/earnings/\">All earnings explained →</a>"])}</p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources on each report page.</p>')
         title=f"Earnings this week ({lab}): who beat, who missed, biggest stock moves"
@@ -251,8 +297,10 @@ def week_recaps(B, reports):
 def weeks_section(B, reports):
     E=B['E']; BASE=B['BASE']; by={}
     for r in reports: by.setdefault(_wk(r),[]).append(r)
+    CAL=load_calendar()
+    for m in CAL: by.setdefault(m,[])
     if not by: return ''
-    li=''.join(f'<li><a href="{BASE}/earnings/week-of-{m.isoformat()}/"><b>Week of {E(week_label(m,by[m]))}</b></a>: {len(by[m])} reports, who beat, who missed, biggest moves</li>' for m in sorted(by,reverse=True))
+    li=''.join(f'<li><a href="{BASE}/earnings/week-of-{m.isoformat()}/"><b>Week of {E(week_label(m,by[m]))}</b></a>: '+(f'{len(by[m])} reports, who beat, who missed, biggest moves' if by[m] else f'preview: {len(CAL[m]["items"])} big reports on the calendar and what Wall Street expects')+'</li>' for m in sorted(by,reverse=True))
     return f'<section class="card" id="weekly"><h2 class="h2s">📅 Weekly earnings recaps</h2><ul class="why">{li}</ul></section>'
 
 def scorecard(B, reports, days=7):

@@ -1,0 +1,226 @@
+{
+ "week": "2026-11-09",
+ "fetched": "2026-11-07",
+ "source": {
+  "name": "Yahoo Finance earnings calendar",
+  "url": "https://finance.yahoo.com/calendar/earnings?from=2026-11-08&to=2026-11-14"
+ },
+ "items": [
+  {
+   "date": "2026-11-09",
+   "ticker": "CEG",
+   "company": "Constellation Energy",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 3.89
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "KKR",
+   "company": "KKR & Co.",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 1.58
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "B",
+   "company": "Barrick Mining",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 0.8
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "FERG",
+   "company": "Ferguson Enterprises",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 3.29
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "NRG",
+   "company": "NRG Energy",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 3.03
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "OXY",
+   "company": "Occidental Petroleum",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": 1.47
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "TTWO",
+   "company": "Take-Two Interactive",
+   "quarter": "Q2 FY2027",
+   "when": "after the close",
+   "eps_est": -0.86
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "RKLB",
+   "company": "Rocket Lab",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": -0.07
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "ASTS",
+   "company": "AST SpaceMobile",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": -0.45
+  },
+  {
+   "date": "2026-11-09",
+   "ticker": "QRVO",
+   "company": "Qorvo",
+   "quarter": "Q2 FY2027",
+   "when": "after the close",
+   "eps_est": 2.05
+  },
+  {
+   "date": "2026-11-10",
+   "ticker": "TDG",
+   "company": "TransDigm",
+   "quarter": "Q4 FY2026",
+   "when": "before the open",
+   "eps_est": 12.21
+  },
+  {
+   "date": "2026-11-10",
+   "ticker": "SE",
+   "company": "Sea Limited",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 0.97
+  },
+  {
+   "date": "2026-11-10",
+   "ticker": "ONON",
+   "company": "On Holding",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 0.4
+  },
+  {
+   "date": "2026-11-10",
+   "ticker": "QBTS",
+   "company": "D-Wave Quantum",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": -0.1
+  },
+  {
+   "date": "2026-11-10",
+   "ticker": "CRWV",
+   "company": "CoreWeave",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": -1.55
+  },
+  {
+   "date": "2026-11-10",
+   "ticker": "RGTI",
+   "company": "Rigetti Computing",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": -0.05
+  },
+  {
+   "date": "2026-11-10",
+   "ticker": "PBR",
+   "company": "Petrobras",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": 1.41
+  },
+  {
+   "date": "2026-11-11",
+   "ticker": "FNV",
+   "company": "Franco-Nevada",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": 1.73
+  },
+  {
+   "date": "2026-11-11",
+   "ticker": "CTVA",
+   "company": "Corteva",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": 0.1
+  },
+  {
+   "date": "2026-11-12",
+   "ticker": "BN",
+   "company": "Brookfield Corp.",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 0.33
+  },
+  {
+   "date": "2026-11-12",
+   "ticker": "NBIS",
+   "company": "Nebius Group",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": -1.24
+  },
+  {
+   "date": "2026-11-12",
+   "ticker": "DDS",
+   "company": "Dillard's",
+   "quarter": "Q3 2026",
+   "when": "before the open",
+   "eps_est": 6.2
+  },
+  {
+   "date": "2026-11-12",
+   "ticker": "CSCO",
+   "company": "Cisco Systems",
+   "quarter": "Q1 FY2027",
+   "when": "after the close",
+   "eps_est": 1.32
+  },
+  {
+   "date": "2026-11-12",
+   "ticker": "AMAT",
+   "company": "Applied Materials",
+   "quarter": "Q4 FY2026",
+   "when": "after the close",
+   "eps_est": 4.06
+  },
+  {
+   "date": "2026-11-12",
+   "ticker": "NU",
+   "company": "Nu Holdings",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": 0.22
+  },
+  {
+   "date": "2026-11-12",
+   "ticker": "QXO",
+   "company": "QXO",
+   "quarter": "Q3 2026",
+   "when": "after the close",
+   "eps_est": 0.14
+  }
+ ],
+ "featured": [
+  "CSCO",
+  "AMAT",
+  "CRWV",
+  "KKR",
+  "CEG",
+  "RKLB"
+ ]
+}
