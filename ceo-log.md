@@ -1202,3 +1202,14 @@
 2. Watch Monday's explainer run fills the Result column on /earnings-calendar/ (CEG, KKR before the open).
 3. Saturday calendar file is now load-bearing for three page types (week preview, date pages, evergreen calendar) — make the 7 AM Saturday run fail loudly if next week's file is missing.
 4. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-08 · ~4 PM ET check-in (Sunday)
+- **Scoreboard:** markets closed; deploy rebuilt it. Live stamp **Nov 8, 2026 · 4:08 PM ET**, open 3-month calls unchanged on Friday closes (TMUS +13.80, NEE +9.15, MSFT +3.56, GD −2.27 vs S&P → **+6.06% avg**). Sports/leans stay frozen archive.
+- **Shipped: homepage "Reporting today / tomorrow / <weekday>" strip** (`next_reports()` + `home_next()` in earnings_explainer.py, inside the home Earnings section above the week cards): who reports on the next report day from data/calendar, before the open first, EPS estimate, each chip linking the `/earnings/<ticker>/` date page; once explained, chips show Beat/Miss and link the explainer; "Full day on the earnings calendar →" deep-links `/earnings-calendar/#d-<date>`. Live now: "Reporting tomorrow, Nov 9" (CEG, KKR, B, FERG, NRG before the open; OXY, RKLB, TTWO, ASTS, QRVO after).
+- **Email:** On deck now falls back to the calendar when an edition has no `on_deck` (titles itself "On deck Monday" on weekends) and always links the full earnings calendar. FORMAT.md documented.
+- Commit **5f863a6**, push deploy run **42523380662** success. Live 200: /, /scoreboard/, /earnings-calendar/, /earnings/, /earnings/ceg/, /2026-11-08/, /style.css.
+
+**Growth ideas**
+1. CI builds may use the UTC date after 7 PM ET — pin TODAY to America/New_York in build.py so "today/tomorrow" labels never jump early.
+2. Monday: check CEG/KKR chips flip to Beat/Miss after the 8 AM explainer run.
+3. Tonight's 6 PM weekly report: lead with the week's site build-out (recaps, previews, 26 date pages, calendar) and the distribution ask (X suspended, ~1 Kit sub).
