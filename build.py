@@ -680,7 +680,7 @@ def clip_meta(d):
            else (f" No Bold Bet; Max's lean (not a bet): {ln.get('label','')} at {money('Sports',ln.get('entry'))}." if ln else ''))
     title=f"Max Edge, {nice}: {story}" if story else f"Max Edge: The Daily Five picks for {nice}"
     desc=(f"Max Edge, The Daily Five's AI-generated host, in under a minute. {(story.rstrip('.')+'.') if story else 'Today\'s calls.'}{extra} "
-          f"3-month stock calls graded vs the S&P 500. Not financial advice. 21+.")
+          f"3-month stock calls graded vs the S&P 500. Not financial advice.")
     return title,desc,f'/max-edge/{d}/'
 def clip_ed(d):
     ed=CLIP_EDS.get(d)
@@ -703,7 +703,7 @@ def clip_fallback(d):
     return ('<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:left"><h2 style="font-size:1.05em;margin:0 0 8px;text-align:center">🎙️ Max Edge\'s rundown, in writing today</h2>'
             '<p class="sub" style="font-size:.85em;text-align:center">The video is running late (even AI hosts oversleep). Here\'s exactly what Max would have said.</p>'
             +''.join(f'<p style="margin:8px 0"><b style="font-size:.8em;letter-spacing:.04em;opacity:.75">{E(b)}</b><br>{E(l)}</p>' for b,l in tr)
-            +'<figcaption class="sub" style="font-size:.85em;text-align:center">Max Edge is an AI-generated host. Not financial advice. 21+. '
+            +'<figcaption class="sub" style="font-size:.85em;text-align:center">Max Edge is an AI-generated host. Not financial advice. '
             f'<a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption></figure>')
 def clip_html(d):
     v=os.path.join(ROOT,'clips',f'max-{d}.mp4')
@@ -729,7 +729,7 @@ def clip_html(d):
     return ld+(f'<figure class="maxclip" style="margin:16px auto;max-width:360px;text-align:center"><h2 style="font-size:1.05em;margin:0 0 8px">🎙️ Max Edge\'s {secs}rundown: {clip_topic(d)}</h2>'
             f'<div style="position:relative"><video id="mxv" controls playsinline muted loop preload="metadata" poster="{BASE}/video/max-{d}.jpg" style="width:100%;border-radius:14px;background:#000;display:block" src="{BASE}/video/max-{d}.mp4"></video>'
             f'<button type="button" id="mxs" style="position:absolute;top:10px;right:10px;border:0;border-radius:999px;padding:6px 12px;font-weight:700;background:rgba(0,0,0,.7);color:#fff;cursor:pointer">🔊 Tap for sound</button></div>'
-            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. 21+. <a href="{BASE}{vp}">Share this clip</a> \u00b7 <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption>'
+            f'<figcaption class="sub" style="font-size:.85em">Max Edge, {d}. AI-generated host. Not financial advice. <a href="{BASE}{vp}">Share this clip</a> \u00b7 <a href="{BASE}/max-edge/">Every Max Edge clip \u2192</a></figcaption>'
             +(('<details class="mxtr" style="text-align:left;margin-top:8px;font-size:.9em"><summary style="cursor:pointer;font-weight:700">📝 Read the transcript (sound off? no problem)</summary>'
                +''.join(f'<p style="margin:8px 0"><b style="font-size:.8em;letter-spacing:.04em;opacity:.75">{E(b)}</b><br>{E(l)}</p>' for b,l in tr)+'</details>') if tr else '')
             +'</figure>'+js)
@@ -1261,7 +1261,7 @@ def ogimage(ed,nice):
     chrome=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('chromium-browser')
     if chrome:
         import subprocess
-        try: subprocess.run([chrome,'--headless=new','--no-sandbox','--hide-scrollbars','--window-size=1200,630',f'--screenshot={os.path.join(OUT,rel)}','file://'+svgp],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=60)
+        try: _chrome_run([chrome,'--headless=new','--no-sandbox','--hide-scrollbars','--window-size=1200,630',f'--screenshot={os.path.join(OUT,rel)}','file://'+svgp])
         except Exception: pass
     # Cache-bust: version = short hash of the card's SVG (live edge numbers, headline, picks), so X/Slack/iMessage
     # re-fetch the image when the numbers change but keep their cache while nothing on the card moved.
@@ -1273,12 +1273,23 @@ def write_live(eds):
         for p in ed['finance']+ed['sports']:
             picks[p['id']]={'cur':p.get('cur'),'open':p.get('open'),'so':p.get('so'),'ret':p.get('ret'),'final':p.get('final'),'kind':p['kind'],'qt':p.get('qt'),'label':p['label']}
     w('data/live.json',json.dumps({'updated':NOW.astimezone().isoformat(timespec='seconds'),'ts':int(NOW.timestamp()),'updated_et':NOW.strftime('%-I:%M %p ET'),'picks':picks}))
+def _chrome_run(args,timeout=30):
+    """Headless Chrome screenshot with a hard timeout that kills the whole process group (Chrome's helper processes
+    survived subprocess.run's timeout and hung a local build ~15 min on Nov 8). SKIP_PNG=1 skips rendering for quick local builds."""
+    import subprocess, signal
+    if os.environ.get('SKIP_PNG'): return
+    pr=subprocess.Popen(args,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
+    try: pr.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try: os.killpg(pr.pid,signal.SIGKILL)
+        except Exception: pass
+        pr.wait()
 def _render_png(svgp,pngp):
     chrome=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('chromium-browser')
     if not chrome: return False
     import subprocess, tempfile
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as ud:
-        try: subprocess.run([chrome,'--headless=new','--no-sandbox','--hide-scrollbars','--disable-gpu',f'--user-data-dir={ud}','--window-size=1200,630',f'--screenshot={pngp}','file://'+svgp],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=60)
+        try: _chrome_run([chrome,'--headless=new','--no-sandbox','--hide-scrollbars','--disable-gpu',f'--user-data-dir={ud}','--window-size=1200,630',f'--screenshot={pngp}','file://'+svgp])
         except Exception: return False
     return os.path.exists(pngp)
 PICK_OG_JOBS=[]

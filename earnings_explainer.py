@@ -158,7 +158,7 @@ def render(B, reports):
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
         r['_move']=move; urls.append((P,B['TODAY'].isoformat()))
-    return urls+ticker_hubs(B,reports)+week_recaps(B,reports)
+    return urls+ticker_hubs(B,reports)+upcoming_hubs(B,reports)+week_recaps(B,reports)
 
 def ticker_hubs(B, reports):
     """/earnings/<ticker>/: one evergreen page per company for searches like "AMD earnings" that name no quarter.
@@ -193,6 +193,50 @@ def ticker_hubs(B, reports):
         B['w'](f"earnings/{tk.lower()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,B['TODAY'].isoformat()))
     return urls
 
+def upcoming_hubs(B, reports):
+    """/earnings/<ticker>/ for calendar names we haven't explained yet ("CEG earnings date" searches): report date, before/after
+    the bell, quarter and the Wall Street EPS estimate, all copied from data/calendar with its source. Nothing else is claimed.
+    Same URL becomes the full ticker hub (ticker_hubs) once that company's explainer JSON lands, so the page keeps its ranking."""
+    E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; T=B['TODAY']; urls=[]
+    done={r['ticker'].upper() for r in reports}; seen={}
+    for m,cal in sorted(load_calendar().items()):
+        for x in cal['items']:
+            tk=x['ticker'].upper()
+            if tk in done: continue
+            seen[tk]=(x,cal)   # latest calendar week wins
+    B['_uphubs']=set(seen)
+    def eps(v): return 'not published' if v is None else (f'-${abs(v):.2f}' if v<0 else f'${v:.2f}')
+    for tk,(x,cal) in seen.items():
+        nm=x['company']; q=x['quarter']; dd=datetime.date.fromisoformat(x['date']); P=f"/earnings/{tk.lower()}/"
+        ds=dd.strftime('%A, %B %-d, %Y'); sc=cal['source']; fetched=datetime.date.fromisoformat(cal['fetched']).strftime('%B %-d, %Y')
+        past=dd<T; today=dd==T
+        verb='reported' if past else 'reports'
+        lead=(f"{nm} ({tk}) {verb} {q} earnings on {ds}, {x['when']}. Wall Street's consensus EPS estimate is {eps(x.get('eps_est'))}. "
+              +("Our plain-English explainer of the results is on the way." if past else "Once the numbers are out, this page becomes our plain-English explainer: beat or miss, guidance and how the stock took it."))
+        same=sorted([y for y in cal['items'] if y['date']==x['date'] and y['ticker'].upper()!=tk],key=lambda y:(y['when']!='before the open',y['ticker']))
+        sameh=''.join(f'<li><a href="{BASE}/earnings/{y["ticker"].lower()}/"><b>{E(y["company"])}</b> ({E(y["ticker"])})</a>, {E(y["when"])}, EPS est. {eps(y.get("eps_est"))}</li>' for y in same)
+        faqs=[(f"When does {nm} ({tk}) report earnings?",f"{nm} {verb} {q} results on {ds}, {x['when']}, per the {sc['name']} as of {fetched}. Companies can move dates."),
+              (f"What EPS is expected from {nm} in {q}?",f"The consensus estimate is {eps(x.get('eps_est'))} per share, per the {sc['name']} as of {fetched}.")]
+        faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
+        cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),(f'{tk} earnings',P)])
+        h1=f"{nm} ({tk}) Earnings Date: {q} on {dd.strftime('%b %-d')}, What Wall Street Expects"
+        wk=dd-datetime.timedelta(days=dd.weekday())
+        body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🗓️ Earnings preview · {E(tk)}'+(' · today' if today else '')+f'</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(lead)}</p></section>'
+              f'<section class="card"><h2 class="h2s">{E(q)} at a glance</h2><div class="tbl"><table><tbody>'
+              f'<tr><td>Report date</td><td><b>{E(ds)}</b></td></tr><tr><td>Timing</td><td><b>{E(x["when"])}</b></td></tr>'
+              f'<tr><td>Quarter</td><td><b>{E(q)}</b></td></tr><tr><td>Consensus EPS estimate</td><td><b>{E(eps(x.get("eps_est")))}</b></td></tr></tbody></table></div>'
+              f'<p class="sub">Source: <a href="{E(sc["url"])}" rel="nofollow noopener">{E(sc["name"])}</a> as of {E(fetched)}. Dates and estimates can change before the report.</p></section>'
+              f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get the {E(tk)} report explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
+              +(f'<section class="card"><h2 class="h2s">Also reporting {E(dd.strftime("%A, %b %-d"))}</h2><ul class="why">{sameh}</ul></section>' if sameh else '')
+              +f'{faqh}<p class="sub"><a href="{BASE}/earnings/week-of-{wk.isoformat()}/">Everyone reporting the week of {E(week_label(wk))} →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p>'
+              f'<p class="disc-bar">⚠️ <b>Not financial advice.</b> Calendar data from a public earnings calendar; dates can change.</p>')
+        title=f"{nm} ({tk}) earnings date: {q} on {dd.strftime('%b %-d, %Y')}, EPS estimate"
+        desc=f"{nm} ({tk}) {verb} {q} earnings {dd.strftime('%a %b %-d')}, {x['when']}. Consensus EPS {eps(x.get('eps_est'))}. Results explained here in plain English."
+        sch={"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":h1,"url":SITE+P,"description":desc[:300],"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"publisher":{"@type":"Organization","name":BRAND}},csch,
+             {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
+        B['w'](f"earnings/{tk.lower()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,T.isoformat()))
+    return urls
+
 def _wk(r):
     d=datetime.date.fromisoformat(r['date']); return d-datetime.timedelta(days=d.weekday())
 def week_label(m, rs=()):
@@ -223,7 +267,7 @@ def week_recaps(B, reports):
     the explainer JSON results and the live moves render() just computed. Weekend reports (e.g. Berkshire on Saturday) roll into that week."""
     E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]; by={}
     for r in reports: by.setdefault(_wk(r),[]).append(r)
-    CAL=load_calendar(); B['_hubs']={r['ticker'].upper() for r in reports}
+    CAL=load_calendar(); B['_hubs']={r['ticker'].upper() for r in reports}|B.get('_uphubs',set())
     for m in CAL: by.setdefault(m,[])
     weeks=sorted(by,reverse=True)
     for i,m in enumerate(weeks):
