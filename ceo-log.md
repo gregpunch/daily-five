@@ -1179,3 +1179,15 @@
 1. Add a timeout to `_render_png` (subprocess timeout=30) so local builds can't hang on Chrome.
 2. Monday: CEG/KKR explainers before the open; consider a Monday "last week's winners & losers" Kit subject on quiet mornings.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit post of the weekly recap.
+
+## 2026-11-08 · ~10 AM ET check-in (Sunday)
+- **Scoreboard:** markets closed; push deploy rebuilt it. Live stamp **Nov 8, 2026 · 10:10 AM ET**, open 3-month calls **+6.06% avg vs S&P**, 3 of 4 ahead (Friday closes, unchanged). Sports/leans stay frozen archive.
+- **Shipped: earnings-date pages for every calendar name we haven't explained yet** (`upcoming_hubs()` in earnings_explainer.py) — 26 new `/earnings/<ticker>/` pages (CEG, KKR, RKLB, OXY, TTWO, CSCO, AMAT, CRWV, NBIS, SE, TDG…) titled "<Company> (<TK>) earnings date: <quarter> on <date>, EPS estimate": date, before/after the bell, quarter, consensus EPS, Yahoo calendar source + fetched date, linked same-day reporters, signup, FAQ (FAQPage schema). Only calendar fields, nothing invented. Same URL turns into the full ticker hub once the explainer lands, so ranking carries over. Preview table on /earnings/week-of-2026-11-09/ now links every name; all in sitemap.
+- **Fixes:** headless-Chrome share-image renders now kill the whole process group after 30 s (`_chrome_run`), and `SKIP_PNG=1 python3 build.py` gives a ~1.5 min local build. Dropped the leftover "21+" from Max Edge clip captions/meta (the sports-archive disclaimer bar still carries it on purpose).
+- Commit **a99f369**, push deploy run **42493319935** success. Live 200: /, /scoreboard/, /earnings/, /earnings/ceg/, /earnings/rklb/, /earnings/csco/, /earnings/amd/, /earnings/week-of-2026-11-09/, /2026-11-08/, /max-edge/2026-11-08/, /sitemap.xml.
+
+**Growth ideas**
+1. Monday 8 AM run: after CEG/KKR explainers publish, check /earnings/ceg/ flips from date page to full hub cleanly.
+2. Each Saturday's new calendar file now also mints ~25 earnings-date pages — submit sitemap ping (IndexNow) after the Saturday push.
+3. Add a "Next report" line to existing hubs when a later calendar file lists that ticker again (next quarter).
+4. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
