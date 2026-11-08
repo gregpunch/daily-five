@@ -158,7 +158,7 @@ def render(B, reports):
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
         r['_move']=move; urls.append((P,B['TODAY'].isoformat()))
-    return urls+ticker_hubs(B,reports)+upcoming_hubs(B,reports)+week_recaps(B,reports)
+    return urls+ticker_hubs(B,reports)+upcoming_hubs(B,reports)+week_recaps(B,reports)+calendar_page(B,reports)
 
 def ticker_hubs(B, reports):
     """/earnings/<ticker>/: one evergreen page per company for searches like "AMD earnings" that name no quarter.
@@ -236,6 +236,71 @@ def upcoming_hubs(B, reports):
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{tk.lower()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,T.isoformat()))
     return urls
+
+def cal_week(today, CAL):
+    """Which week /earnings-calendar/ shows: the current Mon–Fri week, or the coming week from Saturday on."""
+    m=today-datetime.timedelta(days=today.weekday())
+    if today.weekday()>=5: m+=datetime.timedelta(days=7)
+    if m in CAL: return m
+    up=[w for w in CAL if w>=m]
+    return min(up) if up else (max(CAL) if CAL else None)
+
+def calendar_page(B, reports):
+    """/earnings-calendar/: one evergreen URL ("earnings calendar this week") that always shows the current week day by day,
+    before the open / after the close, with the Wall Street EPS estimate from data/calendar and, once we've explained a report,
+    the beat/miss and stock move from the explainer. Nothing beyond those two sources is shown."""
+    E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; T=B['TODAY']; CAL=load_calendar()
+    m=cal_week(T,CAL)
+    if not m: return []
+    cal=CAL[m]; P='/earnings-calendar/'
+    wk=[r for r in reports if _wk(r)==m]; done={r['ticker'].upper():r for r in wk}
+    items=[dict(x) for x in cal['items']]
+    have={x['ticker'].upper() for x in items}
+    for r in wk:
+        if r['ticker'].upper() not in have: items.append(dict(date=r['date'],ticker=r['ticker'],company=r['company'],quarter=r['quarter'],when=r.get('when',''),eps_est=None))
+    def eps(v): return '—' if v is None else (f'-${abs(v):.2f}' if v<0 else f'${v:.2f}')
+    def row(x):
+        tk=x['ticker'].upper(); r=done.get(tk)
+        if r:
+            er=eps_result(r); mv=r.get('_move')
+            res=(f'<span class="{"up" if er=="Beat" else "dn" if er=="Miss" else ""}">{E(er)}</span>' if er else 'Explained')+(f' · <b class="{"up" if mv>=0 else "dn"}">{mv:+.1f}%</b>' if mv is not None else '')
+            return f'<tr><td><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>{res}</td></tr>'
+        return f'<tr><td><a href="{BASE}/earnings/{tk.lower()}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>Coming up</td></tr>'
+    order={'before the open':0,'after the close':2}
+    days=sorted({x['date'] for x in items}); sec=''; faqd=[]
+    for d in days:
+        dd=datetime.date.fromisoformat(d); its=sorted([x for x in items if x['date']==d],key=lambda x:(order.get(x['when'],1),-MCAP.get(x['ticker'],0),x['ticker']))
+        lab=dd.strftime('%A, %b %-d')+(' · today' if dd==T else '')
+        groups=''
+        for w in sorted({x['when'] for x in its},key=lambda w:order.get(w,1)):
+            g=[x for x in its if x['when']==w]
+            groups+=(f'<h3 class="h3s">{E(w.capitalize() if w else "Time not set")}</h3>' if w or len(its)>1 else '')+f'<div class="tbl"><table><thead><tr><th>Company</th><th>EPS est.</th><th>Result</th></tr></thead><tbody>{"".join(row(x) for x in g)}</tbody></table></div>'
+        sec+=f'<section class="card" id="d-{d}"><h2 class="h2s">🗓️ {E(lab)}</h2>{groups}</section>'
+        faqd.append(f"{dd.strftime('%A')}: "+', '.join(f"{x['company']} ({x['ticker']})" for x in its))
+    jump=' · '.join(f'<a href="#d-{d}">{datetime.date.fromisoformat(d).strftime("%a %-d")}</a>' for d in days)
+    lab=week_label(m); n=len(items); ex=len(done)
+    F=cal.get('featured') or []; tm={x['ticker']:x for x in items}
+    names=([tm[t]['company'] for t in F if t in tm] or [x['company'] for x in sorted(items,key=lambda x:-MCAP.get(x['ticker'],0))])[:4]
+    summ=(f"{n} big earnings reports the week of {lab}, including {', '.join(names).rstrip('.')}. Day by day, before the open or after the close, with Wall Street's EPS estimate"
+          +(f"; {ex} already explained with beat or miss and the stock move." if ex else "; each turns into a plain-English explainer once it reports."))
+    sc=cal['source']; fetched=datetime.date.fromisoformat(cal['fetched']).strftime('%B %-d, %Y')
+    prev=m-datetime.timedelta(days=7); prevh=''
+    if any(_wk(r)==prev for r in reports): prevh=f'<a href="{BASE}/earnings/week-of-{prev.isoformat()}/">Last week\'s recap: who beat, who missed →</a> · '
+    faqs=[(f"Which companies report earnings this week ({lab})?",'; '.join(faqd)+'.'),
+          ("Where do these dates and estimates come from?",f"The {sc['name']}, as of {fetched}. Companies can move report dates, so check the company's investor relations page before you trade.")]
+    faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
+    cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),('Earnings calendar',P)])
+    h1=f"Earnings Calendar This Week ({lab})"
+    body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🗓️ Earnings calendar · updated {E(T.strftime("%b %-d"))}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p><p class="sub">Jump to: {jump}</p></section>{sec}'
+          f'<p class="sub">Dates and estimates: <a href="{E(sc["url"])}" rel="nofollow noopener">{E(sc["name"])}</a> as of {E(fetched)}. Results and moves come from our explainers and refresh with every site rebuild.</p>'
+          f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get this week\'s big reports explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
+          f'{faqh}<p class="sub">{prevh}<a href="{BASE}/earnings/week-of-{m.isoformat()}/">This week\'s recap page →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p>'
+          f'<p class="disc-bar">⚠️ <b>Not financial advice.</b> Calendar data from a public earnings calendar; dates can change.</p>')
+    title=f"Earnings calendar this week ({lab}): who reports, when, EPS estimates"
+    sch={"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","name":h1,"url":SITE+P,"description":summ[:300],"dateModified":T.isoformat(),"publisher":{"@type":"Organization","name":BRAND}},csch,
+         {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
+    B['w']("earnings-calendar/index.html",B['shell'](title,summ[:155],P,body,sch))
+    return [(P,T.isoformat())]
 
 def _wk(r):
     d=datetime.date.fromisoformat(r['date']); return d-datetime.timedelta(days=d.weekday())
@@ -345,7 +410,7 @@ def weeks_section(B, reports):
     for m in CAL: by.setdefault(m,[])
     if not by: return ''
     li=''.join(f'<li><a href="{BASE}/earnings/week-of-{m.isoformat()}/"><b>Week of {E(week_label(m,by[m]))}</b></a>: '+(f'{len(by[m])} reports, who beat, who missed, biggest moves' if by[m] else f'preview: {len(CAL[m]["items"])} big reports on the calendar and what Wall Street expects')+'</li>' for m in sorted(by,reverse=True))
-    return f'<section class="card" id="weekly"><h2 class="h2s">📅 Weekly earnings recaps</h2><ul class="why">{li}</ul></section>'
+    return f'<section class="card" id="weekly"><h2 class="h2s">📅 Weekly earnings recaps</h2><p class="sub"><a href="{BASE}/earnings-calendar/"><b>🗓️ Earnings calendar this week →</b></a> day by day, before the open or after the close.</p><ul class="why">{li}</ul></section>'
 
 def week_picks(reports, today=None):
     """Cards for this week's recap, last week's recap, and next week's preview.
@@ -410,7 +475,7 @@ def home_weeks(B, reports):
         f'<a class="ercard" href="{BASE}{p["url"]}"><span class="erk">{E(p["kicker"])}</span>'
         f'<h3>{E(p["title"])}</h3><p>{E(p["blurb"])}</p><span class="erg">{E(p["cta"])}</span></a>'
         for p in picks)
-    return f'<div class="ergrid wkhome">{cards}</div>'
+    return f'<div class="ergrid wkhome">{cards}</div><p class="sub"><a href="{BASE}/earnings-calendar/"><b>🗓️ Earnings calendar this week →</b></a> who reports each day and what Wall Street expects.</p>'
 
 def scorecard(B, reports, days=7):
     """'Earnings season scorecard' on /earnings/: share of reports that beat on EPS and on revenue,

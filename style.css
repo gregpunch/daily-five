@@ -257,3 +257,4 @@ html{scroll-padding-top:84px}nav a.ncta{background:linear-gradient(135deg,#16c78
 .sbarc td{background:#141726;color:var(--mut);font-size:13px;padding:14px 12px;border-bottom:1px solid var(--line)}
 .sbarc b{color:var(--txt);font-weight:800;margin-right:8px}
 .sbarc .s{color:var(--mut);font-weight:500}
+.h3s{font-size:1rem;margin:14px 0 6px;opacity:.85}
