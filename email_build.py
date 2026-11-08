@@ -172,6 +172,20 @@ def on_deck(ed):
     """'On deck today': ed['on_deck'] = [{ticker, company, when, eps_consensus?, rev_consensus?, source:{name,url}}], verified
     reporters only. Consensus shows only when the edition carries it from a reliable free source. Omitted when empty."""
     od=[x for x in (ed.get('on_deck') or []) if x.get('ticker') and x.get('source',{}).get('url')]
+    cal_d=None
+    if not od:
+        # Fallback: today's (or the next report day's) names from data/calendar, so the email never skips who reports.
+        try:
+            import earnings_explainer as EX
+            d0=datetime.date.fromisoformat(ed['date']); cal=EX.load_calendar(ROOT)
+            cal_d,its=EX.next_reports(d0,EX.load(ROOT),cal)
+            if cal_d and (cal_d-d0).days<=4:
+                sc=next(c['source'] for c in cal.values() if any(x['date']==cal_d.isoformat() for x in c['items']))
+                od=[dict(ticker=x['ticker'],company=x['company'],when=x['when'],eps_consensus=(None if x.get('eps_est') is None else (f"-${abs(x['eps_est']):.2f}" if x['eps_est']<0 else f"${x['eps_est']:.2f}")),source=sc) for x in its if not x['_r']]
+                if od and cal_d!=d0 and not ed.get('on_deck_title'):
+                    ed=dict(ed,on_deck_title='On deck '+cal_d.strftime('%A'),on_deck_sub=f"Who reports {cal_d.strftime('%A, %b %-d')}, and what Wall Street expects")
+        except Exception as ex:
+            print('email on-deck calendar fallback skipped:',ex); od=[]
     if not od: return []
     li=''
     for x in od[:10]:
@@ -179,6 +193,8 @@ def on_deck(ed):
         li+=(f'<div style="padding:4px 0;{F}font-size:14px;line-height:20px;color:{TXT};"><b>{E(x.get("company") or x["ticker"])} ({E(x["ticker"])})</b>'
              f' <span style="color:{MUT};">· {E(x.get("when",""))}</span>'+(f' <span style="{M}font-size:13px;color:#cdd2e1;">· {E(cs)}</span>' if cs else '')+'</div>')
     srcs=sorted({src(x['source']['name']) for x in od})
+    cu=f"{SITE}/earnings-calendar/"+(f"#d-{cal_d.isoformat()}" if cal_d else "")+f"?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-calendar"
+    li+=f'<div style="{F}font-size:13px;padding-top:6px;"><a href="{cu}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Full earnings calendar this week →</a></div>'
     li+=f'<div style="{F}font-size:11px;color:{MUT};padding-top:6px;">Schedule and estimates: {E(", ".join(srcs))}. Explainers go up after each report.</div>'
     # Weekend editions preview the next trading day: ed['on_deck_title'] / ed['on_deck_sub'] override the heading.
     return [sec('📅',ed.get('on_deck_title') or 'On deck today',ed.get('on_deck_sub') or 'Who reports today, and what Wall Street expects'),f'<tr><td style="padding:4px 24px;">{li}</td></tr>']

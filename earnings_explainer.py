@@ -465,17 +465,54 @@ def week_picks(reports, today=None):
                     'blurb': text, 'cta': 'Dates, times and EPS estimates →' if not has else 'See who beat, who missed →'})
     return out
 
+def next_reports(today, reports=(), cal=None):
+    """Calendar names reporting on the next report day: today if it's a weekday with names on the calendar (and some
+    still to come), else the first later calendar date. Returns (date, items) with each item's explainer (if any) as '_r'."""
+    cal=cal if cal is not None else load_calendar(); today=today or datetime.date.today()
+    items=[x for c in cal.values() for x in c['items']]
+    done={}
+    for r in reports: done.setdefault(r['ticker'].upper(),[]).append(r)
+    def ex(x):
+        rs=[r for r in done.get(x['ticker'].upper(),[]) if 0<=(datetime.date.fromisoformat(r['date'])-datetime.date.fromisoformat(x['date'])).days<=3]
+        return rs[0] if rs else None
+    days=sorted({x['date'] for x in items if datetime.date.fromisoformat(x['date'])>=today})
+    for d in days:
+        its=[dict(x,_r=ex(x)) for x in items if x['date']==d]
+        if datetime.date.fromisoformat(d)==today and all(x['_r'] for x in its): continue
+        order={'before the open':0,'after the close':2}
+        return datetime.date.fromisoformat(d), sorted(its,key=lambda x:(order.get(x['when'],1),-MCAP.get(x['ticker'],0),x['ticker']))
+    return None, []
+def home_next(B, reports):
+    """'Reporting today' / 'Reporting Monday' strip on the homepage from data/calendar: who reports, when, EPS estimate;
+    names already explained show beat/miss and link the explainer."""
+    E=B['E']; BASE=B['BASE']; T=B.get('TODAY') or datetime.date.today()
+    d,its=next_reports(T,reports)
+    if not d or (d-T).days>4: return ''
+    lab='today' if d==T else ('tomorrow' if (d-T).days==1 else d.strftime('%A'))
+    def eps(v): return '' if v is None else ' · EPS est. '+(f'-${abs(v):.2f}' if v<0 else f'${v:.2f}')
+    chips=''
+    for x in its[:10]:
+        r=x['_r']
+        if r:
+            er=eps_result(r) or 'Explained'
+            chips+=f'<a class="rnx" href="{BASE}/earnings/{r["slug"]}/"><b>{E(x["company"])}</b> <span>{E(x["ticker"])} · {E(x["when"])} · <em class="{"up" if er=="Beat" else "dn" if er=="Miss" else ""}">{E(er)}</em></span></a>'
+        else:
+            chips+=f'<a class="rnx" href="{BASE}/earnings/{x["ticker"].lower()}/"><b>{E(x["company"])}</b> <span>{E(x["ticker"])} · {E(x["when"])}{E(eps(x.get("eps_est")))}</span></a>'
+    more=f' (+{len(its)-10} more)' if len(its)>10 else ''
+    return (f'<div class="rnext"><h3 class="h3s">🗓️ Reporting {E(lab)}, {E(d.strftime("%b %-d"))}{E(more)}</h3><div class="rnxg">{chips}</div>'
+            f'<p class="sub"><a href="{BASE}/earnings-calendar/#d-{d.isoformat()}">Full day on the earnings calendar →</a> Dates and estimates from a public earnings calendar; companies can move dates.</p></div>')
 def home_weeks(B, reports):
     """Homepage cards linking the current week's recap and the next week's preview (same pages as /earnings/#weekly)."""
     E = B['E']; BASE = B['BASE']
     picks = week_picks(reports, B.get('TODAY'))
+    nx = home_next(B, reports)
     if not picks:
-        return ''
+        return nx
     cards = ''.join(
         f'<a class="ercard" href="{BASE}{p["url"]}"><span class="erk">{E(p["kicker"])}</span>'
         f'<h3>{E(p["title"])}</h3><p>{E(p["blurb"])}</p><span class="erg">{E(p["cta"])}</span></a>'
         for p in picks)
-    return f'<div class="ergrid wkhome">{cards}</div><p class="sub"><a href="{BASE}/earnings-calendar/"><b>🗓️ Earnings calendar this week →</b></a> who reports each day and what Wall Street expects.</p>'
+    return nx + f'<div class="ergrid wkhome">{cards}</div><p class="sub"><a href="{BASE}/earnings-calendar/"><b>🗓️ Earnings calendar this week →</b></a> who reports each day and what Wall Street expects.</p>'
 
 def scorecard(B, reports, days=7):
     """'Earnings season scorecard' on /earnings/: share of reports that beat on EPS and on revenue,
