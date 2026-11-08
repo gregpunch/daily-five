@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-08",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "24 OF 26 BEAT · 10 STILL FELL",
+   "action": "Counts on his fingers, then throws his hands up in mock disbelief.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Earnings week scorecard: twenty four of twenty six big companies beat on earnings per share. And ten of them still fell. Wall Street said thanks for the beat, now please leave."
+  },
+  {
+   "id": 2,
+   "banner": "APPLOVIN +44% · MARATHON −13%",
+   "action": "Mimes a rocket launch, then a hard crash with a wince.",
+   "line": "Biggest pop: AppLovin, up about forty four percent. That is not a stock, that is a money printer with a ticker. Biggest drop: Marathon Petroleum, down about thirteen percent, even after a big beat. Brutal."
+  },
+  {
+   "id": 3,
+   "banner": "ON DECK: COREWEAVE · CISCO · AMAT",
+   "action": "Rubs his hands, then points at camera like a tip-off.",
+   "line": "On deck this week: Constellation and K K R on Monday, CoreWeave Tuesday, then Cisco and Applied Materials Thursday. The A.I. trade gets its report card. I will explain every print in plain English."
+  },
+  {
+   "id": 4,
+   "banner": "EARNINGS, EXPLAINED · FREE",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "I am an A.I. host, not your financial advisor, so this is not financial advice. Earnings explained every morning, stock calls graded against the S and P. Free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Earnings, explained · every morning at 7 AM ET"
+ }
+}

@@ -481,3 +481,44 @@ def home_strip(B, reports, days=3):
     return (f'<section class="card ernhome"><h2 class="h2s">🧾 Earnings explained: who beat, who missed</h2>'
             f'<p class="sub">This week\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it.</p>'
             f'<ul class="why">{li}</ul><p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
+
+def week_stats(reports, monday):
+    """Numbers for a weekend 'weekly recap leads' edition (ed['lead_week']=<monday>): same math as week_recaps()
+    (EPS/revenue beat counts, biggest pop/drop and beat-but-fell from live moves vs the pre-report close)."""
+    if isinstance(monday, str): monday = datetime.date.fromisoformat(monday)
+    rs = [r for r in reports if _wk(r) == monday]
+    if not rs: return None
+    for r in rs:
+        if r.get('_move') is None:
+            rx = live_reaction(r); pc = r.get('prev_close')
+            r['_move'] = (rx['price']/pc-1)*100 if rx.get('price') and pc else None
+    ep = [eps_result(r) for r in rs]; rv = [rev_result(r) for r in rs]
+    mv = sorted([r for r in rs if r.get('_move') is not None], key=lambda r: r['_move'])
+    return dict(monday=monday, label=week_label(monday, rs), url=f'/earnings/week-of-{monday.isoformat()}/', rs=rs,
+                n=len(rs), en=sum(1 for x in ep if x), eb=sum(x == 'Beat' for x in ep),
+                rn=sum(1 for x in rv if x), rb=sum(x == 'Beat' for x in rv),
+                pop=mv[-1] if mv and mv[-1]['_move'] > 0 else None, drop=mv[0] if mv and mv[0]['_move'] < 0 else None,
+                bf=[r for r in mv if surprise(r, r['_move']) in ('beat-fell', 'rev-beat-fell')],
+                top=sorted(rs, key=lambda r: (-size(r), r['ticker'])))
+
+def home_week_lead(B, reports, ed):
+    """Home lead block for weekend editions with ed['lead_week']: the weekly recap headline numbers, the biggest
+    names (with live moves) and a link to every explainer of that week, above the regular 'Earnings, explained' cards."""
+    E = B['E']; BASE = B['BASE']; s = week_stats(reports, ed['lead_week'])
+    if not s: return ''
+    def mv(r):
+        if r.get('_move') is None: return ''
+        return f'<span class="ermv {"up" if r["_move"] >= 0 else "dn"}">{E(r["ticker"])} {r["_move"]:+.1f}%</span>'
+    tiles = ''.join(f'<div class="sct"><b>{b}</b><span>{l}</span></div>' for b, l in [
+        (f'{s["eb"]} of {s["en"]}', 'beat on EPS'), (f'{s["rb"]} of {s["rn"]}', 'beat on revenue')]
+        + ([(f'<span class="up">{E(s["pop"]["ticker"])} {s["pop"]["_move"]:+.1f}%</span>', f'biggest pop: {E(s["pop"]["company"])}')] if s['pop'] else [])
+        + ([(f'<span class="dn">{E(s["drop"]["ticker"])} {s["drop"]["_move"]:+.1f}%</span>', f'biggest drop: {E(s["drop"]["company"])}')] if s['drop'] else [])
+        + ([(str(len(s['bf'])), 'beat and still fell')] if s['bf'] else []))
+    cards = ''.join(f'<a class="ercard" href="{BASE}/earnings/{r["slug"]}/"><span class="erk">{E(r["ticker"])} · {E(r["quarter"])}</span>'
+                    f'<h3>{E(r["company"])}: {E(r["verdict_word"])}</h3>{mv(r)}<span class="erg">Read the breakdown →</span></a>' for r in s['top'][:8])
+    allx = ' · '.join(f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a>' for r in s['top'])
+    return (f'<section class="sec ernlead" id="week-lead"><div class="sh"><span class="si">📊</span><div><h2>{E(ed.get("lead_title") or "This week in earnings")}</h2>'
+            f'<p class="sub">{s["n"]} big reports explained the week of {E(s["label"])}. Biggest names first; moves are vs the close before each report and refresh with every rebuild. '
+            f'<a href="{BASE}{s["url"]}"><b>Full weekly recap →</b></a></p></div></div>'
+            f'<div class="scgrid">{tiles}</div><div class="ergrid">{cards}</div>'
+            f'<p class="sub"><b>Every explainer this week:</b> {allx}</p></section>')

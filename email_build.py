@@ -269,11 +269,37 @@ def earnings(ed):
           f'<div style="{F}font-size:13px;padding-top:8px;"><a href="{u}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Read the full breakdown →</a></div>')
         out.append(row(inner,tint))
     return out
+def week_lead(ed):
+    """Weekend editions with ed['lead_week']=<monday>: the weekly recap leads the email (beat counts, biggest pop/drop,
+    biggest names with their moves, and a link to every explainer that week). Same numbers as /earnings/week-of-<monday>/."""
+    try:
+        import earnings_explainer as EX; s=EX.week_stats(EX.load(ROOT),ed['lead_week'])
+    except Exception as ex:
+        print('email week lead skipped:',ex); return []
+    if not s: return []
+    cg=f"utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-weeklead"
+    wu=f"{SITE}{s['url']}?{cg}"
+    parts=[f'<b>{s["eb"]} of {s["en"]}</b> beat on EPS',f'<b>{s["rb"]} of {s["rn"]}</b> on revenue']
+    if s['pop']: parts.append(f'biggest pop <span style="color:{UP};font-weight:700;">{E(s["pop"]["company"])} {s["pop"]["_move"]:+.1f}%</span>')
+    if s['drop']: parts.append(f'biggest drop <span style="color:{DN};font-weight:700;">{E(s["drop"]["company"])} {s["drop"]["_move"]:+.1f}%</span>')
+    if s['bf']: parts.append(f'<b>{len(s["bf"])}</b> beat and still fell')
+    out=[sec('📊',ed.get('lead_title') or 'This week in earnings',f'{s["n"]} big reports explained · {s["label"]} · biggest names first'),
+         f'<tr><td style="padding:2px 24px 10px;{F}font-size:14px;line-height:21px;color:#cdd2e1;">📊 {" · ".join(parts)} · <a href="{wu}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">full weekly recap →</a></td></tr>']
+    li=''
+    for r in s['top'][:8]:
+        u=f"{SITE}/earnings/{r['slug']}/?{cg}"
+        m=r.get('_move'); mv=(f' <span style="{M}font-size:13px;color:{UP if m>=0 else DN};font-weight:700;">{m:+.1f}%</span>' if m is not None else '')
+        li+=(f'<div style="padding:5px 0;{F}font-size:15px;line-height:21px;color:{TXT};"><a href="{u}" style="color:{TXT};text-decoration:none;"><b>{E(r["company"])} ({E(r["ticker"])})</b></a>{mv}'
+             f' <span style="color:{AMB};font-weight:700;">· {E(r["verdict_word"])}</span></div>')
+    out.append(f'<tr><td style="padding:4px 24px;">{li}</td></tr>')
+    allx=' · '.join(f'<a href="{SITE}/earnings/{r["slug"]}/?{cg}" style="color:#a5b4fc;text-decoration:none;">{E(r["company"])}</a>' for r in s['top'])
+    out.append(f'<tr><td style="padding:6px 24px 10px;{F}font-size:13px;line-height:20px;color:{MUT};"><b style="color:{TXT};">Every explainer this week:</b> {allx}</td></tr>')
+    return out
 def render(ed,prev=None,rec=None,open3=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'3 Month':0,'1 Day':1,'1 Month':2,'1 Year':3}
     finl=sorted([p for p in ed['finance'] if keep(p)],key=lambda p:(order.get(p['horizon'],9),-(p.get('score') or 0)))
-    hl=subject(ed)
+    hl=(ed.get('lead_title') if ed.get('lead_week') else None) or subject(ed)
     btn=(f'<table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td style="border-radius:999px;background:{UP};">'
          f'<a href="{SITE}/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed["date"]}" style="display:inline-block;padding:14px 30px;{F}font-size:16px;font-weight:900;color:#04130c;text-decoration:none;border-radius:999px;">Read today on the site →</a></td></tr></table>')
     rows=[f'<tr><td style="padding:28px 24px 8px;background:{BG};background-image:radial-gradient(120% 100% at 0 0,#2a1f66,{BG} 60%);">'
@@ -285,8 +311,9 @@ def render(ed,prev=None,rec=None,open3=None):
       f'<div style="padding:14px 0 10px;">{btn}</div></td></tr>',
       ]
     # Earnings-first (Nov 4, 2026): earnings, on deck, stock calls, short AI. No sports, Bold Bets or leans.
+    rows+=week_lead(ed) if ed.get('lead_week') else []
     er=earnings(ed)
-    rows+=er if er else [sec('🧾',"Earnings, explained",'No big reports overnight'),f'<tr><td style="padding:4px 24px;{F}font-size:14px;color:{TXT};">No major company reported last night or this morning. <a href="{SITE}/earnings/" style="color:#a5b4fc;">Recent explainers →</a></td></tr>']
+    rows+=er if (er or ed.get('lead_week')) else [sec('🧾',"Earnings, explained",'No big reports overnight'),f'<tr><td style="padding:4px 24px;{F}font-size:14px;color:{TXT};">No major company reported last night or this morning. <a href="{SITE}/earnings/" style="color:#a5b4fc;">Recent explainers →</a></td></tr>']
     rows+=on_deck(ed)
     rows+=week_roundup(ed)
     rows.append(sec('📅','3-month stock calls','Buy and hold 3 months · graded vs the S&P 500'))

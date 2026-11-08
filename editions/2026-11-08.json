@@ -1,0 +1,148 @@
+{
+ "date": "2026-11-08",
+ "headline": "Earnings week recap: 24 of 26 beat on EPS, AppLovin +44%, Marathon Petroleum −13%, 10 beat and still fell; CoreWeave, Cisco and Applied Materials report in the week ahead",
+ "top_call": "This week 24 of 26 big companies beat Wall Street on earnings, and the market still made 10 of them pay. AppLovin ripped about 44%, Marathon Petroleum sank about 13%, and the rest landed somewhere between 'nice quarter' and 'nice quarter, sell it.' Every explainer is linked below, biggest names first, plus who reports in the week ahead: CoreWeave Tuesday, Cisco and Applied Materials Thursday.",
+ "lead_week": "2026-11-02",
+ "lead_title": "24 of 26 beat earnings this week, and 10 still fell",
+ "subject": "The Daily Five — Sun Nov 8: 24 of 26 beat earnings, 10 still fell; AppLovin +44%",
+ "backdrop": "Friday's bounce: the S&P 500 rose 0.3% and the Nasdaq gained 1.1% as Nvidia climbed 2.8% after two days of AI-led selling, while the Dow slipped 237 points (0.5%). The S&P still lost 2.7% on the week, its worst week since the April 2025 tariff shock, per AP.",
+ "backdrop_source": {
+  "name": "AP",
+  "url": "https://www.midfloridanewspapers.com/ai-stocks-halt-their-brutal-worldwide-sell-off-as-wall-street-trims-its-loss-for/article_10b4929e-1050-4db3-af06-918a49640695.html"
+ },
+ "finance": [],
+ "on_deck_title": "On deck this coming week",
+ "on_deck_sub": "The big reports Nov 9–12 and what Wall Street expects (EPS estimates per Yahoo Finance)",
+ "on_deck": [
+  {
+   "ticker": "CEG",
+   "company": "Constellation Energy",
+   "when": "Mon · before the open",
+   "eps_consensus": "$3.89",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "KKR",
+   "company": "KKR & Co.",
+   "when": "Mon · before the open",
+   "eps_consensus": "$1.58",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "RKLB",
+   "company": "Rocket Lab",
+   "when": "Mon · after the close",
+   "eps_consensus": "−$0.07",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "OXY",
+   "company": "Occidental Petroleum",
+   "when": "Mon · after the close",
+   "eps_consensus": "$1.47",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "SE",
+   "company": "Sea Limited",
+   "when": "Tue · before the open",
+   "eps_consensus": "$0.97",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-10"
+   }
+  },
+  {
+   "ticker": "TDG",
+   "company": "TransDigm",
+   "when": "Tue · before the open",
+   "eps_consensus": "$12.21",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-10"
+   }
+  },
+  {
+   "ticker": "CRWV",
+   "company": "CoreWeave",
+   "when": "Tue · after the close",
+   "eps_consensus": "−$1.55",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-10"
+   }
+  },
+  {
+   "ticker": "NBIS",
+   "company": "Nebius Group",
+   "when": "Thu · before the open",
+   "eps_consensus": "−$1.24",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-12"
+   }
+  },
+  {
+   "ticker": "CSCO",
+   "company": "Cisco Systems",
+   "when": "Thu · after the close",
+   "eps_consensus": "$1.32",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-12"
+   }
+  },
+  {
+   "ticker": "AMAT",
+   "company": "Applied Materials",
+   "when": "Thu · after the close",
+   "eps_consensus": "$4.06",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-12"
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "IPO",
+   "headline": "Anthropic is pushing ahead with a pre-Thanksgiving IPO anyway: $80–100 billion raise at a $1.25–1.75 trillion valuation, below the $2 trillion some backers dreamed of, per investors cited by the FT",
+   "why": "The AI rout just gave the biggest IPO of the year a haircut, and they're showing up to the barber anyway. OpenAI also trimmed its private round to $1.25 trillion. A soft print here is a mood ring for every AI stock.",
+   "source": {
+    "name": "The Decoder",
+    "url": "https://the-decoder.com/anthropic-pushes-ahead-with-pre-thanksgiving-ipo-despite-tech-selloff-accepts-lower-valuation/"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "The U.S. cleared a Chinese firm with an empty Beijing office, and owners tied to a blacklisted private-equity firm, to buy Nvidia H200 chips, per a New York Times investigation",
+   "why": "Export controls, but make it honor system. Expect Washington to tighten the screws, which is a headline risk for Nvidia ahead of its Nov 17 report.",
+   "source": {
+    "name": "The Verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1029483/nvidia-ai-chips-china-blacklist-government"
+   }
+  },
+  {
+   "category": "Talent",
+   "headline": "Meta's chief strategy officer and former CFO Dave Wehner is leaving to become CFO of Fireworks, a $17.5 billion AI inference startup reportedly in talks to raise at $30–40 billion",
+   "why": "When Meta's old money guy picks the picks-and-shovels startup, that's a tell about where he thinks the AI cash lands: running the models, not just building them.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/11/07/dave-wehner-meta-fireworks-cfo.html"
+   }
+  }
+ ],
+ "sports": []
+}

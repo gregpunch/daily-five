@@ -690,6 +690,8 @@ def clip_ed(d):
 def clip_topic(d):
     """What the clip headline promises: the Bold Bet only on days that have one (else Max's lean, else the 3-month calls)."""
     ed=clip_ed(d)
+    if d>='2026-11-05':  # earnings-first (Nov 4 pivot): no Bold Bets or leans in clips
+        return "the weekly earnings recap + who reports next" if ed.get('lead_week') else "earnings, explained + what's on deck"
     if any(p.get('bold') for p in ed.get('sports',[])): return "today's calls + the Bold Bet"
     if ed.get('lean'): return "no Bold Bet, just Max's lean + the 3-month calls"
     return "no Bold Bet today + the 3-month calls"
@@ -994,7 +996,9 @@ def home_body(ed,fin,ai,bd,upd):
     """Earnings-first home (Nov 4, 2026 pivot): 'Earnings, explained' leads, then 3-month stock calls, then AI.
     No sports picks, Bold Bets or leans here; those live on as a frozen archive on /scoreboard/."""
     try:
-        import earnings_explainer as EX; el=EX.home_lead(dict(E=E,BASE=BASE,TODAY=TODAY,PIN=ed.get('lead')),EX.load(ROOT))
+        import earnings_explainer as EX; _R=EX.load(ROOT); el=EX.home_lead(dict(E=E,BASE=BASE,TODAY=TODAY,PIN=ed.get('lead')),_R)
+        # Weekend editions may lead with the weekly recap: ed['lead_week']=<monday>, ed['lead_title']=hero/section headline.
+        if ed.get('lead_week'): el=EX.home_week_lead(dict(E=E,BASE=BASE,TODAY=TODAY),_R,ed)+el
     except Exception as ex:
         print('home_lead skipped:',ex); el=''
     return el+f"""<p class="stamp"><span class="live"></span>Live prices · last updated <b id="upd">{upd}</b> · <span class="dl">stocks via Yahoo Finance (may lag up to ~15 min)</span></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> Explainers summarize public company reports; stock calls are graded in public against the S&amp;P 500.</p>
@@ -1002,11 +1006,12 @@ def home_body(ed,fin,ai,bd,upd):
 <section class="sec ai" id="ai"><div class="sh"><span class="si">🤖</span><div><h2>AI that matters</h2><p class="sub">The stories most likely to move AI stocks.</p></div></div><div class="newsgrid">{ai}</div></section>
 <p class="sub" style="margin:18px 0">🗄 Our old sports picks, Bold Bets and Max\'s leans are a frozen archive on the <a href="{BASE}/scoreboard/">Scoreboard</a>.</p>"""
 
-def home_hero(nice,pin=None):
+def home_hero(nice,pin=None,title=None):
     try:
         import earnings_explainer as EX; ld=EX.lead(EX.load(ROOT),TODAY,days=2,n=1,pin=pin)
     except Exception: ld=[]
     h1=(f"{ld[0]['company']}: {ld[0]['verdict_word']}. Earnings, explained." if ld else "Earnings, explained in plain English")
+    if title: h1=title
     return f'<section class="hero"><div class="mesh" aria-hidden="true"></div><div class="wrap hgrid"><div><p class="date"><span class="live"></span>{nice}</p><h1>{E(h1)}</h1><p class="tag">{E(TAG)}</p>{sform("hero")}<div class="jump"><a href="#earnings">🧾 Earnings, explained</a><a href="#finance">📅 3-month calls</a><a href="#ai">🤖 AI</a></div></div></div></section>'
 
 def body(ed,prev=None,home=False):
@@ -2471,7 +2476,7 @@ def main():
         hr=hero(ed,nice); w(f'{d}/index.html',shell(title,desc,f'/{d}/',body(ed,prev),sch,hr,og)); items.append((d,nice,title,desc,ed,hr))
     if items:
         d,nice,title,desc,ed,hr=items[0]
-        w('index.html',shell(f"The Daily Five: Earnings Explained in Plain English, Every Day",f"{TAG} Who beat, who missed, guidance and the stock reaction. Free 7 AM email.",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG},home_hero(nice,ed.get('lead'))))
+        w('index.html',shell(f"The Daily Five: Earnings Explained in Plain English, Every Day",f"{TAG} Who beat, who missed, guidance and the stock reaction. Free 7 AM email.",'/',body(ed,eds[1] if len(eds)>1 else None,home=True),{"@context":"https://schema.org","@type":"WebSite","name":BRAND,"url":SITE+"/","description":TAG},home_hero(nice,ed.get('lead'),ed.get('lead_title') if ed.get('lead_week') else None)))
     items=[x for x in items]  # archive lists every edition, beta included
     w('archive/index.html',shell(f"Archive | {BRAND}","Every past edition of The Daily Five.",'/archive/',f'<h1 class="pt">Archive</h1><p class="sub"><a href="{BASE}/week-in-review/">Week in review: every week\'s calls, graded →</a></p><div class="arch">'+''.join(f'<a href="{BASE}/{d}/"><span class="ad">{n}</span><b>{E(e["headline"])}</b></a>' for d,n,_,_,e,_ in items)+'</div>'))
     rows=[]

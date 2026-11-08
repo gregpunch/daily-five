@@ -106,7 +106,7 @@ def script_words(ws,line,exact=False):
             if i2>i1: a0,b0=ws[i1].start,ws[i2-1].end
             else:
                 a0=ws[i1-1].end if i1>0 else ws[0].start; b0=ws[i1].start if i1<len(ws) else ws[-1].end
-                if b0-a0<0.12*(j2-j1): b0=a0+0.12*(j2-j1)
+                if b0-a0<(0.3 if i1>=len(ws) else 0.12)*(j2-j1): b0=a0+(0.3 if i1>=len(ws) else 0.12)*(j2-j1)
             n=j2-j1; step=(b0-a0)/n
             out+=[mk(a0+k*step,a0+(k+1)*step,st[j1+k]) for k in range(n)]
         return out
@@ -138,6 +138,10 @@ for s in S['segments']:
     print(f"seg{s['id']}: match {ratio:.2f}  heard: {heard}")
     if not words: print('no speech found'); sys.exit(1)
     t0=max(0,words[0].start-0.18); t1=min(dur(f),words[-1].end+0.22)
+    if os.path.exists(os.path.join(SEG,f"tts{s['id']}.wav")):
+        # TTS segments: STT sometimes drops the last words (Nov 8: 'now please leave'); never trim real speech, so extend t1 to the last loud audio.
+        loud=np.nonzero(np.abs(pcm)>0.02)[0]
+        if len(loud): t1=min(dur(f),max(t1,loud[-1]/16000+0.2))
     _a,_b=norm(s['line']),norm(heard)
     if not any(difflib.SequenceMatcher(None,_a[0],x).ratio()>=0.5 for x in _b[:2]): print(f"seg{s['id']}: opening words not heard ({_a[0]!r}) - trimming would cut them; regenerate this segment"); GATE and sys.exit(2)
     segs.append((s,f,t0,t1,words))
@@ -210,7 +214,7 @@ run(['ffmpeg','-v','error','-y','-loop','1','-t',str(EC),'-i',host,'-f','lavfi',
      f"drawbox=x=0:y=560:w={W}:h=190:color={TEAL}@0.95:t=fill,"
      f"drawtext=fontfile={FONT}:expansion=none:text='{esc(S['end_card']['title'])}':fontcolor=0x07080d:fontsize={fit(S['end_card']['title'],64)[0]}:x=(w-tw)/2:y=600,"
      f"drawtext=fontfile={FONT}:expansion=none:text='{esc(S['end_card']['sub'])}':fontcolor=0x07080d:fontsize={fit(S['end_card']['sub'],28,16)[0]}:x=(w-tw)/2:y=690,"
-     f"drawtext=fontfile={FONT}:expansion=none:text='Max Edge is an AI host · Not financial advice · 21+':fontcolor=white:fontsize=24:x=(w-tw)/2:y=820,fps={FPS}",
+     f"drawtext=fontfile={FONT}:expansion=none:text='Max Edge is an AI host · Not financial advice':fontcolor=white:fontsize=24:x=(w-tw)/2:y=820,fps={FPS}",
      '-c:v','libx264','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-shortest',ec])
 vids.append(ec)
 # ---------- 5. concat + captions + whoosh + music ----------
