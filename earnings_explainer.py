@@ -303,6 +303,71 @@ def weeks_section(B, reports):
     li=''.join(f'<li><a href="{BASE}/earnings/week-of-{m.isoformat()}/"><b>Week of {E(week_label(m,by[m]))}</b></a>: '+(f'{len(by[m])} reports, who beat, who missed, biggest moves' if by[m] else f'preview: {len(CAL[m]["items"])} big reports on the calendar and what Wall Street expects')+'</li>' for m in sorted(by,reverse=True))
     return f'<section class="card" id="weekly"><h2 class="h2s">📅 Weekly earnings recaps</h2><ul class="why">{li}</ul></section>'
 
+def week_picks(reports, today=None):
+    """Cards for this week's recap, last week's recap, and next week's preview.
+    Labels follow the Mon–Sun week of `today`: Saturday still says 'this week';
+    Monday promotes last week's recap and the new preview."""
+    today = today or datetime.date.today()
+    cur = today - datetime.timedelta(days=today.weekday())
+    last = cur - datetime.timedelta(days=7)
+    nxt = cur + datetime.timedelta(days=7)
+    by = {}
+    for r in reports:
+        by.setdefault(_wk(r), []).append(r)
+    CAL = load_calendar()
+
+    def blurb(m):
+        rs = by.get(m) or []
+        cal = CAL.get(m)
+        lab = week_label(m, rs)
+        if rs:
+            ep = [eps_result(r) for r in rs]
+            en = sum(1 for x in ep if x)
+            eb = sum(x == 'Beat' for x in ep)
+            extra = f'{eb} of {en} beat on EPS' if en else f'{len(rs)} reports explained'
+            return lab, f'{len(rs)} reports · {extra}', True
+        if not cal:
+            return None, None, False
+        n = len(cal['items'])
+        F = cal.get('featured') or []
+        tm = {x['ticker']: x for x in cal['items']}
+        names = ([tm[t]['company'] for t in F if t in tm] or
+                 [x['company'] for x in sorted(cal['items'], key=lambda x: (x['date'], x['ticker']))])[:3]
+        who = (f", including {', '.join(names)}" if names else '')
+        return lab, f'{n} big reports on the calendar{who}', False
+
+    out = []
+    lab, text, has = blurb(last)
+    if lab and has:
+        out.append({'kind': 'last', 'monday': last, 'url': f'/earnings/week-of-{last.isoformat()}/',
+                    'kicker': '📊 Last week', 'title': f'Earnings recap ({lab})',
+                    'blurb': text, 'cta': 'See who beat, who missed →'})
+    lab, text, has = blurb(cur)
+    if lab:
+        out.append({'kind': 'this', 'monday': cur, 'url': f'/earnings/week-of-{cur.isoformat()}/',
+                    'kicker': '📊 This week' if has else '🗓️ This week',
+                    'title': f'Earnings recap ({lab})' if has else f'Who reports ({lab})',
+                    'blurb': text, 'cta': 'See who beat, who missed →' if has else 'Dates, times and EPS estimates →'})
+    lab, text, has = blurb(nxt)
+    if lab:
+        out.append({'kind': 'next', 'monday': nxt, 'url': f'/earnings/week-of-{nxt.isoformat()}/',
+                    'kicker': '🗓️ Next week',
+                    'title': f'Who reports ({lab})' if not has else f'Earnings recap ({lab})',
+                    'blurb': text, 'cta': 'Dates, times and EPS estimates →' if not has else 'See who beat, who missed →'})
+    return out
+
+def home_weeks(B, reports):
+    """Homepage cards linking the current week's recap and the next week's preview (same pages as /earnings/#weekly)."""
+    E = B['E']; BASE = B['BASE']
+    picks = week_picks(reports, B.get('TODAY'))
+    if not picks:
+        return ''
+    cards = ''.join(
+        f'<a class="ercard" href="{BASE}{p["url"]}"><span class="erk">{E(p["kicker"])}</span>'
+        f'<h3>{E(p["title"])}</h3><p>{E(p["blurb"])}</p><span class="erg">{E(p["cta"])}</span></a>'
+        for p in picks)
+    return f'<div class="ergrid wkhome">{cards}</div>'
+
 def scorecard(B, reports, days=7):
     """'Earnings season scorecard' on /earnings/: share of reports that beat on EPS and on revenue,
     and the biggest stock moves, over the last `days` days. Computed only from the JSON results and live moves."""
@@ -380,7 +445,7 @@ def home_lead(B, reports):
     sline=home_scoreline(B,reports,rec)
     return (f'<section class="sec ernlead" id="earnings"><div class="sh"><span class="si">🧾</span><div><h2>Earnings, explained</h2>{sline}'
             f'<p class="sub">Last night\'s and this morning\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it. Biggest names first. Live stock moves refresh with every rebuild.</p></div></div>'
-            f'<div class="ergrid">{cards}</div><p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
+            f'<div class="ergrid">{cards}</div>{home_weeks(B,reports)}<p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
 
 def home_scoreline(B, reports, rec, days=7):
     """One-line earnings season scorecard under the home 'Earnings, explained' heading:

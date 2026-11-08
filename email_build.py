@@ -182,6 +182,39 @@ def on_deck(ed):
     li+=f'<div style="{F}font-size:11px;color:{MUT};padding-top:6px;">Schedule and estimates: {E(", ".join(srcs))}. Explainers go up after each report.</div>'
     # Weekend editions preview the next trading day: ed['on_deck_title'] / ed['on_deck_sub'] override the heading.
     return [sec('📅',ed.get('on_deck_title') or 'On deck today',ed.get('on_deck_sub') or 'Who reports today, and what Wall Street expects'),f'<tr><td style="padding:4px 24px;">{li}</td></tr>']
+def week_roundup(ed):
+    """This-week recap + next-week preview (or last-week + this-week from Monday), linking
+    /earnings/week-of-<monday>/ pages. Omitted when neither page exists yet."""
+    try:
+        import earnings_explainer as EX
+        picks = EX.week_picks(EX.load(ROOT), datetime.date.fromisoformat(ed['date']))
+    except Exception as ex:
+        print('email week roundup skipped:', ex)
+        return []
+    if not picks:
+        return []
+    kinds = {p['kind'] for p in picks}
+    if 'last' in kinds and ('this' in kinds or 'next' in kinds):
+        title, sub = 'Last week and this week', 'The recap, and who reports next'
+    elif 'this' in kinds and 'next' in kinds:
+        title, sub = 'This week and next', 'Who beat, who missed, and who reports next'
+    elif 'next' in kinds:
+        title, sub = 'Earnings next week', 'Who reports, when, and what Wall Street expects'
+    else:
+        title, sub = 'This week in earnings', 'Who beat, who missed, biggest moves'
+    blocks = []
+    for i, p in enumerate(picks):
+        u = f"{SITE}{p['url']}?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-weekly"
+        border = f'border-top:1px solid {LINE};' if i else ''
+        pad = '12px 0 4px' if i else '4px 0'
+        blocks.append(
+            f'<div style="padding:{pad};{border}">'
+            f'<div style="{F}font-size:11px;font-weight:800;color:{AMB};letter-spacing:1px;text-transform:uppercase;">{E(p["kicker"])}</div>'
+            f'<div style="{F}font-size:17px;font-weight:800;color:{TXT};padding-top:2px;"><a href="{u}" style="color:{TXT};text-decoration:none;">{E(p["title"])}</a></div>'
+            f'<div style="{F}font-size:14px;line-height:20px;color:#cdd2e1;padding-top:4px;">{E(p["blurb"])}</div>'
+            f'<div style="{F}font-size:13px;padding-top:6px;"><a href="{u}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">{E(p["cta"])}</a></div>'
+            f'</div>')
+    return [sec('📅', title, sub), f'<tr><td style="padding:4px 24px;">{"".join(blocks)}</td></tr>']
 def email_scoreline(ed, days=7):
     """One-line earnings season scorecard under the email 'Earnings, explained' heading
     (mirrors home_scoreline on the site): EPS beat tally over the last `days` days, plus
@@ -255,6 +288,7 @@ def render(ed,prev=None,rec=None,open3=None):
     er=earnings(ed)
     rows+=er if er else [sec('🧾',"Earnings, explained",'No big reports overnight'),f'<tr><td style="padding:4px 24px;{F}font-size:14px;color:{TXT};">No major company reported last night or this morning. <a href="{SITE}/earnings/" style="color:#a5b4fc;">Recent explainers →</a></td></tr>']
     rows+=on_deck(ed)
+    rows+=week_roundup(ed)
     rows.append(sec('📅','3-month stock calls','Buy and hold 3 months · graded vs the S&P 500'))
     last=None
     for i,p in enumerate(finl,1):
