@@ -1165,3 +1165,17 @@
 2. Morning-of preview pages that flip to results at the same URL (still open from earlier in the week).
 3. Monday 8 AM run: CEG/KKR/B/FERG/NRG explainers will auto-shrink the preview table — watch that it reads well mid-week.
 4. Distribution still the bottleneck (X suspended, ~1 Kit sub). Weekly recap + next-week preview are now one click from home and the email — ask Greg before any Reddit/X post.
+
+## 2026-11-08 · 7 AM ET edition (Sunday)
+- **Edition 2026-11-08 published** (no new reports since Friday's close, so the **weekly recap leads**): "24 of 26 beat earnings this week, and 10 still fell" — 27 reports Nov 2–7, 20 of 25 beat on revenue, biggest pop AppLovin +43.9%, biggest drop Marathon Petroleum −12.9% (verified from data/earnings + live recap page). Kit subject (not sent by me): **"The Daily Five — Sun Nov 8: 24 of 26 beat earnings, 10 still fell; AppLovin +44%"** in `email/2026-11-08.subject.txt`; `email/2026-11-08.html` written.
+- **New: `lead_week` / `lead_title` edition keys** → `earnings_explainer.home_week_lead` + `email_build.week_lead` open home and email with the weekly recap (beat counts, pop/drop, beat-and-fell, biggest names with moves, link to all 27 explainers). Hero + email header use `lead_title`. FORMAT.md documents the weekend rule and a no-TBD check.
+- **On deck this coming week:** CEG, KKR, RKLB, OXY (Mon), SE, TDG, CRWV (Tue), NBIS, CSCO, AMAT (Thu) with Yahoo EPS estimates; dates/times cross-checked on the Nasdaq calendar API. Preview page /earnings/week-of-2026-11-09/.
+- **Stocks:** no new call (GD on Nov 2 was this week's call). Open calls vs S&P: TMUS +13.8 pts, NEE +9.2, MSFT +3.6, GD −2.3; avg **+6.06%** (stamp 7:26 AM ET, Friday closes TMUS $162.01, NEE $86.95, MSFT $530.61, GD $354.06, SPY $735.29).
+- **AI in brief (Sat Nov 7 stories):** Anthropic pre-Thanksgiving IPO at $1.25–1.75T (The Decoder/FT), U.S. cleared an empty-office Chinese firm for Nvidia H200s (The Verge/NYT), Meta's Dave Wehner → Fireworks CFO (CNBC).
+- **Max Edge clip:** TTS **fallback** (no AI video tool available this run), 52.5 s, 4 segments, STT matches 0.96/0.96/0.90/1.00, max inter-word gap ~0.7 s. `video/max-2026-11-08.mp4` (git-ignored), compressed `clips/max-2026-11-08.mp4` committed → live at https://readdailyfive.com/video/max-2026-11-08.mp4 and /max-edge/2026-11-08/. assemble.py fix: TTS segments no longer lose tail words STT misses (energy-based end trim); end card drops "21+". clip_topic no longer says "no Bold Bet" after Nov 5.
+- Build: local build.py stalled in headless-Chrome OG rendering (hung ~15 min); rebuilt locally with PNG rendering stubbed for the email, then CI built for real. Commit **f099988**, push deploy run **42480183972** success. Live 200: /, /2026-11-08/, /earnings/, /scoreboard/, both weekly pages, /max-edge/2026-11-08/, clip mp4. No TBD anywhere.
+
+**Growth ideas**
+1. Add a timeout to `_render_png` (subprocess timeout=30) so local builds can't hang on Chrome.
+2. Monday: CEG/KKR explainers before the open; consider a Monday "last week's winners & losers" Kit subject on quiet mornings.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit post of the weekly recap.
