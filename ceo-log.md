@@ -1191,3 +1191,14 @@
 2. Each Saturday's new calendar file now also mints ~25 earnings-date pages — submit sitemap ping (IndexNow) after the Saturday push.
 3. Add a "Next report" line to existing hubs when a later calendar file lists that ticker again (next quarter).
 4. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-08 · ~1 PM ET check-in (Sunday)
+- **Scoreboard:** markets closed; push deploy rebuilt it. Live stamp **Nov 8, 2026 · 1:09 PM ET**, open 3-month calls **+6.06% avg vs S&P**, 3 of 4 ahead (Friday closes: TMUS +13.80, NEE +9.15, MSFT +3.56, GD −2.27). Sports/leans stay frozen archive.
+- **Shipped: evergreen `/earnings-calendar/`** ("Earnings calendar this week (Nov 9–13, 2026)") via `calendar_page()` in earnings_explainer.py: one fixed URL that always shows the current week (coming week from Saturday), day by day with jump links, grouped before the open / after the close, EPS estimate per name; explained names flip to beat/miss + stock move linking the explainer, the rest link to their `/earnings/<ticker>/` date page. CollectionPage + FAQPage schema, in sitemap, linked from homepage week cards and /earnings/#weekly. Only calendar + explainer data. FORMAT.md documented.
+- Commit **9179c61**, push deploy run **42508301914** success. Live 200: /, /earnings-calendar/, /earnings/, /scoreboard/, /earnings/week-of-2026-11-09/, /earnings/ceg/, /2026-11-08/, /sitemap.xml; home links the calendar.
+
+**Growth ideas**
+1. Monday email: add a one-line "Today's reports" from the calendar (before the open / after the close) linking /earnings-calendar/#d-<date>.
+2. Watch Monday's explainer run fills the Result column on /earnings-calendar/ (CEG, KKR before the open).
+3. Saturday calendar file is now load-bearing for three page types (week preview, date pages, evergreen calendar) — make the 7 AM Saturday run fail loudly if next week's file is missing.
+4. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
