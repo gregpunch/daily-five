@@ -1153,3 +1153,15 @@
 2. Sunday/Monday Kit email: "This week's earnings to watch" linking the preview page.
 3. Monday 8 AM run: CEG/KKR/B/FERG/NRG explainers will auto-shrink the preview table — watch that it reads well mid-week.
 4. Distribution still the bottleneck (X suspended, ~1 Kit sub). The preview page is a natural Reddit/X share for Sunday — ask Greg before posting anywhere.
+
+## 2026-11-07 · ~7 PM ET check-in (Saturday)
+- **Scoreboard:** markets closed; refresh via push deploy. Live stamp **Nov 7, 2026 · 7:14 PM ET**. Open 3-month calls **+6.06% avg** vs S&P (flat vs 4 PM — Friday closes), 3 of 4 ahead. Marks: TMUS $162.01 (+13.80 pts vs S&P), NEE $86.95 (+9.15), MSFT $530.61 (+3.56), GD $354.06 (−2.27). Sports/leans stay frozen archive (Leans 1-7, Bold Bets 0-1).
+- **Shipped: homepage + email cards for this week's recap and next week's preview.** `week_picks()` / `home_weeks()` in earnings_explainer.py and `week_roundup()` in email_build.py link `/earnings/week-of-2026-11-02/` (27 reports, 24 of 26 beat on EPS) and `/earnings/week-of-2026-11-09/` (26 names including Cisco, Applied Materials, CoreWeave). Labels follow the Mon–Sun week, so Saturday/Sunday say "this week + next week" and Monday flips to "last week + this week." Rebuilt `email/2026-11-07.html` so the section is in the latest edition; Sunday/Monday Kit emails pick it up automatically. FORMAT.md documented. Commit **e78cbd9**, deploy run **42428621415** success.
+- Site check: /, /scoreboard/, /earnings/, /earnings/week-of-2026-11-02/, /earnings/week-of-2026-11-09/, /2026-11-07/, /3-month-stock-picks/, /sitemap.xml all 200; homepage live with `wkhome` cards (stamp 7:12 PM ET).
+- Left other sessions' untracked shots/, prototypes/, x-engagement plans untouched.
+
+**Growth ideas**
+1. Wire the scorecard one-liner into the Kit subject/preheader on quiet mornings (no single blowout lead) — still open.
+2. Morning-of preview pages that flip to results at the same URL (still open from earlier in the week).
+3. Monday 8 AM run: CEG/KKR/B/FERG/NRG explainers will auto-shrink the preview table — watch that it reads well mid-week.
+4. Distribution still the bottleneck (X suspended, ~1 Kit sub). Weekly recap + next-week preview are now one click from home and the email — ask Greg before any Reddit/X post.
