@@ -1247,3 +1247,13 @@
 1. Explainers: show the pre-report 3-month move next to the reaction ("ran up 25% then fell 8%").
 2. Sort or flag the calendar's biggest movers ("Biggest run-ups into earnings this week") as its own card for a shareable angle.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-09 · ~4 PM ET check-in (Monday)
+- **Scoreboard:** refreshed at the close, stamp **Nov 9, 2026 · 4:10 PM ET**. Open 3-month calls vs S&P: TMUS +16.09, NEE +6.77, MSFT +4.03, GD −2.41 → **+6.12% avg**, 3 of 4 ahead.
+- **Shipped: "Into the report" run-up line on every quarter explainer** (`prerun()`/`prerun_html()` in earnings_explainer.py): real 3-month move into the report from Yahoo daily closes, S&P 500 over the same window, and whether the reaction extended or reversed it, plus a "high bar / low bar" note when it explains a counterintuitive move (MPC ran up 37.7% then fell 9.4%; APP fell 19.0% then jumped 50.6%). New FAQ "How much did <TK> stock move before earnings?". FORMAT.md documented.
+- **Gap:** today's Kit email still not sent (no browser route in routines).
+
+**Growth ideas**
+1. "Biggest run-ups into earnings this week" card on /earnings-calendar/ and the weekly recap (shareable angle).
+2. Weekly recap: a "priced in" stat (how many big run-ups sold off on a beat).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

@@ -124,6 +124,43 @@ def up_next(B, reports, n=8):
     return (f'<section class="card"><h2 class="h2s">🗓️ Up next: reporting {E(lab)}, {E(d.strftime("%b %-d"))}</h2><ul class="why">{li}</ul>'
             f'<p class="sub"><a href="{BASE}/earnings-calendar/#d-{d.isoformat()}">See the full day{E(more)} on the earnings calendar →</a> Dates and estimates from a public earnings calendar; companies can move dates.</p></section>')
 
+_prerun_cache={}
+def prerun(sym, rep_date, when=''):
+    """Real 3-month move INTO a past report: last daily close before the report (same day if it reported after the close)
+    vs the close ~63 trading days earlier, from Yahoo's chart API. Also the S&P 500 over the same window. None on failure."""
+    key=(sym,rep_date,when)
+    if key in _prerun_cache: return _prerun_cache[key]
+    out=None
+    try:
+        rd=datetime.date.fromisoformat(rep_date); after=str(when).startswith('after')
+        def closes(s):
+            p1=int(time.mktime((rd-datetime.timedelta(days=130)).timetuple())); p2=int(time.mktime((rd+datetime.timedelta(days=1)).timetuple()))
+            u=f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(s)}?period1={p1}&period2={p2}&interval=1d"
+            j=json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=8))['chart']['result'][0]
+            pts=[(datetime.date.fromtimestamp(t),c) for t,c in zip(j['timestamp'],j['indicators']['quote'][0]['close']) if c]
+            pts=[(d,c) for d,c in pts if (d<=rd if after else d<rd)]
+            if len(pts)<64: return None
+            return (pts[-64][0],pts[-1][0],round((pts[-1][1]/pts[-64][1]-1)*100,1))
+        a=closes(sym); m=closes('^GSPC')
+        if a: out={'start':a[0],'end':a[1],'m3':a[2],'spx':(m[2] if m else None)}
+    except Exception: pass
+    _prerun_cache[key]=out
+    return out
+
+def prerun_html(E, tk, pr, move):
+    """One plain-English line pairing the run-up into the report with the reaction ("ran up 25% then fell 8%")."""
+    if not pr: return '', None
+    m3=pr['m3']; verb='ran up' if m3>=0 else 'fell'
+    ctx=f' (S&amp;P 500 {pr["spx"]:+.1f}% over the same stretch)' if pr.get('spx') is not None else ''
+    if move is None: tail='.'
+    elif (m3>=0)==(move>=0): tail=f', and the report added to that: {move:+.1f}% so far.'
+    else: tail=f', then the report reversed it: {move:+.1f}% so far.'
+    note=(' A big run-up sets a high bar, which helps explain a sell-off on good numbers.' if m3>=10 and move is not None and move<0
+          else ' A stock that was already beaten down can bounce on results that merely clear a low bar.' if m3<=-10 and move is not None and move>0 else '')
+    txt=f'Going in, {tk} {verb} {abs(m3):.1f}% over the three months before the report{ctx}{tail}'
+    h=(f'<p class="sub"><b>Into the report:</b> {txt}{note} Daily closes {pr["start"].strftime("%b %-d")} to {pr["end"].strftime("%b %-d, %Y")}, Yahoo Finance.</p>')
+    return h, (txt.replace('&amp;','&')+note)
+
 def render(B, reports):
     """B: dict of build.py helpers (shell,w,sform,crumbs,E,BASE,SITE,BRAND,TODAY). Returns sitemap (url,lastmod) pairs."""
     E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]
@@ -137,6 +174,8 @@ def render(B, reports):
         rows=''.join('<tr><td>%s</td><td><b>%s</b></td><td>%s</td><td>%s</td></tr>'%(E(h['metric']),E(h['actual']),E(h['consensus']),('<span class="%s">%s</span>'%(cls(h['result']),E(h['result'])) if h['result'] else '')) for h in r['headline'])
         tks=''.join(f'<li>{E(t)}</li>' for t in r['takeaways'])
         rxh=(f"<p class=\"sub\"><b class=\"{'up' if move>=0 else 'dn'}\">{tk} {move:+.1f}%</b> {E(rx['kind'])} at ${rx['price']:,.2f} vs the ${pc:,.2f} close before the report (as of {E(rx['asof'])}). Live moves change fast; this updates every time the site rebuilds.</p>" if move is not None else '<p class="sub">Reaction pending: the first trade after the report will show here.</p>')
+        pr=prerun(r.get('yahoo') or tk.replace('.','-'),r['date'],r.get('when','')) if B.get('live',True) else None
+        prh,prtxt=prerun_html(E,tk,pr,move); rxh+=prh
         rx_h2=('📈 After-hours reaction' if 'after hours' in (rx.get('kind') or '') else '📈 Stock reaction')
         srcs=''.join(f'<li><a href="{E(s["url"])}" rel="nofollow noopener" target="_blank">{E(s["title"])}</a></li>' for s in r['sources'])
         bw=[h for h in r['headline'] if h['result']]
@@ -145,6 +184,7 @@ def render(B, reports):
         faqs=[(f"Did {nm} beat earnings in {q}?",ans_beat)]
         if gd: faqs.append((f"What is {nm}'s guidance after {q}?",' '.join(f"{h['metric']}: {h['actual']} (consensus {h['consensus']})." for h in gd)))
         if move is not None: faqs.append((f"How did {tk} stock react to earnings?",f"{tk} was {move:+.1f}% {rx['kind']} at ${rx['price']:,.2f} versus the ${pc:,.2f} close before the report, as of {rx['asof']}."))
+        if prtxt: faqs.append((f"How much did {tk} stock move before earnings?",prtxt))
         sbh,sfq=surprise_block(B,r,move,rx)
         if sfq: faqs.insert(0,sfq)
         r['_surprise']=surprise(r,move)
