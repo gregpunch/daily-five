@@ -1,0 +1,77 @@
+{
+ "slug": "oxy-q3-2026",
+ "ticker": "OXY",
+ "company": "Occidental Petroleum",
+ "quarter": "Q3 2026",
+ "date": "2026-11-09",
+ "when": "after the close",
+ "verdict_word": "Beat on EPS, debt milestone",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$1.91",
+   "consensus": "$1.46 (LSEG via Reuters)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Reported EPS",
+   "actual": "$1.61",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Operating cash flow (continuing ops)",
+   "actual": "$4.1B",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Free cash flow before working capital",
+   "actual": "$2.8B",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Production",
+   "actual": "1,427 Mboed",
+   "consensus": "Above guidance midpoint (company)",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Adjusted EPS of $1.91 cleared the $1.46 LSEG consensus (Reuters) by a wide margin; Zacks had $1.43 (AP).",
+  "Principal debt fell to $10.0 billion after $10.4 billion retired since the start of 2026, a milestone the CEO called out.",
+  "Operating cash flow was $4.1 billion and free cash flow before working capital $2.8 billion on $1.3 billion of capital spending.",
+  "Realized crude averaged $85.91 a barrel, down 11% from Q2; production of 1,427 Mboed beat the guidance midpoint, and midstream and marketing came in above the high end of guidance.",
+  "Revenue figures differ by outlet (Seeking Alpha $6.56B, AP/Zacks $6.77B), so this page does not score revenue. The earnings call is Nov 10 at 1 p.m. ET."
+ ],
+ "verdict": "Oxy beat the profit estimate by a mile and finally got its debt under $10 billion, which is the corporate version of paying off the car. Lower oil prices took a bite, but cash flow stayed fat. Revenue numbers disagree depending on who you ask, so we're staying out of that fight.",
+ "sources": [
+  {
+   "title": "Occidental Q3 2026 results (8-K via StockTitan)",
+   "url": "https://www.stocktitan.net/sec-filings/OXY/8-k-occidental-petroleum-corp-de-reports-material-event-d370a338356c.html"
+  },
+  {
+   "title": "GlobeNewswire: Occidental announces Q3 2026 results",
+   "url": "https://www.globenewswire.com/news-release/2026/11/09/3399010/0/en/occidental-announces-third-quarter-2026-results.html"
+  },
+  {
+   "title": "Reuters via Boursorama (LSEG consensus)",
+   "url": "https://www.boursorama.com/bourse/actualites/occidental-petroleum-depasse-les-previsions-de-benefices-trimestriels-9a34238875733b4b8a30683c7a8ee4aa"
+  },
+  {
+   "title": "AP via Yahoo Finance: Q3 earnings snapshot",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/occidental-q3-earnings-snapshot-213411526.html"
+  },
+  {
+   "title": "Seeking Alpha: OXY Q3",
+   "url": "https://seekingalpha.com/news/4669294-occidental-petroleum-non-gaap-eps-of-1_91-beats-by-0_44-revenue-of-6_56b-misses-by-330m"
+  }
+ ],
+ "prev_close": 55.76,
+ "reaction": {
+  "kind": "after hours",
+  "price": 56.18,
+  "asof": "2026-11-09 5:00 PM ET"
+ }
+}

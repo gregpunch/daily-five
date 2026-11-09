@@ -1,0 +1,85 @@
+{
+ "slug": "ttwo-q2-2027",
+ "ticker": "TTWO",
+ "company": "Take-Two Interactive",
+ "quarter": "Q2 2027",
+ "date": "2026-11-09",
+ "when": "after the close",
+ "verdict_word": "Mixed: EPS beat, bookings miss",
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$0.99",
+   "consensus": "$0.97 (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Net bookings",
+   "actual": "$1.60B (-18% y/y)",
+   "consensus": "$1.64B (Backpack consensus); guidance was $1.62-1.67B (Zacks)",
+   "result": "Miss"
+  },
+  {
+   "metric": "GAAP net revenue",
+   "actual": "$1.50B",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "-$0.29",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "FY27 net bookings outlook",
+   "actual": "$8.0-8.2B",
+   "consensus": "Reiterated (company)",
+   "result": "Reiterated"
+  }
+ ],
+ "takeaways": [
+  "Net bookings fell 18% to $1.60 billion from $1.96 billion a year ago, under the company's own $1.62-1.67 billion guidance (Zacks).",
+  "GAAP net loss narrowed to $54.0 million ($0.29 a share) from $133.9 million ($0.73) a year ago.",
+  "Recurrent consumer spending, such as in-game purchases, fell 9% in bookings and made up 81% of the total.",
+  "GamesBeat reports NBA 2K27 had its second-best bookings launch ever but came in below Take-Two's forecast.",
+  "Full-year net bookings guidance stayed at $8.0-8.2 billion, and Q3 guidance is $3.35-3.50 billion. Grand Theft Auto VI launches Nov 19, and CEO Strauss Zelnick said pre-orders continue to reach unprecedented levels."
+ ],
+ "verdict": "Take-Two's quarter was basically the opening act: bookings dipped, the loss shrank, and everyone looked past it to November 19. The company kept its full-year target, which is the sentence the market was waiting for. The whole stock is now one video game's launch week.",
+ "sources": [
+  {
+   "title": "Take-Two Q2 FY2027 press release (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261109226921/en/Take-Two-Interactive-Software-Inc.-Reports-Results-for-Fiscal-Second-Quarter-2027"
+  },
+  {
+   "title": "GamesBeat: Take-Two bookings",
+   "url": "https://gamesbeat.com/take-two-reports-bookings-for-fiscal-q2-of-1-6b-down-18-and-below-expectations/"
+  },
+  {
+   "title": "Quartr: TTWO Q2 2027 summary",
+   "url": "https://quartr.com/events/take-two-interactive-software-inc-ttwo-q2-2027_3enSMHwf"
+  },
+  {
+   "title": "Investing.com: earnings preview",
+   "url": "https://www.investing.com/news/earnings/taketwo-faces-earnings-test-days-before-gta-6-launch-93CH-5012750"
+  },
+  {
+   "title": "Backpack Securities: TTWO estimates",
+   "url": "https://backpack.exchange/stocks/TTWO/earnings/estimates"
+  },
+  {
+   "title": "Zacks via Yahoo Finance: Q2 preview",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/two-report-q2-earnings-whats-144000140.html"
+  },
+  {
+   "title": "Investor's Business Daily",
+   "url": "https://www.investors.com/news/technology/ttwo-stock-take-two-fiscal-q2-2027-earnings/"
+  }
+ ],
+ "prev_close": 207.4,
+ "reaction": {
+  "kind": "after hours",
+  "price": 216.5,
+  "asof": "2026-11-09 5:00 PM ET"
+ }
+}
