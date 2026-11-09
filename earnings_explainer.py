@@ -106,6 +106,24 @@ def related(B, r, reports, n=6):
     li=''.join(f'<li><a href="{BASE}/earnings/{x["slug"]}/"><b>{E(x["company"])} ({x["ticker"]}) {E(x["quarter"])}</b></a>: {E(x["verdict_word"])} · {datetime.date.fromisoformat(x["date"]).strftime("%b %-d")}</li>' for x in rel)
     return f'<section class="card"><h2 class="h2s">More earnings explained this week</h2><ul class="why">{li}</ul></section>'
 
+def up_next(B, reports, n=8):
+    """'Up next on the earnings calendar' card on every explainer and ticker hub: the next report day's names from
+    data/calendar (before the open first), each linking its /earnings/<ticker>/ page or its explainer once out.
+    Sends readers and crawlers from older, indexed explainers to the new earnings-date pages."""
+    E=B['E']; BASE=B['BASE']; T=B.get('TODAY') or datetime.date.today()
+    d,its=next_reports(T,reports)
+    if not d or (d-T).days>6 or not its: return ''
+    lab='today' if d==T else ('tomorrow' if (d-T).days==1 else d.strftime('%A'))
+    def eps(v): return '' if v is None else ', EPS est. '+(f'-${abs(v):.2f}' if v<0 else f'${v:.2f}')
+    li=''
+    for x in its[:n]:
+        r=x['_r']
+        if r: li+=f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(x["company"])}</b> ({E(x["ticker"])})</a>, {E(x["when"])}: {E(eps_result(r) or "explained")}</li>'
+        else: li+=f'<li><a href="{BASE}/earnings/{x["ticker"].lower()}/"><b>{E(x["company"])}</b> ({E(x["ticker"])})</a>, {E(x["when"])}{E(eps(x.get("eps_est")))}</li>'
+    more=f' and {len(its)-n} more' if len(its)>n else ''
+    return (f'<section class="card"><h2 class="h2s">🗓️ Up next: reporting {E(lab)}, {E(d.strftime("%b %-d"))}</h2><ul class="why">{li}</ul>'
+            f'<p class="sub"><a href="{BASE}/earnings-calendar/#d-{d.isoformat()}">See the full day{E(more)} on the earnings calendar →</a> Dates and estimates from a public earnings calendar; companies can move dates.</p></section>')
+
 def render(B, reports):
     """B: dict of build.py helpers (shell,w,sform,crumbs,E,BASE,SITE,BRAND,TODAY). Returns sitemap (url,lastmod) pairs."""
     E=B['E']; BASE=B['BASE']; SITE=B['SITE']; BRAND=B['BRAND']; urls=[]
@@ -141,7 +159,7 @@ def render(B, reports):
               f'<section class="card"><h2 class="h2s">🤖 Max\'s verdict</h2><p class="why">{E(r["verdict"])}</p><p class="disc">Max Edge is an AI host. This is commentary, not financial advice.</p></section>'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get every big earnings report explained in your inbox, free.</h2><p>Beat or miss, guidance, the stock reaction and what it means, in plain English. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'<section class="card"><h2 class="h2s">Sources</h2><ul class="why">{srcs}</ul><p class="disc">Numbers come from the company\'s release and the coverage above. Where no consensus was published we leave it out rather than guess.</p></section>'
-              f'{related(B,r,reports)}{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/week-of-{_wk(r).isoformat()}/">This week\'s earnings recap →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
+              f'{related(B,r,reports)}{up_next(B,reports)}{faqh}<p class="sub"><a href="{BASE}/earnings/{tk.lower()}/">Every {E(nm)} earnings report →</a> · <a href="{BASE}/earnings/week-of-{_wk(r).isoformat()}/">This week\'s earnings recap →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources before you trade.</p>')
         title=f"{nm} {q} earnings explained: beat or miss, guidance, stock reaction"
         desc=f"{nm} ({tk}) {q} earnings: {r['verdict_word']}. "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'. Guidance, key takeaways and stock reaction.'
         # When the reaction contradicts the EPS result, match the question searchers type in the title and meta.
@@ -183,7 +201,7 @@ def ticker_hubs(B, reports):
               f'<section class="card"><h2 class="h2s">Latest: {E(L["quarter"])} vs consensus</h2><div class="tbl"><table><thead><tr><th>Metric</th><th>Reported</th><th>Consensus</th><th>Result</th></tr></thead><tbody>{rows}</tbody></table></div>'
               f'<p class="sub"><a href="{BASE}/earnings/{L["slug"]}/">Full {E(tk)} {E(L["quarter"])} explainer: what mattered, the reaction and Max\'s verdict →</a></p></section>'
               f'<section class="card"><h2 class="h2s">Every {E(nm)} report we\'ve explained</h2><ul class="why">{hist}</ul></section>'
-              f'{related(B,L,reports)}'
+              f'{related(B,L,reports)}{up_next(B,reports)}'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get the next {E(tk)} report explained in your inbox.</h2><p>Every big earnings report in plain English: beat or miss, guidance, and how the stock took it. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'{faqh}<p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources on each report page.</p>')
         title=f"{nm} ({tk}) earnings: latest results, guidance and stock reaction"
