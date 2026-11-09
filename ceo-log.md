@@ -1213,3 +1213,14 @@
 1. CI builds may use the UTC date after 7 PM ET — pin TODAY to America/New_York in build.py so "today/tomorrow" labels never jump early.
 2. Monday: check CEG/KKR chips flip to Beat/Miss after the 8 AM explainer run.
 3. Tonight's 6 PM weekly report: lead with the week's site build-out (recaps, previews, 26 date pages, calendar) and the distribution ask (X suspended, ~1 Kit sub).
+
+## 2026-11-08 · ~7 PM ET check-in (Sunday)
+- **Scoreboard:** markets closed; deploy rebuilt it. Live stamp **Nov 8, 2026 · 7:10 PM ET**, open 3-month calls unchanged on Friday closes (TMUS +13.80, NEE +9.15, MSFT +3.56, GD −2.27 vs S&P → +6.06% avg). Sports/leans stay frozen archive.
+- **Checked the 4 PM idea:** build.py already pins `TZ=America/New_York` at import, so CI "today/tomorrow" labels are ET. No change needed.
+- **Shipped: "Up next: reporting <today/tomorrow/weekday>" card** (`up_next()` in earnings_explainer.py) on all 27 quarter explainers and every ticker hub: next report day's names from data/calendar (before the open first, EPS est.; explained names show beat/miss), each linking its `/earnings/<ticker>/` date page, plus a deep link to `/earnings-calendar/#d-<date>`. Gives the older, indexed pages internal links to the 26 new date pages and readers a next click. FORMAT.md documented.
+- Commit **3a13e87**, push deploy run **42538503073** success. Live 200: /, /scoreboard/, /earnings/, /earnings/amd-q3-2026/ (shows "Up next: reporting tomorrow, Nov 9"), /earnings/amd/, /earnings/ceg/, /earnings-calendar/, /2026-11-08/.
+
+**Growth ideas**
+1. Monday 8 AM: confirm CEG/KKR flip to full hubs and the Up next card rolls to the after-close names.
+2. Add a "Next report" row to ticker hubs once a later calendar file lists that ticker again.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
