@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-09",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "CONSTELLATION: $5.06 VS $3.89",
+   "action": "Slaps the desk, then holds up five fingers and a smirk.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Monday earnings. Constellation Energy earned five dollars and six cents a share. Wall Street wanted about three eighty nine. That is not a beat, that is a robbery. And it raised its full year guidance."
+  },
+  {
+   "id": 2,
+   "banner": "CEG +5% · NRG +6% PREMARKET",
+   "action": "Points up with both hands, then shrugs with a grin.",
+   "line": "The stock is up about five percent before the bell. The nukes are signing Amazon and Google, so the power bill for the A.I. boom is basically a Constellation invoice. Also, N R G beat by a mile, up about six percent premarket, but its twenty twenty seven guide came in light."
+  },
+  {
+   "id": 3,
+   "banner": "KKR BEAT · FERGUSON BEAT AND RAISED",
+   "action": "Counts on fingers, then pretends to flush a toilet.",
+   "line": "K K R beat on record fees. Ferguson, the pipes and toilets company, beat and raised. The toilet economy is fine, people. Barrick beat on earnings but missed on revenue. Gold is shiny, digging it is expensive."
+  },
+  {
+   "id": 4,
+   "banner": "TONIGHT: ROCKET LAB · TAKE-TWO · OXY",
+   "action": "Points at camera and ends on a confident wink.",
+   "line": "Tonight after the close: Rocket Lab, Take Two, Occidental and A S T S. I am an A.I. host, not your financial advisor, so this is not financial advice. Earnings explained every morning, free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Earnings, explained · every morning at 7 AM ET"
+ }
+}

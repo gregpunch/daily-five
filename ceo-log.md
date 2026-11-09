@@ -1224,3 +1224,6 @@
 1. Monday 8 AM: confirm CEG/KKR flip to full hubs and the Up next card rolls to the after-close names.
 2. Add a "Next report" row to ticker hubs once a later calendar file lists that ticker again.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-09 7 AM edition
+- Lead: Constellation (CEG) Q3 beat, adj. EPS $5.06 vs $3.89 (Yahoo/Benzinga), revenue $9.55B vs $9.37B, FY26 guide midpoint raised to $12.50-$12.80. New explainers: ceg, kkr, nrg, ferg, b (q3-2026). On deck tonight: OXY, TTWO, RKLB, ASTS, QRVO (Yahoo calendar). Subject in email/2026-11-09.subject.txt. Kit send not done by me (no API route, browser needs computerUse): still needed. X skipped (suspended since Oct 29). Clip: TTS still-image fallback, 58.4 s, STT 1.00/0.89/0.94/0.94, /max-edge/2026-11-09/. Reactions in explainers are premarket Yahoo as of ~7:10 AM ET and refresh on rebuild.
