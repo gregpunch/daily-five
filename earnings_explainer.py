@@ -211,6 +211,41 @@ def ticker_hubs(B, reports):
         B['w'](f"earnings/{tk.lower()}/index.html",B['shell'](title,desc[:155],P,body,sch)); urls.append((P,B['TODAY'].isoformat()))
     return urls
 
+_runup_cache={}
+def runup(sym):
+    """Real 3-month daily closes from Yahoo's chart API: latest price and 1-week / 1-month / 3-month change, plus the 3-month
+    range. Returns None on any failure so the page simply omits the section. Memoized per build."""
+    if sym in _runup_cache: return _runup_cache[sym]
+    out=None
+    try:
+        u=f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(sym)}?range=3mo&interval=1d"
+        j=json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=8))['chart']['result'][0]
+        pts=[(t,c) for t,c in zip(j['timestamp'],j['indicators']['quote'][0]['close']) if c]
+        if len(pts)>=40:
+            last=j['meta'].get('regularMarketPrice') or pts[-1][1]; lt=time.localtime(j['meta'].get('regularMarketTime') or pts[-1][0])
+            def ch(n): return round((last/pts[-1-n][1]-1)*100,1) if len(pts)>n else None
+            cl=[c for _,c in pts]
+            out={'price':round(last,2),'asof':time.strftime('%b %-d, %Y %-I:%M %p ET',lt),'w1':ch(5),'m1':ch(21),'m3':round((last/pts[0][1]-1)*100,1),
+                 'hi':round(max(cl+[last]),2),'lo':round(min(cl+[last]),2)}
+    except Exception: pass
+    _runup_cache[sym]=out
+    return out
+
+def runup_section(B, tk, sym):
+    E=B['E']; r=runup(sym); m=runup('^GSPC')
+    if not r: return ''
+    def pc(v): return '—' if v is None else f'<span class="{"up" if v>0 else "dn" if v<0 else ""}">{v:+.1f}%</span>'
+    rows=[('Latest price',f'<b>${r["price"]:,.2f}</b>'),('Past week',pc(r['w1'])),('Past month',pc(r['m1'])),('Past 3 months',pc(r['m3']))]
+    if m: rows.append(('S&amp;P 500, past 3 months',pc(m['m3'])))
+    rows.append(('3-month range',f'${r["lo"]:,.2f} to ${r["hi"]:,.2f}'))
+    gap=''
+    if m and r['m3'] is not None:
+        d=round(r['m3']-m['m3'],1)
+        gap=f' Over three months {E(tk)} is {"ahead of" if d>0 else "behind" if d<0 else "even with"} the S&amp;P 500'+(f' by {abs(d):.1f} points.' if d else '.')
+    return (f'<section class="card"><h2 class="h2s">How {E(tk)} stock is trading into the report</h2><div class="tbl"><table><tbody>'
+            +''.join(f'<tr><td>{a}</td><td>{b}</td></tr>' for a,b in rows)+'</tbody></table></div>'
+            f'<p class="sub">'+('A big run-up raises the bar: the stock may need a clear beat to hold its gains. ' if r['m3']>=10 else 'The stock has already sold off, so the bar going in may be lower. ' if r['m3']<=-10 else '')+f'{gap.strip()} Prices from Yahoo Finance (latest trade vs. daily closes), as of {E(r["asof"])}; refreshed on every site build.</p></section>')
+
 def upcoming_hubs(B, reports):
     """/earnings/<ticker>/ for calendar names we haven't explained yet ("CEG earnings date" searches): report date, before/after
     the bell, quarter and the Wall Street EPS estimate, all copied from data/calendar with its source. Nothing else is claimed.
@@ -245,6 +280,7 @@ def upcoming_hubs(B, reports):
               f'<tr><td>Quarter</td><td><b>{E(q)}</b></td></tr><tr><td>Consensus EPS estimate</td><td><b>{E(eps(x.get("eps_est")))}</b></td></tr></tbody></table></div>'
               f'<p class="sub">Source: <a href="{E(sc["url"])}" rel="nofollow noopener">{E(sc["name"])}</a> as of {E(fetched)}. Dates and estimates can change before the report.</p></section>'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get the {E(tk)} report explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
+              +(runup_section(B,tk,x.get('yahoo') or tk.replace('.','-')) if not past else '')
               +(f'<section class="card"><h2 class="h2s">Also reporting {E(dd.strftime("%A, %b %-d"))}</h2><ul class="why">{sameh}</ul></section>' if sameh else '')
               +f'{faqh}<p class="sub"><a href="{BASE}/earnings/week-of-{wk.isoformat()}/">Everyone reporting the week of {E(week_label(wk))} →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p>'
               f'<p class="disc-bar">⚠️ <b>Not financial advice.</b> Calendar data from a public earnings calendar; dates can change.</p>')

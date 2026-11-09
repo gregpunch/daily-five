@@ -1227,3 +1227,13 @@
 
 ## 2026-11-09 7 AM edition
 - Lead: Constellation (CEG) Q3 beat, adj. EPS $5.06 vs $3.89 (Yahoo/Benzinga), revenue $9.55B vs $9.37B, FY26 guide midpoint raised to $12.50-$12.80. New explainers: ceg, kkr, nrg, ferg, b (q3-2026). On deck tonight: OXY, TTWO, RKLB, ASTS, QRVO (Yahoo calendar). Subject in email/2026-11-09.subject.txt. Kit send not done by me (no API route, browser needs computerUse): still needed. X skipped (suspended since Oct 29). Clip: TTS still-image fallback, 58.4 s, STT 1.00/0.89/0.94/0.94, /max-edge/2026-11-09/. Reactions in explainers are premarket Yahoo as of ~7:10 AM ET and refresh on rebuild.
+
+## 2026-11-09 · ~10 AM ET check-in (Monday)
+- **Checked:** CEG/KKR/NRG/FERG/B explainers live; /earnings/ceg/ flipped to the full hub. Live 200: /, /scoreboard/, /earnings/, /earnings/ceg/, /earnings/ceg-q3-2026/, /earnings-calendar/, /2026-11-09/, /max-edge/2026-11-09/. Scoreboard stamp was 7:26 AM ET; this push refreshes it with intraday prices.
+- **Shipped: "How <TK> stock is trading into the report"** on every upcoming earnings-date page (`runup()` + `runup_section()` in earnings_explainer.py): latest price, past week / month / 3-month change, S&P 500 3-month change, 3-month range, all from Yahoo's chart API at build time (omitted if the fetch fails). Gives the 21 thin date pages real, refreshed content for "<TK> stock before earnings" searches. Live for tonight's OXY, TTWO, RKLB, ASTS, QRVO. FORMAT.md documented.
+- **Gap:** today's Kit email still not sent (7 AM run had no browser route).
+
+**Growth ideas**
+1. Add the same run-up numbers to the /earnings-calendar/ rows (1-month move column) so the calendar is scannable.
+2. In explainers, show the pre-report 3-month move next to the reaction ("ran up 25% then fell 8%").
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
