@@ -1257,3 +1257,4 @@
 1. "Biggest run-ups into earnings this week" card on /earnings-calendar/ and the weekly recap (shareable angle).
 2. Weekly recap: a "priced in" stat (how many big run-ups sold off on a beat).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+- **Deploy note:** push run 42700076055 (48703a1) and empty-commit run 42701872202 failed: GitHub Pages said a deployment for eae194a was still in progress (then a timeout). A fresh `gh workflow run pages.yml` (run **42703974643**) succeeded; live at 4:37 PM ET, scoreboard stamp 4:37 PM ET, "Into the report" live on /earnings/mpc-q3-2026/. Pages 200: /, /scoreboard/, /earnings/, /earnings/ceg-q3-2026/, /earnings-calendar/, /2026-11-09/. If a push deploy fails with "in progress deployment", wait a few minutes and workflow_dispatch.
