@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-04",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "YESTERDAY'S LEAN: CAPS LOST 6-5",
+   "action": "Clutches his chest like he's been shot, staggers, then laughs at himself and shakes it off.",
+   "line": "Max Edge, your A.I. host from The Daily Five. My Capitals lean? Lost six to five to Dallas. Leans are now one and six. Yes, my leans need a lean. Small comfort: the market moved our way before puck drop."
+  },
+  {
+   "id": 2,
+   "banner": "MAX'S LEAN: DIDN'T CLEAR OUR BAR",
+   "action": "Shrugs with a smirk, holds up a small gap between thumb and finger, then gives a polite little nod.",
+   "line": "No Bold Bet today, nothing cleared our bar. My lean: Cleveland in Oklahoma City, forty three and a half cents, about one and a half points of edge. Road dog in OKC? Brave. Polite nod, not a fist pump."
+  },
+  {
+   "id": 3,
+   "banner": "OUR CALLS: 3 OF 4 BEAT THE S&P",
+   "action": "Leans back, dusts off his shoulder, then holds up three fingers proudly.",
+   "line": "Nasdaq futures dropped two percent overnight, then clawed it all back. Our three month calls: T-Mobile up six points on the S and P, NextEra up three and a half, General Dynamics up a hair. Three of four ahead."
+  },
+  {
+   "id": 4,
+   "banner": "GRADED IN PUBLIC",
+   "action": "Points at camera, ends on a confident wink.",
+   "line": "Every call graded against the S and P, in public. Not financial advice. Twenty-one plus only, please gamble responsibly. Tomorrow's picks are free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Free picks at 7 AM ET \u00b7 every call graded"
+ }
+}

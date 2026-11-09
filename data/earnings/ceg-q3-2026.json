@@ -1,0 +1,62 @@
+{
+ "slug": "ceg-q3-2026",
+ "ticker": "CEG",
+ "company": "Constellation Energy",
+ "quarter": "Q3 2026",
+ "date": "2026-11-09",
+ "when": "before the open",
+ "verdict_word": "Giant beat, guidance nudged up",
+ "mcap_b": 89,
+ "headline": [
+  {
+   "metric": "Adjusted operating EPS",
+   "actual": "$5.06 (vs $3.04 a year ago)",
+   "consensus": "$3.89 (Yahoo Finance / Benzinga)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$9.55B (vs $6.57B a year ago)",
+   "consensus": "$9.37B (Benzinga)",
+   "result": "Beat"
+  },
+  {
+   "metric": "FY2026 adj. EPS guidance",
+   "actual": "$12.50-$12.80 (midpoint raised, range narrowed)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Constellation earned $5.06 a share on an adjusted basis vs about $3.89 expected, and revenue of $9.55 billion topped the roughly $9.37 billion Street number (Benzinga). A year ago it made $3.04.",
+  "Much of the jump is the Calpine deal, which closed in January and roughly adds a fleet of gas plants to the nuclear business; the release also credits \"favorable market and portfolio conditions.\" Share count rose to 354 million from 313 million, so per-share growth is not all free.",
+  "It raised the midpoint of full-year adjusted EPS guidance (the second raise this year) and narrowed the range to $12.50-$12.80.",
+  "The AI-power story kept stacking up: a 20-year, 690 MW deal with Amazon for Calvert Cliffs, a 20-year Google deal to add about 890 MW across 11 nuclear units, a new 270 MW \"Peak+\" contract, and a conditional DOE loan guarantee of up to $5 billion for nuclear uprates.",
+  "It also agreed to buy the 609 MW Rhode Island State Energy Center for $715 million. GAAP EPS was $5.19, so this was no accounting mirage in the other direction."
+ ],
+ "verdict": "Constellation beat by more than a buck, raised guidance and kept signing Amazon and Google while it was at it. The stock was already up on Friday and the whole AI-power trade just got a wobble, so the real question is whether $5.06 was a peak or a floor. Max says the nukes are paying rent. Not advice.",
+ "sources": [
+  {
+   "title": "Constellation Q3 2026 press release (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261108197880/en/Constellation-Reports-Third-Quarter-2026-Results"
+  },
+  {
+   "title": "Benzinga: Constellation Q3 adj. EPS $5.06 beats $3.85 estimate",
+   "url": "https://www.benzinga.com/news/earnings/26/11/63026118/constellation-energy-q3-adj-eps-5-06-beats-3-85-estimate-sales-9-550b-beat-9-372b-estimate"
+  },
+  {
+   "title": "Yahoo Finance earnings calendar (consensus $3.89)",
+   "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+  },
+  {
+   "title": "StockTitan: Constellation Q3 2026 release",
+   "url": "https://www.stocktitan.net/news/CEG/constellation-reports-third-quarter-2026-ywj2o05th3ds.html"
+  }
+ ],
+ "prev_close": 249.95,
+ "reaction": {
+  "kind": "premarket",
+  "price": 249.95,
+  "asof": "2026-11-09 7:15 AM ET"
+ }
+}

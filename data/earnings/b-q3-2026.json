@@ -1,0 +1,57 @@
+{
+ "slug": "b-q3-2026",
+ "ticker": "B",
+ "company": "Barrick Mining",
+ "quarter": "Q3 2026",
+ "date": "2026-11-09",
+ "when": "before the open",
+ "verdict_word": "EPS beat, revenue light",
+ "mcap_b": 69,
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$0.82",
+   "consensus": "$0.79 (StreetInsider)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$5.07B",
+   "consensus": "$5.13B (StreetInsider)",
+   "result": "Miss"
+  },
+  {
+   "metric": "2026 gold production guidance",
+   "actual": "2.90-3.25M oz (reiterated)",
+   "consensus": "n/a",
+   "result": "Reiterated"
+  }
+ ],
+ "takeaways": [
+  "Barrick posted $0.82 adjusted EPS vs $0.79 expected, but revenue of $5.07 billion came in just under the $5.13 billion consensus (StreetInsider).",
+  "It produced 816,000 ounces of gold, up 3% from Q2 and down 2% from a year ago; adjusted net earnings rose 37% y/y to $1.35 billion on higher gold prices (Investing.com).",
+  "All-in sustaining costs for gold rose to $1,911 an ounce from $1,538 a year ago, on lower ore grades, higher royalties and diesel.",
+  "Gold and copper guidance were reiterated, and the quarterly dividend is $0.175 a share."
+ ],
+ "verdict": "Barrick beat on EPS and missed on revenue by a hair, and costs per ounce are climbing like gold itself. It is a gold miner: the gold price writes the plot, the company just digs. Max says shiny, but pricey to dig.",
+ "sources": [
+  {
+   "title": "StreetInsider: Barrick tops Q3 EPS by 3c, misses on revenue",
+   "url": "https://www.streetinsider.com/Earnings/Barrick+Mining+%28B%29+Tops+Q3+EPS+by+3c%2C+misses+on+revenue/27310525.html"
+  },
+  {
+   "title": "Investing.com: Barrick beats Q3 earnings, reaffirms 2026 production",
+   "url": "https://mx.investing.com/news/earnings/barrick-mining-supera-ganancias-del-q3-y-reafirma-produccion-2026-3839806"
+  },
+  {
+   "title": "AP via Yahoo: Barrick Q3 earnings snapshot",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/barrick-mining-q3-earnings-snapshot-110711267.html"
+  }
+ ],
+ "prev_close": 40.56,
+ "reaction": {
+  "kind": "premarket",
+  "price": 40.56,
+  "asof": "2026-11-09 7:15 AM ET"
+ }
+}

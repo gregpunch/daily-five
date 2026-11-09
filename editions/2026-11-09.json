@@ -1,0 +1,97 @@
+{
+ "date": "2026-11-09",
+ "headline": "Constellation crushes earnings ($5.06 vs $3.89 expected) and nudges guidance up; KKR, NRG, Ferguson and Barrick report too; Rocket Lab, Take-Two and Occidental tonight",
+ "top_call": "Constellation Energy, the nuclear-and-gas power giant that keeps signing AI data center deals, earned $5.06 a share vs about $3.89 expected, raised the midpoint of its 2026 guidance and added Amazon, Google and a $5 billion DOE loan commitment to the scoreboard. KKR beat on record fees, NRG beat by a mile but guided 2027 under Wall Street, and Ferguson beat and raised. Plain-English explainers below, plus who reports tonight.",
+ "lead": "ceg-q3-2026",
+ "subject": "The Daily Five — Mon Nov 9: Constellation beats big ($5.06 vs $3.89) and raises",
+ "backdrop": "Friday's bounce: the S&P 500 rose 0.3% and the Nasdaq gained 1.1% as Nvidia climbed 2.8% after two days of AI-led selling, while the Dow slipped 237 points (0.5%). The S&P still lost 2.7% on the week, its worst week since the April 2025 tariff shock, per AP.",
+ "backdrop_source": {
+  "name": "AP",
+  "url": "https://www.midfloridanewspapers.com/ai-stocks-halt-their-brutal-worldwide-sell-off-as-wall-street-trims-its-loss-for/article_10b4929e-1050-4db3-af06-918a49640695.html"
+ },
+ "finance": [],
+ "on_deck_title": "On deck tonight",
+ "on_deck_sub": "Who reports after the close today, Nov 9, and what Wall Street expects (EPS estimates per Yahoo Finance)",
+ "on_deck": [
+  {
+   "ticker": "OXY",
+   "company": "Occidental Petroleum",
+   "when": "after the close",
+   "eps_consensus": "$1.47",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "TTWO",
+   "company": "Take-Two Interactive",
+   "when": "after the close",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   },
+   "eps_consensus": "−$0.86"
+  },
+  {
+   "ticker": "RKLB",
+   "company": "Rocket Lab",
+   "when": "after the close",
+   "eps_consensus": "−$0.07",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "ASTS",
+   "company": "AST SpaceMobile",
+   "when": "after the close",
+   "eps_consensus": "−$0.45",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  },
+  {
+   "ticker": "QRVO",
+   "company": "Qorvo",
+   "when": "after the close",
+   "eps_consensus": "$2.05",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-09"
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Infrastructure",
+   "headline": "Anthropic reportedly locked in $3.4 billion of gas-turbine generator orders (about 1.7 gigawatts) for future AI data centers, taking over existing orders from Texas-based OnePWR Solutions, per the Financial Times",
+   "why": "Constellation's earnings call and Anthropic's shopping list are the same story: power is the bottleneck. Neither company had confirmed the deal when Reuters reported it.",
+   "source": {
+    "name": "The Neuron",
+    "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-november-9-2026/"
+   }
+  },
+  {
+   "category": "Policy",
+   "headline": "Trump said he doesn't mind AI guardrails and could work with Democrats on safeguards, while warning regulation shouldn't leave the US behind China",
+   "why": "The AI trade just had a rough week; a policy that is 'open to guardrails' is a headline the market will read both ways.",
+   "source": {
+    "name": "The Neuron",
+    "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-november-9-2026/"
+   }
+  },
+  {
+   "category": "Agents",
+   "headline": "Alibaba's real-world coding-agent test found the top model fully completed only 26.4% of selected tasks, even as the same kinds of models score above 99% on older benchmarks",
+   "why": "The robots are great at tests and still mediocre at Mondays. Agent hype vs. agent reality, in one number.",
+   "source": {
+    "name": "The Neuron",
+    "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-november-9-2026/"
+   }
+  }
+ ],
+ "sports": []
+}

@@ -1,0 +1,56 @@
+{
+ "slug": "ferg-q3-2026",
+ "ticker": "FERG",
+ "company": "Ferguson Enterprises",
+ "quarter": "Q3 2026",
+ "date": "2026-11-09",
+ "when": "before the open",
+ "verdict_word": "Beat and raise",
+ "mcap_b": 46,
+ "headline": [
+  {
+   "metric": "Adjusted diluted EPS",
+   "actual": "$3.43 (+7.9% y/y)",
+   "consensus": "$3.29 (Seeking Alpha / Yahoo)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$9.0B (+9.5% y/y)",
+   "consensus": "about $8.7B (Seeking Alpha)",
+   "result": "Beat"
+  },
+  {
+   "metric": "FY2026 sales growth guidance",
+   "actual": "about 7% (was mid-single-digit)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Ferguson, the plumbing and HVAC distributor, made $3.43 adjusted vs $3.29 expected, on $9.0 billion of sales, up 9.5% (Seeking Alpha, StockTitan).",
+  "It raised full-year 2026 sales growth guidance to about 7% from mid-single-digit growth. Its fiscal quarter ended Sept 30, labeled Q3 in the release.",
+  "The stock slid about 3% from Nov 3 to Friday's close ahead of the report, so expectations had cooled."
+ ],
+ "verdict": "Ferguson sells pipes, boilers and the stuff behind your wall, and it beat and raised. Boring and profitable, which in this market is the new exotic. Max says the toilet economy is fine.",
+ "sources": [
+  {
+   "title": "Ferguson Q3 2026 results (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261109708536/en/Ferguson-Reports-Third-Quarter-Ended-September-30-2026"
+  },
+  {
+   "title": "Seeking Alpha: Ferguson non-GAAP EPS $3.43 beats by $0.14",
+   "url": "https://seekingalpha.com/news/4668857-ferguson-enterprises-inc-non-gaap-eps-of-3_43-beats-by-0_14-revenue-of-9b-beats-by-310m"
+  },
+  {
+   "title": "StockTitan: Ferguson Q3 sales rise 9.5%, raises 2026 guidance",
+   "url": "https://www.stocktitan.net/news/FERG/ferguson-reports-third-quarter-ended-september-30-c4tc6k2jhqxo.html"
+  }
+ ],
+ "prev_close": 233.7,
+ "reaction": {
+  "kind": "premarket",
+  "price": 233.7,
+  "asof": "2026-11-09 7:15 AM ET"
+ }
+}

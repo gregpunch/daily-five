@@ -1,0 +1,68 @@
+{
+ "slug": "nrg-q3-2026",
+ "ticker": "NRG",
+ "company": "NRG Energy",
+ "quarter": "Q3 2026",
+ "date": "2026-11-09",
+ "when": "before the open",
+ "verdict_word": "Big beat, 2027 guide light",
+ "mcap_b": 19,
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$4.68 (vs $2.78 a year ago)",
+   "consensus": "$3.33 (Benzinga)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$9.47B (+24% y/y)",
+   "consensus": "$9.24B (Benzinga)",
+   "result": "Beat"
+  },
+  {
+   "metric": "FY2026 adj. EPS guidance",
+   "actual": "$7.90-$9.90 (reaffirmed)",
+   "consensus": "$8.79 (StreetInsider)",
+   "result": "Reaffirmed, midpoint $8.90"
+  },
+  {
+   "metric": "FY2027 adj. EPS guidance (new)",
+   "actual": "$8.05-$10.05 (midpoint $9.05)",
+   "consensus": "$10.51 (StreetInsider)",
+   "result": "Below consensus"
+  }
+ ],
+ "takeaways": [
+  "NRG earned $4.68 adjusted vs $3.33 expected (Benzinga); revenue of $9.47 billion beat by about $230 million. Adjusted EBITDA was $2.01 billion vs $1.21 billion a year ago.",
+  "Much of the lift is the LS Power generation assets and CPower it bought and closed, which also added shares.",
+  "It reaffirmed 2026 adjusted EPS guidance of $7.90-$9.90 and gave first 2027 guidance of $8.05-$10.05, a midpoint of $9.05 vs about $10.51 the Street had (StreetInsider). Treat the comparison with care: the 2027 range does not include the sale below.",
+  "It agreed to sell six gas plants (4.9 GW) back to LS Power for about $4 billion in cash, expected to close in Q2 2027, and plans $3 billion of buybacks across 2026-2027 plus $3 billion of debt reduction in 2027 (StockTitan summary of the release).",
+  "GAAP EPS was $2.59, well below the adjusted $4.68."
+ ],
+ "verdict": "A giant beat, then a 2027 guide that came in under what Wall Street penciled in. The stock ran up 10% on Friday, so a beat-and-selloff was one real possibility. Selling gas plants to fund buybacks is the classic move. Max says watch the guide, not the beat.",
+ "sources": [
+  {
+   "title": "NRG Q3 2026 press release (exhibit 99.1)",
+   "url": "http://archive.fast-edgar.com/20261109/AM22K22CK222L2E2222G22Y2LNAIT2222282/nrgq32026ex991.htm"
+  },
+  {
+   "title": "Benzinga: NRG Q3 adj. EPS $4.68 beats $3.33",
+   "url": "https://www.benzinga.com/news/earnings/26/11/63025997/nrg-energy-q3-adj-eps-4-68-beats-3-33-estimate-sales-9-466b-beat-9-240b-estimate"
+  },
+  {
+   "title": "StreetInsider: NRG tops Q3 EPS, offers guidance",
+   "url": "https://www.streetinsider.com/Earnings/NRG+Energy+%28NRG%29+Tops+Q3+EPS+by+152c+%3B+Offers+Guidance/27310815.html"
+  },
+  {
+   "title": "StockTitan: NRG news",
+   "url": "https://www.stocktitan.net/news/NRG/"
+  }
+ ],
+ "prev_close": 88.29,
+ "reaction": {
+  "kind": "premarket",
+  "price": 88.29,
+  "asof": "2026-11-09 7:15 AM ET"
+ }
+}
