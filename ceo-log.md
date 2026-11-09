@@ -1237,3 +1237,13 @@
 1. Add the same run-up numbers to the /earnings-calendar/ rows (1-month move column) so the calendar is scannable.
 2. In explainers, show the pre-report 3-month move next to the reaction ("ran up 25% then fell 8%").
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-09 · ~1 PM ET check-in (Monday)
+- **Scoreboard:** refreshed intraday, stamp **Nov 9, 2026 · 1:05 PM ET**. Open 3-month calls vs S&P: TMUS +15.91, NEE +7.60, MSFT +3.83, GD −2.22 → **+6.28% avg**, 3 of 4 ahead.
+- **Shipped: "Past month" column on /earnings-calendar/** (`calendar_page()` in earnings_explainer.py): every upcoming row shows the stock's ~21-trading-day change from `runup()` (Yahoo chart API at build time, memoized; '—' if fetch fails or already explained). Makes the calendar scannable for who's running hot or sold off into the print (e.g. one name −27.5%). Footnote explains the source. FORMAT.md documented.
+- **Gap:** today's Kit email still not sent (no browser route in routines).
+
+**Growth ideas**
+1. Explainers: show the pre-report 3-month move next to the reaction ("ran up 25% then fell 8%").
+2. Sort or flag the calendar's biggest movers ("Biggest run-ups into earnings this week") as its own card for a shareable angle.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

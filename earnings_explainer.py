@@ -318,8 +318,10 @@ def calendar_page(B, reports):
         if r:
             er=eps_result(r); mv=r.get('_move')
             res=(f'<span class="{"up" if er=="Beat" else "dn" if er=="Miss" else ""}">{E(er)}</span>' if er else 'Explained')+(f' · <b class="{"up" if mv>=0 else "dn"}">{mv:+.1f}%</b>' if mv is not None else '')
-            return f'<tr><td><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>{res}</td></tr>'
-        return f'<tr><td><a href="{BASE}/earnings/{tk.lower()}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>Coming up</td></tr>'
+            return f'<tr><td><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>—</td><td>{res}</td></tr>'
+        ru=runup(x.get('yahoo') or tk.replace('.','-')); m1=ru and ru.get('m1')
+        mvh='—' if m1 is None else f'<span class="{"up" if m1>0 else "dn" if m1<0 else ""}">{m1:+.1f}%</span>'
+        return f'<tr><td><a href="{BASE}/earnings/{tk.lower()}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>{mvh}</td><td>Coming up</td></tr>'
     order={'before the open':0,'after the close':2}
     days=sorted({x['date'] for x in items}); sec=''; faqd=[]
     for d in days:
@@ -328,7 +330,7 @@ def calendar_page(B, reports):
         groups=''
         for w in sorted({x['when'] for x in its},key=lambda w:order.get(w,1)):
             g=[x for x in its if x['when']==w]
-            groups+=(f'<h3 class="h3s">{E(w.capitalize() if w else "Time not set")}</h3>' if w or len(its)>1 else '')+f'<div class="tbl"><table><thead><tr><th>Company</th><th>EPS est.</th><th>Result</th></tr></thead><tbody>{"".join(row(x) for x in g)}</tbody></table></div>'
+            groups+=(f'<h3 class="h3s">{E(w.capitalize() if w else "Time not set")}</h3>' if w or len(its)>1 else '')+f'<div class="tbl"><table><thead><tr><th>Company</th><th>EPS est.</th><th>Past month</th><th>Result</th></tr></thead><tbody>{"".join(row(x) for x in g)}</tbody></table></div>'
         sec+=f'<section class="card" id="d-{d}"><h2 class="h2s">🗓️ {E(lab)}</h2>{groups}</section>'
         faqd.append(f"{dd.strftime('%A')}: "+', '.join(f"{x['company']} ({x['ticker']})" for x in its))
     jump=' · '.join(f'<a href="#d-{d}">{datetime.date.fromisoformat(d).strftime("%a %-d")}</a>' for d in days)
@@ -346,7 +348,7 @@ def calendar_page(B, reports):
     cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),('Earnings calendar',P)])
     h1=f"Earnings Calendar This Week ({lab})"
     body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🗓️ Earnings calendar · updated {E(T.strftime("%b %-d"))}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p><p class="sub">Jump to: {jump}</p></section>{sec}'
-          f'<p class="sub">Dates and estimates: <a href="{E(sc["url"])}" rel="nofollow noopener">{E(sc["name"])}</a> as of {E(fetched)}. Results and moves come from our explainers and refresh with every site rebuild.</p>'
+          f'<p class="sub">Dates and estimates: <a href="{E(sc["url"])}" rel="nofollow noopener">{E(sc["name"])}</a> as of {E(fetched)}. Past month is the stock\'s change over roughly 21 trading days into the report, from Yahoo Finance at build time. Results and moves come from our explainers and refresh with every site rebuild.</p>'
           f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get this week\'s big reports explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
           f'{faqh}<p class="sub">{prevh}<a href="{BASE}/earnings/week-of-{m.isoformat()}/">This week\'s recap page →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p>'
           f'<p class="disc-bar">⚠️ <b>Not financial advice.</b> Calendar data from a public earnings calendar; dates can change.</p>')
