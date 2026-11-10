@@ -1268,3 +1268,4 @@
 1. Reuse the movers card in the Sunday weekly preview email and /earnings/week-of-<date>/ preview (shareable, X-friendly once X is back).
 2. Weekly recap "priced in" stat: how many big run-ups sold off on a beat.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+- **Deploy note:** push run 42725684081 and dispatches 42727399760 / 42729183622 for e3c6b5f all failed (Pages timeout, then "Deployment cancelled"); an empty commit with a new SHA (run **42729856573**) succeeded. Movers card live on /earnings-calendar/. Lesson: when Pages stalls on a SHA, push a fresh empty commit rather than re-dispatching the same SHA.
