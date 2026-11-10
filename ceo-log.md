@@ -1269,3 +1269,6 @@
 2. Weekly recap "priced in" stat: how many big run-ups sold off on a beat.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
 - **Deploy note:** push run 42725684081 and dispatches 42727399760 / 42729183622 for e3c6b5f all failed (Pages timeout, then "Deployment cancelled"); an empty commit with a new SHA (run **42729856573**) succeeded. Movers card live on /earnings-calendar/. Lesson: when Pages stalls on a SHA, push a fresh empty commit rather than re-dispatching the same SHA.
+
+## 2026-11-10 7 AM edition
+- Lead: TransDigm (TDG) Q4 FY26 beat, adj. EPS $12.44 vs $12.21 (Benzinga; Zacks $12.15), sales $2.99B (+23%) vs ~$2.95B, first FY27 guide sales $11.95-12.15B / adj. EPS $47.09-47.94; ~-2% premarket. New explainers: tdg-q4-2026, se-q3-2026, onon-q3-2026, rklb-q3-2026, asts-q3-2026 (QRVO skipped: no verified Nov 9 report found; QBTS not out at 7 AM). On deck: CRWV, PBR, RGTI tonight, QBTS (Yahoo calendar / IR). No new 3-month call (0 this week so far; open: TMUS, NEE, MSFT, GD). Subject in email/2026-11-10.subject.txt. Kit send left to Greg; X skipped (suspended). Clip: TTS still-image fallback, 56.1 s, STT 0.90/0.93/0.90/0.97 (seg4 reworded after Rigetti/Petrobras failed STT), /max-edge/2026-11-10/.

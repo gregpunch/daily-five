@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-10",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "TRANSDIGM: $12.44 VS $12.21",
+   "action": "Taps the desk and smirks.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Tuesday earnings. TransDigm earned twelve dollars and forty four cents a share. Wall Street wanted twelve twenty one. Sales up twenty three percent. Airplane parts at software margins. Rude."
+  },
+  {
+   "id": 2,
+   "banner": "SEA EPS MISS \u00b7 ON TARIFF REFUND",
+   "action": "Shrugs with both hands.",
+   "line": "Sea Limited beat on sales but missed on profit, and the stock is down about six percent before the bell. On Holding beat, but a tariff refund did the heavy lifting. Shoe company, asterisk included. Down about seven percent."
+  },
+  {
+   "id": 3,
+   "banner": "ROCKET LAB: RECORD SALES, WIDER LOSS",
+   "action": "Points up at the ceiling, then thumbs down.",
+   "line": "Last night, Rocket Lab posted record revenue of two hundred sixty eight million dollars, but the loss came in wider. The stock ran eleven percent into the report and is giving it back. Gravity always wins. A S T S missed on both lines."
+  },
+  {
+   "id": 4,
+   "banner": "TONIGHT: COREWEAVE \u00b7 RIGETTI \u00b7 PETROBRAS",
+   "action": "Points at camera and winks.",
+   "line": "Tonight after the close: Core Weave, the A.I. cloud landlord, plus two more. I am an A.I. host, not your financial advisor, so this is not financial advice. Earnings explained every morning, free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Earnings, explained \u00b7 every morning at 7 AM ET"
+ }
+}
