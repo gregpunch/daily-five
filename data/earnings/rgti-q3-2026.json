@@ -1,0 +1,69 @@
+{
+ "slug": "rgti-q3-2026",
+ "ticker": "RGTI",
+ "company": "Rigetti Computing",
+ "quarter": "Q3 2026",
+ "date": "2026-11-10",
+ "when": "after the close",
+ "verdict_word": "Revenue missed big, cash pile huge",
+ "headline": [
+  {
+   "metric": "Revenue",
+   "actual": "$1.41M (−28% y/y)",
+   "consensus": "$3.67M (Investing.com)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Non-GAAP EPS",
+   "actual": "−$0.06",
+   "consensus": "−$0.05 (Investing.com)",
+   "result": "Miss"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "−$0.08",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Cash and investments",
+   "actual": "$497.1M, no debt",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "2026 revenue outlook",
+   "actual": "~$20M, assuming C-DAC acceptance in Q4",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Q3 revenue was $1.411 million versus $1.947 million a year earlier; nine-month revenue was $10.9 million versus $5.2 million, about 110% growth (company release).",
+  "Operating loss widened to $33.2 million from $20.5 million; GAAP net loss was only $3.1 million thanks to a $25.3 million gain on warrant liabilities (10-Q via StockTitan).",
+  "Cash, equivalents and investments were $497.1 million with no debt.",
+  "Cepheus-1-108Q hit 99.5% median two-qubit gate fidelity, and the company signed a definitive $100 million agreement with the U.S. Department of Commerce.",
+  "The roughly $20 million full-year revenue outlook depends on customer acceptance of the C-DAC system and revenue recognition in Q4."
+ ],
+ "verdict": "Rigetti's quarter was tiny, with revenue under $1.5 million, while the balance sheet is anything but. The full-year target needs one big customer sign-off in Q4, so everyone is now hoping C-DAC reads its acceptance email.",
+ "sources": [
+  {
+   "title": "Rigetti Computing Reports Third Quarter 2026 Financial Results (GlobeNewswire)",
+   "url": "https://www.globenewswire.com/news-release/2026/11/10/3400214/0/en/rigetti-computing-reports-third-quarter-2026-financial-results.html"
+  },
+  {
+   "title": "Rigetti Q3 2026 10-Q summary (StockTitan)",
+   "url": "https://www.stocktitan.net/sec-filings/RGTI/10-q-rigetti-computing-inc-quarterly-earnings-report-22916a195e2f.html"
+  },
+  {
+   "title": "Investing.com: Rigetti misses EPS forecast",
+   "url": "https://es.investing.com/news/earnings/rigetti-computing-no-alcanza-por--las-previsiones-de-bpa-en-el-tercer-trimestre-del-ano-3922407"
+  }
+ ],
+ "prev_close": 12.15,
+ "reaction": {
+  "kind": "after hours",
+  "price": 11.30,
+  "asof": "2026-11-10 5:15 PM ET"
+ }
+}

@@ -1,0 +1,69 @@
+{
+ "slug": "crwv-q3-2026",
+ "ticker": "CRWV",
+ "company": "CoreWeave",
+ "quarter": "Q3 2026",
+ "date": "2026-11-10",
+ "when": "after the close",
+ "verdict_word": "Sales beat, guide raised, debt bill still huge",
+ "headline": [
+  {
+   "metric": "Revenue",
+   "actual": "$3.66B (+168% y/y)",
+   "consensus": "$3.55B (LSEG via CNBC/Reuters)",
+   "result": "Beat"
+  },
+  {
+   "metric": "EPS (GAAP)",
+   "actual": "−$1.27",
+   "consensus": "−$1.16 (LSEG via CNBC; CNBC noted comparability unclear)",
+   "result": ""
+  },
+  {
+   "metric": "Revenue backlog",
+   "actual": "~$132.5B (from ~$104B in June)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "2026 revenue guidance",
+   "actual": "$13.0B–$13.3B (was $12.4B–$13.2B)",
+   "consensus": "$12.86B (LSEG via CNBC)",
+   "result": "Raised"
+  },
+  {
+   "metric": "2026 adjusted operating income guidance",
+   "actual": "$1.275B–$1.375B",
+   "consensus": "$1.07B (Visible Alpha via CNBC)",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Revenue rose 168% to $3.661 billion, up more than $1 billion from the prior quarter, per the company release.",
+  "GAAP net loss was $709 million, or $1.27 a share, versus $110 million a year earlier; net interest expense was $846 million.",
+  "Revenue backlog was about $132.5 billion, up from about $104 billion at the end of June (company release, CNBC).",
+  "Full-year 2026 capex is now expected at $37 billion to $39 billion, raising the low end of the prior $35 billion to $39 billion range.",
+  "Q4 interest expense is guided to $1.05 billion to $1.15 billion, and exit-2026 annualized run-rate revenue guidance rose to $20 billion to $21 billion."
+ ],
+ "verdict": "CoreWeave sold a mountain of AI compute and then handed most of the proceeds to its lenders. Growth is real, the interest bill is also real, and the stock gets to decide which one it cares about tonight.",
+ "sources": [
+  {
+   "title": "CoreWeave Reports Strong Third Quarter 2026 Results (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261110351463/en/CoreWeave-Reports-Strong-Third-Quarter-2026-Results"
+  },
+  {
+   "title": "CNBC: CoreWeave Q3 earnings report 2026",
+   "url": "https://www.cnbc.com/2026/11/10/coreweave-crwv-q3-earnings-report-2026.html"
+  },
+  {
+   "title": "Reuters via Yahoo Finance: CoreWeave beats quarterly revenue estimates",
+   "url": "https://ca.finance.yahoo.com/news/coreweave-beats-quarterly-revenue-estimates-210939684.html"
+  }
+ ],
+ "prev_close": 48.73,
+ "reaction": {
+  "kind": "after hours",
+  "price": 49.55,
+  "asof": "2026-11-10 5:15 PM ET"
+ }
+}
