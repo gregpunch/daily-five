@@ -1,0 +1,60 @@
+{
+ "slug": "onon-q3-2026",
+ "ticker": "ONON",
+ "company": "On Holding",
+ "quarter": "Q3 2026",
+ "date": "2026-11-10",
+ "when": "before the open",
+ "verdict_word": "Beat, flattered by a tariff refund",
+ "mcap_b": 12,
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "CHF 0.54",
+   "consensus": "CHF 0.38 (analyst estimate via Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Net sales",
+   "actual": "CHF 931.4M (+17.2% y/y)",
+   "consensus": "CHF 929.8M (Investing.com)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Gross margin",
+   "actual": "72.6% (66.9% ex-refund)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "FY2026 sales guidance",
+   "actual": "Low-20% cc growth, CHF 3.47–3.56B (unchanged)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Adjusted EPS of CHF 0.54 beat the CHF 0.38 estimate, but a one-off CHF 52.6 million U.S. tariff refund did a lot of the lifting (Investing.com).",
+  "Sales of CHF 931.4 million barely cleared the CHF 929.8 million consensus; growth was 17.2% (17.8% in constant currency).",
+  "Ex-refund gross margin was 66.9% vs 65.7% a year ago; full-year gross margin outlook now about 67.5% (about 66% ex-refund), up from at least 65%.",
+  "Full-year sales growth guidance held at low-20% constant currency (CHF 3.47-3.56 billion); the adjusted EBITDA margin outlook was unchanged.",
+  "Americas grew 12.4%, Europe/Middle East/Africa 17.9% and Asia-Pacific 31.1%; direct-to-consumer sales rose 25%."
+ ],
+ "verdict": "On's profit beat came with an asterisk the size of a customs refund check. Strip that out and you get a shoe company growing nicely that didn't raise the guide. The market wanted it to sprint; it jogged.",
+ "sources": [
+  {
+   "title": "On Q3 2026 results (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261110423336/en/On-Reports-Results-for-the-Third-Quarter-and-Nine-Month-Period-Ended-September-30-2026"
+  },
+  {
+   "title": "Investing.com: On Holding shares fall 5% premarket as tariff refund flatters Q3 beat",
+   "url": "https://ca.investing.com/news/earnings/on-holding-shares-fall-5-in-premarket-as-tariff-refund-flatters-q3-profit-beat-4945704"
+  }
+ ],
+ "prev_close": 37.53,
+ "reaction": {
+  "kind": "premarket",
+  "price": 34.7,
+  "asof": "2026-11-10 7:10 AM ET"
+ }
+}

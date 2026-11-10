@@ -1,0 +1,70 @@
+{
+ "slug": "rklb-q3-2026",
+ "ticker": "RKLB",
+ "company": "Rocket Lab",
+ "quarter": "Q3 2026",
+ "date": "2026-11-09",
+ "when": "after the close",
+ "verdict_word": "Record sales beat, wider loss",
+ "mcap_b": 32,
+ "headline": [
+  {
+   "metric": "Revenue",
+   "actual": "$267.8M (+73% y/y)",
+   "consensus": "$257.2M (Investing.com); $256.5M (Zacks)",
+   "result": "Beat"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "−$0.12",
+   "consensus": "−$0.07 (Investing.com)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Backlog",
+   "actual": "$3.57B (+52% vs Q2)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Q4 revenue guidance",
+   "actual": "$270–290M",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Non-GAAP gross margin",
+   "actual": "38.4% (guide was 35–37%)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Record revenue of $267.8 million, up 73%, beat the $257.2 million estimate and topped the company's own $258-265 million guide.",
+  "The loss was wider than expected: −$0.12 a share vs −$0.07 expected (Investing.com), partly on a $27.3 million debt-extinguishment loss and $21.3 million of deal costs.",
+  "Backlog jumped $1.2 billion in one quarter to $3.57 billion, with about $1 billion of new launch contracts; Neutron now has 16 missions booked, first launch no earlier than 2027.",
+  "Q4 guide: revenue $270-290 million, non-GAAP gross margin 39-41%, adjusted EBITDA loss of $14-20 million.",
+  "The stock ran up 10.9% on Monday into the print, then slipped after hours (Investing.com)."
+ ],
+ "verdict": "Rocket Lab sold more space than ever and the backlog grew like it ate a whole constellation. But the stock rallied 11% into the report, the loss came in wider and Neutron is still a 2027 story. Great quarter, priced for a perfect one.",
+ "sources": [
+  {
+   "title": "Rocket Lab Q3 2026 results (company IR)",
+   "url": "https://investors.rocketlabcorp.com/news-releases/news-release-details/rocket-lab-announces-third-quarter-2026-financial-results-posts"
+  },
+  {
+   "title": "Investing.com: Rocket Lab Q3 2026 earnings call transcript and consensus",
+   "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-rocket-lab-beats-revenue-in-q3-2026-stock-swings-lower-after-hours-93CH-5013696"
+  },
+  {
+   "title": "Zacks via Yahoo Finance: RKLB key metrics vs estimates",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/rocket-lab-corporation-rklb-q3-223001517.html"
+  }
+ ],
+ "prev_close": 58.86,
+ "reaction": {
+  "kind": "premarket",
+  "price": 54.74,
+  "asof": "2026-11-10 7:10 AM ET"
+ }
+}

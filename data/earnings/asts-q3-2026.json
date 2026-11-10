@@ -1,0 +1,64 @@
+{
+ "slug": "asts-q3-2026",
+ "ticker": "ASTS",
+ "company": "AST SpaceMobile",
+ "quarter": "Q3 2026",
+ "date": "2026-11-09",
+ "when": "after the close",
+ "verdict_word": "Missed on loss and revenue, guide reaffirmed",
+ "mcap_b": 12.6,
+ "headline": [
+  {
+   "metric": "EPS",
+   "actual": "−$0.44",
+   "consensus": "−$0.40 (FactSet via MarketWatch)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$42.3M (vs $14.7M a year ago)",
+   "consensus": "$45.7M (FactSet); $47.9M (Investing.com)",
+   "result": "Miss"
+  },
+  {
+   "metric": "2026 revenue guidance",
+   "actual": "$150–200M (reaffirmed)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Cash",
+   "actual": "About $3.2B",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Loss of $0.44 a share was wider than the $0.40 FactSet expected (MarketWatch); revenue of $42.3 million missed $45.7 million.",
+  "It kept 2026 revenue guidance at $150-200 million and still targets initial intermittent nationwide U.S. service before year-end.",
+  "New: Blacklift, its own 20-ton reusable rocket planned from late 2028, plus a $1.0 billion non-dilutive funding award from Japan's communications ministry.",
+  "Plans to reach over 100 BlueBird satellites deployed during 2027 and 2028; Q4 capex guide is $400-500 million.",
+  "The stock jumped 14.1% in Monday's session before the report (Investing.com)."
+ ],
+ "verdict": "AST missed on both lines and announced it's building its own rocket, which is the most AST thing possible. Fans heard 'nationwide service by year-end' and 'a billion dollars from Japan'; accountants heard 'wider loss.' Both are right.",
+ "sources": [
+  {
+   "title": "AST SpaceMobile Q3 2026 business update (SEC EX-99.1)",
+   "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526453758/asts-ex99_1.htm"
+  },
+  {
+   "title": "MarketWatch: AST SpaceMobile reports wider 3Q loss (FactSet consensus)",
+   "url": "https://www.marketwatch.com/story/ast-spacemobile-reports-wider-3q-loss-higher-revenue-8138cd40"
+  },
+  {
+   "title": "Investing.com: AST SpaceMobile Q3 2026 earnings call transcript",
+   "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-ast-spacemobile-q3-2026-misses-estimates-but-stock-rises-93CH-5013695"
+  }
+ ],
+ "prev_close": 36.89,
+ "reaction": {
+  "kind": "premarket",
+  "price": 36.0,
+  "asof": "2026-11-10 7:10 AM ET"
+ }
+}

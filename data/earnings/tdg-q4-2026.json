@@ -1,0 +1,70 @@
+{
+ "slug": "tdg-q4-2026",
+ "ticker": "TDG",
+ "company": "TransDigm",
+ "quarter": "Q4 FY2026",
+ "date": "2026-11-10",
+ "when": "before the open",
+ "verdict_word": "Beat on EPS and sales, 2027 guide out",
+ "mcap_b": 67,
+ "headline": [
+  {
+   "metric": "Adjusted EPS",
+   "actual": "$12.44",
+   "consensus": "$12.21 (Benzinga); $12.15 (Zacks via AP)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Net sales",
+   "actual": "$2.99B (+23% y/y)",
+   "consensus": "$2.947B (Benzinga); $2.94B (Zacks via AP)",
+   "result": "Beat"
+  },
+  {
+   "metric": "GAAP EPS",
+   "actual": "$10.33 (+33% y/y)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "EBITDA As Defined",
+   "actual": "$1.583B (53.0% of sales)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "FY2027 guidance",
+   "actual": "Sales $11.95–12.15B; adj. EPS $47.09–47.94",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Adjusted EPS of $12.44 topped the $12.21 estimate (Benzinga) and Zacks' $12.15 (AP); sales of $2.988 billion beat about $2.94-2.95 billion.",
+  "Sales rose 23%, with 14% organic growth; the rest came from acquisitions such as Prince & Izant (about $1.07 billion, closed Sept. 28).",
+  "Net income fell 4% to $586 million on higher interest expense from a bigger debt load and higher taxes.",
+  "EBITDA As Defined margin was 53.0%, including about two points of dilution from recent deals, vs 54.2% a year ago.",
+  "First fiscal 2027 outlook: sales of $11.95-12.15 billion and adjusted EPS of $47.09-47.94. The company bought back $943 million of stock in the quarter."
+ ],
+ "verdict": "TransDigm did the TransDigm thing: sell airplane parts at software margins, beat the number, buy another company, borrow more. Clean beat on profit and sales; the debt bill is the only thing that grew faster than the parts catalog.",
+ "sources": [
+  {
+   "title": "TransDigm Q4 FY2026 press release (PR Newswire)",
+   "url": "https://www.prnewswire.com/news-releases/transdigm-group-reports-fiscal-2026-fourth-quarter-and-year-end-results-302934067.html"
+  },
+  {
+   "title": "AP via WTOP: TransDigm fiscal Q4 earnings snapshot (Zacks consensus)",
+   "url": "https://wtop.com/national/2026/11/transdigm-fiscal-q4-earnings-snapshot/"
+  },
+  {
+   "title": "Benzinga: TransDigm Q4 adj. EPS $12.44 beats $12.21",
+   "url": "https://www.benzinga.com/news/earnings/26/11/63081691/transdigm-gr-q4-adj-eps-12-44-beats-12-21-estimate-sales-2-988b-beat-2-947b-estimate"
+  }
+ ],
+ "prev_close": 1218.85,
+ "reaction": {
+  "kind": "premarket",
+  "price": 1195.0,
+  "asof": "2026-11-10 7:05 AM ET"
+ }
+}

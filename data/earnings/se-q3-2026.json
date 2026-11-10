@@ -1,0 +1,70 @@
+{
+ "slug": "se-q3-2026",
+ "ticker": "SE",
+ "company": "Sea Limited",
+ "quarter": "Q3 2026",
+ "date": "2026-11-10",
+ "when": "before the open",
+ "verdict_word": "Sales beat, EPS miss",
+ "mcap_b": 46,
+ "headline": [
+  {
+   "metric": "Diluted EPS",
+   "actual": "$0.78",
+   "consensus": "$0.81 (Benzinga); $0.99 (StreetInsider)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "$8.58B (+43.4% y/y)",
+   "consensus": "$8.045B (Benzinga)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Net income",
+   "actual": "$502.5M (+34% y/y)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Adjusted EBITDA",
+   "actual": "$931.3M (+28.9% y/y)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Shopee GMV",
+   "actual": "$39.7B (+23.3% y/y)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Revenue jumped 43.4% to about $8.6 billion, well above the $8.045 billion estimate (Benzinga).",
+  "EPS of $0.78 missed: Benzinga had $0.81 and StreetInsider $0.99, so the size of the miss depends on whose consensus you use.",
+  "Shopee revenue rose 41.3% to $6.1 billion on 4.5 billion orders; Shopee adjusted EBITDA rose 44.7% to $269.2 million.",
+  "Monee (the lending arm) grew revenue 63.9% to $1.6 billion, with loans outstanding up 60% to $12.6 billion and 90-day bad loans at 1.3% vs 1.1% a year ago.",
+  "Garena bookings rose 5.9% to $890 million on Free Fire."
+ ],
+ "verdict": "Sea sold a ton more stuff, lent a ton more money, and still came up a few cents short on profit. Wall Street wanted growth AND margins; Sea delivered growth and a slightly bigger bad-loan pile. Not a disaster, just not the clean sweep a stock down this much needed.",
+ "sources": [
+  {
+   "title": "Sea Limited Q3 2026 results (Business Wire)",
+   "url": "https://www.businesswire.com/news/home/20261109862081/en/Sea-Limited-Reports-Third-Quarter-2026-Results"
+  },
+  {
+   "title": "Benzinga: Sea Q3 EPS $0.78 misses $0.81, sales $8.582B beat $8.045B",
+   "url": "https://www.benzinga.com/news/earnings/26/11/63081680/sea-q3-eps-0-78-misses-0-81-estimate-sales-8-582b-beat-8-045b-estimate"
+  },
+  {
+   "title": "StreetInsider: Sea misses Q3 EPS, beats on revenue",
+   "url": "https://www.streetinsider.com/Earnings/Sea+Ltd.+%28SE%29+Misses+Q3+EPS+by+21c%2C+Beats+on+Revenue/27318033.html"
+  }
+ ],
+ "prev_close": 77.96,
+ "reaction": {
+  "kind": "premarket",
+  "price": 73.0,
+  "asof": "2026-11-10 7:10 AM ET"
+ }
+}

@@ -1,0 +1,87 @@
+{
+ "date": "2026-11-10",
+ "headline": "TransDigm beats ($12.44 vs $12.21) and guides 2027; Sea and On beat on sales but slide premarket; Rocket Lab's record quarter meets a wider loss; CoreWeave tonight",
+ "top_call": "TransDigm, the airplane-parts toll booth, earned $12.44 a share vs $12.21 expected on sales up 23% and put out its first fiscal 2027 guide. Sea beat on revenue ($8.58B vs $8.05B) but missed on EPS, On's beat leaned on a tariff refund, and last night Rocket Lab posted record sales with a wider loss while AST SpaceMobile missed on both lines. Plain-English explainers below, plus CoreWeave tonight.",
+ "lead": "tdg-q4-2026",
+ "subject": "The Daily Five — Tue Nov 10: TransDigm beats ($12.44 vs $12.21) and guides 2027",
+ "backdrop": "Monday's rebound: the S&P 500 had its best day since April as dip-buyers returned to AI and chip stocks (AMD +13%, the chip index's biggest gain since July), even as Nvidia fell more than 4% on news of an independent investigation into CEO Jensen Huang. Futures are mixed ahead of this morning's October CPI, per Investing.com.",
+ "backdrop_source": {
+  "name": "Investing.com",
+  "url": "https://www.investing.com/news/economy-news/us-inflation-data-ahead-huang-scandal-fallout--whats-moving-markets-5014413"
+ },
+ "finance": [],
+ "on_deck_title": "On deck today",
+ "on_deck_sub": "Still to report today, Nov 10 (D-Wave's results weren't out at 7 AM ET), with Wall Street's EPS estimates per Yahoo Finance",
+ "on_deck": [
+  {
+   "ticker": "CRWV",
+   "company": "CoreWeave",
+   "when": "after the close",
+   "eps_consensus": "−$1.55",
+   "source": {
+    "name": "CoreWeave investor relations",
+    "url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Announces-Date-of-Third-Quarter-2026-Financial-Results-and-Conference-Call/default.aspx"
+   }
+  },
+  {
+   "ticker": "PBR",
+   "company": "Petrobras",
+   "when": "after the close",
+   "eps_consensus": "$1.41",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-10"
+   }
+  },
+  {
+   "ticker": "RGTI",
+   "company": "Rigetti Computing",
+   "when": "after the close",
+   "eps_consensus": "−$0.05",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-10"
+   }
+  },
+  {
+   "ticker": "QBTS",
+   "company": "D-Wave Quantum",
+   "when": "before the open",
+   "eps_consensus": "−$0.10",
+   "source": {
+    "name": "D-Wave investor relations",
+    "url": "https://ir.dwavequantum.com/news/news-details/2026/D-Wave-Quantum-to-Report-Third-Quarter-2026-Financial-Results-on-November-10-2026/default.aspx"
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Chips",
+   "headline": "Nvidia fell more than 4% Monday after announcing an independent investigation into CEO Jensen Huang, who told staff he had a relationship with a businesswoman alleged to be a spy for China; shares ticked higher after hours",
+   "why": "The AI trade's bellwether now has a headline risk that has nothing to do with chips. Trump said he believes Huang 'will be in good shape.'",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/economy-news/us-inflation-data-ahead-huang-scandal-fallout--whats-moving-markets-5014413"
+   }
+  },
+  {
+   "category": "Money",
+   "headline": "Anthropic circulated IPO terms of about 867 million shares at $70-80 (up to $69.3 billion), then retracted the pricing as inaccurate, Reuters reported; formal marketing could start Tuesday",
+   "why": "The biggest AI IPO on the calendar just had a typo worth billions. CoreWeave reports tonight into the same mood.",
+   "source": {
+    "name": "Investing.com (Reuters report)",
+    "url": "https://www.investing.com/news/economy-news/us-inflation-data-ahead-huang-scandal-fallout--whats-moving-markets-5014413"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "Chip stocks ripped Monday: AMD +13.3%, Monolithic Power +16.6%, Astera Labs +13.7%, Applied Materials +11.4%, as the S&P 500 posted its best day since April",
+   "why": "Deutsche Bank says tech positioning had fallen below its post-Liberation Day lows. When everyone is already out, the only trade left is back in.",
+   "source": {
+    "name": "Investing.com",
+    "url": "https://www.investing.com/news/economy-news/us-inflation-data-ahead-huang-scandal-fallout--whats-moving-markets-5014413"
+   }
+  }
+ ],
+ "sports": []
+}
