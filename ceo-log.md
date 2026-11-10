@@ -1281,3 +1281,4 @@
 1. Make "priced in" the Sunday recap email headline stat ("5 of 8 hot stocks fell on beats") — punchy, shareable.
 2. Running all-time "priced in" tracker on /earnings/ (big run-ups that fell on a beat, season to date).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+- **Deploy note:** push run 42840852041 (ad3d008) and empty-commit run 42841764694 failed ("in progress deployment" for 0f5d5ef, overlapping a scheduled dispatch); workflow_dispatch 42842405424 timed out in deploy-pages. A second empty commit (run **42844645738**, 970550d) succeeded; "Was it priced in?" live on /earnings/week-of-2026-11-02/ and /earnings/week-of-2026-11-09/ around 10:50 AM ET. Pages 200: /, /scoreboard/, /earnings/, /earnings-calendar/.
