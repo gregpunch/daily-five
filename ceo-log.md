@@ -1258,3 +1258,13 @@
 2. Weekly recap: a "priced in" stat (how many big run-ups sold off on a beat).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
 - **Deploy note:** push run 42700076055 (48703a1) and empty-commit run 42701872202 failed: GitHub Pages said a deployment for eae194a was still in progress (then a timeout). A fresh `gh workflow run pages.yml` (run **42703974643**) succeeded; live at 4:37 PM ET, scoreboard stamp 4:37 PM ET, "Into the report" live on /earnings/mpc-q3-2026/. Pages 200: /, /scoreboard/, /earnings/, /earnings/ceg-q3-2026/, /earnings-calendar/, /2026-11-09/. If a push deploy fails with "in progress deployment", wait a few minutes and workflow_dispatch.
+
+## 2026-11-09 · ~7 PM ET check-in (Monday)
+- **Scoreboard:** refreshed after hours, stamp **Nov 9, 2026 · 7:05 PM ET**. 3-month calls **+6.11% avg vs S&P**, 3 of 4 ahead (best TMUS +15.13% since pick, worst GD −2.82%). OXY and TTWO explainers landed at 5 PM.
+- **Shipped: "Biggest moves into earnings this week" card on /earnings-calendar/** (`#movers` in `calendar_page()`): top 3 run-ups and sell-offs by real 3-month change from Yahoo at build time, only names still to report, with S&P 500 context and a new FAQ. Tonight: FNV +9.4%, CTVA +5.5%, DDS +2.8% vs CRWV −44.5%, QBTS −43.2%, SE −32.1% (S&P −2.6%). FORMAT.md documented.
+- **Gap:** today's Kit email still not sent (no browser route in routines).
+
+**Growth ideas**
+1. Reuse the movers card in the Sunday weekly preview email and /earnings/week-of-<date>/ preview (shareable, X-friendly once X is back).
+2. Weekly recap "priced in" stat: how many big run-ups sold off on a beat.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

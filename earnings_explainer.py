@@ -373,6 +373,29 @@ def calendar_page(B, reports):
             groups+=(f'<h3 class="h3s">{E(w.capitalize() if w else "Time not set")}</h3>' if w or len(its)>1 else '')+f'<div class="tbl"><table><thead><tr><th>Company</th><th>EPS est.</th><th>Past month</th><th>Result</th></tr></thead><tbody>{"".join(row(x) for x in g)}</tbody></table></div>'
         sec+=f'<section class="card" id="d-{d}"><h2 class="h2s">🗓️ {E(lab)}</h2>{groups}</section>'
         faqd.append(f"{dd.strftime('%A')}: "+', '.join(f"{x['company']} ({x['ticker']})" for x in its))
+    # Biggest movers into the print: real 3-month change (Yahoo, build time) for names that haven't reported yet
+    mv=[]
+    for x in items:
+        tk=x['ticker'].upper()
+        if tk in done: continue
+        xd=datetime.date.fromisoformat(x['date'])
+        if xd<T or (xd==T and (x['when']=='before the open' or time.localtime().tm_hour>=16)): continue
+        ru=runup(x.get('yahoo') or tk.replace('.','-'))
+        if ru and ru.get('m3') is not None: mv.append((ru['m3'],x))
+    moverh=''; spx=runup('^GSPC')
+    if len(mv)>=4:
+        mv.sort(key=lambda t:-t[0]); k=min(3,len(mv)//2)
+        hot=[t for t in mv[:k] if t[0]>0]; cold=[t for t in mv[::-1][:k] if t[0]<0]
+        def li(v,x):
+            dd=datetime.date.fromisoformat(x['date'])
+            return f'<li><a href="{BASE}/earnings/{x["ticker"].lower()}/"><b>{E(x["company"])}</b> ({E(x["ticker"].upper())})</a> <b class="{"up" if v>0 else "dn"}">{v:+.1f}%</b> <small>· reports {E(dd.strftime("%a %b %-d"))}, {E(x["when"])}</small></li>'
+        cols=''
+        if hot: cols+=f'<div><h3 class="h3s">🔥 Ran up the most</h3><ul class="why">{"".join(li(v,x) for v,x in hot)}</ul><p class="sub">High bar: a big run-up can mean a beat is already priced in.</p></div>'
+        if cold: cols+=f'<div><h3 class="h3s">🧊 Sold off the most</h3><ul class="why">{"".join(li(v,x) for v,x in cold)}</ul><p class="sub">Low bar: a beaten-down stock can pop on "less bad" news.</p></div>'
+        if cols:
+            moverh=(f'<section class="card" id="movers"><h2 class="h2s">Biggest moves into earnings this week</h2>{cols}'
+                    f'<p class="sub">Past 3 months, from Yahoo Finance at build time'+(f'; S&amp;P 500 over the same window: {spx["m3"]:+.1f}%' if spx else '')+'. Only names that haven\'t reported yet.</p></section>')
+            B['_movers']=[(x['ticker'].upper(),v) for v,x in hot+cold]
     jump=' · '.join(f'<a href="#d-{d}">{datetime.date.fromisoformat(d).strftime("%a %-d")}</a>' for d in days)
     lab=week_label(m); n=len(items); ex=len(done)
     F=cal.get('featured') or []; tm={x['ticker']:x for x in items}
@@ -382,12 +405,15 @@ def calendar_page(B, reports):
     sc=cal['source']; fetched=datetime.date.fromisoformat(cal['fetched']).strftime('%B %-d, %Y')
     prev=m-datetime.timedelta(days=7); prevh=''
     if any(_wk(r)==prev for r in reports): prevh=f'<a href="{BASE}/earnings/week-of-{prev.isoformat()}/">Last week\'s recap: who beat, who missed →</a> · '
-    faqs=[(f"Which companies report earnings this week ({lab})?",'; '.join(faqd)+'.'),
+    faqs=[(f"Which companies report earnings this week ({lab})?",'; '.join(faqd)+'.')]
+    if B.get('_movers'):
+        faqs.append(("Which stocks ran up or sold off the most before earnings this week?",'; '.join(f"{t} {v:+.1f}% over 3 months" for t,v in B['_movers'])+". Prices from Yahoo Finance at build time."))
+    faqs+=[
           ("Where do these dates and estimates come from?",f"The {sc['name']}, as of {fetched}. Companies can move report dates, so check the company's investor relations page before you trade.")]
     faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
     cnav,csch=B['crumbs']([('Home','/'),('Earnings explained','/earnings/'),('Earnings calendar',P)])
     h1=f"Earnings Calendar This Week ({lab})"
-    body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🗓️ Earnings calendar · updated {E(T.strftime("%b %-d"))}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p><p class="sub">Jump to: {jump}</p></section>{sec}'
+    body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">🗓️ Earnings calendar · updated {E(T.strftime("%b %-d"))}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p><p class="sub">Jump to: {jump}</p></section>{moverh}{sec}'
           f'<p class="sub">Dates and estimates: <a href="{E(sc["url"])}" rel="nofollow noopener">{E(sc["name"])}</a> as of {E(fetched)}. Past month is the stock\'s change over roughly 21 trading days into the report, from Yahoo Finance at build time. Results and moves come from our explainers and refresh with every site rebuild.</p>'
           f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get this week\'s big reports explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
           f'{faqh}<p class="sub">{prevh}<a href="{BASE}/earnings/week-of-{m.isoformat()}/">This week\'s recap page →</a> · <a href="{BASE}/earnings/">All earnings explained →</a></p>'
