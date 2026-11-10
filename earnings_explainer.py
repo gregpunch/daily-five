@@ -215,7 +215,7 @@ def render(B, reports):
         sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc[:300],"datePublished":r['date'],"dateModified":B['TODAY'].isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P,"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"citation":[s['url'] for s in r['sources']]},csch,
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
-        r['_move']=move; urls.append((P,B['TODAY'].isoformat()))
+        r['_move']=move; r['_pr']=pr; urls.append((P,B['TODAY'].isoformat()))
     return urls+ticker_hubs(B,reports)+upcoming_hubs(B,reports)+week_recaps(B,reports)+calendar_page(B,reports)
 
 def ticker_hubs(B, reports):
@@ -491,6 +491,27 @@ def week_recaps(B, reports):
         def cell(x): return f'<span class="{cl(x)}">{E(x)}</span>' if x else '—'
         rows=''.join(f'<tr><td><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])}</b> ({E(r["ticker"])})</a><br><small>{E(r["quarter"])} · {datetime.date.fromisoformat(r["date"]).strftime("%a %b %-d")}</small></td>'
                      f'<td>{cell(eps_result(r))}</td><td>{cell(rev_result(r))}</td><td>'+(f'<b class="{"up" if r["_move"]>=0 else "dn"}">{r["_move"]:+.1f}%</b>' if r.get('_move') is not None else 'pending')+'</td></tr>' for r in rs)
+        def pcell(r):
+            pr=r.get('_pr')
+            return f'<span class="{"up" if pr["m3"]>=0 else "dn"}">{pr["m3"]:+.1f}%</span>' if pr else '—'
+        rows=rows.replace('</td></tr>','</td><td>{PC}</td></tr>')
+        for r in rs: rows=rows.replace('{PC}',pcell(r),1)
+        # "Priced in?" stat: did big run-ups sell off on the report, and did beaten-down names bounce? Real Yahoo closes.
+        pi=[r for r in rs if r.get('_pr') and r.get('_move') is not None]
+        hot=[r for r in pi if r['_pr']['m3']>=10]; cold=[r for r in pi if r['_pr']['m3']<=-10]
+        hf=[r for r in hot if r['_move']<0]; cb=[r for r in cold if r['_move']>0]
+        hfb=[r for r in hf if eps_result(r)=='Beat']
+        pih=''; pif=None; lnk=lambda r: f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a>'
+        if hot or cold:
+            def nm(r): return f'{lnk(r)} ({r["ticker"]} {r["_pr"]["m3"]:+.1f}% into it, {r["_move"]:+.1f}% after)'
+            li=''
+            if hot: li+=f'<li><b>{len(hf)} of {len(hot)}</b> stocks that ran up 10%+ in the three months before reporting fell after the report'+(f', {len(hfb)} of them despite an EPS beat' if hfb else '')+(': '+'; '.join(nm(r) for r in hf) if hf else '.')+'</li>'
+            if cold: li+=f'<li><b>{len(cb)} of {len(cold)}</b> stocks that fell 10%+ going in bounced after the report'+(': '+'; '.join(nm(r) for r in cb) if cb else '.')+'</li>'
+            pih=(f'<section class="card" id="priced-in"><h2 class="h2s">🎯 Was it priced in?</h2><ul class="why">{li}</ul><p class="sub">"Into the report" is the 3-month move to the last close before each report (Yahoo Finance daily closes); "after" is vs that close, refreshed every rebuild. {len(pi)} of {len(rs)} reports had both numbers.</p></section>')
+            parts=[]
+            if hot: parts.append(f"{len(hf)} of {len(hot)} stocks that ran up 10% or more in the three months before reporting fell after the report"+(f" ({', '.join(r['ticker'] for r in hf)})" if hf else ''))
+            if cold: parts.append(f"{len(cb)} of {len(cold)} stocks that fell 10% or more going in bounced"+(f" ({', '.join(r['ticker'] for r in cb)})" if cb else ''))
+            pif=(f"Were earnings priced in the week of {lab}?",'; '.join(parts)+'. Moves from Yahoo Finance daily closes, as of the latest site rebuild.')
         def tile(big,l): return f'<div class="sct"><b>{big}</b><span>{l}</span></div>'
         tiles=''
         if en: tiles+=tile(f'{eb} of {en}','beat on EPS')
@@ -505,6 +526,7 @@ def week_recaps(B, reports):
               +(f" and the biggest drop {mv[0]['company']} ({mv[0]['ticker']} {mv[0]['_move']:+.1f}%)" if mv and mv[0]['_move']<0 else '')+'.')
         faqs=[(f"Which companies beat earnings the week of {lab}?",(f"On EPS: {', '.join(beats)} beat consensus." if beats else 'No EPS beats among the reports we explained.')+(f" Missed: {', '.join(miss)}." if miss else ''))]
         if mv: faqs.append((f"Which stock moved the most after earnings the week of {lab}?",f"Among the reports we explained, {mv[-1]['company']} ({mv[-1]['ticker']}) moved {mv[-1]['_move']:+.1f}% and {mv[0]['company']} ({mv[0]['ticker']}) moved {mv[0]['_move']:+.1f}% versus the close before each report, as of the latest site rebuild."))
+        if pif: faqs.append(pif)
         if bf: faqs.append((f"Which stocks fell after beating earnings the week of {lab}?",'; '.join(f"{r['company']} ({r['ticker']} {r['_move']:+.1f}%)" for r in bf)+'. Each explainer covers why.'))
         faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(a)}</summary><p>{E(b)}</p></details>' for a,b in faqs)+'</div>'
         nav=[]
@@ -514,7 +536,7 @@ def week_recaps(B, reports):
         h1=f"Earnings This Week ({lab}): Who Beat, Who Missed, Biggest Stock Moves"
         body=(f'{cnav}<section class="sbhero hubhero"><span class="kicker">📊 Weekly earnings recap · {E(lab)}</span><h1 class="pt">{E(h1)}</h1><p class="sub wksum">{E(summ)}</p></section>'
               f'<section class="card scard"><h2 class="h2s">📊 The week in one glance</h2><div class="scgrid">{tiles}</div><p class="sub">Beat or miss is vs the consensus on each explainer; stock moves are vs the close before the report and refresh with every site rebuild.</p></section>'
-              f'<section class="card"><h2 class="h2s">Every report this week</h2><div class="tbl"><table><thead><tr><th>Company</th><th>EPS</th><th>Revenue</th><th>Stock</th></tr></thead><tbody>{rows}</tbody></table></div></section>{calh}'
+              f'<section class="card"><h2 class="h2s">Every report this week</h2><div class="tbl"><table><thead><tr><th>Company</th><th>EPS</th><th>Revenue</th><th>Stock</th><th>3 mo. into it</th></tr></thead><tbody>{rows}</tbody></table></div></section>{pih}{calh}'
               f'<section class="signup wksign"><div><span class="kicker">📬 Free</span><h2>Get next week\'s big reports explained in your inbox.</h2><p>Beat or miss, guidance and the stock reaction in plain English, every weekday morning. No spam, unsubscribe anytime.</p></div>{B["sform"]("ern")}</section>'
               f'{faqh}<p class="sub">{" · ".join(nav+[f"<a href=\"{BASE}/earnings/\">All earnings explained →</a>"])}</p><p class="disc-bar">⚠️ <b>Not financial advice.</b> AI-written summary of public filings and news. Check the sources on each report page.</p>')
         title=f"Earnings this week ({lab}): who beat, who missed, biggest stock moves"

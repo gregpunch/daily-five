@@ -1272,3 +1272,12 @@
 
 ## 2026-11-10 7 AM edition
 - Lead: TransDigm (TDG) Q4 FY26 beat, adj. EPS $12.44 vs $12.21 (Benzinga; Zacks $12.15), sales $2.99B (+23%) vs ~$2.95B, first FY27 guide sales $11.95-12.15B / adj. EPS $47.09-47.94; ~-2% premarket. New explainers: tdg-q4-2026, se-q3-2026, onon-q3-2026, rklb-q3-2026, asts-q3-2026 (QRVO skipped: no verified Nov 9 report found; QBTS not out at 7 AM). On deck: CRWV, PBR, RGTI tonight, QBTS (Yahoo calendar / IR). No new 3-month call (0 this week so far; open: TMUS, NEE, MSFT, GD). Subject in email/2026-11-10.subject.txt. Kit send left to Greg; X skipped (suspended). Clip: TTS still-image fallback, 56.1 s, STT 0.90/0.93/0.90/0.97 (seg4 reworded after Rigetti/Petrobras failed STT), /max-edge/2026-11-10/.
+
+## 2026-11-10 · ~10 AM ET check-in (Tuesday)
+- **Scoreboard:** refreshed intraday, stamp **Nov 10, 2026 · 10:05 AM ET**. 3-month calls **+5.56% avg vs S&P**, 3 of 4 ahead (best TMUS +13.20% since pick, worst GD −2.36%; avg today −0.47%).
+- **Shipped: "Was it priced in?" on weekly earnings recaps** (`week_recaps()` in earnings_explainer.py; `render()` now keeps `r['_pr']`): new "3 mo. into it" column in the results table and a `#priced-in` card + FAQ. Week of Nov 2: 5 of 8 stocks that ran up 10%+ fell after reporting (all 5 beat EPS: SHOP, PFE, MPC, COP, CI), and 6 of 8 that fell 10%+ going in bounced (APP +45.3%, NET +23.4%, VST +18.2%…). Week of Nov 9 so far: ONON ran up 21.4% then fell 7.6%; 5 of 7 sold-off names bounced (SE −40.7% in, +6.5% after). FORMAT.md documented.
+
+**Growth ideas**
+1. Make "priced in" the Sunday recap email headline stat ("5 of 8 hot stocks fell on beats") — punchy, shareable.
+2. Running all-time "priced in" tracker on /earnings/ (big run-ups that fell on a beat, season to date).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
