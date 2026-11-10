@@ -216,6 +216,7 @@ def render(B, reports):
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
         r['_move']=move; r['_pr']=pr; urls.append((P,B['TODAY'].isoformat()))
+    B['_ERPTS']=reports
     return urls+ticker_hubs(B,reports)+upcoming_hubs(B,reports)+week_recaps(B,reports)+calendar_page(B,reports)
 
 def ticker_hubs(B, reports):
@@ -271,6 +272,21 @@ def runup(sym):
     _runup_cache[sym]=out
     return out
 
+def season_note(B, m3, tk=''):
+    """Plain sentence: what happened this season to explained reports in the same 3-month run-up bucket as m3
+    (ran up 10%+ / fell 10%+), from r['_pr'] and r['_move'] set in render(). '' when the bucket has < 3 reports."""
+    rs=[r for r in (B.get('_ERPTS') or []) if r.get('_pr') and r.get('_move') is not None and r['ticker'].upper()!=tk.upper()]
+    if m3 is None: return ''
+    if m3>=10:
+        g=[r for r in rs if r['_pr']['m3']>=10]; n=len([r for r in g if r['_move']<0])
+        if len(g)<3: return ''
+        return f"This season, {n} of {len(g)} stocks we explained that ran up 10% or more going in fell after reporting (avg move {sum(r['_move'] for r in g)/len(g):+.1f}%)."
+    if m3<=-10:
+        g=[r for r in rs if r['_pr']['m3']<=-10]; n=len([r for r in g if r['_move']>0])
+        if len(g)<3: return ''
+        return f"This season, {n} of {len(g)} stocks we explained that fell 10% or more going in bounced after reporting (avg move {sum(r['_move'] for r in g)/len(g):+.1f}%)."
+    return ''
+
 def runup_section(B, tk, sym):
     E=B['E']; r=runup(sym); m=runup('^GSPC')
     if not r: return ''
@@ -284,7 +300,7 @@ def runup_section(B, tk, sym):
         gap=f' Over three months {E(tk)} is {"ahead of" if d>0 else "behind" if d<0 else "even with"} the S&amp;P 500'+(f' by {abs(d):.1f} points.' if d else '.')
     return (f'<section class="card"><h2 class="h2s">How {E(tk)} stock is trading into the report</h2><div class="tbl"><table><tbody>'
             +''.join(f'<tr><td>{a}</td><td>{b}</td></tr>' for a,b in rows)+'</tbody></table></div>'
-            f'<p class="sub">'+('A big run-up raises the bar: the stock may need a clear beat to hold its gains. ' if r['m3']>=10 else 'The stock has already sold off, so the bar going in may be lower. ' if r['m3']<=-10 else '')+f'{gap.strip()} Prices from Yahoo Finance (latest trade vs. daily closes), as of {E(r["asof"])}; refreshed on every site build.</p></section>')
+            f'<p class="sub">'+('A big run-up raises the bar: the stock may need a clear beat to hold its gains. ' if r['m3']>=10 else 'The stock has already sold off, so the bar going in may be lower. ' if r['m3']<=-10 else '')+f'{gap.strip()} '+(f'<b>{E(season_note(B,r["m3"],tk))}</b> <a href="{B["BASE"]}/earnings/#priced-in">See the tracker →</a> ' if season_note(B,r['m3'],tk) else '')+f'Prices from Yahoo Finance (latest trade vs. daily closes), as of {E(r["asof"])}; refreshed on every site build.</p></section>')
 
 def upcoming_hubs(B, reports):
     """/earnings/<ticker>/ for calendar names we haven't explained yet ("CEG earnings date" searches): report date, before/after
@@ -361,6 +377,9 @@ def calendar_page(B, reports):
             return f'<tr><td><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>—</td><td>{res}</td></tr>'
         ru=runup(x.get('yahoo') or tk.replace('.','-')); m1=ru and ru.get('m1')
         mvh='—' if m1 is None else f'<span class="{"up" if m1>0 else "dn" if m1<0 else ""}">{m1:+.1f}%</span>'
+        m3=ru and ru.get('m3')
+        if m3 is not None and m3>=10: mvh+=f'<br><small title="Up {m3:.1f}% over 3 months into the report">🔥 3 mo. {m3:+.0f}% · high bar</small>'
+        elif m3 is not None and m3<=-10: mvh+=f'<br><small title="Down {abs(m3):.1f}% over 3 months into the report">🧊 3 mo. {m3:+.0f}% · low bar</small>'
         return f'<tr><td><a href="{BASE}/earnings/{tk.lower()}/"><b>{E(x["company"])}</b> ({E(tk)})</a><br><small>{E(x["quarter"])}</small></td><td>{eps(x.get("eps_est"))}</td><td>{mvh}</td><td>Coming up</td></tr>'
     order={'before the open':0,'after the close':2}
     days=sorted({x['date'] for x in items}); sec=''; faqd=[]
@@ -390,8 +409,8 @@ def calendar_page(B, reports):
             dd=datetime.date.fromisoformat(x['date'])
             return f'<li><a href="{BASE}/earnings/{x["ticker"].lower()}/"><b>{E(x["company"])}</b> ({E(x["ticker"].upper())})</a> <b class="{"up" if v>0 else "dn"}">{v:+.1f}%</b> <small>· reports {E(dd.strftime("%a %b %-d"))}, {E(x["when"])}</small></li>'
         cols=''
-        if hot: cols+=f'<div><h3 class="h3s">🔥 Ran up the most</h3><ul class="why">{"".join(li(v,x) for v,x in hot)}</ul><p class="sub">High bar: a big run-up can mean a beat is already priced in.</p></div>'
-        if cold: cols+=f'<div><h3 class="h3s">🧊 Sold off the most</h3><ul class="why">{"".join(li(v,x) for v,x in cold)}</ul><p class="sub">Low bar: a beaten-down stock can pop on "less bad" news.</p></div>'
+        if hot: cols+=f'<div><h3 class="h3s">🔥 Ran up the most</h3><ul class="why">{"".join(li(v,x) for v,x in hot)}</ul><p class="sub">High bar: a big run-up can mean a beat is already priced in. {E(season_note(B,10))}</p></div>'
+        if cold: cols+=f'<div><h3 class="h3s">🧊 Sold off the most</h3><ul class="why">{"".join(li(v,x) for v,x in cold)}</ul><p class="sub">Low bar: a beaten-down stock can pop on "less bad" news. {E(season_note(B,-10))}</p></div>'
         if cols:
             moverh=(f'<section class="card" id="movers"><h2 class="h2s">Biggest moves into earnings this week</h2>{cols}'
                     f'<p class="sub">Past 3 months, from Yahoo Finance at build time'+(f'; S&amp;P 500 over the same window: {spx["m3"]:+.1f}%' if spx else '')+'. Only names that haven\'t reported yet.</p></section>')

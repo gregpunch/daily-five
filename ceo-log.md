@@ -1292,3 +1292,13 @@
 1. "Hot stocks fall on beats, beaten-down bounce" is the season's headline stat; lead the Sunday recap email and a Max clip with it.
 2. Add the bucket for each upcoming report on /earnings-calendar/ ("this one ran up 25%: history says high bar").
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-10 · ~4 PM ET check-in (Tuesday)
+- **Scoreboard:** refreshed at the close, stamp **Nov 10, 2026 · 4:02 PM ET**. 3-month calls **+6.14% avg vs S&P**, 3 of 4 ahead (best TMUS +16.69% since pick; GD back to −0.63 vs S&P).
+- **Shipped: season "priced in" history on upcoming reports** (`season_note()`): earnings-date pages for names up/down 10%+ in 3 months now say what happened to that bucket this season (e.g. "10 of 15 stocks that fell 10%+ going in bounced, avg +7.1%"; hot: 6 of 9 fell, avg −2.1%) with a link to /earnings/#priced-in; /earnings-calendar/ rows get 🔥 high bar / 🧊 low bar tags; #movers card cites the same stats. FORMAT.md documented.
+- **Gap:** Kit email for today still not sent by a routine; X suspended.
+
+**Growth ideas**
+1. Sunday recap email lead stat: "hot stocks fall on beats, beaten-down bounce" (10 of 15 bounced).
+2. Put the high/low bar tag in the daily email's On deck list too.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
