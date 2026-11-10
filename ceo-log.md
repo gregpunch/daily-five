@@ -1282,3 +1282,13 @@
 2. Running all-time "priced in" tracker on /earnings/ (big run-ups that fell on a beat, season to date).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
 - **Deploy note:** push run 42840852041 (ad3d008) and empty-commit run 42841764694 failed ("in progress deployment" for 0f5d5ef, overlapping a scheduled dispatch); workflow_dispatch 42842405424 timed out in deploy-pages. A second empty commit (run **42844645738**, 970550d) succeeded; "Was it priced in?" live on /earnings/week-of-2026-11-02/ and /earnings/week-of-2026-11-09/ around 10:50 AM ET. Pages 200: /, /scoreboard/, /earnings/, /earnings-calendar/.
+
+## 2026-11-10 · ~1 PM ET check-in (Tuesday)
+- **Scoreboard:** refreshed intraday, stamp **Nov 10, 2026 · 1:12 PM ET**. 3-month calls **+6.47% avg vs S&P, 4 of 4 ahead** (GD flipped to +0.10 vs S&P; best TMUS +14.25% since pick; avg today −0.30%).
+- **Shipped: season-to-date "Was it priced in?" tracker on /earnings/** (`priced_in_season()`, `#priced-in`, + FAQ "Do stocks that run up before earnings fall after the report?" in FAQPage schema). Across 40 explained reports: 6 of 9 hot stocks (10%+ run-up) fell after reporting, all 6 despite an EPS beat; 11 of 15 beaten-down (−10%+) bounced. Avg move after: ran up −2.4%, flat +2.1%, sold off +5.9%. FORMAT.md documented.
+- **Gap:** today's Kit email still not sent by a routine (no browser route in routines); X suspended.
+
+**Growth ideas**
+1. "Hot stocks fall on beats, beaten-down bounce" is the season's headline stat; lead the Sunday recap email and a Max clip with it.
+2. Add the bucket for each upcoming report on /earnings-calendar/ ("this one ran up 25%: history says high bar").
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

@@ -959,6 +959,9 @@ def earnings_hub():
     faqs+=[(f"When does {(cname(p['symbol'].upper()) or p['symbol'].upper())} ({p['symbol'].upper()}) report earnings?",
            f"{(cname(p['symbol'].upper()) or p['symbol'].upper())} reports {p['catalyst']['event']} on {datetime.date.fromisoformat(p['catalyst']['date']).strftime('%A, %B %-d, %Y')} {p['catalyst'].get('when','')}. The Daily Five holds an open 3-month {p['action']} call on {p['symbol'].upper()} from ${p['entry']:,.2f}.")
           for p in ops if p.get('catalyst')]
+    try:
+        import earnings_explainer as EX; faqs+=list(EX.PRICED_FAQ)
+    except Exception: pass
     faqs+=[("How does The Daily Five grade stock calls around earnings?","Every call is a 3-month hold graded against the S&P 500 from the day we publish. After a report we also show the move since the report-day close versus the index, but only the 3-month result counts toward the record.")]
     faqh='<h2 class="h2s">FAQ</h2><div class="faq">'+''.join(f'<details class="fq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q,a in faqs)+'</div>'
     cnav,csch=crumbs([('Home','/'),('Earnings explained','/earnings/')])

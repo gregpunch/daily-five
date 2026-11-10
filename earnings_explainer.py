@@ -706,11 +706,45 @@ def beat_fell_section(B, reports, days=7):
             f'Each page answers the question searchers type — "Why did X stock fall after beating earnings?" — with the real numbers and Max\'s take.</p>'
             f'<ul class="why">{li}</ul></section>')
 
+PRICED_FAQ=[]
+def priced_in_season(B, reports):
+    """/earnings/#priced-in: season-to-date 'Was it priced in?' tracker. Every explained report with both a real
+    3-month run-up into the report (prerun, Yahoo daily closes) and a live post-report move: how often 10%+ run-ups
+    fell after reporting (and how many of those beat EPS), and how often 10%+ sell-offs bounced. Sets PRICED_FAQ."""
+    E=B['E']; BASE=B['BASE']; PRICED_FAQ.clear()
+    pi=[r for r in reports if r.get('_pr') and r.get('_move') is not None]
+    hot=[r for r in pi if r['_pr']['m3']>=10]; cold=[r for r in pi if r['_pr']['m3']<=-10]
+    if len(hot)+len(cold)<3: return ''
+    hf=[r for r in hot if r['_move']<0]; hfb=[r for r in hf if eps_result(r)=='Beat']; cb=[r for r in cold if r['_move']>0]
+    rest=[r for r in pi if -10<r['_pr']['m3']<10]
+    def avg(rs): return sum(r['_move'] for r in rs)/len(rs) if rs else None
+    def tile(big,l): return f'<div class="sct"><b>{big}</b><span>{l}</span></div>'
+    def pc(n,d): return f'{round(100*n/d)}%' if d else '—'
+    tiles=''
+    if hot: tiles+=tile(f'{len(hf)} of {len(hot)}',f'hot stocks (up 10%+ in 3 months) fell after reporting ({pc(len(hf),len(hot))})')
+    if hfb: tiles+=tile(str(len(hfb)),'of those fell despite an EPS beat')
+    if cold: tiles+=tile(f'{len(cb)} of {len(cold)}',f'beaten-down stocks (down 10%+) bounced ({pc(len(cb),len(cold))})')
+    a1,a2,a3=avg(hot),avg(cold),avg(rest)
+    def mvs(x): return '—' if x is None else f'<span class="{"up" if x>=0 else "dn"}">{x:+.1f}%</span>'
+    rows=''.join(f'<tr><td>{lab}</td><td>{len(rs)}</td><td>{mvs(avg(rs))}</td></tr>' for lab,rs in (('Ran up 10%+ into the report',hot),('Moved less than 10% either way',rest),('Fell 10%+ into the report',cold)) if rs)
+    def nm(r): return f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a> ({r["ticker"]} {r["_pr"]["m3"]:+.1f}% into it, {r["_move"]:+.1f}% after)'
+    li=''
+    if hf: li+='<li><b>Hot and fell:</b> '+'; '.join(nm(r) for r in sorted(hf,key=lambda r:r['_move'])[:6])+'</li>'
+    if cb: li+='<li><b>Beaten down and bounced:</b> '+'; '.join(nm(r) for r in sorted(cb,key=lambda r:-r['_move'])[:6])+'</li>'
+    parts=[]
+    if hot: parts.append(f"{len(hf)} of {len(hot)} stocks that ran up 10% or more in the three months before reporting fell after the report"+(f", {len(hfb)} of them despite beating on EPS" if hfb else ''))
+    if cold: parts.append(f"{len(cb)} of {len(cold)} stocks that fell 10% or more going in bounced")
+    PRICED_FAQ.append(("Do stocks that run up before earnings fall after the report?",f"So far this earnings season, across {len(pi)} big reports we explained: "+'; '.join(parts)+'. Run-ups are 3-month moves to the last close before each report and reactions are vs that close (Yahoo Finance), as of the latest site rebuild.'))
+    return (f'<section class="card scard" id="priced-in"><h2 class="h2s">🎯 Was it priced in? This season so far</h2>'
+            f'<p class="sub">Does a big run-up into earnings set the bar too high? Here\'s every report we\'ve explained with both numbers.</p><div class="scgrid">{tiles}</div>'
+            f'<div class="tbl"><table><thead><tr><th>Going in (3 months)</th><th>Reports</th><th>Avg move after</th></tr></thead><tbody>{rows}</tbody></table></div><ul class="why">{li}</ul>'
+            f'<p class="sub">{len(pi)} of {len(reports)} explained reports had both numbers. Run-up is the 3-month move to the last close before the report; "after" is vs that close (Yahoo Finance daily closes), refreshed every rebuild. Not a trading signal, just the record.</p></section>')
+
 def index_section(B, reports):
     E=B['E']; BASE=B['BASE']
     if not reports: return ''
     li=''.join(f'<li><a href="{BASE}/earnings/{r["slug"]}/"><b>{E(r["company"])} ({r["ticker"]}) {E(r["quarter"])}</b></a>: {E(r["verdict_word"])}'+(f' · stock {r["_move"]:+.1f}%' if r.get('_move') is not None else '')+f' · {datetime.date.fromisoformat(r["date"]).strftime("%b %-d")}</li>' for r in reports)
-    return scorecard(B,reports)+beat_fell_section(B,reports)+weeks_section(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
+    return scorecard(B,reports)+beat_fell_section(B,reports)+priced_in_season(B,reports)+weeks_section(B,reports)+f'<section class="card"><h2 class="h2s">🧾 Earnings explained: beat or miss, in plain English</h2><ul class="why">{li}</ul></section>'
 
 def home_lead(B, reports):
     """Home-page lead: 'Earnings, explained' cards for the latest reports, biggest names first.
