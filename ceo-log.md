@@ -1313,3 +1313,6 @@
 1. Sunday recap email lead stat: "hot stocks fall on beats, beaten-down bounce."
 2. A Max clip segment on tonight's low-bar names (CRWV, RGTI) once their reactions are in.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-11 7 AM edition
+- Lead: CoreWeave (CRWV) Q3 beat and raise: revenue $3.66B (+168%) vs $3.55B (LSEG), adj. EPS −$0.95 vs −$1.16 (Investing.com), 2026 guide raised to $13.0-13.3B vs $12.86B; ~+16% premarket ($56.39 vs $48.73 at 7:09 AM ET). New explainers: pbr-q3-2026 (adj. EPS $1.44 vs $1.41 Yahoo, but net income/EBITDA missed LSEG; output guide raised; ~−2% premarket), gib-q4-2026 (adj. EPS C$2.31 vs C$2.30 IBES, dividend +8.8%; flat). CRWV/RGTI reactions updated to premarket. On deck: FNV, CTVA after the close (Yahoo calendar). No new 3-month call (0 this week; open TMUS, NEE, MSFT, GD, +6.15% avg vs S&P, 3 of 4 ahead). FORMAT.md: Leans 1-7 final. Commit 425cf1e, deploy 43018337574 success. Kit send left to Greg; X skipped (suspended). Clip: TTS still-image fallback (no AI video generation available), 58.0 s, STT 0.89/0.94/0.94/0.98, /max-edge/2026-11-11/.

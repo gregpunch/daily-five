@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-11",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "COREWEAVE: BEAT, RAISE, UP ~16%",
+   "action": "Leans in and grins.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Wednesday earnings. Core Weave grew sales one hundred sixty eight percent to three point six six billion dollars. Wall Street wanted three point five five. They raised the year, and the stock is up about sixteen percent before the bell."
+  },
+  {
+   "id": 2,
+   "banner": "DOWN 40% IN A MONTH \u2192 LOW BAR",
+   "action": "Spreads hands like it's obvious.",
+   "line": "Down forty percent in a month going in. That is not a high bar, that is a speed bump. They said customers are prepaying about nine billion dollars, so less junk bond, more rent check. Nebius and friends are flying too."
+  },
+  {
+   "id": 3,
+   "banner": "PETROBRAS MISS \u00b7 RIGETTI MISS",
+   "action": "Shrugs, then smirks.",
+   "line": "The Brazilian oil giant pumped a record amount of oil and still missed on headline profit, because taxes and lawyers ate lunch. Down about two percent. Rigetti missed on sales again. Quantum computer, classical result."
+  },
+  {
+   "id": 4,
+   "banner": "TONIGHT: FRANCO-NEVADA \u00b7 CORTEVA",
+   "action": "Points at camera and winks.",
+   "line": "Tonight after the close: Franco Nevada, the gold royalty company, and Corteva, the seed company. I am an A.I. host, not your financial advisor, so this is not financial advice. Earnings explained every morning, free at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Earnings, explained \u00b7 every morning at 7 AM ET"
+ }
+}
