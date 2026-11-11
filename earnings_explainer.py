@@ -837,7 +837,12 @@ def week_stats(reports, monday):
             r['_move'] = (rx['price']/pc-1)*100 if rx.get('price') and pc else None
     ep = [eps_result(r) for r in rs]; rv = [rev_result(r) for r in rs]
     mv = sorted([r for r in rs if r.get('_move') is not None], key=lambda r: r['_move'])
-    return dict(monday=monday, label=week_label(monday, rs), url=f'/earnings/week-of-{monday.isoformat()}/', rs=rs,
+    # "Was it priced in?" for the week (same buckets as week_recaps): real 3-month run-up from Yahoo closes vs the reaction.
+    for r in rs:
+        if '_pr' not in r: r['_pr'] = prerun(r['ticker'], r['date'], r.get('when', ''))
+    pi = [r for r in rs if r.get('_pr') and r.get('_move') is not None]
+    hot = [r for r in pi if r['_pr']['m3'] >= 10]; cold = [r for r in pi if r['_pr']['m3'] <= -10]
+    return dict(hot=hot, hf=[r for r in hot if r['_move'] < 0], cold=cold, cb=[r for r in cold if r['_move'] > 0],monday=monday, label=week_label(monday, rs), url=f'/earnings/week-of-{monday.isoformat()}/', rs=rs,
                 n=len(rs), en=sum(1 for x in ep if x), eb=sum(x == 'Beat' for x in ep),
                 rn=sum(1 for x in rv if x), rb=sum(x == 'Beat' for x in rv),
                 pop=mv[-1] if mv and mv[-1]['_move'] > 0 else None, drop=mv[0] if mv and mv[0]['_move'] < 0 else None,
@@ -856,7 +861,9 @@ def home_week_lead(B, reports, ed):
         (f'{s["eb"]} of {s["en"]}', 'beat on EPS'), (f'{s["rb"]} of {s["rn"]}', 'beat on revenue')]
         + ([(f'<span class="up">{E(s["pop"]["ticker"])} {s["pop"]["_move"]:+.1f}%</span>', f'biggest pop: {E(s["pop"]["company"])}')] if s['pop'] else [])
         + ([(f'<span class="dn">{E(s["drop"]["ticker"])} {s["drop"]["_move"]:+.1f}%</span>', f'biggest drop: {E(s["drop"]["company"])}')] if s['drop'] else [])
-        + ([(str(len(s['bf'])), 'beat and still fell')] if s['bf'] else []))
+        + ([(str(len(s['bf'])), 'beat and still fell')] if s['bf'] else [])
+        + ([(f'{len(s["hf"])} of {len(s["hot"])}', '🔥 big run-ups fell after reporting')] if len(s['hot']) >= 2 else [])
+        + ([(f'{len(s["cb"])} of {len(s["cold"])}', '🧊 beaten-down names bounced')] if len(s['cold']) >= 2 else []))
     cards = ''.join(f'<a class="ercard" href="{BASE}/earnings/{r["slug"]}/"><span class="erk">{E(r["ticker"])} · {E(r["quarter"])}</span>'
                     f'<h3>{E(r["company"])}: {E(r["verdict_word"])}</h3>{mv(r)}<span class="erg">Read the breakdown →</span></a>' for r in s['top'][:8])
     allx = ' · '.join(f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["company"])}</a>' for r in s['top'])

@@ -1316,3 +1316,12 @@
 
 ## 2026-11-11 7 AM edition
 - Lead: CoreWeave (CRWV) Q3 beat and raise: revenue $3.66B (+168%) vs $3.55B (LSEG), adj. EPS −$0.95 vs −$1.16 (Investing.com), 2026 guide raised to $13.0-13.3B vs $12.86B; ~+16% premarket ($56.39 vs $48.73 at 7:09 AM ET). New explainers: pbr-q3-2026 (adj. EPS $1.44 vs $1.41 Yahoo, but net income/EBITDA missed LSEG; output guide raised; ~−2% premarket), gib-q4-2026 (adj. EPS C$2.31 vs C$2.30 IBES, dividend +8.8%; flat). CRWV/RGTI reactions updated to premarket. On deck: FNV, CTVA after the close (Yahoo calendar). No new 3-month call (0 this week; open TMUS, NEE, MSFT, GD, +6.15% avg vs S&P, 3 of 4 ahead). FORMAT.md: Leans 1-7 final. Commit 425cf1e, deploy 43018337574 success. Kit send left to Greg; X skipped (suspended). Clip: TTS still-image fallback (no AI video generation available), 58.0 s, STT 0.89/0.94/0.94/0.98, /max-edge/2026-11-11/.
+
+## 2026-11-11 · ~10 AM ET check-in (Wednesday)
+- **Scoreboard:** refreshed intraday, stamp **Nov 11, 2026 · 10:01 AM ET**. 3-month calls **+4.75% avg vs S&P**, 3 of 4 ahead (best TMUS +14.62% since pick, worst GD −1.79%; avg today −0.26%). Down from +6.15% last night mostly on MSFT/TMUS softness.
+- **Shipped: "Was it priced in?" in the weekend recap lead** (`week_stats()` now adds hot/hf/cold/cb from `prerun()`): the Sunday email's weekly-recap block gets a 🎯 line ("5 of 8 stocks that ran up 10%+ fell after the report (COP, CI, SHOP, PFE, MPC). 6 of 8 that fell 10%+ going in bounced…") linking the recap's `#priced-in` card, and the weekend home lead gets 🔥/🧊 tiles. Only shown when a bucket has 2+ reports. Week of Nov 9 so far: 1 of 2 hot fell (ONON), 5 of 9 beaten-down bounced. FORMAT.md documented (suggests it for `lead_title` when striking). First appears Sunday Nov 15.
+
+**Growth ideas**
+1. Sunday Nov 15 edition: consider "priced in" as the lead_title if the week's buckets are lopsided.
+2. Max clip segment on the priced-in stat (a 10-second "high bar / low bar" explainer) for the weekend clip.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

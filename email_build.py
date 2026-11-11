@@ -316,6 +316,13 @@ def week_lead(ed):
     if s['bf']: parts.append(f'<b>{len(s["bf"])}</b> beat and still fell')
     out=[sec('📊',ed.get('lead_title') or 'This week in earnings',f'{s["n"]} big reports explained · {s["label"]} · biggest names first'),
          f'<tr><td style="padding:2px 24px 10px;{F}font-size:14px;line-height:21px;color:#cdd2e1;">📊 {" · ".join(parts)} · <a href="{wu}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">full weekly recap →</a></td></tr>']
+    # "Was it priced in?" headline: big run-ups that fell on the report vs beaten-down names that bounced (real Yahoo closes).
+    pi=[]
+    if len(s.get('hot',[]))>=2: pi.append(f'🔥 <b>{len(s["hf"])} of {len(s["hot"])}</b> stocks that ran up 10%+ in the 3 months before reporting fell after the report'+(f' ({E(", ".join(r["ticker"] for r in s["hf"]))})' if s['hf'] else ''))
+    if len(s.get('cold',[]))>=2: pi.append(f'🧊 <b>{len(s["cb"])} of {len(s["cold"])}</b> that fell 10%+ going in bounced'+(f' ({E(", ".join(r["ticker"] for r in s["cb"]))})' if s['cb'] else ''))
+    if pi:
+        out.append(f'<tr><td style="padding:0 24px 10px;{F}font-size:14px;line-height:21px;color:#cdd2e1;"><b style="color:{AMB};">🎯 Was it priced in?</b> {". ".join(pi)}. '
+                   f'<a href="{wu}#priced-in" style="color:#a5b4fc;text-decoration:none;font-weight:700;">See why →</a></td></tr>')
     li=''
     for r in s['top'][:8]:
         u=f"{SITE}/earnings/{r['slug']}/?{cg}"
