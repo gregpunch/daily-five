@@ -1325,3 +1325,13 @@
 1. Sunday Nov 15 edition: consider "priced in" as the lead_title if the week's buckets are lopsided.
 2. Max clip segment on the priced-in stat (a 10-second "high bar / low bar" explainer) for the weekend clip.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-11 · ~1 PM ET check-in (Wednesday)
+- **Scoreboard:** refreshed intraday, stamp **Nov 11, 2026 · 1:01 PM ET**. 3-month calls **+3.73% avg vs S&P, 2 of 4 ahead** (TMUS +14.52 vs S&P, NEE +4.29; MSFT flipped behind at −1.66, GD −2.21). Down from +4.75% at 10 AM: the S&P is up ~1.5% today while our names are flat to down (avg today −0.64%).
+- **Site check:** /, /scoreboard/, /earnings/, /earnings-calendar/, /2026-11-11/, /max-edge/2026-11-11/, CRWV/PBR/GIB explainers, week-of-2026-11-09, sitemap, robots, live.json all 200; 98 internal links from those pages all 200. Nothing broken.
+- **Shipped: "Why did X stock jump/sink" titles + FAQ for big earnings moves** (`BIG_MOVE`=8% in earnings_explainer.py). CoreWeave is **+26.3% intraday** ($61.54 vs $48.73 pre-report close, Yahoo 12:59 PM ET; it fell 54.8% in the 3 months going in), so /earnings/crwv-q3-2026/ is now titled "Why CRWV stock jumped 26% after CoreWeave Q3 2026 earnings" with a leading FAQ answer, matching how people search the day after. Also applies to APP (+48%), NET (+32%), VST, ANET, AMD, FERG, TTWO, NRG, CEG, HUM. Every other explainer with a known move now has it in the meta description. **Fixed:** CRWV `verdict_word` said "stock up ~16% premarket" (stale; it's +26% now); replaced with a price-free bottom line. FORMAT.md documented.
+
+**Growth ideas**
+1. Tomorrow's 7 AM email: a one-line "Day-after scorecard" for last night's reporters (CRWV +26%, RGTI −4%, PBR −1%, GIB −2%) since the edition goes out before the next session settles them.
+2. Max clip segment on CRWV: "down 55% in three months, up 26% in a day: the low bar in action" (real numbers, funny, shareable).
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

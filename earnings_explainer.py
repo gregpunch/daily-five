@@ -59,6 +59,8 @@ def rev_result(r):
             return h['result'].split(',')[0].strip()
     return None
 
+BIG_MOVE=8.0  # % move vs pre-report close that earns a 'why did X stock jump/sink' title + FAQ
+
 def surprise(r, move, thr=1.0):
     """Mismatch labels searchers ask about ("why did X stock fall after earnings"):
     'beat-fell' = EPS Beat but stock down; 'rev-beat-fell' = revenue Beat (EPS not Beat) but stock down;
@@ -185,6 +187,11 @@ def render(B, reports):
         if gd: faqs.append((f"What is {nm}'s guidance after {q}?",' '.join(f"{h['metric']}: {h['actual']} (consensus {h['consensus']})." for h in gd)))
         if move is not None: faqs.append((f"How did {tk} stock react to earnings?",f"{tk} was {move:+.1f}% {rx['kind']} at ${rx['price']:,.2f} versus the ${pc:,.2f} close before the report, as of {rx['asof']}."))
         if prtxt: faqs.append((f"How much did {tk} stock move before earnings?",prtxt))
+        # Big-move reports (|move| >= BIG_MOVE, no beat/miss mismatch): answer "why did X stock jump/sink after earnings".
+        big=move is not None and abs(move)>=BIG_MOVE and not surprise(r,move)
+        if big:
+            bv='jump' if move>0 else 'sink'
+            faqs.insert(0,(f"Why did {tk} stock {bv} after earnings?",f"{tk} was {move:+.1f}% {rx['kind']} at ${rx['price']:,.2f} versus the ${pc:,.2f} close before {nm}'s {q} report on {d}, as of {rx['asof']}. The report: {r['verdict_word']}. "+'; '.join(f"{h['metric']} {h['actual']} vs {h['consensus']}" for h in bw[:2] if h['consensus']!='n/a')+f". Max's take: {r['verdict']}"))
         sbh,sfq=surprise_block(B,r,move,rx)
         if sfq: faqs.insert(0,sfq)
         r['_surprise']=surprise(r,move)
@@ -212,6 +219,11 @@ def render(B, reports):
         elif r['_surprise']=='miss-rose':
             title=f"Why {tk} stock rose after {nm} missed {q} earnings"
             desc=f"{nm} missed on EPS but {tk} was {move:+.1f}% {rx.get('kind','')}. Why the market shrugged, explained: "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'.'
+        elif big:
+            title=f"Why {tk} stock {'jumped' if move>0 else 'sank'} {abs(move):.0f}% after {'' if nm==tk else nm+' '}{q} earnings"
+            desc=f"{nm} {q}: {r['verdict_word']}, and {tk} was {move:+.1f}% {rx.get('kind','')} vs the pre-report close. What drove it, explained: "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'.'
+        elif move is not None:
+            desc=f"{nm} ({tk}) {q} earnings: {r['verdict_word']}; stock {move:+.1f}% {rx.get('kind','')}. "+'; '.join(f"{h['metric']} {h['actual']}" for h in r['headline'][:2])+'. Guidance and key takeaways.'
         sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc[:300],"datePublished":r['date'],"dateModified":B['TODAY'].isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P,"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"citation":[s['url'] for s in r['sources']]},csch,
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
