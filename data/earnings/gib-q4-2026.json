@@ -1,0 +1,70 @@
+{
+ "slug": "gib-q4-2026",
+ "ticker": "GIB",
+ "company": "CGI",
+ "quarter": "Q4 FY2026",
+ "date": "2026-11-11",
+ "when": "before the open",
+ "verdict_word": "Penny beat on EPS, dividend up 8.8%",
+ "mcap_b": 18,
+ "headline": [
+  {
+   "metric": "Adjusted diluted EPS",
+   "actual": "C$2.31 (+8.5% y/y)",
+   "consensus": "C$2.30 (LSEG I/B/E/S via Rallies)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "C$4.15B (+3.3% y/y; +2.5% constant currency)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Diluted EPS",
+   "actual": "C$2.24 (+30.2% y/y)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Bookings",
+   "actual": "C$4.53B (book-to-bill 109.2%)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "Quarterly dividend",
+   "actual": "C$0.185 (+8.8%)",
+   "consensus": "n/a",
+   "result": ""
+  }
+ ],
+ "takeaways": [
+  "Adjusted diluted EPS of C$2.31 edged the C$2.30 LSEG I/B/E/S estimate; reported diluted EPS jumped 30.2% to C$2.24.",
+  "Revenue grew 3.3% to C$4.15 billion, or 2.5% in constant currency.",
+  "Adjusted EBIT rose 1.6% to C$678.0 million, with the margin slipping 20 basis points to 16.4%.",
+  "Bookings were C$4.53 billion (109.2% book-to-bill); managed-services book-to-bill was 122%, which the CEO tied to AI-embedded services.",
+  "Full-year backlog stands at C$32.07 billion, about 1.9 times annual revenue, and the dividend rises 8.8%."
+ ],
+ "verdict": "CGI is the Canadian IT consultant that never surprises anyone, and it didn't start today: a one-cent beat, 2.5% real growth and a fatter dividend. Boring is the product.",
+ "sources": [
+  {
+   "title": "CGI reports fourth quarter and Fiscal 2026 results (PR Newswire)",
+   "url": "https://www.prnewswire.com/news-releases/cgi-reports-fourth-quarter-and-fiscal-2026-results-302935758.html"
+  },
+  {
+   "title": "Rallies: CGI Q4 adjusted EPS C$2.31 vs IBES estimate C$2.30",
+   "url": "https://rallies.ai/news/cgi-inc-q4-adjusted-eps-cad-231-vs-ibes-estimate-cad-23-a263cb5fd366a885"
+  },
+  {
+   "title": "CGI Q4 F2026 investor presentation (MarketScreener)",
+   "url": "https://ca.marketscreener.com/news/cgi-q4-f2026-presentation-en-ce785edbdd80f222"
+  }
+ ],
+ "prev_close": 82.51,
+ "reaction": {
+  "kind": "premarket",
+  "price": 82.5,
+  "asof": "2026-11-11 7:08 AM ET"
+ }
+}

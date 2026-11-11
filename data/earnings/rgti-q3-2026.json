@@ -62,8 +62,9 @@
  ],
  "prev_close": 12.15,
  "reaction": {
-  "kind": "after hours",
-  "price": 11.30,
-  "asof": "2026-11-10 5:15 PM ET"
- }
+  "kind": "premarket",
+  "price": 12.5,
+  "asof": "2026-11-11 7:09 AM ET"
+ },
+ "mcap_b": 4
 }

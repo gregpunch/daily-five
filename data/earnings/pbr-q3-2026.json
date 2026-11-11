@@ -1,0 +1,70 @@
+{
+ "slug": "pbr-q3-2026",
+ "ticker": "PBR",
+ "company": "Petrobras",
+ "quarter": "Q3 2026",
+ "date": "2026-11-10",
+ "when": "after the close",
+ "verdict_word": "Adj. EPS edged past; profit missed LSEG, output guide raised",
+ "mcap_b": 118,
+ "headline": [
+  {
+   "metric": "Adjusted EPS (per ADS)",
+   "actual": "$1.44",
+   "consensus": "$1.41 (Yahoo Finance)",
+   "result": "Beat"
+  },
+  {
+   "metric": "Net income",
+   "actual": "R$39.75B (US$7.74B), +21.5% y/y",
+   "consensus": "R$47.02B (LSEG via Reuters)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Adjusted EBITDA",
+   "actual": "R$85.82B (+34.3% y/y)",
+   "consensus": "R$93.97B (LSEG via Reuters)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Revenue",
+   "actual": "R$169.35B (+32.4% y/y); US$32.96B",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "2026 oil output guidance",
+   "actual": "2.7–2.8M barrels/day (was 2.5M)",
+   "consensus": "n/a",
+   "result": "Raised"
+  }
+ ],
+ "takeaways": [
+  "Net income rose 21.5% to R$39.75 billion (US$7.74 billion), short of the R$47.02 billion LSEG consensus cited by Reuters; adjusted EPS was $1.44 per AP.",
+  "Excluding one-off items (court contingencies, a crude/diesel export tax, asset sales) net income was R$47.9 billion, up 68% year over year.",
+  "Production averaged 2.83 million barrels a day, a third straight record, and the 2026 output target rose to 2.7-2.8 million from 2.5 million.",
+  "Brent averaged $97 a barrel in the quarter, up more than 40% from a year earlier, lifting revenue 32.4% to R$169.35 billion.",
+  "The board approved R$15.3 billion in shareholder payouts tied to the quarter; net debt fell 4.2% to US$57.8 billion."
+ ],
+ "verdict": "Petrobras pumped a record amount of oil at $97 Brent and still came in light on headline profit, because Brazil's tax man and the courts took their cut. The pumps are fine; the paperwork is the problem.",
+ "sources": [
+  {
+   "title": "Petrobras news agency: Q3 2026 results (Portuguese)",
+   "url": "https://agencia.petrobras.com.br/w/negocio/petrobras-registra-lucro-l%C3%ADquido-de-r-39-8-bilh%C3%B5es-no-terceiro-trimestre-de-2026"
+  },
+  {
+   "title": "AP via Yahoo Finance: Petrobras Q3 earnings snapshot",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/petrobras-q3-earnings-snapshot-234323106.html"
+  },
+  {
+   "title": "Reuters via Investing.com Brasil: Petrobras profit up 21.5%, raises projections (LSEG consensus)",
+   "url": "https://br.investing.com/news/stock-market-news/petrobras-tem-lucro-de-r3975-bi-no-3o-tri-2123144"
+  }
+ ],
+ "prev_close": 18.28,
+ "reaction": {
+  "kind": "premarket",
+  "price": 17.87,
+  "asof": "2026-11-11 7:09 AM ET"
+ }
+}

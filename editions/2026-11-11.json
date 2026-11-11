@@ -1,0 +1,67 @@
+{
+ "date": "2026-11-11",
+ "headline": "CoreWeave beats and raises, stock jumps ~16% premarket; Petrobras pumps a record but profit misses; CGI's penny beat; Franco-Nevada and Corteva tonight",
+ "top_call": "CoreWeave grew revenue 168% to $3.66 billion vs $3.55 billion expected, lost less than feared on an adjusted basis (−$0.95 vs −$1.16) and raised its 2026 outlook, and the stock is up about 16% before the bell. Petrobras' adjusted EPS edged past at $1.44 but headline profit missed LSEG, Rigetti's tiny quarter missed, and CGI beat by a penny. Plain-English explainers below, plus Franco-Nevada and Corteva tonight.",
+ "lead": "crwv-q3-2026",
+ "subject": "The Daily Five — Wed Nov 11: CoreWeave beats, raises, jumps 16% premarket",
+ "backdrop": "Tuesday the S&P 500 slipped 0.38% and the Nasdaq 0.74% on hotter-than-expected inflation data and Nvidia's slide. This morning futures are higher (Nasdaq-100 about +1.6% at 4:30 AM ET) as CoreWeave lifts the neoclouds; the bond market is closed for Veterans Day, stocks are open.",
+ "backdrop_source": {
+  "name": "Yahoo Finance",
+  "url": "https://finance.yahoo.com/markets/stocks/articles/p-500-nasdaq-futures-rise-095935016.html"
+ },
+ "finance": [],
+ "on_deck_title": "On deck today",
+ "on_deck_sub": "Reporting after the close today, Nov 11, with Wall Street's EPS estimates per Yahoo Finance",
+ "on_deck": [
+  {
+   "ticker": "FNV",
+   "company": "Franco-Nevada",
+   "when": "after the close",
+   "eps_consensus": "$1.73",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-11"
+   }
+  },
+  {
+   "ticker": "CTVA",
+   "company": "Corteva",
+   "when": "after the close",
+   "eps_consensus": "$0.10",
+   "source": {
+    "name": "Yahoo Finance earnings calendar",
+    "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-11"
+   }
+  }
+ ],
+ "ai": [
+  {
+   "category": "Money",
+   "headline": "Anthropic is offering 825 million shares at $70-78 each and plans to price on Nov 18 and start trading Nov 19, sources told CNBC; retail platforms could get roughly 20% of the deal",
+   "why": "The biggest AI IPO on the calendar now has a date. Its filing uses the word 'adverse' 257 times, which is either honesty or foreshadowing.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/11/11/coreweave-provides-silver-lining-for-neoclouds-as-nvidia-storm-swirls.html"
+   }
+  },
+  {
+   "category": "Chips",
+   "headline": "Nvidia is up about 3% premarket after its board hired law firm Wachtell Lipton to investigate CEO Jensen Huang and whether company secrets were compromised",
+   "why": "The chip trade is bouncing with it (Broadcom, AMD, Intel higher). The headline risk hasn't gone anywhere.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/11/11/coreweave-provides-silver-lining-for-neoclouds-as-nvidia-storm-swirls.html"
+   }
+  },
+  {
+   "category": "Cloud",
+   "headline": "Neoclouds rally behind CoreWeave: Nebius +10.2%, Applied Digital +6.4% and IREN +6.3% in early premarket trade",
+   "why": "One landlord said the tenants are still paying rent, so the whole street got repriced. Nebius reports tomorrow morning.",
+   "source": {
+    "name": "CNBC",
+    "url": "https://www.cnbc.com/2026/11/11/coreweave-crwv-outlook-earnings-ai.html"
+   }
+  }
+ ],
+ "sports": []
+}
