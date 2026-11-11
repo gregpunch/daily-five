@@ -187,13 +187,28 @@ def on_deck(ed):
         except Exception as ex:
             print('email on-deck calendar fallback skipped:',ex); od=[]
     if not od: return []
-    li=''
+    li=''; nbar=0
+    try:
+        import earnings_explainer as EX
+    except Exception: EX=None
     for x in od[:10]:
         cs=' · '.join(b for b in [f"EPS est. {x['eps_consensus']}" if x.get('eps_consensus') else '',f"revenue est. {x['rev_consensus']}" if x.get('rev_consensus') else ''] if b)
+        # High/low bar tag: real 3-month move into the report (Yahoo daily closes via EX.runup); omitted on any failure or a |move| < 10%.
+        bar=''
+        try:
+            ru=EX and EX.runup(x.get('yahoo') or x['ticker'].upper().replace('.','-')); m3=ru and ru.get('m3')
+            if m3 is not None and m3>=10: bar=f' <span style="{F}font-size:12px;color:#fca5a5;white-space:nowrap;">· 🔥 up {m3:.0f}% in 3 mo., high bar</span>'
+            elif m3 is not None and m3<=-10: bar=f' <span style="{F}font-size:12px;color:#93c5fd;white-space:nowrap;">· 🧊 down {abs(m3):.0f}% in 3 mo., low bar</span>'
+        except Exception: bar=''
+        nbar+=bool(bar)
         li+=(f'<div style="padding:4px 0;{F}font-size:14px;line-height:20px;color:{TXT};"><b>{E(x.get("company") or x["ticker"])} ({E(x["ticker"])})</b>'
-             f' <span style="color:{MUT};">· {E(x.get("when",""))}</span>'+(f' <span style="{M}font-size:13px;color:#cdd2e1;">· {E(cs)}</span>' if cs else '')+'</div>')
+             f' <span style="color:{MUT};">· {E(x.get("when",""))}</span>'+(f' <span style="{M}font-size:13px;color:#cdd2e1;">· {E(cs)}</span>' if cs else '')+bar+'</div>')
+    if nbar:
+        pu=f"{SITE}/earnings/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-pricedin#priced-in"
+        li+=(f'<div style="{F}font-size:12px;line-height:18px;color:{MUT};padding-top:6px;">🔥 High bar: the stock ran up 10%+ in 3 months, so even a beat can sell off. '
+             f'🧊 Low bar: it fell 10%+, so "less bad" can spark a bounce. <a href="{pu}" style="color:#a5b4fc;text-decoration:none;">How that played out this season →</a></div>')
     srcs=sorted({src(x['source']['name']) for x in od})
-    cu=f"{SITE}/earnings-calendar/"+(f"#d-{cal_d.isoformat()}" if cal_d else "")+f"?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-calendar"
+    cu=f"{SITE}/earnings-calendar/?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-calendar"+(f"#d-{cal_d.isoformat()}" if cal_d else "")
     li+=f'<div style="{F}font-size:13px;padding-top:6px;"><a href="{cu}" style="color:#a5b4fc;text-decoration:none;font-weight:700;">Full earnings calendar this week →</a></div>'
     li+=f'<div style="{F}font-size:11px;color:{MUT};padding-top:6px;">Schedule and estimates: {E(", ".join(srcs))}. Explainers go up after each report.</div>'
     # Weekend editions preview the next trading day: ed['on_deck_title'] / ed['on_deck_sub'] override the heading.

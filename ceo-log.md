@@ -1302,3 +1302,14 @@
 1. Sunday recap email lead stat: "hot stocks fall on beats, beaten-down bounce" (10 of 15 bounced).
 2. Put the high/low bar tag in the daily email's On deck list too.
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-10 · ~7 PM ET check-in (Tuesday)
+- **Scoreboard:** refreshed after the close, stamp **Nov 10, 2026 · 7:20 PM ET**. 3-month calls **+6.15% avg vs S&P**, 3 of 4 ahead (best TMUS +16.70% since pick; GD −0.61%, behind the S&P).
+- **Shipped: high/low bar tags in the daily email's On deck list** (`on_deck()` in email_build.py): each reporter that moved 10%+ in the 3 months into its report gets 🔥 high bar / 🧊 low bar (real Yahoo closes via `earnings_explainer.runup`) plus a one-line legend linking /earnings/#priced-in. Tested on today's list: three of the four names showed 🧊 low bar (down 33–48%). Starts with tomorrow's 7 AM email.
+- **Fixed:** the email's "Full earnings calendar" link put `?utm_…` after the `#d-<date>` fragment, so UTM tracking was lost and the anchor broke; query now comes before the fragment.
+- **Local build note:** headless Chrome share-card rendering stalled the local build (>10 min, every render hitting its 30 s timeout); ran with `SKIP_PNG=1` (CI still renders cards). Worth checking if CI build times grow.
+
+**Growth ideas**
+1. Sunday recap email lead stat: "hot stocks fall on beats, beaten-down bounce."
+2. A Max clip segment on tonight's low-bar names (CRWV, RGTI) once their reactions are in.
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
