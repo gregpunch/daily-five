@@ -333,6 +333,20 @@ def week_lead(ed):
     allx=' · '.join(f'<a href="{SITE}/earnings/{r["slug"]}/?{cg}" style="color:#a5b4fc;text-decoration:none;">{E(r["company"])}</a>' for r in s['top'])
     out.append(f'<tr><td style="padding:6px 24px 10px;{F}font-size:13px;line-height:20px;color:{MUT};"><b style="color:{TXT};">Every explainer this week:</b> {allx}</td></tr>')
     return out
+def day_after_line(ed):
+    """'Day-after scorecard': how yesterday's first-session reporters actually closed (real Yahoo daily close vs the
+    pre-report close), since the 7 AM edition's lead cards only had premarket moves. Omitted on weekends' leads or when empty."""
+    if ed.get('lead_week'): return []
+    try:
+        import earnings_explainer as EX; sess,rs=EX.day_after(EX.load(ROOT),ed['date'])
+    except Exception as ex:
+        print('email day-after skipped:',ex); return []
+    if not rs: return []
+    cg=f"utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign={ed['date']}-dayafter"
+    bits=' · '.join(f'<a href="{SITE}/earnings/{r["slug"]}/?{cg}" style="color:{TXT};text-decoration:none;font-weight:700;">{E(r["company"])}</a> '
+                    f'<span style="{M}color:{UP if r["_dmove"]>=0 else DN};font-weight:700;">{r["_dmove"]:+.1f}%</span>' for r in rs)
+    return [f'<tr><td style="padding:2px 24px 10px;{F}font-size:14px;line-height:21px;color:#cdd2e1;"><b style="color:{AMB};">🗓 Day-after scorecard</b> '
+            f'<span style="color:{MUT};">({E(sess.strftime("%a"))} close vs the pre-report close)</span>: {bits}</td></tr>']
 def render(ed,prev=None,rec=None,open3=None):
     d=datetime.date.fromisoformat(ed['date']); nice=d.strftime('%A, %B ')+str(d.day)+d.strftime(', %Y')
     order={'3 Month':0,'1 Day':1,'1 Month':2,'1 Year':3}
@@ -352,6 +366,7 @@ def render(ed,prev=None,rec=None,open3=None):
     rows+=week_lead(ed) if ed.get('lead_week') else []
     er=earnings(ed)
     rows+=er if (er or ed.get('lead_week')) else [sec('🧾',"Earnings, explained",'No big reports overnight'),f'<tr><td style="padding:4px 24px;{F}font-size:14px;color:{TXT};">No major company reported last night or this morning. <a href="{SITE}/earnings/" style="color:#a5b4fc;">Recent explainers →</a></td></tr>']
+    rows+=day_after_line(ed)
     rows+=on_deck(ed)
     rows+=week_roundup(ed)
     rows.append(sec('📅','3-month stock calls','Buy and hold 3 months · graded vs the S&P 500'))

@@ -1335,3 +1335,12 @@
 1. Tomorrow's 7 AM email: a one-line "Day-after scorecard" for last night's reporters (CRWV +26%, RGTI −4%, PBR −1%, GIB −2%) since the edition goes out before the next session settles them.
 2. Max clip segment on CRWV: "down 55% in three months, up 26% in a day: the low bar in action" (real numbers, funny, shareable).
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-11 · ~4 PM ET check-in (Wednesday)
+- **Scoreboard:** refreshed after the close, stamp **Nov 11, 2026 · 4:08 PM ET**. 3-month calls **+4.70% avg vs S&P, 2 of 4 ahead** (TMUS +17.50% since pick, NEE +4.74%; MSFT −1.43%, GD −2.00%). Avg today +0.05%.
+- **Shipped: Day-after scorecard in the daily email** (`day_after()` + `day_after_line()`): a line under Earnings, explained with how yesterday's first-session reporters actually closed vs the pre-report close (real Yahoo daily closes), linked to each explainer. Tomorrow's email will show Petrobras −2.5%, CoreWeave +24.7%, CGI −1.8%, Rigetti −8.6% (Wed close). Fills the gap that the 7 AM edition only has premarket moves. FORMAT.md documented.
+
+**Growth ideas**
+1. Put the same day-after line on the home page lead (site), so the morning visitor sees the settled numbers too.
+2. Max clip segment on CRWV: "down 55% in three months, up 25% in a day: the low bar in action."
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

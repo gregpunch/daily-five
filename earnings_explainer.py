@@ -884,3 +884,44 @@ def home_week_lead(B, reports, ed):
             f'<a href="{BASE}{s["url"]}"><b>Full weekly recap →</b></a></p></div></div>'
             f'<div class="scgrid">{tiles}</div><div class="ergrid">{cards}</div>'
             f'<p class="sub"><b>Every explainer this week:</b> {allx}</p></section>')
+
+_da_cache={}
+def _session_close(sym, day):
+    """Real Yahoo daily close for `day` (a date), or None."""
+    key=(sym,day)
+    if key in _da_cache: return _da_cache[key]
+    out=None
+    try:
+        p1=int(time.mktime((day-datetime.timedelta(days=6)).timetuple())); p2=int(time.mktime((day+datetime.timedelta(days=1)).timetuple()))
+        u=f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(sym)}?period1={p1}&period2={p2}&interval=1d"
+        j=json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0'}),timeout=8))['chart']['result'][0]
+        for t,c in zip(j['timestamp'],j['indicators']['quote'][0]['close']):
+            if c and datetime.date.fromtimestamp(t)==day: out=round(c,2)
+    except Exception: pass
+    _da_cache[key]=out
+    return out
+
+def _next_wd(d):
+    d+=datetime.timedelta(days=1)
+    while d.weekday()>=5: d+=datetime.timedelta(days=1)
+    return d
+
+def day_after(reports, today, n=8):
+    """'Day-after scorecard' for a morning edition: reports whose first full trading session (the report day if it came
+    before the open, else the next weekday) was the last weekday before `today`, with that session's real closing move
+    vs the stored pre-report close (Yahoo daily close). Biggest names first. Returns (session_date, [r with r['_dmove']])."""
+    if isinstance(today,str): today=datetime.date.fromisoformat(today)
+    sess=today-datetime.timedelta(days=1)
+    while sess.weekday()>=5: sess-=datetime.timedelta(days=1)
+    out=[]
+    for r in reports:
+        try: rd=datetime.date.fromisoformat(r['date'])
+        except Exception: continue
+        if not (0<=(sess-rd).days<=4): continue
+        first=rd if str(r.get('when','')).startswith('before') else _next_wd(rd)
+        if first!=sess or not r.get('prev_close'): continue
+        c=_session_close(r.get('yahoo') or r['ticker'].upper().replace('.','-'), sess)
+        if c is None: continue
+        r['_dmove']=round((c/r['prev_close']-1)*100,1); out.append(r)
+    out.sort(key=lambda r:(-size(r),r['ticker']))
+    return sess,out[:n]
