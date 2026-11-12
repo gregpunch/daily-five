@@ -1,0 +1,31 @@
+{
+ "slug": "vylr-q3-2026",
+ "ticker": "VYLR",
+ "company": "Vylor",
+ "quarter": "Q3 2026",
+ "date": "2026-11-11",
+ "when": "after the close",
+ "verdict_word": "Smaller loss than feared in its off-season quarter; full-year guide reaffirmed",
+ "mcap_b": 48,
+ "headline": [
+  {"metric": "Adjusted pro forma operating EPS", "actual": "-$0.42", "consensus": "-$0.50 (Benzinga)", "result": "Beat"},
+  {"metric": "Pro forma net sales", "actual": "$938M (-1% y/y)", "consensus": "$903.7M (Benzinga)", "result": "Beat"},
+  {"metric": "Adjusted pro forma operating EBITDA", "actual": "-$269M (loss 33% wider y/y)", "consensus": "n/a", "result": ""},
+  {"metric": "2026 operating EPS guidance", "actual": "$2.25-$2.35 (reaffirmed)", "consensus": "n/a", "result": "Reaffirmed"}
+ ],
+ "takeaways": [
+  "First report since Vylor, the seed business, split from Corteva. Q3 is the seed off-season, so a loss is normal.",
+  "Pro forma net sales were $938 million, down 1%; volume fell 9% while price/mix rose 6% on licensing income and pricing, per the company release.",
+  "Soybean sales fell 26% to $133 million on the shift to a licensing model in Brazil; corn rose 4% to $607 million.",
+  "The Fly compared organic sales of $911 million with a $918.1 million consensus (a slight miss), so the revenue verdict depends on which number you use.",
+  "Full-year guidance reaffirmed: about $2.8 billion adjusted operating EBITDA and $2.25-$2.35 operating EPS. A $3 billion buyback and $0.13 dividend were announced Oct 22."
+ ],
+ "verdict": "Vylor's first report card came in the quarter when seed companies basically sell nothing, and it still lost less than expected. Its old roommate Corteva got the bad Brazil news; Vylor got to say 'reaffirmed.'",
+ "sources": [
+  {"title": "Vylor Reaffirms Full-Year Guidance on Strong YTD Results (PR Newswire)", "url": "https://www.prnewswire.com/news-releases/vylor-reaffirms-full-year-guidance-on-strong-ytd-results-advances-leading-technology-302936902.html"},
+  {"title": "Benzinga: Vylor Q3 Adj. EPS $(0.42) Beats $(0.50) Estimate, Sales $938M Beat $903.652M", "url": "https://www.benzinga.com/news/earnings/26/11/63169975/vylor-q3-adj-eps-0-42-beats-0-50-estimate-sales-938-000m-beat-903-652m-estimate"},
+  {"title": "The Fly via TipRanks: Vylor reports Q3 EPS (42c), consensus (52c)", "url": "https://www.tipranks.com/news/the-fly/vylor-reports-q3-eps-42c-consensus-52c-thefly-news"}
+ ],
+ "prev_close": 72.1,
+ "reaction": {"kind": "premarket", "price": 72.2, "asof": "2026-11-12 4:00 AM ET"}
+}

@@ -1,0 +1,35 @@
+{
+ "slug": "nbis-q3-2026",
+ "ticker": "NBIS",
+ "company": "Nebius Group",
+ "quarter": "Q3 2026",
+ "date": "2026-11-12",
+ "when": "before the open",
+ "verdict_word": "Big revenue beat and ARR more than doubled, but 2026 slides to the low end",
+ "mcap_b": 37,
+ "headline": [
+  {"metric": "Revenue", "actual": "$980.8M (+571% y/y)", "consensus": "$916.8M (Zacks via Yahoo Finance)", "result": "Beat"},
+  {"metric": "EPS (GAAP, diluted)", "actual": "-$0.13", "consensus": "-$0.61 (Zacks via Yahoo Finance)", "result": "Beat"},
+  {"metric": "Adjusted EBITDA", "actual": "$465.8M (vs -$5.2M a year ago)", "consensus": "n/a", "result": ""},
+  {"metric": "Annualized run-rate revenue (ARR), end of Sept.", "actual": "$6.4B (from $3.0B in June)", "consensus": "$4.1B-$4.8B (analyst range via TradingNews)", "result": "Above"},
+  {"metric": "2026 revenue guidance", "actual": "Low end of $3.0B-$3.4B", "consensus": "n/a", "result": "Lowered within range"},
+  {"metric": "2027 preliminary revenue guidance", "actual": "$12B-$13B; capex $40B-$45B", "consensus": "n/a", "result": "New"}
+ ],
+ "takeaways": [
+  "Revenue jumped 571% to $980.8 million; the AI cloud business was $973.8 million, about 99% of the total, per the company release and shareholder letter.",
+  "ARR hit $6.4 billion at the end of September, up 113% from $3.0 billion in June. Then Nebius said it 'no longer sees ARR as the right measure' of the business.",
+  "Some 2026 revenue is slipping into early 2027, so the company now expects the low end of its $3.0-3.4 billion range, and the December ARR target now arrives in February.",
+  "Prepayments on deals signed in Q3 covered more than 100% of the associated capex, up from 50-60% in Q2; payback improved to 1 year 7 months.",
+  "First 2027 outlook: $12-13 billion revenue, $40-45 billion capex, and pre-tax breakeven by the end of 2027. Q3 capex alone was $7.3 billion."
+ ],
+ "verdict": "Nebius beat on sales, doubled its run-rate in a quarter, and got customers to prepay for the buildings. Then it quietly retired the ARR number right as the December target slid to February. Big quarter, slightly moving goalposts, and the stock is up anyway.",
+ "sources": [
+  {"title": "Nebius reports third quarter 2026 financial results (company newsroom)", "url": "https://nebius.com/newsroom/nebius-reports-third-quarter-2026-financial-results"},
+  {"title": "Nebius Q3 2026 Financial Results Press Release (PDF)", "url": "https://assets.nebius.com/assets/508584f1-b73d-484f-b64f-f96a5bc3b515/Nebius%20Q3%202026%20Financial%20Results%20Press%20Release.pdf"},
+  {"title": "Nebius Q3 2026 letter to shareholders (PDF)", "url": "https://assets.nebius.com/assets/65994da2-e220-40cd-bb5d-72e9654a237d/SHL.pdf"},
+  {"title": "Zacks via Yahoo Finance: Nebius Stock Ahead of Q3 Earnings (consensus)", "url": "https://finance.yahoo.com/markets/stocks/articles/nebius-stock-ahead-q3-earnings-123600801.html"},
+  {"title": "TradingNews: Nebius Q3 ARR expected at $4.1B-$4.8B", "url": "https://www.tradingnews.com/news/nebius-stock-targets-190-usd-after-19-percent-surge-to-159-usd-as-coreweave-backlog"}
+ ],
+ "prev_close": 154.69,
+ "reaction": {"kind": "premarket", "price": 162.0, "asof": "2026-11-12 7:13 AM ET"}
+}

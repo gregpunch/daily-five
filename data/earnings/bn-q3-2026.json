@@ -1,0 +1,30 @@
+{
+ "slug": "bn-q3-2026",
+ "ticker": "BN",
+ "company": "Brookfield Corporation",
+ "quarter": "Q3 2026",
+ "date": "2026-11-12",
+ "when": "before the open",
+ "verdict_word": "A penny beat, 16% growth, and the biggest infrastructure fund ever on the way",
+ "mcap_b": 104,
+ "headline": [
+  {"metric": "Distributable earnings per share", "actual": "$0.73 (+16% y/y)", "consensus": "$0.72 (Nasdaq consensus)", "result": "Beat"},
+  {"metric": "DE before realizations per share", "actual": "$0.64 (+14% y/y)", "consensus": "n/a", "result": ""},
+  {"metric": "Net income attributable to shareholders", "actual": "$1.31B (vs $219M a year ago)", "consensus": "n/a", "result": ""},
+  {"metric": "Capital raised in Q3", "actual": "$25B (fee-bearing capital $682B, +13%)", "consensus": "n/a", "result": ""}
+ ],
+ "takeaways": [
+  "Total distributable earnings were $1.72 billion ($0.73 a share), including $222 million of realized carried interest, per the company release.",
+  "Asset management fee-related earnings rose 15%; wealth solutions (insurance) earnings rose 22%, with insurance assets near $200 billion.",
+  "After quarter-end, Brookfield got $13 billion more for its infrastructure flagship, $26 billion committed so far; it says the fund will become 'by far, the largest infrastructure fund ever raised.'",
+  "About $300 million of stock bought back since the last report, almost $900 million this year."
+ ],
+ "verdict": "Brookfield owns the toll roads, pipes and power plants the AI boom has to plug into, and it collects fees on top. A one-cent beat is boring, and boring is the point.",
+ "sources": [
+  {"title": "Brookfield Corporation Reports 16% Increase in Earnings (company release, PDF)", "url": "https://bn.brookfield.com/sites/brookfield-bn-v2/files/Brookfield-BN-IR-V2/2026/Q3/2026-q3-bn-press-release.pdf"},
+  {"title": "Brookfield Corporation press releases", "url": "https://bn.brookfield.com/events-news/press-releases"},
+  {"title": "Nasdaq earnings calendar, Nov 12, 2026 (consensus)", "url": "https://www.nasdaq.com/market-activity/earnings"}
+ ],
+ "prev_close": 42.06,
+ "reaction": {"kind": "premarket", "price": 42.4, "asof": "2026-11-12 6:30 AM ET"}
+}

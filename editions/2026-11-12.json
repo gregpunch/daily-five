@@ -1,0 +1,48 @@
+{
+ "date": "2026-11-12",
+ "headline": "Nebius beats with $981M in sales and doubles its run-rate to $6.4B, stock up ~5% premarket; Brookfield's penny beat; Franco-Nevada and Vylor last night; Cisco, Applied Materials and Cerebras tonight",
+ "top_call": "Nebius grew revenue 571% to $980.8 million vs $916.8 million expected (Zacks), lost just $0.13 a share vs $0.61 feared, and more than doubled its annualized run-rate to $6.4 billion in three months. The catch: 2026 revenue now lands at the low end of its range and the December ARR target slides to February. The stock is up about 5% before the bell anyway. Plus Brookfield, Franco-Nevada, Vylor and Corteva, explained, and Cisco, Applied Materials and Cerebras tonight.",
+ "lead": "nbis-q3-2026",
+ "subject": "The Daily Five — Thu Nov 12: Nebius beats ($981M vs $917M), run-rate doubles to $6.4B",
+ "backdrop": "Wednesday the S&P 500 rose 1.31% to 7,619.38 and the Nasdaq 1.60%. This morning S&P 500 futures are down about 0.4% and Nasdaq-100 futures about 0.8% as Nvidia slides on reports its board is weighing CEO Jensen Huang's future.",
+ "backdrop_source": {
+  "name": "Yahoo Finance",
+  "url": "https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-12-sp-500-nasdaq-dow-nvidia-invest-110027430.html"
+ },
+ "finance": [],
+ "on_deck_title": "On deck today",
+ "on_deck_sub": "Reporting after the close today, Nov 12, with Wall Street's EPS estimates",
+ "on_deck": [
+  {"ticker": "CSCO", "company": "Cisco Systems", "when": "after the close", "eps_consensus": "$1.32",
+   "source": {"name": "Yahoo Finance earnings calendar", "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-12"}},
+  {"ticker": "AMAT", "company": "Applied Materials", "when": "after the close", "eps_consensus": "$4.06",
+   "source": {"name": "Yahoo Finance earnings calendar", "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-12"}},
+  {"ticker": "NU", "company": "Nu Holdings", "when": "after the close", "eps_consensus": "$0.22",
+   "source": {"name": "Yahoo Finance earnings calendar", "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-12"}},
+  {"ticker": "CBRS", "company": "Cerebras Systems", "when": "after the close", "eps_consensus": "-$0.13",
+   "source": {"name": "Nasdaq earnings calendar", "url": "https://www.nasdaq.com/market-activity/earnings"}},
+  {"ticker": "QXO", "company": "QXO", "when": "after the close", "eps_consensus": "$0.14",
+   "source": {"name": "Yahoo Finance earnings calendar", "url": "https://finance.yahoo.com/calendar/earnings?day=2026-11-12"}}
+ ],
+ "ai": [
+  {
+   "category": "Chips",
+   "headline": "Nvidia's board met overnight on whether to oust CEO Jensen Huang after a second reported affair; no decision yet, and the stock is down about 5-7% premarket",
+   "why": "Bernstein cut its target to $200 from $400 and Baird to $200 from $500. The world's most important AI company is now a key-man question, and Elon Musk says hiring Huang would be 'an honor.' Popcorn is not financial advice.",
+   "source": {"name": "CNBC", "url": "https://www.cnbc.com/2026/11/12/nvidia-boards-crisis-meeting.html"}
+  },
+  {
+   "category": "Cloud",
+   "headline": "CoreWeave is giving back about 7% premarket after Wednesday's 24% earnings pop, while Nebius rises on its own beat",
+   "why": "The neoclouds trade like one stock until earnings day, then they trade like siblings fighting over the remote.",
+   "source": {"name": "CNBC", "url": "https://www.cnbc.com/2026/11/12/nvidia-boards-crisis-meeting.html"}
+  },
+  {
+   "category": "Policy",
+   "headline": "Mississippi's new Democratic senator-elect Scott Colom pledged to push for a pause on new data center construction until companies pay for their own power and water",
+   "why": "Democrats now hold at least 55 Senate seats. Data center politics just went national, and AI's power bill has a lobby now.",
+   "source": {"name": "CNBC", "url": "https://www.cnbc.com/2026/11/12/nvidia-boards-crisis-meeting.html"}
+  }
+ ],
+ "sports": []
+}

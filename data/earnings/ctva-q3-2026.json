@@ -8,10 +8,30 @@
  "verdict_word": "Light on sales and EPS; Brazil trims the outlook",
  "mcap_b": 8,
  "headline": [
-  {"metric": "Adjusted pro forma operating EPS", "actual": "$0.06 (-57% y/y)", "consensus": "$0.0957 (24/7 Wall St. preview)", "result": "Miss"},
-  {"metric": "Net sales", "actual": "$1.59B (-9% y/y)", "consensus": "$1.764B (IBES via Reuters)", "result": "Miss"},
-  {"metric": "Adjusted pro forma operating EBITDA", "actual": "$222M (-17% y/y)", "consensus": "n/a", "result": ""},
-  {"metric": "2026 operating EPS guidance", "actual": "$0.76-$0.80 (pro forma)", "consensus": "n/a", "result": "Updated"}
+  {
+   "metric": "Adjusted pro forma operating EPS",
+   "actual": "$0.06 (-57% y/y)",
+   "consensus": "$0.0957 (24/7 Wall St. preview)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Net sales",
+   "actual": "$1.59B (-9% y/y)",
+   "consensus": "$1.764B (IBES via Reuters)",
+   "result": "Miss"
+  },
+  {
+   "metric": "Adjusted pro forma operating EBITDA",
+   "actual": "$222M (-17% y/y)",
+   "consensus": "n/a",
+   "result": ""
+  },
+  {
+   "metric": "2026 operating EPS guidance",
+   "actual": "$0.76-$0.80 (pro forma)",
+   "consensus": "n/a",
+   "result": "Updated"
+  }
  ],
  "takeaways": [
   "Net sales fell 9% to $1.59 billion; volume slipped 2% and pricing dropped 7%, per the company release.",
@@ -22,10 +42,23 @@
  ],
  "verdict": "The first report since the seed split came in soft, with Brazil pricing doing most of the damage. North America grew, which is nice, but the guide was the part with a haircut.",
  "sources": [
-  {"title": "Corteva Reports Third-Quarter 2026 Results (PR Newswire via Morningstar)", "url": "https://www.morningstar.com/news/pr-newswire/20261111cl95463/corteva-reports-third-quarter-2026-results-updates-fy-2026-outlook"},
-  {"title": "Reuters brief via TradingView: Corteva Q3 revenue vs IBES estimate", "url": "https://www.tradingview.com/news/reuters.com,2026-11-11:newsml_PLX56Z24Z:0-brief-corteva-q3-revenue-usd-1-591-million-vs-ibes-estimate-usd-1-764-million/"},
-  {"title": "24/7 Wall St.: Corteva and Franco-Nevada preview (consensus)", "url": "https://247wallst.com/investing/2026/11/10/cortevas-first-report-since-the-vylor-split-and-franco-nevadas-gold-defying-run-both-face-a-test/"}
+  {
+   "title": "Corteva Reports Third-Quarter 2026 Results (PR Newswire via Morningstar)",
+   "url": "https://www.morningstar.com/news/pr-newswire/20261111cl95463/corteva-reports-third-quarter-2026-results-updates-fy-2026-outlook"
+  },
+  {
+   "title": "Reuters brief via TradingView: Corteva Q3 revenue vs IBES estimate",
+   "url": "https://www.tradingview.com/news/reuters.com,2026-11-11:newsml_PLX56Z24Z:0-brief-corteva-q3-revenue-usd-1-591-million-vs-ibes-estimate-usd-1-764-million/"
+  },
+  {
+   "title": "24/7 Wall St.: Corteva and Franco-Nevada preview (consensus)",
+   "url": "https://247wallst.com/investing/2026/11/10/cortevas-first-report-since-the-vylor-split-and-franco-nevadas-gold-defying-run-both-face-a-test/"
+  }
  ],
  "prev_close": 12.14,
- "reaction": {"kind": "after hours", "price": 11.34, "asof": "2026-11-11 5:14 PM ET"}
+ "reaction": {
+  "kind": "premarket",
+  "price": 10.95,
+  "asof": "2026-11-12 7:09 AM ET"
+ }
 }

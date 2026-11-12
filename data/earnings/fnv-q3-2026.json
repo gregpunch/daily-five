@@ -1,0 +1,33 @@
+{
+ "slug": "fnv-q3-2026",
+ "ticker": "FNV",
+ "company": "Franco-Nevada",
+ "quarter": "Q3 2026",
+ "date": "2026-11-11",
+ "when": "after the close",
+ "verdict_word": "Profit beat, revenue miss: gold prices did the lifting, mines delivered less",
+ "mcap_b": 48,
+ "headline": [
+  {"metric": "Adjusted EPS", "actual": "$1.89 (+33% y/y)", "consensus": "$1.77 (Zacks via AP)", "result": "Beat"},
+  {"metric": "Revenue", "actual": "$549.3M (+13% y/y)", "consensus": "$587.8M (LSEG via Reuters)", "result": "Miss"},
+  {"metric": "Gold equivalent ounces (GEOs) sold", "actual": "130,435 (-6% y/y)", "consensus": "n/a", "result": ""},
+  {"metric": "Adjusted EBITDA", "actual": "$493.9M ($2.56/share, +15%)", "consensus": "n/a", "result": ""},
+  {"metric": "2026 GEO guidance", "actual": "525,000-555,000 (narrowed from 510,000-570,000)", "consensus": "n/a", "result": "Narrowed to midpoint"}
+ ],
+ "takeaways": [
+  "Revenue rose 13% to $549.3 million on higher gold and oil prices, but precious-metal deliveries were 'slightly below expectations,' per CEO Paul Brink in the company release.",
+  "GEOs sold fell 6% to 130,435 on lower contributions from Guadalupe-Palmarejo, Antapaccay and Cobre Panama; Reuters said revenue missed on lower gold stream deliveries.",
+  "Net income rose 38% to $395.5 million ($2.05 a share), helped by items excluded from adjusted earnings, including a partial Cobre Panama impairment reversal (Business News Today).",
+  "Panama's interministerial commission recommended formal negotiations with First Quantum over Cobre Panama's future; no restart has been approved.",
+  "$4.8 billion of available capital, no debt, and a $0.44 quarterly dividend."
+ ],
+ "verdict": "Franco-Nevada is the landlord of gold mines: it doesn't dig, it just collects. This quarter the rent went up because gold did, while the tenants shipped fewer ounces. A profit beat on a revenue miss, and the stock barely blinked.",
+ "sources": [
+  {"title": "Franco-Nevada Reports Q3 2026 Results (PR Newswire)", "url": "https://www.prnewswire.com/news-releases/franco-nevada-reports-q3-2026-results-302936997.html"},
+  {"title": "AP via Yahoo Finance: Franco-Nevada Q3 Earnings Snapshot (Zacks consensus)", "url": "https://finance.yahoo.com/markets/stocks/articles/franco-nevada-q3-earnings-snapshot-223705320.html"},
+  {"title": "Reuters via Longbridge: Franco-Nevada Q3 revenue misses estimates on lower gold stream deliveries", "url": "https://longbridge.com/en/news/305220352.md"},
+  {"title": "Business News Today: Franco-Nevada profit jumps 38%, but gold deliveries fall", "url": "https://business-news-today.com/franco-nevada-profit-jumps-38-but-gold-deliveries-fall-as-panama-risk-remains/"}
+ ],
+ "prev_close": 248.76,
+ "reaction": {"kind": "premarket", "price": 248.0, "asof": "2026-11-12 6:31 AM ET"}
+}
