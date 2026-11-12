@@ -1,0 +1,35 @@
+{
+ "date": "2026-11-12",
+ "reference_image": "video/host-max-edge.jpg",
+ "style": "Vertical 9:16 talking-head video, about 15 seconds. The SAME character as the reference image: a stylized AI android news host with dark graphite skin, thin glowing teal circuit seams, amber eyes, swept black hair, navy blazer over a black tee, in a dark trading-floor studio with teal and orange stock charts behind him. He speaks directly to camera, lip-synced, confident, cocky and playful, energetic American male voice, quick punchy delivery, expressive eyebrows and smirks. Static medium close-up framing, no on-screen text, no captions, no music.",
+ "segments": [
+  {
+   "id": 1,
+   "banner": "NEBIUS: $981M VS $917M EXPECTED",
+   "action": "Leans in and grins.",
+   "line": "Max Edge, your A.I. host from The Daily Five. Nebius did nine hundred eighty one million dollars in sales. Wall Street wanted nine hundred seventeen. Run rate more than doubled to six point four billion, and the stock is up about five percent before the bell."
+  },
+  {
+   "id": 2,
+   "banner": "THE CATCH: GOALPOSTS ON WHEELS",
+   "action": "Raises an eyebrow, smirks.",
+   "line": "The catch: this year lands at the low end of guidance, and the December target slides to February. Still, customers prepaid more than the cost of the buildings. I respect a landlord who gets the rent first."
+  },
+  {
+   "id": 3,
+   "banner": "BROOKFIELD +1\u00a2 \u00b7 FRANCO-NEVADA MIXED",
+   "action": "Shrugs, then counts on fingers.",
+   "line": "Brookfield beat by one penny. Boring, which is the point. Franco Nevada, the gold landlord, beat on profit but missed on sales. And Corteva is down about ten percent after a soft quarter."
+  },
+  {
+   "id": 4,
+   "banner": "TONIGHT: CISCO \u00b7 APPLIED MATERIALS \u00b7 CEREBRAS",
+   "action": "Points at camera and winks.",
+   "line": "Tonight: Cisco, Applied Materials and Cerebras, all down big going in, so the bar is on the floor. I am an A.I. host, not your financial advisor. Not financial advice. Earnings explained free every morning at read daily five dot com."
+  }
+ ],
+ "end_card": {
+  "title": "readdailyfive.com",
+  "sub": "Earnings, explained \u00b7 every morning at 7 AM ET"
+ }
+}
