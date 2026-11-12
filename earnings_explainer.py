@@ -178,6 +178,11 @@ def render(B, reports):
         rxh=(f"<p class=\"sub\"><b class=\"{'up' if move>=0 else 'dn'}\">{tk} {move:+.1f}%</b> {E(rx['kind'])} at ${rx['price']:,.2f} vs the ${pc:,.2f} close before the report (as of {E(rx['asof'])}). Live moves change fast; this updates every time the site rebuilds.</p>" if move is not None else '<p class="sub">Reaction pending: the first trade after the report will show here.</p>')
         pr=prerun(r.get('yahoo') or tk.replace('.','-'),r['date'],r.get('when','')) if B.get('live',True) else None
         prh,prtxt=prerun_html(E,tk,pr,move); rxh+=prh
+        d1=day_one(r) if B.get('live',True) else None
+        if d1:
+            d1d=d1['date'].strftime('%a %b ')+str(d1['date'].day)
+            d1txt=f"On its first full trading day after the report ({d1d}), {tk} closed {d1['move']:+.1f}% at ${d1['close']:,.2f} versus the ${pc:,.2f} close before the report."
+            rxh=(f'<p class="d1"><b>Day one:</b> <b class="{"up" if d1["move"]>=0 else "dn"}">{tk} closed {d1["move"]:+.1f}%</b> on {E(d1d)} (${d1["close"]:,.2f} vs ${pc:,.2f} pre-report close, Yahoo Finance daily close). That settled number is the cleanest read on how the market judged the report.</p>')+rxh
         rx_h2=('📈 After-hours reaction' if 'after hours' in (rx.get('kind') or '') else '📈 Stock reaction')
         srcs=''.join(f'<li><a href="{E(s["url"])}" rel="nofollow noopener" target="_blank">{E(s["title"])}</a></li>' for s in r['sources'])
         bw=[h for h in r['headline'] if h['result']]
@@ -186,6 +191,7 @@ def render(B, reports):
         faqs=[(f"Did {nm} beat earnings in {q}?",ans_beat)]
         if gd: faqs.append((f"What is {nm}'s guidance after {q}?",' '.join(f"{h['metric']}: {h['actual']} (consensus {h['consensus']})." for h in gd)))
         if move is not None: faqs.append((f"How did {tk} stock react to earnings?",f"{tk} was {move:+.1f}% {rx['kind']} at ${rx['price']:,.2f} versus the ${pc:,.2f} close before the report, as of {rx['asof']}."))
+        if d1: faqs.append((f"How did {tk} stock close the day after earnings?",d1txt))
         if prtxt: faqs.append((f"How much did {tk} stock move before earnings?",prtxt))
         # Big-move reports (|move| >= BIG_MOVE, no beat/miss mismatch): answer "why did X stock jump/sink after earnings".
         big=move is not None and abs(move)>=BIG_MOVE and not surprise(r,move)
@@ -227,7 +233,7 @@ def render(B, reports):
         sch={"@context":"https://schema.org","@graph":[{"@type":"Article","headline":h1,"description":desc[:300],"datePublished":r['date'],"dateModified":B['TODAY'].isoformat(),"author":{"@type":"Organization","name":BRAND},"publisher":{"@type":"Organization","name":BRAND},"mainEntityOfPage":SITE+P,"about":{"@type":"Corporation","name":nm,"tickerSymbol":tk},"citation":[s['url'] for s in r['sources']]},csch,
              {"@type":"FAQPage","url":SITE+P,"mainEntity":[{"@type":"Question","name":a,"acceptedAnswer":{"@type":"Answer","text":b}} for a,b in faqs]}]}
         B['w'](f"earnings/{r['slug']}/index.html",B['shell'](title,desc[:155],P,body,sch))
-        r['_move']=move; r['_pr']=pr; urls.append((P,B['TODAY'].isoformat()))
+        r['_move']=move; r['_pr']=pr; r['_d1']=d1; urls.append((P,B['TODAY'].isoformat()))
     B['_ERPTS']=reports
     return urls+ticker_hubs(B,reports)+upcoming_hubs(B,reports)+week_recaps(B,reports)+calendar_page(B,reports)
 
@@ -941,3 +947,34 @@ def day_after(reports, today, n=8):
         r['_dmove']=round((c/r['prev_close']-1)*100,1); out.append(r)
     out.sort(key=lambda r:(-size(r),r['ticker']))
     return sess,out[:n]
+
+_D1_PATH=os.path.join(os.path.dirname(os.path.abspath(__file__)),'data','dayone.json')
+_d1=None
+def day_one(r):
+    """First full trading session after the report (report day if before the open, else next weekday) and its real
+    Yahoo close vs the stored pre-report close. Settled closes are cached in data/dayone.json (committed by local builds).
+    Returns {'date','close','move'} or None if the session hasn't closed yet or the fetch fails."""
+    global _d1
+    if _d1 is None:
+        try: _d1=json.load(open(_D1_PATH))
+        except Exception: _d1={}
+    pc=r.get('prev_close')
+    if not pc: return None
+    try: rd=datetime.date.fromisoformat(r['date'])
+    except Exception: return None
+    first=rd if str(r.get('when','')).startswith('before') else _next_wd(rd)
+    try:
+        from zoneinfo import ZoneInfo
+        now=datetime.datetime.now(ZoneInfo('America/New_York'))
+    except Exception: now=datetime.datetime.now()
+    if first>now.date() or (first==now.date() and (now.hour,now.minute)<(16,15)): return None
+    key=f"{r['ticker']}|{r['date']}"
+    c=_d1.get(key)
+    if c is None:
+        c=_session_close(r.get('yahoo') or r['ticker'].upper().replace('.','-'), first)
+        if c is None: return None
+        _d1[key]=c
+        try:
+            json.dump(_d1,open(_D1_PATH,'w'),indent=0,sort_keys=True)
+        except Exception: pass
+    return {'date':first,'close':c,'move':round((c/pc-1)*100,1)}

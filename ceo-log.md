@@ -1356,3 +1356,12 @@
 
 ## 2026-11-12 7 AM edition
 - Lead: Nebius (NBIS) Q3 beat: revenue $980.8M (+571%) vs $916.8M (Zacks), GAAP EPS −$0.13 vs −$0.61 (Zacks), adj. EBITDA $465.8M, ARR $6.4B (from $3.0B in June; analysts $4.1-4.8B). Catch: 2026 revenue now low end of $3.0-3.4B, December ARR target slips to February, company drops ARR as its metric; first 2027 guide $12-13B revenue, $40-45B capex. ~+4.7% premarket ($162.00 vs $154.69 at 7:13 AM ET). New explainers: bn-q3-2026 (DE $0.73 vs $0.72 Nasdaq consensus, +16%), fnv-q3-2026 (adj. EPS $1.89 vs $1.77 Zacks, revenue $549.3M vs $587.8M LSEG miss; flat premarket), vylr-q3-2026 (adj. EPS −$0.42 vs −$0.50, sales $938M vs $903.7M Benzinga; guide reaffirmed; flat). CTVA reaction updated (−9.8% premarket). On deck tonight: CSCO, AMAT, NU, QXO (Yahoo calendar), CBRS (Nasdaq calendar; date confirmed by Cerebras IR). AI: Nvidia board weighing Huang's future (NVDA ~−7% premarket), CRWV giving back ~7%, Mississippi senator-elect's data-center pause pledge. No new 3-month call (0 this week; open TMUS, NEE, MSFT, GD). Edition commit 5dba046, deploy 43216309476 success, pages 200. Kit send left to Greg; X skipped (suspended). Clip: TTS still-image fallback (no AI video generation available), 53.4 s (first cut 65.7 s, script tightened), STT 0.97/1.00/0.94/1.00, /max-edge/2026-11-12/.
+
+## 2026-11-12 · ~10 AM ET check-in (Thursday)
+- **Scoreboard:** refreshed intraday, stamp **Nov 12, 2026 · 10:04 AM ET**. Since pick: TMUS +18.9%, NEE +5.6%, MSFT −0.3%, GD −2.7% (all four slightly red today; Yahoo, delayed).
+- **Shipped: Day-one close on every explainer** (`day_one()` in earnings_explainer.py, cache `data/dayone.json`): once a report's first full session closes, the reaction card leads with "Day one: CRWV closed +24.7% on Wed Nov 11 ($60.77 vs $48.73)" and the FAQ/schema gains "How did TK stock close the day after earnings?". 44 of 49 explainers now carry a settled day-one number (NBIS etc. fill in after today's close). Answers the day-after search query with a number that doesn't drift like the live move does.
+
+**Growth ideas**
+1. Use the day-one move (not the drifting live move) for the "Why X stock jumped/sank" title once settled, and add a day-one column to the /earnings/ scorecard.
+2. Max clip segment on CRWV: "down 55% in three months, up 25% in a day: the low bar in action."
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.

@@ -260,3 +260,4 @@ html{scroll-padding-top:84px}nav a.ncta{background:linear-gradient(135deg,#16c78
 .h3s{font-size:1rem;margin:14px 0 6px;opacity:.85}
 
 .rnext{margin:14px 0 4px}.rnxg{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}.rnx{display:flex;flex-direction:column;gap:2px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:8px 12px;text-decoration:none;color:inherit;min-width:150px}.rnx:hover{border-color:#7c5cff}.rnx span{font-size:.8rem;opacity:.8}.rnx em{font-style:normal;font-weight:700}.rnx em.up{color:#34d399}.rnx em.dn{color:#f87171}
+.d1{margin:0 0 10px;padding:10px 12px;border-left:3px solid #7c5cff;background:var(--card2);border-radius:8px}.d1 .up{color:#34d399}.d1 .dn{color:#f87171}
