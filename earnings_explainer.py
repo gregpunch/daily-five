@@ -797,10 +797,26 @@ def home_lead(B, reports):
         return (f'<a class="ercard" href="{BASE}/earnings/{r["slug"]}/"><span class="erk">{E(r["ticker"])} · {E(r["quarter"])} · {E(r.get("when",""))}</span>'
                 f'<h3>{E(r["company"])}: {E(r["verdict_word"])}</h3>{mv_badge(r)}<p>{E(v)}</p><span class="erm">{hl}</span><span class="erg">Read the plain-English breakdown →</span></a>')
     cards=''.join(card(r) for r in rec)
-    sline=home_scoreline(B,reports,rec)
+    sline=home_scoreline(B,reports,rec)+home_dayafter(B,reports)
     return (f'<section class="sec ernlead" id="earnings"><div class="sh"><span class="si">🧾</span><div><h2>Earnings, explained</h2>{sline}'
             f'<p class="sub">Last night\'s and this morning\'s big reports in plain English: the numbers vs Wall Street, guidance, and how the stock took it. Biggest names first. Live stock moves refresh with every rebuild.</p></div></div>'
             f'<div class="ergrid">{cards}</div>{home_weeks(B,reports)}<p class="sub"><a href="{BASE}/earnings/">All earnings explained →</a></p></section>')
+
+def home_dayafter(B, reports):
+    """Home 'Day-after scorecard' (same math as the email's day_after_line): how the latest full session's first-day
+    reporters actually closed vs the pre-report close (real Yahoo daily closes). After 4:15 PM ET on a weekday the
+    just-closed session counts, so the evening and next-morning visitor both see settled numbers."""
+    E=B['E']; BASE=B['BASE']
+    try:
+        from zoneinfo import ZoneInfo
+        now=datetime.datetime.now(ZoneInfo('America/New_York')); ref=now.date()
+        if now.weekday()<5 and (now.hour,now.minute)>=(16,15): ref=ref+datetime.timedelta(days=1)
+        sess,rs=day_after(reports,ref,n=6)
+    except Exception as ex:
+        print('home day-after skipped:',ex); return ''
+    if not rs: return ''
+    bits=' · '.join(f'<a href="{BASE}/earnings/{r["slug"]}/">{E(r["ticker"])}</a> <span class="{"up" if r["_dmove"]>=0 else "dn"}">{r["_dmove"]:+.1f}%</span>' for r in rs)
+    return f'<p class="ersl">🗓 <b>Day-after scorecard</b> <span class="dl">({E(sess.strftime("%a %b ")+str(sess.day))} close vs the pre-report close)</span>: {bits}</p>'
 
 def home_scoreline(B, reports, rec, days=7):
     """One-line earnings season scorecard under the home 'Earnings, explained' heading:

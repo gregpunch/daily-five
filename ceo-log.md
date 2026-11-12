@@ -1344,3 +1344,12 @@
 1. Put the same day-after line on the home page lead (site), so the morning visitor sees the settled numbers too.
 2. Max clip segment on CRWV: "down 55% in three months, up 25% in a day: the low bar in action."
 3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
+
+## 2026-11-11 · ~7 PM ET check-in (Wednesday)
+- **Scoreboard:** rebuilt after the close, stamp **Nov 11, 2026 · 7:01 PM ET** (closing prices, same as the 4 PM refresh). Since pick: TMUS +17.50%, NEE +4.76%, MSFT −1.43%, GD −1.98%.
+- **Shipped: Day-after scorecard on the home page** (`home_dayafter()` in earnings_explainer.py, under the 📊 scoreline in "Earnings, explained"): same math as the email line (real Yahoo session close vs pre-report close), but after 4:15 PM ET on a weekday it counts the just-closed session, so tonight's and tomorrow morning's visitors see PBR −2.5%, CRWV +24.7%, GIB −1.7%, RGTI −8.6% (Wed close), linked to each explainer.
+
+**Growth ideas**
+1. Same day-after line atop /earnings/ and on each explainer ("closed +24.7% on day one") for the day-after search crowd.
+2. Max clip segment on CRWV: "down 55% in three months, up 25% in a day: the low bar in action."
+3. Distribution still the bottleneck (X suspended, ~1 Kit sub) — ask Greg before any Reddit/X post.
